@@ -22,5 +22,13 @@ namespace Self.Utils
 
         public static string NewLine(this object msg) => msg + "\r\n";
         public static string Space(this object msg) => msg + " ";
+
+        public static void DrawRays(params Ray[] rays)
+        {
+            foreach (var ray in rays)
+            {
+                Debug.DrawRay(ray.origin, ray.direction);
+            }
+        }
     }
 }

@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -28,16 +29,21 @@ namespace Self.Utils
         public static bool TryWithTag<T>(out T t, string tag) => Find(tag).TryGetComponent(out t);
         public static T GetWithName<T>(string name) => GameObject.Find(name).GetComponent<T>();
 
+        public static int GetLayer(this RaycastHit2D hit) => 1 << hit.collider.gameObject.layer;
+        public static int GetLayer(this Collision2D info) => 1 << info.gameObject.layer;
+
         public static T Get<T>(this Collision2D info) => info.gameObject.GetComponent<T>();
         public static T Get<T>(this Collider2D info) => info.gameObject.GetComponent<T>();
         public static T Get<T>(this Collision info) => info.gameObject.GetComponent<T>();
         public static T Get<T>(this Collider info) => info.gameObject.GetComponent<T>();
+        public static T Get<T>(this RaycastHit2D hit) => hit.collider.Get<T>();
 
         public static bool Try<T>(this Collision2D info, out T t) => info.gameObject.TryGetComponent(out t);
         public static bool Try<T>(this Collider2D info, out T t) => info.gameObject.TryGetComponent(out t);
         public static bool Try<T>(this Collision info, out T t) => info.gameObject.TryGetComponent(out t);
         public static bool Try<T>(this Collider info, out T t) => info.gameObject.TryGetComponent(out t);
         public static bool Try<T>(this GameObject gob, out T t) => gob.TryGetComponent(out t);
+        public static bool Try<T>(this RaycastHit2D hit, out T t) => hit.collider.TryGetComponent(out t);
         public static T Try<T>(this GameObject gob)
         {
             gob.TryGetComponent(out T t);
@@ -65,6 +71,20 @@ namespace Self.Utils
             }
         }
 
-        public static int GetLayer(this RaycastHit2D hit) => hit.collider.gameObject.layer;
+        public static bool BoxCast2D(out RaycastHit2D hit,
+            Vector2 origin, Vector2 size, int layer = 1 << 0, float distance = 1, float angle = 0, Vector2 direction = new())
+        {
+            hit = Physics2D.BoxCast(origin, size, angle, direction, distance, layer);
+            return hit;
+        }
+
+        public static bool Raycast2D(out RaycastHit2D hit,
+            Vector2 origin, Vector2 direction, int layer = 1 << 0, float distance = 1)
+        {
+            hit = Physics2D.Raycast(origin, direction, distance, layer);
+            return hit;
+        }
+
+        public static GameObject GetChildGameObject(this Transform t, int? specify = null) => t.GetChild(specify == null ? 0 : (int)specify).gameObject;
     }
 }

@@ -6,6 +6,9 @@ TagManager:
   tags:
   - Manager
   - Enemy
+  - Ladder
+  - Ground
+  - Pad
   layers:
   - Default
   - TransparentFX
@@ -15,7 +18,7 @@ TagManager:
   - UI
   - Player
   - Ground
-  - 
+  - Obstacle
   - 
   - 
   - 

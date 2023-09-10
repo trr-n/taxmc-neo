@@ -8,7 +8,7 @@ namespace Self.Game
     public class Floor : MonoBehaviour
     {
         [SerializeField]
-        Sprite sprite;
+        Sprite[] sprites;
 
         [SerializeField]
         float repetiteSpeed;
@@ -18,20 +18,19 @@ namespace Self.Game
 
         public enum MovingStyle
         {
-            Stopped, Horizontal, Vertical
+            Fixed, Horizontal, Vertical
         }
         [SerializeField]
-        MovingStyle style = MovingStyle.Stopped;
+        MovingStyle style = MovingStyle.Fixed;
 
         Vector3 basePos;
 
-        SpriteRenderer selfSr;
+        SpriteRenderer sr;
 
         void Start()
         {
+            // sr = GetComponent<SpriteRenderer>();
             basePos = transform.position;
-
-            selfSr = GetComponent<SpriteRenderer>();
         }
 
         void Update()
@@ -43,13 +42,11 @@ namespace Self.Game
         {
             switch (style)
             {
-                case MovingStyle.Stopped: break;
+                case MovingStyle.Fixed: break;
 
                 case MovingStyle.Horizontal:
-                    var hmin = basePos - Coordinate.X * repetiteRange;
-                    var hmax = basePos + Coordinate.X * repetiteRange;
-
-                    if (transform.position.x < hmin.x || transform.position.x > hmax.x)
+                    var x = Coordinate.X * repetiteRange;
+                    if (transform.position.x < (basePos - x).x || transform.position.x > (basePos + x).x)
                     {
                         repetiteSpeed *= -1;
                     }
@@ -57,10 +54,8 @@ namespace Self.Game
                     break;
 
                 case MovingStyle.Vertical:
-                    var vmin = basePos - Coordinate.X * repetiteRange;
-                    var vmax = basePos + Coordinate.X * repetiteRange;
-
-                    if (transform.position.y < vmin.y || transform.position.y > vmax.y)
+                    var y = Coordinate.Y * repetiteRange;
+                    if (transform.position.y < (basePos - y).y || transform.position.y > (basePos + y).y)
                     {
                         repetiteSpeed *= -1;
                     }

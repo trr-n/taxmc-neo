@@ -31,9 +31,9 @@ namespace Self.Utils
         }
 
         [Obsolete]
-        public static void Write2(object data, string password, string path, FileMode mode = FileMode.Create)
+        public static void Write2(object data, string password, string path)
         {
-            using FileStream stream = new(path, mode);
+            using FileStream stream = new(path, FileMode.Create);
             Rijndael enc = new(password);
             byte[] arr = enc.Encrypt(JsonSerializer.Serialize(data));
             stream.Write(arr, 0, arr.Length);

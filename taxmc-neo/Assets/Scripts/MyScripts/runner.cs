@@ -13,9 +13,7 @@ namespace Self.Utils
             try
             {
                 if (flag0)
-                {
                     return;
-                }
 
                 foreach (var action in actions)
                 {

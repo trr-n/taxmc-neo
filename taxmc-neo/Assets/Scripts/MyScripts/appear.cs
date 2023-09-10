@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Runtime.InteropServices;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -21,9 +22,9 @@ namespace Self.Utils
     {
         static int cindex = 0;
         static readonly Stopwatch csw = new(true);
-        public static void Colour(this SpriteRenderer sr, in float span, params Color[] colours)
+        public static void Colour(this SpriteRenderer sr, in float interval, params Color[] colours)
         {
-            if (!(csw.sf >= span))
+            if (!(csw.sf >= interval))
                 return;
 
             // index = colors[index > colors.Length ? index = 0 : index++];
@@ -34,13 +35,14 @@ namespace Self.Utils
 
         static int iindex = 0;
         static readonly Stopwatch isw = new(true);
-        public static void Image(this SpriteRenderer sr, in float span, params Sprite[] sprites)
+        public static void Pic(this SpriteRenderer sr, in float interval, params Sprite[] pics)
         {
-            if (isw.sf >= span)
+            if (isw.sf >= interval)
                 return;
 
-            iindex = iindex >= sprites.Length - 1 ? iindex = 0 : iindex += 1;
-            sr.sprite = sprites[iindex];
+            iindex = iindex >= pics.Length - 1 ? 0 : iindex += 1;
+
+            sr.sprite = pics[iindex];
             isw.Restart();
         }
     }

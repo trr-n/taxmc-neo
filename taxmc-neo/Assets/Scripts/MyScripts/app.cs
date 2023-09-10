@@ -14,6 +14,7 @@ namespace Self.Utils
         public static float GetFPS => Mathf.Floor(1 / Time.deltaTime);
 
         public static void SetGravity(Vector3 gravity) => Physics2D.gravity = gravity;
+        public static Vector2 GetGravity => Physics2D.gravity;
 
         public static void SetCursorStatus(CursorAppearance appear, CursorRangeOfMotion rangeOfMotion)
         {
