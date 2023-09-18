@@ -26,6 +26,8 @@ namespace trrne.Utils
 
         public static void SetPosition(this Transform t, Vector2 position) => t.position = position;
 
+        public static void SetPosition(this RaycastHit2D hit, Vector2 position) => hit.collider.transform.position = position;
+
         public static void ClampPosition22(this Transform t,
             float? minX = null, float? maxX = null, float? minY = null, float? maxY = null, float? minZ = null, float? maxZ = null)
         {

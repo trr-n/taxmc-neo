@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using Codice.CM.Client.Differences.Merge;
 using UnityEngine;
 
 namespace trrne.Utils
@@ -12,8 +13,7 @@ namespace trrne.Utils
         {
             try
             {
-                if (flag0)
-                    return;
+                if (flag0) { return; }
 
                 foreach (var action in actions)
                 {
@@ -22,10 +22,7 @@ namespace trrne.Utils
 
                 flag0 = true;
             }
-            catch (Exception e)
-            {
-                throw e;
-            }
+            catch (Exception e) { MonoBehaviour.print(e.Message); }
         }
 
         public static T Function<T>(Func<T> func) => func();
@@ -39,5 +36,10 @@ namespace trrne.Utils
                 bookingSW.Rubbish();
             }
         }
+
+        /// <summary>
+        /// 何もしないとき用
+        /// </summary>
+        public static void NothingSpecial() {; }
     }
 }

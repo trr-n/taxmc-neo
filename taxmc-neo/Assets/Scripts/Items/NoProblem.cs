@@ -9,8 +9,13 @@ namespace trrne.Game
     public class NoProblem : Item
     {
         [SerializeField]
-        [Range(0, 100)]
-        int blankRate = 75;
+        [Tooltip("base: 1")]
+        float blankRate = 1.2f;
+
+        [SerializeField]
+        GameObject delFx;
+
+        Vector2 initPos = Vector2.zero;
 
         protected override void Receive()
         {
@@ -21,11 +26,14 @@ namespace trrne.Game
             {
                 Lottery.Weighted(new Pair<Action, float>[]
                 {
-                    // alive
-                    new (() => { print("alive"); }, 1),
-                    // dead
-                    new (() => { print("dead"); }, 1)
+                    // はずれ
+                    new (() => Runner.NothingSpecial(), 1),
+
+                    // あたり
+                    new (() => hit.SetPosition(initPos), 1 * blankRate)
                 });
+
+                delFx.Generate(transform.position);
             }
         }
 
