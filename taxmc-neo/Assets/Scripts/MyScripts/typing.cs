@@ -1,4 +1,4 @@
-namespace Self.Utils
+namespace trrne.Utils
 {
     public static class Typing
     {

@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace Self.Utils
+namespace trrne.Utils
 {
     public enum LogFormat { Standard, Warning, Error }
     public static class log

@@ -2,25 +2,23 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using Self.Utils;
+using trrne.Utils;
 
-namespace Self.Game
+namespace trrne.Game
 {
     public class Player : MonoBehaviour
     {
         [SerializeField]
-        Sprite[] sprites;
-
-        public bool Ctrlable { get; set; }
-        public bool Jumpable { get; set; }
-        public bool Walkable { get; set; }
+        Text leftText;
 
         [SerializeField]
-        float climbingSpeed;
-        // bool onLadder = false;
-        Vector3 climbingDir;
+        Sprite[] sprites;
 
-        bool onWall = false;
+        // FadingPanel fpanel;
+
+        public bool ctrlable { get; set; }
+        public bool jumpable { get; set; }
+        public bool walkable { get; set; }
 
         readonly float speed = 10;
 
@@ -36,28 +34,30 @@ namespace Self.Game
         SpriteRenderer sr;
         Rigidbody2D rb;
 
-        [SerializeField]
-        Text speedT, livesT;
-
+        /// <summary>
+        /// ザンキ
+        /// </summary>
         Health health;
 
         void Start()
         {
             sr = GetComponent<SpriteRenderer>();
-            rays.offset = ((sr.bounds.size.y / 2) - 0.2f) * Coordinate.Y;
+            rays.offset = ((sr.bounds.size.y / 2) - 0.2f) * Coordinate.y;
 
             rb = GetComponent<Rigidbody2D>();
             rb.mass = 60f;
 
             health = GetComponent<Health>();
 
-            Ctrlable = true;
+            // fpanel = Gobject.GetWithTag<FadingPanel>(Constant.Tags.Panel);
+
+            ctrlable = true;
         }
 
         void Update()
         {
             // sr.Colour(0.33f, Color.red, Color.green, Color.blue);
-            livesT.SetText(health.Lives.current);
+            leftText.SetText(health.lives.left);
         }
 
         void FixedUpdate()
@@ -65,72 +65,44 @@ namespace Self.Game
             Movement();
         }
 
-        void LateUpdate()
-        {
-            speedT.SetText(Numeric.Cutail(CurrentSpeed) + " km/h");
-        }
-
+        /// <summary>
+        /// ゴキブリの動きぶり
+        /// </summary>
         void Movement()
         {
-            if (!Ctrlable) return;
+            if (!ctrlable) { return; }
 
-            // Move
-            Vector2 move = Input.GetAxisRaw(Constant.Keys.Horizontal) * Coordinate.X;
+            // 移動
+            Vector2 move = Input.GetAxisRaw(Constant.Keys.Horizontal) * Coordinate.x;
             rb.position += Time.fixedDeltaTime * speed * move;
             currentSpeed = transform.Speed();
 
-            // Jump
-            Ray jray = new(transform.position - rays.offset, -Coordinate.Y);
-            Debug.DrawRay(jray.origin, jray.direction * rays.dis);
+            // ジャンプ
+            Ray jumpRay = new(transform.position - rays.offset, -Coordinate.y);
+#if DEBUG
+            Debug.DrawRay(jumpRay.origin, jumpRay.direction * rays.dis);
+#endif
 
-            isFloating = Gobject.Raycast2D(out var hit, jray.origin, jray.direction, rays.layer, rays.dis);
-            if (hit)
+            // 地に足がついていたらジャンプ可
+            if (isFloating = Gobject.Raycast2D(
+                out var hit, jumpRay.origin, jumpRay.direction, rays.layer, rays.dis))
             {
-                if (isFloating && /*!onLadder &&*/ Inputs.Pressed(Constant.Keys.Jump))
+                if (isFloating && Inputs.Pressed(Constant.Keys.Jump))
                 {
-                    rb.AddForce(Coordinate.Y * power, ForceMode2D.Impulse);
+                    rb.AddForce(Coordinate.y * power, ForceMode2D.Impulse);
                 }
             }
-
-            // Climb
-            if (Gobject.BoxCast2D(out var lhit, transform.position, sr.bounds.size, Constant.Layers.Obstacle))
-            {
-                if (!lhit.Compare(Constant.Tags.Ladder))
-                    return;
-
-                if (Inputs.Pressed(Constant.Keys.Jump))
-                {
-                    climbingDir = Coordinate.Y;
-                }
-                else if (Inputs.Pressed(Constant.Keys.Down))
-                {
-                    climbingDir = -Coordinate.Y;
-                }
-
-                transform.Translate(Time.deltaTime * climbingSpeed * climbingDir);
-            }
-            else
-            {
-                if (Physics2D.gravity != (Vector2)Constant.DefaultGravity)
-                {
-                    Physics2D.gravity = Constant.DefaultGravity;
-                }
-            }
-
-            // // Jump pad
-            // Ray pray = new(transform.position, Vector2.right);
-            // if (Gobject.Raycast2D(out var phit, pray.origin, pray.direction, Constant.Layers.Obstacle, sr.bounds.size.x * 1.1f))
-            // {
-            //     if (phit.Compare(Constant.Tags.Pad))
-            //     {
-            //     }
-            // }
         }
 
+        /// <summary>
+        /// 成仏
+        /// </summary>
         public void Die()
         {
             transform.position = Vector2.zero;
             health.Reset();
+
+            // fpanel.Fade(FadeStyle.Out);
         }
     }
 }

@@ -1,7 +1,7 @@
 using System.IO;
 using System.Runtime.CompilerServices;
 
-namespace Self.Utils
+namespace trrne.Utils
 {
     public static class File
     {

@@ -1,9 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
-using Self.Utils;
+using trrne.Utils;
 using UnityEngine;
 
-namespace Self.Game
+namespace trrne.Game
 {
     public class Manager : MonoBehaviour
     {
@@ -19,7 +19,7 @@ namespace Self.Game
             camera.Followable = true;
 
             player = Gobject.GetWithTag<Player>(Constant.Tags.Player);
-            player.Ctrlable = true;
+            player.ctrlable = true;
 
             enemies = Gobject.Finds(Constant.Tags.Enemy);
             foreach (var enemy in enemies)

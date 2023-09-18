@@ -1,18 +1,18 @@
 using System;
 using UnityEngine;
 
-namespace Self.Utils
+namespace trrne.Utils
 {
     public static class Coordinate
     {
-        public static Vector3 X => new(1, 0);
-        public static Vector3 MX => new(-1, 0);
-        public static Vector3 Y => new(0, 1);
-        public static Vector3 MY => new(0, -1);
-        public static Vector3 Z => new(0, 0, 1);
-        public static Vector3 MZ => new(0, 0, -1);
+        public static Vector3 x => new(1, 0);
+        public static Vector3 mx => new(-1, 0);
+        public static Vector3 y => new(0, 1);
+        public static Vector3 my => new(0, -1);
+        public static Vector3 z => new(0, 0, 1);
+        public static Vector3 mz => new(0, 0, -1);
 
-        public static float G => 9.81f;
+        public static float g => 9.80665f;
 
         public static void SetPosition(this Transform t, double? x = null, double? y = null, double? z = null)
         {

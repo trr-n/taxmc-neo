@@ -2,10 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEditor.IMGUI.Controls;
 using UnityEngine;
-using Self.Utils;
+using trrne.Utils;
 using UCamera = UnityEngine.Camera;
 
-namespace Self.Game
+namespace trrne.Game
 {
     public class Camera : MonoBehaviour
     {
@@ -22,7 +22,7 @@ namespace Self.Game
         {
             // if (!Followable)
             //     return;
-            transform.position = player.transform.position + -Coordinate.Y * 0.25f + Coordinate.Z * -10;
+            transform.position = player.transform.position + -Coordinate.y * 0.25f + Coordinate.z * -10;
         }
     }
 }

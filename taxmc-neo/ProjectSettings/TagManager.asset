@@ -9,6 +9,7 @@ TagManager:
   - Ladder
   - Ground
   - Pad
+  - Panel
   layers:
   - Default
   - TransparentFX

@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using static UnityEngine.Application;
 
-namespace Self.Utils
+namespace trrne.Utils
 {
     public enum FrameRate { Low = 30, Medium = 60, High = 144, Ultra = 200, VSync = -1 }
     public enum CursorAppearance { Invisible, Visible }
@@ -11,10 +11,10 @@ namespace Self.Utils
     {
         public static void SetFPS(int fps = -1) => targetFrameRate = fps;
         public static void SetFPS(FrameRate fps) => targetFrameRate = (int)fps;
-        public static float GetFPS => Mathf.Floor(1 / Time.deltaTime);
+        public static float fps => Mathf.Floor(1 / Time.deltaTime);
 
         public static void SetGravity(Vector3 gravity) => Physics2D.gravity = gravity;
-        public static Vector2 GetGravity => Physics2D.gravity;
+        public static Vector2 gravity => Physics2D.gravity;
 
         public static void SetCursorStatus(CursorAppearance appear, CursorRangeOfMotion rangeOfMotion)
         {
@@ -22,9 +22,12 @@ namespace Self.Utils
             Cursor.lockState = (CursorLockMode)rangeOfMotion;
         }
 
-        public static float GetTimeScale => Time.timeScale;
-        public static bool CurrentTimeScale(float scale) => Time.timeScale == scale;
+        public static float timeScale => Time.timeScale;
+        public static bool TimeScale(float scale) => Time.timeScale == scale;
 
-        public static string GetDevice => platform.ToString();
+        public static string platform => Application.platform.ToString();
+
+        public static Vector2 resolution => new(Screen.currentResolution.width, Screen.currentResolution.height);
+        public static Vector2 screenSize => new(Screen.width, Screen.height);
     }
 }

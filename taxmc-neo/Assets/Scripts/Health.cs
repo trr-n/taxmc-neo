@@ -2,26 +2,43 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Self.Game
+namespace trrne.Game
 {
     public class Health : MonoBehaviour
     {
-        [SerializeField]
-        int remainLives;
+        [SerializeField, Min(1)]
+        int max = 1;
+        int left;
 
-        int currentLives;
+        /// <summary>
+        /// 最大、現在
+        /// </summary>
+        public (int max, int left) lives => (max, left);
 
-        public (int remain, int current) Lives => (remainLives, currentLives);
+        /// <summary>
+        /// 残機が0か
+        /// </summary>
+        public bool isZero => left <= 0;
 
-        public void Fluc(int amount)
+        /// <summary>
+        /// amount分残機数を変動させる
+        /// </summary>
+        public void Fluctuation(int amount)
         {
-            if (currentLives <= 0)
-                return;
+            if (isZero) { return; }
 
-            currentLives += amount;
-            currentLives = Mathf.Clamp(currentLives, 0, remainLives);
+            left += amount;
+            left = Mathf.Clamp(left, 0, max);
         }
 
-        public void Reset() => currentLives = remainLives;
+        /// <summary>
+        /// 残機を最大に設定
+        /// </summary>
+        public void Reset() => left = max;
+
+        /// <summary>
+        /// 残機数の上限をlatestに変更
+        /// </summary>
+        public void ChangeMax(int latest) => max = latest;
     }
 }

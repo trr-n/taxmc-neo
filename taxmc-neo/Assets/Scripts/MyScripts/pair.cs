@@ -1,19 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Self.Utils
+namespace trrne.Utils
 {
     public class Pair<TKey, TValue> where TValue : struct, IComparable, IFormattable, IConvertible, IComparable<TValue>, IEquatable<TValue>
     {
-        public TKey Key;
-        public TValue Value;
+        public TKey key;
+        public TValue value;
 
         public Pair() { }
 
         public Pair(TKey key, TValue value)
         {
-            Key = key;
-            Value = value;
+            this.key = key;
+            this.value = value;
         }
     }
 
@@ -30,10 +30,7 @@ namespace Self.Utils
 
         public Pairs() { }
 
-        public object this[int index]
-        {
-            get { return new Pairs<TKey, TValue>[index]; }
-        }
+        public object this[int index] => new Pairs<TKey, TValue>[index];
 
         public Pairs(int capacity)
         {

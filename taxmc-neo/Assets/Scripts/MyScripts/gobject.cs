@@ -1,9 +1,8 @@
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Self.Utils
+namespace trrne.Utils
 {
     public enum Active { Self, Hierarchy }
 
@@ -33,6 +32,7 @@ namespace Self.Utils
         public static int GetLayer(this Collision2D info) => 1 << info.gameObject.layer;
 
         public static T Get<T>(this Collision2D info) => info.gameObject.GetComponent<T>();
+        public static bool Get<T>(this Collision2D info, out T t) { t = info.Get<T>(); return t is null; }
         public static T Get<T>(this Collider2D info) => info.gameObject.GetComponent<T>();
         public static T Get<T>(this Collision info) => info.gameObject.GetComponent<T>();
         public static T Get<T>(this Collider info) => info.gameObject.GetComponent<T>();

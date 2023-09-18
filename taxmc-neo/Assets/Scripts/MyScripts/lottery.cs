@@ -2,17 +2,14 @@
 using System.Collections;
 using System.Collections.Generic;
 
-namespace Self.Utils
+namespace trrne.Utils
 {
     public static class Lottery
     {
         // https://youtu.be/3CQCBQRq0FA
         public static int Weighted(params float[] weights)
         {
-            if (weights.Length <= 0)
-            {
-                return -1;
-            }
+            if (weights.Length <= 0) { throw new Karappoyanke("nanka kakankai"); }
 
             float[] cumulativeWeights = new float[weights.Length];
 
@@ -31,18 +28,11 @@ namespace Self.Utils
                 int center = (min + max) / 2;
                 float centerPoint = cumulativeWeights[center];
 
-                if (rand > centerPoint)
-                {
-                    min = center + 1;
-                }
-
+                if (rand > centerPoint) { min = center + 1; }
                 else
                 {
                     float pre = center > 0 ? cumulativeWeights[center - 1] : 0;
-                    if (rand >= pre)
-                    {
-                        return center;
-                    }
+                    if (rand >= pre) { return center; }
                     max = center;
                 }
             }
@@ -52,15 +42,12 @@ namespace Self.Utils
 
         public static T Weighted<T>(params KeyValuePair<T, float>[] pairs)
         {
-            if (pairs.Length == 1)
-            {
-                return pairs[0].Key;
-            }
+            if (pairs.Length == 1) { return pairs[0].Key; }
 
             float[] weights = new float[pairs.Length];
-            for (int i = 0; i < pairs.Length; i++)
+            for (int idx = 0; idx < pairs.Length; idx++)
             {
-                weights[i] = pairs[i].Value;
+                weights[idx] = pairs[idx].Value;
             }
 
             int choice = Weighted(weights);
@@ -71,19 +58,31 @@ namespace Self.Utils
 
         public static T Weighted<T>(params Pair<T, float>[] pairs)
         {
-            if (pairs.Length == 1)
-            {
-                return pairs[0].Key;
-            }
+            if (pairs.Length == 1) { return pairs[0].key; }
 
             float[] weights = new float[pairs.Length];
-            for (int i = 0; i < pairs.Length; i++)
+            for (int idx = 0; idx < pairs.Length; idx++)
             {
-                weights[i] = pairs[i].Value;
+                weights[idx] = pairs[idx].value;
             }
 
             int choice = Weighted(weights);
-            return pairs[choice].Key;
+            return pairs[choice].key;
+        }
+
+        public static void Weighted(params Pair<Action, float>[] pairs)
+        {
+            if (pairs.Length == 1) { pairs[0].key(); }
+
+            float[] weights = new float[pairs.Length];
+            for (int idx = 0; idx < pairs.Length; idx++)
+            {
+                weights[idx] = pairs[idx].value;
+            }
+
+            int choice = Weighted(weights);
+            pairs[choice].key();
+
         }
     }
 }

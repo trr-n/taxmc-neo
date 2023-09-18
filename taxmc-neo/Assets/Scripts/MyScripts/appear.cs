@@ -3,7 +3,7 @@ using System.Runtime.InteropServices;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Self.Utils
+namespace trrne.Utils
 {
 
     public static class Appear
@@ -18,7 +18,7 @@ namespace Self.Utils
         public static string SetText(this Text text, object obj) => text.text = obj.ToString();
     }
 
-    public static class Animator
+    public static class Anime
     {
         static int cindex = 0;
         static readonly Stopwatch csw = new(true);

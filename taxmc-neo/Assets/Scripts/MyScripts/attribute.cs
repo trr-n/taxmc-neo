@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Self.Utils
+namespace trrne.Utils
 {
     [AttributeUsage(AttributeTargets.Method | AttributeTargets.Property)]
     public sealed class WarningAttribute : Attribute

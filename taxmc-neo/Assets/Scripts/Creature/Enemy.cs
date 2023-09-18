@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Self.Game
+namespace trrne.Game
 {
     public abstract class Enemy : MonoBehaviour
     {

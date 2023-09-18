@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Self.Utils
+namespace trrne.Utils
 {
     public static class Numeric
     {

@@ -1,9 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
-using Self.Utils;
+using trrne.Utils;
 using UnityEngine;
 
-namespace Self.Game
+namespace trrne.Game
 {
     public class Gunny : Enemy
     {
@@ -12,7 +12,7 @@ namespace Self.Game
         // readonly float gunLineLength = 5f;
         (GameObject obj, LineRenderer line, float length) gun;
 
-        Vector3 direction = Coordinate.X;
+        Vector3 direction = Coordinate.x;
         float speed = 10f;
 
         Rigidbody2D rb;

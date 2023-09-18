@@ -1,9 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
-using Self.Utils;
+using trrne.Utils;
 using UnityEngine;
 
-namespace Self.Game
+namespace trrne.Game
 {
     [RequireComponent(typeof(Health))]
     public class Newbie : Enemy
@@ -42,7 +42,7 @@ namespace Self.Game
 
         protected override void DetectPlayer()
         {
-            horizon.ray = new(transform.position - (Coordinate.X * distance / 2), transform.right);
+            horizon.ray = new(transform.position - (Coordinate.x * distance / 2), transform.right);
             horizon.hit = Physics2D.Raycast(horizon.ray.origin, horizon.ray.direction, distance, layers);
 
             if (horizon.hit)
@@ -53,7 +53,7 @@ namespace Self.Game
                         player.Die();
 
                         if (horizon.hit.Try<Health>(out var life))
-                            life.Fluc(-1);
+                            life.Fluctuation(-1);
 
                         break;
 
@@ -66,13 +66,10 @@ namespace Self.Game
                 }
             }
 
-            vertical.ray = new(transform.position + (distance * Coordinate.Y / 2), transform.up);
+            vertical.ray = new(transform.position + (distance * Coordinate.y / 2), transform.up);
             vertical.hit = Physics2D.Raycast(vertical.ray.origin, vertical.ray.direction, distance, layers);
 
-            if (vertical.hit)
-            {
-                health.Fluc(-1);
-            }
+            if (vertical.hit) { health.Fluctuation(-1); }
 
             Debug.DrawRay(horizon.ray.origin, horizon.ray.direction * distance, Color.red);
             Debug.DrawRay(vertical.ray.origin, vertical.ray.direction * distance, Color.blue);
@@ -80,12 +77,12 @@ namespace Self.Game
 
         protected override void Die()
         {
-            if (health.Lives.current > 0)
-                return;
+            if (!health.isZero) { return; }
 
-            print("died.");
             if (dyingFx.Length > 0)
+            {
                 dyingFx.Generate(transform.position);
+            }
         }
 
         protected override void Move()
@@ -93,7 +90,7 @@ namespace Self.Game
             if (!enable)
                 return;
 
-            transform.Translate(Time.deltaTime * speed * Coordinate.X);
+            transform.Translate(Time.deltaTime * speed * Coordinate.x);
         }
     }
 }

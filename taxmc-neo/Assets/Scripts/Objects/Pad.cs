@@ -3,19 +3,23 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Self.Game
+namespace trrne.Game
 {
     public class Pad : MonoBehaviour
     {
         [SerializeField]
         Rigidbody2D[] debug4;
-        float detectRange = 2;
+
+        readonly float detectRange = 2;
 
         void Update()
         {
             debug4 = Closers;
         }
 
+        /// <summary>
+        /// 近くにいるえんてぃてぃを取得
+        /// </summary>
         Rigidbody2D[] Closers
         {
             get

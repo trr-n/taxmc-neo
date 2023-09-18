@@ -1,10 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
-using Self.Utils;
+using trrne.Utils;
 using UnityEditor.Build.Content;
 using UnityEngine;
 
-namespace Self.Game
+namespace trrne.Game
 {
     public class Flag : MonoBehaviour
     {

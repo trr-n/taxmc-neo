@@ -1,8 +1,8 @@
 using UnityEngine;
-using Self.Utils;
+using trrne.Utils;
 using System.Collections;
 
-namespace Self.Game
+namespace trrne.Game
 {
     public class Blower : MonoBehaviour
     {
