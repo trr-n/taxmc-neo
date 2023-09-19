@@ -16,7 +16,6 @@ namespace trrne.Utils
         public static void SetPosition(this Transform t, float? x = null, float? y = null, float? z = null)
         {
             if (x is null && y is null && z is null) { throw new Karappoyanke(); }
-
             t.position = new(x is null ? t.position.x : (float)x, y is null ? t.position.y : (float)y, z is null ? t.position.z : (float)z);
         }
 
@@ -30,7 +29,6 @@ namespace trrne.Utils
             float? minX = null, float? maxX = null, float? minY = null, float? maxY = null, float? minZ = null, float? maxZ = null)
         {
             if (minX is null && maxX is null && minY is null && maxY is null && minZ is null && maxZ is null) { throw new Karappoyanke(); }
-
             t.position = new(minX is null ? t.position.x : Mathf.Clamp(t.position.x, (float)minX, (float)maxX),
                 minY is null ? t.position.y : Mathf.Clamp(t.position.y, (float)minY, (float)maxY),
                 minZ is null ? t.position.z : Mathf.Clamp(t.position.z, (float)minZ, (float)maxZ));
@@ -39,37 +37,38 @@ namespace trrne.Utils
         public static void ClampPosition2(this Transform t, float? minX = null, float? maxX = null, float? minY = null, float? maxY = null)
         {
             if (minX is null && maxX is null && minY is null && maxY is null) { throw new Karappoyanke(); }
-
             t.position = new(Mathf.Clamp(t.position.x, (float)minX, (float)maxX), Mathf.Clamp(t.position.y, (float)minY, (float)maxY));
         }
 
         public static void ClampPosition2(this Transform t, (float min, float max)? x = null, (float min, float max)? y = null)
         {
             if (x is null && y is null) { throw new Karappoyanke(); }
-
             t.position = new(Mathf.Clamp(t.position.x, x.Value.max, x.Value.max), Mathf.Clamp(t.position.y, y.Value.min, y.Value.max));
         }
 
         public static void ClampPosition2(this Transform t, float? x = null, float? y = null)
         {
             if (x is null && y is null) { throw new Karappoyanke(); }
-
             t.position = new(Mathf.Clamp(t.position.x, (float)x, (float)-x), Mathf.Clamp(t.position.y, (float)y, (float)-y));
         }
 
         public static void SetVelocityX(this Rigidbody2D rb, float velocity) { rb.velocity = new(velocity, rb.velocity.y); }
 
+        // public static void ClampVelocity(this Rigidbody2D rb, float? min = null, float? max = null)
+        // {
+        //     if (min is null && max is null) { throw new Karappoyanke(); }
+        //     rb.velocity = new(min is null ? rb.velocity.x : Mathf.Clamp(rb.velocity.x, (float)min, (float)max), );
+        // }
+
         public static void SetRotation(this Transform t, float? x = null, float? y = null, float? z = null, float? w = null)
         {
             if (x is null && y is null && z is null & w is null) { throw new Karappoyanke(); }
-
             t.rotation = new(x is null ? t.rotation.x : (float)x, y is null ? t.rotation.y : (float)y, z is null ? t.rotation.z : (float)z, w is null ? t.rotation.w : (float)w);
         }
 
         public static void SetEuler(this Transform t, float? x = null, float? y = null, float? z = null)
         {
             if (x is null && y is null && z is null) { throw new Karappoyanke(); }
-
             t.rotation = Quaternion.Euler(x is null ? t.localScale.x : (float)x, y is null ? t.localScale.y : (float)y, z is null ? t.localScale.z : (float)z);
         }
 
@@ -78,7 +77,6 @@ namespace trrne.Utils
         public static void SetScale(this Transform t, float? x = null, float? y = null, float? z = null)
         {
             if (x is null && y is null && z is null) { throw new Karappoyanke(); }
-
             t.localScale = new(x is null ? t.localScale.x : (float)x, y is null ? t.localScale.y : (float)y, z is null ? t.localScale.z : (float)z);
         }
 

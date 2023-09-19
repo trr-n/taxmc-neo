@@ -2,7 +2,6 @@ using UnityEngine;
 using UnityEngine.UI;
 using trrne.Utils;
 using System.Threading.Tasks;
-using Cysharp.Threading.Tasks;
 
 namespace trrne.Game
 {
@@ -41,6 +40,9 @@ namespace trrne.Game
         /// </summary>
         Health health;
 
+        readonly float tolerance = 0.33f;
+        readonly float reduction = 0.9f;
+
         void Start()
         {
             sr = GetComponent<SpriteRenderer>();
@@ -68,21 +70,23 @@ namespace trrne.Game
         void Movement()
         {
             if (!ctrlable) { return; }
-
             Move();
+            Jump();
+        }
 
+        void Jump()
+        {
             // ジャンプ
             Ray rjump = new(transform.position - rays.offset, -Coordinate.y);
 #if DEBUG
             Debug.DrawRay(rjump.origin, rjump.direction * rays.dis);
 #endif
-
             // 地に足がついていたらジャンプ可
-            if (floating = Gobject.Raycast2D(out var hit, rjump.origin, rjump.direction, rays.layer, rays.dis) &&
-                Inputs.Pressed(Constant.Keys.Jump))
+            if (floating = Gobject.Raycast2D(out var hit, rjump.origin, rjump.direction, rays.layer, rays.dis) && Inputs.Pressed(Constant.Keys.Jump))
             {
                 rb.AddForce(Coordinate.y * power, ForceMode2D.Impulse);
             }
+
         }
 
         /// <summary>
@@ -93,13 +97,16 @@ namespace trrne.Game
             Vector2 move = Input.GetAxisRaw(Constant.Keys.Horizontal) * Coordinate.x;
             velocityText.SetText(rb.velocity);
 
-            if (move.magnitude <= 0.3f)
+            if (move.magnitude <= tolerance)
             {
-                // rb.velocity = new(rb.velocity.x * 0.9f, rb.velocity.y);
-                rb.SetVelocityX(rb.velocity.x * 0.9f);
+                // 入力されていなかったら速度を0.9倍する
+                rb.SetVelocityX(rb.velocity.x * reduction);
             }
 
+            // Xの速度を制限
             rb.velocity = new(Mathf.Clamp(rb.velocity.x, -speed.max, speed.max), rb.velocity.y);
+
+            // 浮いていたら速度を1/2に
             rb.velocity += Time.fixedDeltaTime * (floating ? speed.basis / 2 : speed.basis) * move;
         }
 
