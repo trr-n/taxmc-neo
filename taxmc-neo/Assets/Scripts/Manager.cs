@@ -7,16 +7,16 @@ namespace trrne.Game
 {
     public class Manager : MonoBehaviour
     {
-        new Camera camera;
+        new Cam camera;
         Player player;
         GameObject[] enemies;
 
         void Start()
         {
-            Physics2D.gravity = Constant.DefaultGravity;
+            Physics2D.gravity = Constant.Gravity;
 
-            camera = Gobject.GetWithTag<Camera>(Constant.Tags.MainCamera);
-            camera.Followable = true;
+            camera = Gobject.GetWithTag<Cam>(Constant.Tags.MainCamera);
+            camera.followable = true;
 
             player = Gobject.GetWithTag<Player>(Constant.Tags.Player);
             player.ctrlable = true;

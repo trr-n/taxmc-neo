@@ -7,9 +7,9 @@ using UCamera = UnityEngine.Camera;
 
 namespace trrne.Game
 {
-    public class Camera : MonoBehaviour
+    public class Cam : MonoBehaviour
     {
-        public bool Followable { get; set; }
+        public bool followable { get; set; }
 
         GameObject player;
 

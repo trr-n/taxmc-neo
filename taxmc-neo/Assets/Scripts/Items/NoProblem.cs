@@ -30,10 +30,12 @@ namespace trrne.Game
                     new (() => Runner.NothingSpecial(), 1),
 
                     // あたり
-                    new (() => hit.SetPosition(initPos), 1 * blankRate)
+                    // new (() => hit.SetPosition(initPos), 1 * blankRate)
+                    new (() => hit.Get<Player>().Die(), 1 * blankRate)
                 });
 
-                delFx.Generate(transform.position);
+                // delFx.Generate(transform.position);
+                Destroy(gameObject);
             }
         }
 

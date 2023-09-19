@@ -3,33 +3,33 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using trrne.Utils;
+using System.Runtime.InteropServices.WindowsRuntime;
 
 namespace trrne.Game
 {
     public class Player : MonoBehaviour
     {
         [SerializeField]
-        Text leftText;
+        Text leftText, velocityText;
 
         [SerializeField]
         Sprite[] sprites;
-
-        // FadingPanel fpanel;
 
         public bool ctrlable { get; set; }
         public bool jumpable { get; set; }
         public bool walkable { get; set; }
 
-        readonly float speed = 10;
+        // readonly float speed = 10;
+        readonly (float basis, float max) speed = (20, 10);
 
         (Vector3 offset, float dis, int layer) rays = (new(), 0.25f, Constant.Layers.Ground);
         readonly float power = 250;
 
-        bool isFloating;
-        public bool IsFloating => isFloating;
+        bool floating;
+        public bool isFloating => floating;
 
-        float currentSpeed;
-        public float CurrentSpeed => currentSpeed;
+        float vel;
+        public float velocity => vel;
 
         SpriteRenderer sr;
         Rigidbody2D rb;
@@ -48,15 +48,10 @@ namespace trrne.Game
             rb.mass = 60f;
 
             health = GetComponent<Health>();
-
-            // fpanel = Gobject.GetWithTag<FadingPanel>(Constant.Tags.Panel);
-
-            ctrlable = true;
         }
 
         void Update()
         {
-            // sr.Colour(0.33f, Color.red, Color.green, Color.blue);
             leftText.SetText(health.lives.left);
         }
 
@@ -72,26 +67,40 @@ namespace trrne.Game
         {
             if (!ctrlable) { return; }
 
-            // 移動
-            Vector2 move = Input.GetAxisRaw(Constant.Keys.Horizontal) * Coordinate.x;
-            rb.position += Time.fixedDeltaTime * speed * move;
-            currentSpeed = transform.Speed();
+            Move();
 
             // ジャンプ
-            Ray jumpRay = new(transform.position - rays.offset, -Coordinate.y);
+            Ray rjump = new(transform.position - rays.offset, -Coordinate.y);
 #if DEBUG
-            Debug.DrawRay(jumpRay.origin, jumpRay.direction * rays.dis);
+            Debug.DrawRay(rjump.origin, rjump.direction * rays.dis);
 #endif
 
             // 地に足がついていたらジャンプ可
-            if (isFloating = Gobject.Raycast2D(
-                out var hit, jumpRay.origin, jumpRay.direction, rays.layer, rays.dis))
+            if (floating = (
+                Gobject.Raycast2D(out var hit, rjump.origin, rjump.direction, rays.layer, rays.dis) &&
+                Inputs.Pressed(Constant.Keys.Jump)
+            ))
             {
-                if (isFloating && Inputs.Pressed(Constant.Keys.Jump))
-                {
-                    rb.AddForce(Coordinate.y * power, ForceMode2D.Impulse);
-                }
+                rb.AddForce(Coordinate.y * power, ForceMode2D.Impulse);
             }
+        }
+
+        /// <summary>
+        /// 移動
+        /// </summary>
+        void Move()
+        {
+            Vector2 move = Input.GetAxisRaw(Constant.Keys.Horizontal) * Coordinate.x;
+            velocityText.SetText(rb.velocity);
+
+            if (move.magnitude <= 0.3f)
+            {
+                // rb.velocity = new(rb.velocity.x * 0.9f, rb.velocity.y);
+                rb.SetVelocityX(rb.velocity.x * 0.9f);
+            }
+
+            rb.velocity = new(Mathf.Clamp(rb.velocity.x, -speed.max, speed.max), rb.velocity.y);
+            rb.velocity += Time.fixedDeltaTime * (floating ? speed.basis / 2 : speed.basis) * move;
         }
 
         /// <summary>
@@ -99,10 +108,13 @@ namespace trrne.Game
         /// </summary>
         public void Die()
         {
-            transform.position = Vector2.zero;
-            health.Reset();
+            // 制御不可に
+            ctrlable = false;
 
-            // fpanel.Fade(FadeStyle.Out);
+            // 座標リセット
+            transform.SetPosition(Constant.Positions.Stage1);
+
+            ctrlable = true;
         }
     }
 }

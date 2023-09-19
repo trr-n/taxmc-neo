@@ -5,7 +5,7 @@ namespace trrne.Game
 {
     public abstract class Item : MonoBehaviour
     {
-        [Header("アニメーション用の画像")]
+        [Tooltip("アニメーション用の画像")]
         public Sprite[] itemSprites;
 
         SpriteRenderer _sr;

@@ -7,7 +7,7 @@ namespace trrne
 {
     public static class Constant
     {
-        public static Vector3 DefaultGravity = -Coordinate.y * Coordinate.g;
+        public static Vector3 Gravity = -Coordinate.y * Coordinate.g;
 
         public readonly struct Scenes
         {
@@ -42,6 +42,12 @@ namespace trrne
             MainCamera = "MainCamera",
             Enemy = "Enemy",
             Panel = "Panel";
+        }
+
+        public readonly struct Positions
+        {
+            public static Vector2
+            Stage1 = Coordinate.zero;
         }
     }
 }

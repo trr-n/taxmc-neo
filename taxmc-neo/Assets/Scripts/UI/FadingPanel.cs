@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 namespace trrne.Game
 {
-    public enum FadeStyle { In, Out, InOut }
+    public enum FadeType { CutIn, CutOut }
 
     public class FadingPanel : MonoBehaviour
     {
@@ -32,7 +32,18 @@ namespace trrne.Game
 
         void Update()
         {
+            SyncingSize();
+
+            // print("(10f).IsCaged(0, 9): " + 10f.IsCaged(0, 9));
+        }
+
+        /// <summary>
+        /// パネルとシーンのサイズを同期
+        /// </summary>
+        void SyncingSize()
+        {
             size = (recT.sizeDelta, new(Screen.width, Screen.height));
+
             if (size.panel != size.screen)
             {
                 size.panel = size.screen;
@@ -51,26 +62,38 @@ namespace trrne.Game
         //     }
         // }
 
-        IEnumerator _Fade(FadeStyle style)
+        IEnumerator Fader(FadeType cut)
         {
             // 補正
-            alfa = style == FadeStyle.Out ? 0 : 1;
+            alfa = cut == FadeType.CutOut ? 0 : 1;
             panel.SetAlpha(alfa);
 
+            // alfaが0-1の間ループ
             while (true)
             {
-                switch (style)
+                yield return null;
+
+                switch (cut)
                 {
-                    case FadeStyle.In:
+                    case FadeType.CutIn:
+                        panel.SetAlpha(alfa -= fadingSpeed * Time.unscaledDeltaTime);
                         break;
 
-                    case FadeStyle.Out:
-                        alfa += fadingSpeed * Time.deltaTime;
+                    case FadeType.CutOut:
+                        panel.SetAlpha(alfa += fadingSpeed * Time.unscaledDeltaTime);
                         break;
                 }
+
+                if (alfa >= 1 || alfa <= 0) { break; }
             }
+
+            print("Faded.");
         }
 
-        public void Fade(FadeStyle fstyle) => StartCoroutine(_Fade(fstyle));
+        /// <summary>
+        /// 複数回実行しない
+        /// </summary>
+        /// <param name="fstyle"></param>
+        public void Fade(FadeType fstyle) => StartCoroutine(Fader(fstyle));
     }
 }
