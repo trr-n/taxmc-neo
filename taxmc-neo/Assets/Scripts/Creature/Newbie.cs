@@ -87,8 +87,7 @@ namespace trrne.Game
 
         protected override void Move()
         {
-            if (!enable)
-                return;
+            if (!enable) { return; }
 
             transform.Translate(Time.deltaTime * speed * Coordinate.x);
         }

@@ -21,7 +21,10 @@ namespace trrne.Game
         void Update()
         {
             if (!constant)
+            {
                 size = sr.bounds.size;
+            }
+
             print("size: " + size);
         }
     }

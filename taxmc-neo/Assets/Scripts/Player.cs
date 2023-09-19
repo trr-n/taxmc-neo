@@ -1,9 +1,7 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using trrne.Utils;
-using System.Runtime.InteropServices.WindowsRuntime;
+using System.Threading.Tasks;
 
 namespace trrne.Game
 {
@@ -14,6 +12,9 @@ namespace trrne.Game
 
         [SerializeField]
         Sprite[] sprites;
+
+        [SerializeField]
+        GameObject dieFx;
 
         public bool ctrlable { get; set; }
         public bool jumpable { get; set; }
@@ -76,10 +77,8 @@ namespace trrne.Game
 #endif
 
             // 地に足がついていたらジャンプ可
-            if (floating = (
-                Gobject.Raycast2D(out var hit, rjump.origin, rjump.direction, rays.layer, rays.dis) &&
-                Inputs.Pressed(Constant.Keys.Jump)
-            ))
+            if (floating = Gobject.Raycast2D(out var hit, rjump.origin, rjump.direction, rays.layer, rays.dis) &&
+                Inputs.Pressed(Constant.Keys.Jump))
             {
                 rb.AddForce(Coordinate.y * power, ForceMode2D.Impulse);
             }
@@ -106,14 +105,19 @@ namespace trrne.Game
         /// <summary>
         /// 成仏
         /// </summary>
-        public void Die()
+        public async Task Die()
         {
             // 制御不可に
             ctrlable = false;
+            // TODO attach a fx
+            // dieFx.Generate(transform.position);
+
+            // FIX 指定した秒数分ここを抜けた後固まる
+            // TODO unitaskで作り直す
+            await Task.Delay(1000);
 
             // 座標リセット
             transform.SetPosition(Constant.Positions.Stage1);
-
             ctrlable = true;
         }
     }

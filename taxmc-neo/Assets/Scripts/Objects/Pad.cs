@@ -2,36 +2,20 @@ using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using trrne.Utils;
 
 namespace trrne.Game
 {
-    public class Pad : MonoBehaviour
+    public class Pad : Objectt
     {
-        [SerializeField]
-        Rigidbody2D[] debug4;
+        float power = 5f;
 
-        readonly float detectRange = 2;
-
-        void Update()
+        protected override void Behaviour()
         {
-            debug4 = Closers;
-        }
-
-        /// <summary>
-        /// 近くにいるえんてぃてぃを取得
-        /// </summary>
-        Rigidbody2D[] Closers
-        {
-            get
+            if (Gobject.BoxCast2D(out var hit, transform.position, size))
             {
-                var allRbs = FindObjectsByType<Rigidbody2D>(FindObjectsSortMode.None);
-
-                var closers =
-                    from c in allRbs
-                    where Vector2.Distance(transform.position, c.gameObject.transform.position) < detectRange
-                    select c;
-
-                return closers.ToArray();
+                var rb = hit.Get<Rigidbody2D>();
+                rb.AddForce(power * Coordinate.y, ForceMode2D.Impulse);
             }
         }
     }

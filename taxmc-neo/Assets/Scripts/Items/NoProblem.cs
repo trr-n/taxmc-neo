@@ -1,8 +1,8 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using trrne.Utils;
 using UnityEngine;
+using trrne.Utils;
 
 namespace trrne.Game
 {
@@ -15,43 +15,35 @@ namespace trrne.Game
         [SerializeField]
         GameObject delFx;
 
-        Vector2 initPos = Vector2.zero;
-
-        protected override void Receive()
+        protected override async void Receive()
         {
-            // return;
-            // プレイヤーに触れたら
-            // blankRate%の確率で初期値に戻す
+            // プレイヤーに触れたらblankRate%の確率で初期値に戻す
             if (Gobject.BoxCast2D(out var hit, transform.position, sr.bounds.size, Constant.Layers.Player))
             {
-                Lottery.Weighted(new Pair<Action, float>[]
-                {
-                    // はずれ
-                    new (() => Runner.NothingSpecial(), 1),
+                // Lottery.Weighted(new Pair<Action, float>[]
+                // {
+                //     // はずれ
+                //     new (() => Runner.NothingSpecial(), 1),
 
-                    // あたり
-                    // new (() => hit.SetPosition(initPos), 1 * blankRate)
-                    new (() => hit.Get<Player>().Die(), 1 * blankRate)
-                });
+                //     // あたり
+                //     new (() => { hit.Get<Player>().Die(); }, 1 * blankRate)
+                // });
+
+                switch (Lottery.Weighted(1, 1 * blankRate))
+                {
+                    case 0:
+                        Runner.NothingSpecial();
+                        break;
+
+                    case 1:
+                    default:
+                        await hit.Get<Player>().Die();
+                        break;
+                }
 
                 // delFx.Generate(transform.position);
                 Destroy(gameObject);
             }
         }
-
-        // void OnCollisionEnter2D(Collision2D info)
-        // {
-        //     if (info.Compare(Constant.Tags.Player))
-        //     {
-        //         Lottery.Weighted(new Pair<Action, float>[]
-        //         {
-        //             // alive
-        //             new (() => { print("alive"); }, 1),
-        //             // dead
-        //             new (() => { print("dead"); }, 1)
-        //         });
-
-        //     }
-        // }
     }
 }

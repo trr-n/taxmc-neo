@@ -18,7 +18,7 @@ namespace trrne.Utils
         public static string SetText(this Text text, object obj) => text.text = obj.ToString();
     }
 
-    public static class Anime
+    public static class Anima
     {
         static int cindex = 0;
         static readonly Stopwatch csw = new(true);

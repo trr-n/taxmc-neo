@@ -30,7 +30,7 @@ namespace trrne.Game
         {
             if (animatable)
             {
-                Anime.Pic(_sr, interval, itemSprites);
+                Anima.Pic(_sr, interval, itemSprites);
             }
 
             Receive();
