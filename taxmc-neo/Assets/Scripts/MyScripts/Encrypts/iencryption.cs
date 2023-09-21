@@ -1,4 +1,4 @@
-﻿namespace trrne.Utils
+﻿namespace trrne.utils
 {
     public interface IEncryption
     {

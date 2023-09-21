@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using static UnityEngine.Application;
 
-namespace trrne.Utils
+namespace trrne.utils
 {
     public enum FrameRate { Low = 30, Medium = 60, High = 144, Ultra = 200, VSync = -1 }
     public enum CursorAppearance { Invisible, Visible }

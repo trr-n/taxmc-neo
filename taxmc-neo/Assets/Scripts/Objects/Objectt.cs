@@ -1,4 +1,4 @@
-using trrne.Utils;
+using trrne.utils;
 using UnityEngine;
 
 namespace trrne.Game
@@ -35,7 +35,8 @@ namespace trrne.Game
             switch (pics.Length)
             {
                 case 0:
-                    throw new Karappoyanke();
+                    // throw new Karappoyanke();
+                    break;
 
                 case 1:
                     picset.RunOnce(() => sr.sprite = pics[0]);

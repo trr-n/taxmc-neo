@@ -1,6 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
-using trrne.Utils;
+using trrne.utils;
 using UnityEngine;
 
 namespace trrne
@@ -21,7 +21,7 @@ namespace trrne
             public const int
             Player = 1 << 6,
             Ground = 1 << 7,
-            Obstacle = 1 << 8;
+            Object = 1 << 8;
         }
 
         public readonly struct Keys
@@ -41,7 +41,8 @@ namespace trrne
             Pad = "Pad",
             MainCamera = "MainCamera",
             Enemy = "Enemy",
-            Panel = "Panel";
+            Panel = "Panel",
+            Ice = "Ice";
         }
 
         public readonly struct Positions

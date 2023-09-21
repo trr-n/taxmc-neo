@@ -1,5 +1,5 @@
 using UnityEngine;
-using trrne.Utils;
+using trrne.utils;
 using System.Collections;
 
 namespace trrne.Game

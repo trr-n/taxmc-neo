@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-namespace trrne.Utils
+namespace trrne.utils
 {
     public static class Coordinate
     {

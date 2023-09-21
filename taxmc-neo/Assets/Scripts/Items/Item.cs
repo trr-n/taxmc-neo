@@ -1,4 +1,4 @@
-﻿using trrne.Utils;
+﻿using trrne.utils;
 using UnityEngine;
 
 namespace trrne.Game
@@ -8,8 +8,8 @@ namespace trrne.Game
         [Tooltip("アニメーション用の画像")]
         public Sprite[] itemSprites;
 
-        SpriteRenderer _sr;
-        protected SpriteRenderer sr => _sr;
+        SpriteRenderer srenderer;
+        protected SpriteRenderer sr => srenderer;
 
         /// <summary>
         /// アニメーションのインターバル<br/>初期値: 0.02
@@ -23,15 +23,12 @@ namespace trrne.Game
 
         void Start()
         {
-            _sr = GetComponent<SpriteRenderer>();
+            srenderer = GetComponent<SpriteRenderer>();
         }
 
         void Update()
         {
-            if (animatable)
-            {
-                Anima.Pic(_sr, interval, itemSprites);
-            }
+            if (animatable) { Anima.Pic(srenderer, interval, itemSprites); }
 
             Receive();
         }
@@ -44,6 +41,6 @@ namespace trrne.Game
         /// <summary>
         /// 画像を設定
         /// </summary>
-        protected void SetSprite(Sprite sprite) => _sr.sprite = sprite;
+        protected void SetSprite(Sprite sprite) => srenderer.sprite = sprite;
     }
 }

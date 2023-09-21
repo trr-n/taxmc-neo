@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace trrne.Utils
+namespace trrne.utils
 {
     public static class Inputs
     {

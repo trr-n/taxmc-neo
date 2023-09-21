@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
-using trrne.Utils;
+using PlasticGui.WorkspaceWindow.Items;
+using trrne.utils;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -21,6 +22,9 @@ namespace trrne.Game
 
         Image panel;
 
+        bool fading = false;
+        public bool isFading => fading;
+
         void Start()
         {
             panel = GetComponent<Image>();
@@ -32,15 +36,13 @@ namespace trrne.Game
 
         void Update()
         {
-            SyncingSize();
-
-            // print("(10f).IsCaged(0, 9): " + 10f.IsCaged(0, 9));
+            SyncScreen();
         }
 
         /// <summary>
         /// パネルとシーンのサイズを同期
         /// </summary>
-        void SyncingSize()
+        void SyncScreen()
         {
             size = (recT.sizeDelta, new(Screen.width, Screen.height));
 
@@ -49,18 +51,6 @@ namespace trrne.Game
                 size.panel = size.screen;
             }
         }
-
-        // public void Fade(FadeStyle style)
-        // {
-        //     switch (style)
-        //     {
-        //         case FadeStyle.In:
-        //             break;
-
-        //         case FadeStyle.Out:
-        //             break;
-        //     }
-        // }
 
         IEnumerator Fader(FadeType cut)
         {
@@ -91,9 +81,26 @@ namespace trrne.Game
         }
 
         /// <summary>
-        /// 複数回実行しない
+        /// パネルの
         /// </summary>
-        /// <param name="fstyle"></param>
-        public void Fade(FadeType fstyle) => StartCoroutine(Fader(fstyle));
+        /// <param name="cut">cut in or out</param>
+        public void Fade(FadeType cut) => StartCoroutine(Fader(cut));
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public void Fade2(FadeType cut)
+        {
+            while (fading)
+            {
+                switch (cut)
+                {
+                    case FadeType.CutIn:
+                        break;
+                    case FadeType.CutOut:
+                        break;
+                }
+            }
+        }
     }
 }

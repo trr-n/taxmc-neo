@@ -1,6 +1,6 @@
 ﻿using static UnityEngine.SystemInfo;
 
-namespace trrne.Utils
+namespace trrne.utils
 {
     public static class Sys
     {

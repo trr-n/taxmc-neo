@@ -3,7 +3,7 @@ using System.Collections;
 using Codice.CM.Client.Differences.Merge;
 using UnityEngine;
 
-namespace trrne.Utils
+namespace trrne.utils
 {
     public class Runner
     {

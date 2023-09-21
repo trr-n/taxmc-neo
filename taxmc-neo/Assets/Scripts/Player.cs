@@ -1,6 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
-using trrne.Utils;
+using trrne.utils;
 using System.Threading.Tasks;
 
 namespace trrne.Game
@@ -20,16 +20,21 @@ namespace trrne.Game
         public bool jumpable { get; set; }
         public bool walkable { get; set; }
 
+        bool onIce = false;
+
         // readonly float speed = 10;
         readonly (float basis, float max) speed = (20, 10);
 
-        (Vector3 offset, float dis, int layer) rays = (new(), 0.25f, Constant.Layers.Ground);
+        (Vector3 offset, float dis, int layer) rays = (new(), 0.25f, Constant.Layers.Ground | Constant.Layers.Object);
         readonly float power = 250;
 
         bool floating;
         public bool isFloating => floating;
 
         float vel;
+        /// <summary>
+        /// 移動速度
+        /// </summary>
         public float velocity => vel;
 
         SpriteRenderer sr;
@@ -41,6 +46,10 @@ namespace trrne.Game
         Health health;
 
         readonly float tolerance = 0.33f;
+
+        /// <summary>
+        /// 減速比
+        /// </summary>
         readonly float reduction = 0.9f;
 
         void Start()
@@ -70,6 +79,7 @@ namespace trrne.Game
         void Movement()
         {
             if (!ctrlable) { return; }
+
             Move();
             Jump();
         }
@@ -86,7 +96,6 @@ namespace trrne.Game
             {
                 rb.AddForce(Coordinate.y * power, ForceMode2D.Impulse);
             }
-
         }
 
         /// <summary>
@@ -97,7 +106,7 @@ namespace trrne.Game
             Vector2 move = Input.GetAxisRaw(Constant.Keys.Horizontal) * Coordinate.x;
             velocityText.SetText(rb.velocity);
 
-            if (move.magnitude <= tolerance)
+            if (move.magnitude <= tolerance && !onIce)
             {
                 // 入力されていなかったら速度を0.9倍する
                 rb.SetVelocityX(rb.velocity.x * reduction);
@@ -117,15 +126,16 @@ namespace trrne.Game
         {
             // 制御不可に
             ctrlable = false;
-            // TODO attach a fx
-            // dieFx.Generate(transform.position);
+            if (dieFx != null)
+            {
+                dieFx.Generate(transform.position);
+            }
 
             // FIX 指定した秒数分ここを抜けた後固まる
-            // TODO unitaskで作り直す
             await Task.Delay(1000);
 
             // 座標リセット
-            transform.SetPosition(Constant.Positions.Stage1);
+            // transform.SetPosition(Constant.Positions.Stage1);
             ctrlable = true;
         }
     }

@@ -2,7 +2,7 @@ using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using trrne.Utils;
+using trrne.utils;
 
 namespace trrne.Game
 {

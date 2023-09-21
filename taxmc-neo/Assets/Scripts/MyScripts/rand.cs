@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace trrne.Utils
+namespace trrne.utils
 {
     public static class Rand
     {

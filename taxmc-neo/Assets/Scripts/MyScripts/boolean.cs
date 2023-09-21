@@ -1,4 +1,4 @@
-﻿namespace trrne.Utils
+﻿namespace trrne.utils
 {
     public static class Boolean
     {
@@ -18,13 +18,10 @@
         }
 
         /// <summary>
-        /// 
+        /// min ≦ n ≦ max
         /// </summary>
         /// <param name="min">最小値</param>
         /// <param name="max">最大値</param>
-        public static bool IsCaged(this float n, float min, float max)
-        {
-            return n >= min || n <= max;
-        }
+        public static bool IsCaged(this float n, float min, float max) => n >= min || n <= max;
     }
 }

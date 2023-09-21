@@ -2,7 +2,7 @@ using System.Text;
 using System.Collections.Generic;
 using System.Security.Cryptography;
 
-namespace trrne.Utils
+namespace trrne.utils
 {
     public class Rijndael : IEncryption
     {

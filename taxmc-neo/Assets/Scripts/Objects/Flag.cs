@@ -1,6 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
-using trrne.Utils;
+using trrne.utils;
 using UnityEditor.Build.Content;
 using UnityEngine;
 

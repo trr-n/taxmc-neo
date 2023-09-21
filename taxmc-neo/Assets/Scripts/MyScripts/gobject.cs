@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace trrne.Utils
+namespace trrne.utils
 {
     public enum Active { Self, Hierarchy }
 

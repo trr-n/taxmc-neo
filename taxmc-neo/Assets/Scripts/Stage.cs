@@ -1,19 +1,18 @@
-using System.Collections;
-using System.Collections.Generic;
+using trrne.utils;
 using UnityEngine;
 
 namespace trrne.Game
 {
     public class Stage : MonoBehaviour
     {
-        static int current;
-        public static int Current => current;
+        static int cur;
+        public static int current => cur;
 
-        public const int Max = 1;
+        public static int max => Scenes.total;
 
-        public static bool IsClear => current >= Max;
-        public static float Progress => Max / current;
+        public static bool isClear => cur >= max;
+        public static float progress => max / cur;
 
-        public static void Next() => current += 1;
+        public static void Next() => cur += 1;
     }
 }
