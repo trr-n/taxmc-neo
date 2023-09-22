@@ -29,8 +29,7 @@ namespace trrne.utils
         [Obsolete] public static int Range(int max) => Int(max: max);
         [Obsolete] public static float Range(float max) => Float(max: max);
 
-        public static int Choice(object[] arr) => Int(max: arr.Length - 1);
-        public static int Choice2(this object[] arr) => Int(max: arr.Length - 1);
-        public static T Choice3<T>(this T[] arr) => arr[Int(max: arr.Length - 1)];
+        public static int Choice(this object[] arr) => Int(max: arr.Length - 1);
+        public static T Choice<T>(this T[] arr) => arr[Int(max: arr.Length - 1)];
     }
 }

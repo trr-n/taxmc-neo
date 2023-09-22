@@ -20,14 +20,14 @@ namespace trrne.Game
 
         void Update()
         {
-            Behaviour();
+            Behavior();
             Animation();
         }
 
         /// <summary>
         /// 振舞
         /// </summary>
-        protected abstract void Behaviour();
+        protected abstract void Behavior();
 
         readonly Runner picset = new();
         void Animation()

@@ -1,46 +1,38 @@
-using System.Collections;
-using System.Collections.Generic;
+using Cysharp.Threading.Tasks;
 using trrne.utils;
 using UnityEngine;
 
 namespace trrne.Game
 {
-    [RequireComponent(typeof(Health))]
+    // [RequireComponent(typeof(Health))]
     public class Newbie : Enemy
     {
+        public enum StartFacing { Left, Right }
         [SerializeField]
-        GameObject[] dyingFx;
+        StartFacing facing = StartFacing.Right;
 
         readonly float distance = 1.5f;
         (Ray ray, RaycastHit2D hit) horizon, vertical;
         readonly int layers = Constant.Layers.Player | Constant.Layers.Ground;
 
         Player player;
-        Health health;
+        // Health health;
 
-        const float BaseSpeed = 2f;
-        float speed;
+        (float basis, float real) speed = (2f, 0);
 
         void Start()
         {
             player = Gobject.GetWithTag<Player>(Constant.Tags.Player);
-            health = GetComponent<Health>();
+            // health = GetComponent<Health>();
 
-            speed = Rand.Int(max: 2) switch
+            speed.real = Rand.Int(max: 2) switch
             {
-                1 => -BaseSpeed * 2,
-                _ => BaseSpeed
+                1 => -speed.basis * 2,
+                _ => speed.basis
             };
         }
 
-        void Update()
-        {
-            Move();
-            DetectPlayer();
-            Die();
-        }
-
-        protected override void DetectPlayer()
+        protected override async void Behavior()
         {
             horizon.ray = new(transform.position - (Coordinate.x * distance / 2), transform.right);
             horizon.hit = Physics2D.Raycast(horizon.ray.origin, horizon.ray.direction, distance, layers);
@@ -49,43 +41,49 @@ namespace trrne.Game
             {
                 switch (horizon.hit.GetLayer())
                 {
+                    // プレイヤーにあたったら56す
                     case Constant.Layers.Player:
-                        player.Die();
+                        await player.Die();
                         break;
 
-                    case Constant.Layers.Ground:
+                    // プレイヤー以外にあたったら進行方向を反転
+                    // case Constant.Layers.Ground:
                     default:
-                        // 壁にあたったら進行方向を反転
-                        speed *= -1;
+                        speed.real *= -1;
                         break;
-
                 }
             }
 
             vertical.ray = new(transform.position + (distance * Coordinate.y / 2), transform.up);
             vertical.hit = Physics2D.Raycast(vertical.ray.origin, vertical.ray.direction, distance, layers);
 
-            if (vertical.hit) { health.Fluctuation(-1); }
+            // プレイヤーに踏まれたら死
+            if (vertical.hit && vertical.hit.Compare(Constant.Tags.Player))
+            {
+                Die();
+            }
 
+#if DEBUG
             Debug.DrawRay(horizon.ray.origin, horizon.ray.direction * distance, Color.red);
             Debug.DrawRay(vertical.ray.origin, vertical.ray.direction * distance, Color.blue);
+#endif
         }
 
-        protected override void Die()
+        protected override async void Die()
         {
-            if (!health.isZero) { return; }
+            // エフェクト生成
+            dieFX.Generate(transform.position);
 
-            if (dyingFx.Length > 0)
-            {
-                dyingFx.Generate(transform.position);
-            }
+            // すこーし待機
+            await UniTask.WaitForSeconds(0.1f);
+
+            // オブジェクト破壊
+            Destroy(gameObject);
         }
 
         protected override void Move()
         {
-            if (!enable) { return; }
-
-            transform.Translate(Time.deltaTime * speed * Coordinate.x);
+            transform.Translate(Time.deltaTime * speed.real * Coordinate.x);
         }
     }
 }

@@ -10,7 +10,7 @@ namespace trrne.Game
     {
         float power = 5f;
 
-        protected override void Behaviour()
+        protected override void Behavior()
         {
             if (Gobject.BoxCast2D(out var hit, transform.position, size))
             {

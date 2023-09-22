@@ -17,8 +17,9 @@ namespace trrne.Game
         /// </summary>
         readonly float spinSpeed = 15f;
 
-        protected override void Behaviour()
+        protected override void Behavior()
         {
+            // 回転
             transform.Rotate((dir == Spin.Left ? Coordinate.z : -Coordinate.z) * spinSpeed * Time.deltaTime, Space.World);
         }
     }

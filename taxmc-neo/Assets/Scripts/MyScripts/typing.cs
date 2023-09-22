@@ -15,7 +15,9 @@ namespace trrne.utils
             string[] pres = before.Split("  ");
 
             for (int count = 0; count < pres.Length; count++)
+            {
                 target = target.Replace(pres[count], after);
+            }
 
             return target;
         }

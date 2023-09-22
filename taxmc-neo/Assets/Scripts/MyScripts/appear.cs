@@ -11,7 +11,7 @@ namespace trrne.utils
         public static bool Compare(this SpriteRenderer sr, Sprite sprite) => sr.sprite == sprite;
 
         public static void SetSprite(this SpriteRenderer sr, Sprite sprite) => sr.sprite = sprite;
-        public static void SetSprite(this SpriteRenderer sr, Sprite[] sprites) => sr.sprite = sprites.Choice3();
+        public static void SetSprite(this SpriteRenderer sr, Sprite[] sprites) => sr.sprite = sprites.Choice();
 
         public static Vector2 GetSpriteSize(this SpriteRenderer sr) => sr.bounds.size;
 

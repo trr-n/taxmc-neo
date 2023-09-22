@@ -13,13 +13,13 @@ namespace trrne.Game
 
         SpriteRenderer sr;
 
-        Vector2 bcastSize;
+        Vector2 boxsize;
 
         void Start()
         {
             sr = GetComponent<SpriteRenderer>();
             sr.sprite = flags[0];
-            bcastSize = new(sr.bounds.size.x / 2, sr.bounds.size.y);
+            boxsize = new(sr.bounds.size.x / 2, sr.bounds.size.y);
         }
 
         void Update()
@@ -29,7 +29,8 @@ namespace trrne.Game
 
         void HitMe()
         {
-            if (Gobject.BoxCast2D(out _, transform.position, bcastSize, Constant.Layers.Player, 0, 0))
+            // プレイヤーが触れたらおろす
+            if (Gobject.BoxCast2D(out _, transform.position, boxsize, Constant.Layers.Player, 0, 0))
             {
                 sr.sprite = flags[1];
             }
@@ -38,7 +39,7 @@ namespace trrne.Game
         void OnDrawGizmos()
         {
             Gizmos.color = Color.HSVToRGB(Time.unscaledDeltaTime % 1, 1, 1);
-            Gizmos.DrawWireCube(transform.position, bcastSize);
+            Gizmos.DrawWireCube(transform.position, boxsize);
         }
     }
 }

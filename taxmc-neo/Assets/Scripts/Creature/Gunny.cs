@@ -7,10 +7,7 @@ namespace trrne.Game
 {
     public class Gunny : Enemy
     {
-        // GameObject gun;
-        // LineRenderer gunLine;
-        // readonly float gunLineLength = 5f;
-        (GameObject obj, LineRenderer line, float length) gun;
+        (GameObject obj, LineRenderer line, float lineLength) gun;
 
         Vector3 direction = Coordinate.x;
         float speed = 10f;
@@ -25,29 +22,14 @@ namespace trrne.Game
             gun.line = gun.obj.GetComponent<LineRenderer>();
         }
 
-        void Update()
-        {
-            Move();
-        }
-
         protected override void Move()
         {
-            if (!enable)
-            {
-                rb.isKinematic = false;
-                return;
-            }
-
-            rb.isKinematic = true;
+            ;
         }
 
-        protected override void DetectPlayer()
+        protected override void Behavior()
         {
-        }
-
-        void DetectWall()
-        {
-            Ray ray = new(transform.position, direction);
+            ;
         }
 
         void ADS()

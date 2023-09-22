@@ -22,7 +22,7 @@ namespace trrne.Game
             center = transform.position;
         }
 
-        protected override void Behaviour()
+        protected override void Behavior()
         {
             Move();
         }

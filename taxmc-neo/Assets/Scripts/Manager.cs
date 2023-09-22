@@ -13,7 +13,7 @@ namespace trrne.Game
 
         void Start()
         {
-            Physics2D.gravity = Constant.Gravity;
+            Physics2D.gravity = Coordinate.gravity;
 
             camera = Gobject.GetWithTag<Cam>(Constant.Tags.MainCamera);
             camera.followable = true;

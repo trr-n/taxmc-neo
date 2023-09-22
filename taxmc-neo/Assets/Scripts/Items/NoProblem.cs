@@ -1,5 +1,6 @@
 using UnityEngine;
 using trrne.utils;
+using Cysharp.Threading.Tasks;
 
 namespace trrne.Game
 {
@@ -8,13 +9,13 @@ namespace trrne.Game
         [SerializeField]
         GameObject hitFX;
 
-        protected override void Receive()
+        protected override async void Receive()
         {
             // プレイヤーに触れたらblankRate%の確率で初期値に戻す
             if (Gobject.BoxCast2D(out var hit, transform.position, sr.bounds.size, Constant.Layers.Player))
             {
                 // Blanc OR Negro
-                hit.Get<Player>().Die();
+                await hit.Get<Player>().Die();
 
                 if (hitFX != null)
                 {

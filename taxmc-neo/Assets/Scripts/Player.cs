@@ -20,13 +20,19 @@ namespace trrne.Game
         public bool jumpable { get; set; }
         public bool walkable { get; set; }
 
+        /// <summary>
+        /// 死亡処理中はtrue
+        /// </summary>
+        bool dying;
+
         // bool onIce = false;
 
         // readonly float speed = 10;
         readonly (float basis, float max) speed = (20, 10);
 
         (Vector3 offset, float dis, int layer) rays = (new(), 0.25f, Constant.Layers.Ground | Constant.Layers.Object);
-        readonly float power = 250;
+        // readonly float jumpPower = 250;
+        (bool during, float power) jump = (false, 250f);
 
         bool floating;
         public bool isFloating => floating;
@@ -37,13 +43,15 @@ namespace trrne.Game
         /// </summary>
         public float velocity => vel;
 
+        readonly float floatingReduction = 5f;
+
         SpriteRenderer sr;
         Rigidbody2D rb;
 
-        /// <summary>
-        /// ザンキ
-        /// </summary>
-        Health health;
+        // /// <summary>
+        // /// ザンキ
+        // /// </summary>
+        // Health health;
 
         readonly float tolerance = 0.33f;
 
@@ -51,6 +59,8 @@ namespace trrne.Game
         /// 減速比
         /// </summary>
         readonly float reduction = 0.9f;
+
+        Animator animator;
 
         void Start()
         {
@@ -60,12 +70,12 @@ namespace trrne.Game
             rb = GetComponent<Rigidbody2D>();
             rb.mass = 60f;
 
-            health = GetComponent<Health>();
+            // health = GetComponent<Health>();
         }
 
         void Update()
         {
-            leftText.SetText(health.lives.left);
+            // leftText.SetText(health.lives.left);
         }
 
         void FixedUpdate()
@@ -74,7 +84,7 @@ namespace trrne.Game
         }
 
         /// <summary>
-        /// ゴキブリの動きぶり
+        /// 動きぶり
         /// </summary>
         void Movement()
         {
@@ -94,7 +104,7 @@ namespace trrne.Game
             // 地に足がついていたらジャンプ可
             if (floating = Gobject.Raycast2D(out var hit, rjump.origin, rjump.direction, rays.layer, rays.dis) && Inputs.Pressed(Constant.Keys.Jump))
             {
-                rb.AddForce(Coordinate.y * power, ForceMode2D.Impulse);
+                rb.AddForce(Coordinate.y * jump.power, ForceMode2D.Impulse);
             }
         }
 
@@ -115,28 +125,39 @@ namespace trrne.Game
             // Xの速度を制限
             rb.velocity = new(Mathf.Clamp(rb.velocity.x, -speed.max, speed.max), rb.velocity.y);
 
-            // 浮いていたら速度を1/2に
-            rb.velocity += Time.fixedDeltaTime * (floating ? speed.basis / 2 : speed.basis) * move;
+            // 浮いていたら移動速度を1/2に
+            rb.velocity += Time.fixedDeltaTime * (floating ? speed.basis / floatingReduction : speed.basis) * move;
         }
 
         /// <summary>
         /// 成仏
         /// </summary>
-        public void Die()
-        // public async UniTaskVoid Die()
+        // public void Die()
+        public async UniTask Die()
         {
+            if (dying) { return; }
+            // 死亡中
+            dying = true;
+
             // 制御不可に
             ctrlable = false;
-            if (dieFx != null)
-            {
-                dieFx.Generate(transform.position);
-            }
 
-            // await UniTask.Delay(1000);
+            // エフェクト生成
+            var fx = dieFx.Generate(transform.position);
+
+            // エフェクトの長さ分だけちと待機
+            // TODO 代替案: 「はあ。。」を録音して流す
+            // fx.fxdurationをはあの長さに変更
+            await UniTask.Delay(Numeric.Cutail(fx.FxDuration()) + 1);
 
             // 座標リセット
-            transform.SetPosition(Constant.Positions.Stage1);
+            transform.SetPosition(Constant.SpawnPositions.Stage1);
+
+            // 制御可能に
             ctrlable = true;
+
+            // 復活していいよ
+            dying = false;
         }
     }
 }

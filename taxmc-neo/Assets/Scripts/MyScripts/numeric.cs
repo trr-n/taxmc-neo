@@ -18,44 +18,39 @@ namespace trrne.utils
         public static float Round(float n, int digit = 0) => MathF.Round(n, digit);
         public static int Round(int n, int digit = 0) => (int)MathF.Round(n, digit);
 
-        public static float FocusSin(float min, float max)
-        {
-            float sin01 = (Mathf.Sin(Time.time) / 2) + 0.5f + min;
-            return sin01 * max;
-        }
-
+        // 小数点以下を切り捨てる
         public static int Cutail(float n)
         {
-            string nstr = n.ToString();
-            string done = nstr.Split(".")[0];
-            return int.Parse(done);
+            // return int.Parse(n.ToString().Split(".")[0]);
+            string n2str = n.ToString();
+
+            return int.Parse(n2str.Split(".")[0]);
         }
 
         public static int Percent(float n, int digit = 0) => (int)MathF.Round(n * 100, digit);
         public static int Percent(int w, int per) => Round(w * per / 100);
 
         public static float Ratio(float w, float t) => (float)w / t;
-        public static bool Twins(this float n1, float n2) => Mathf.Approximately(n1, n2);
+        public static bool Twins(this float a, float b) => Mathf.Approximately(a, b);
 
         public static bool IsPrime(int n)
         {
-            if (n < 2 || (n % 2 == 0 && n != 2))
-            {
-                return false;
-            }
+            if (n < 2 || (n % 2 == 0 && n != 2)) { return false; }
 
             for (ushort i = 2; i < Mathf.Sqrt(n); i++)
             {
-                if (n % i == 0)
-                {
-                    return false;
-                }
+                if (n % i == 0) { return false; }
             }
             return true;
         }
 
         public static int GetEnumLength<T>(this T t) => Enum.GetNames(typeof(T)).Length;
 
-        public static float g => 9.81f;
+        /// <summary>
+        /// min ≦ n ≦ max
+        /// </summary>
+        /// <param name="min">最小値</param>
+        /// <param name="max">最大値</param>
+        public static bool IsCaged(this float n, float min, float max) => n >= min || n <= max;
     }
 }

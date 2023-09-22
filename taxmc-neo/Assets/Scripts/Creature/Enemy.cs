@@ -6,9 +6,31 @@ namespace trrne.Game
 {
     public abstract class Enemy : MonoBehaviour
     {
+        public GameObject dieFX;
+
         public bool enable;
+
+        /// <summary>
+        /// 移動
+        /// </summary>
         protected abstract void Move();
-        protected abstract void DetectPlayer();
+
+        /// <summary>
+        /// 振舞 / プレイヤー検知など
+        /// </summary>
+        protected abstract void Behavior();
+
+        /// <summary>
+        /// 死
+        /// </summary>
         protected abstract void Die();
+
+        protected void Update()
+        {
+            if (!enable) { return; }
+
+            Move();
+            Behavior();
+        }
     }
 }

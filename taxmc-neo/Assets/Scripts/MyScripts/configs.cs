@@ -5,15 +5,13 @@ using UnityEngine;
 
 namespace trrne
 {
-    public static class Constant
+    public static partial class Constant
     {
-        public static Vector3 Gravity = -Coordinate.y * Coordinate.g;
-
         public readonly struct Scenes
         {
             public static string
-            Title = "Title",
-            Main = "BottleSort";
+            Title = "StageSelect",
+            Main = "Game1";
         }
 
         public readonly struct Layers
@@ -45,7 +43,7 @@ namespace trrne
             Ice = "Ice";
         }
 
-        public readonly struct Positions
+        public readonly struct SpawnPositions
         {
             public static Vector2
             Stage1 = Coordinate.zero;
