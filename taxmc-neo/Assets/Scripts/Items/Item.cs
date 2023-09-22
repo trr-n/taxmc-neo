@@ -1,4 +1,6 @@
-﻿using trrne.utils;
+﻿using System.Globalization;
+using System;
+using trrne.utils;
 using UnityEngine;
 
 namespace trrne.Game
@@ -14,23 +16,39 @@ namespace trrne.Game
         /// <summary>
         /// アニメーションのインターバル<br/>初期値: 0.02
         /// </summary>
-        protected float interval = 0.02f;
+        public float interval = 0.02f;
 
         /// <summary>
         /// アニメーションするか
         /// </summary>
         protected bool animatable = true;
 
+        (int index, Stopwatch sw) anima = (0, new());
+
         void Start()
         {
             srenderer = GetComponent<SpriteRenderer>();
+
+            anima.sw.Start();
         }
 
         void Update()
         {
-            if (animatable) { Anima.Pic(srenderer, interval, itemSprites); }
-
             Receive();
+            Animation();
+        }
+
+        void Animation()
+        {
+            if (!animatable) { return; }
+
+            if (anima.sw.sf >= interval)
+            {
+                anima.index = anima.index >= itemSprites.Length - 1 ? 0 : anima.index += 1;
+                sr.sprite = itemSprites[anima.index];
+
+                anima.sw.Restart();
+            }
         }
 
         /// <summary>

@@ -18,31 +18,31 @@ namespace trrne.utils
         public static string SetText(this Text text, object obj) => text.text = obj.ToString();
     }
 
-    public static class Anima
+    public class Anima
     {
-        static int cindex = 0;
-        static readonly Stopwatch csw = new(true);
-        public static void Colour(this SpriteRenderer sr, in float interval, params Color[] colours)
-        {
-            if (!(csw.sf >= interval))
-                return;
+        (int index, Stopwatch sw) colour, picture;
 
-            // index = colors[index > colors.Length ? index = 0 : index++];
+        int cindex = 0;
+        readonly Stopwatch colourSW = new(true);
+        public void Colour(SpriteRenderer sr, in float interval, params Color[] colours)
+        {
+            if (!(colourSW.sf >= interval)) { return; }
+
             cindex = cindex >= colours.Length - 1 ? cindex = 0 : cindex += 1;
             sr.color = colours[cindex];
-            csw.Restart();
+
+            colourSW.Restart();
         }
 
-        static int iindex = 0;
-        static readonly Stopwatch isw = new(true);
-        public static void Pic(this SpriteRenderer sr, in float interval, params Sprite[] pics)
+        int iindex = 0;
+        readonly Stopwatch isw = new(true);
+        public void Picture(SpriteRenderer sr, in float interval, params Sprite[] pics)
         {
-            if (isw.sf >= interval)
-                return;
+            if (isw.sf >= interval) { return; }
 
             iindex = iindex >= pics.Length - 1 ? 0 : iindex += 1;
-
             sr.sprite = pics[iindex];
+
             isw.Restart();
         }
     }

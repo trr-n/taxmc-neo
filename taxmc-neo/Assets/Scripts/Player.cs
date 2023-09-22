@@ -1,7 +1,7 @@
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 using trrne.utils;
-using System.Threading.Tasks;
+using Cysharp.Threading.Tasks;
 
 namespace trrne.Game
 {
@@ -20,7 +20,7 @@ namespace trrne.Game
         public bool jumpable { get; set; }
         public bool walkable { get; set; }
 
-        bool onIce = false;
+        // bool onIce = false;
 
         // readonly float speed = 10;
         readonly (float basis, float max) speed = (20, 10);
@@ -106,7 +106,7 @@ namespace trrne.Game
             Vector2 move = Input.GetAxisRaw(Constant.Keys.Horizontal) * Coordinate.x;
             velocityText.SetText(rb.velocity);
 
-            if (move.magnitude <= tolerance && !onIce)
+            if (move.magnitude <= tolerance) // && !onIce)
             {
                 // 入力されていなかったら速度を0.9倍する
                 rb.SetVelocityX(rb.velocity.x * reduction);
@@ -122,7 +122,8 @@ namespace trrne.Game
         /// <summary>
         /// 成仏
         /// </summary>
-        public async Task Die()
+        public void Die()
+        // public async UniTaskVoid Die()
         {
             // 制御不可に
             ctrlable = false;
@@ -131,11 +132,10 @@ namespace trrne.Game
                 dieFx.Generate(transform.position);
             }
 
-            // FIX 指定した秒数分ここを抜けた後固まる
-            await Task.Delay(1000);
+            // await UniTask.Delay(1000);
 
             // 座標リセット
-            // transform.SetPosition(Constant.Positions.Stage1);
+            transform.SetPosition(Constant.Positions.Stage1);
             ctrlable = true;
         }
     }

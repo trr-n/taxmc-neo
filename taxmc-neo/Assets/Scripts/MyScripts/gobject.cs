@@ -8,7 +8,7 @@ namespace trrne.utils
 
     public static class Gobject
     {
-        public static GameObject Generate(this GameObject[] g, Vector3 p = new(), Quaternion r = new()) => Object.Instantiate(g[Rand.Choice(g)], p, r);
+        public static GameObject Generate(this GameObject[] g, Vector3 p = new(), Quaternion r = new()) => Object.Instantiate(g.Choice3(), p, r);
         public static GameObject Generate(this GameObject g, Vector3 p = new(), Quaternion r = new()) => Object.Instantiate(g, p, r);
         public static GameObject Generate(this GameObject gob) => Object.Instantiate(gob);
 
@@ -44,11 +44,7 @@ namespace trrne.utils
         public static bool Try<T>(this Collider info, out T t) => info.gameObject.TryGetComponent(out t);
         public static bool Try<T>(this GameObject gob, out T t) => gob.TryGetComponent(out t);
         public static bool Try<T>(this RaycastHit2D hit, out T t) => hit.collider.TryGetComponent(out t);
-        public static T Try<T>(this GameObject gob)
-        {
-            gob.TryGetComponent(out T t);
-            return t is null ? default : t;
-        }
+        public static T Try<T>(this GameObject gob) { gob.TryGetComponent(out T t); return t is null ? default : t; }
 
         public static GameObject Find(string tag) => GameObject.FindGameObjectWithTag(tag);
         public static GameObject[] Finds(string tag) => GameObject.FindGameObjectsWithTag(tag);
@@ -63,13 +59,7 @@ namespace trrne.utils
         public static bool IsActive(this GameObject gob, Active? active = null)
         => active switch { Active.Self => gob.activeSelf, Active.Hierarchy => gob.activeInHierarchy, _ => throw null, };
 
-        public static void SetActives(this GameObject[] gobs, bool state)
-        {
-            foreach (var gob in gobs)
-            {
-                gob.SetActive(state);
-            }
-        }
+        public static void SetActives(this GameObject[] gobs, bool state) { foreach (var gob in gobs) { gob.SetActive(state); } }
 
         public static bool BoxCast2D(out RaycastHit2D hit,
             Vector2 origin, Vector2 size, int layer = 1 << 0, float distance = 1, float angle = 0, Vector2 direction = new())

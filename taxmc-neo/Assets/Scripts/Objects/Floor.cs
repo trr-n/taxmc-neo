@@ -5,32 +5,24 @@ using UnityEngine;
 
 namespace trrne.Game
 {
-    public class Floor : MonoBehaviour
+    public class Floor : Objectt
     {
         [SerializeField]
-        Sprite[] sprites;
+        float repetiteSpeed, repetiteRange;
 
+        public enum MoveType { Fixed, Horizontal, Vertical }
         [SerializeField]
-        float repetiteSpeed;
+        MoveType style = MoveType.Fixed;
 
-        [SerializeField]
-        float repetiteRange;
-
-        public enum MovingStyle { Fixed, Horizontal, Vertical }
-        [SerializeField]
-        MovingStyle style = MovingStyle.Fixed;
-
-        Vector3 basePos;
-
-        // SpriteRenderer sr;
+        Vector3 center;
+        bool riding = false;
 
         void Start()
         {
-            // sr = GetComponent<SpriteRenderer>();
-            basePos = transform.position;
+            center = transform.position;
         }
 
-        void Update()
+        protected override void Behaviour()
         {
             Move();
         }
@@ -42,24 +34,26 @@ namespace trrne.Game
         {
             switch (style)
             {
-                case MovingStyle.Fixed: break;
+                // 固定
+                case MoveType.Fixed: break;
 
-                case MovingStyle.Horizontal:
+                // 左右
+                case MoveType.Horizontal:
                     var x = Coordinate.x * repetiteRange;
 
                     // 可動域を超えたら速度反転
-                    if (transform.position.x < (basePos - x).x || transform.position.x > (basePos + x).x)
+                    if (transform.position.x < (center - x).x || transform.position.x > (center + x).x)
                     {
                         repetiteSpeed *= -1;
                     }
                     transform.Translate(Time.deltaTime * repetiteSpeed * Coordinate.x, Space.World);
                     break;
 
-                case MovingStyle.Vertical:
+                // 上下
+                case MoveType.Vertical:
                     var y = Coordinate.y * repetiteRange;
 
-                    // 可動域を超えたら速度反転
-                    if (transform.position.y < (basePos - y).y || transform.position.y > (basePos + y).y)
+                    if (transform.position.y < (center - y).y || transform.position.y > (center + y).y)
                     {
                         repetiteSpeed *= -1;
                     }

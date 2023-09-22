@@ -51,18 +51,14 @@ namespace trrne.Game
                 {
                     case Constant.Layers.Player:
                         player.Die();
-
-                        if (horizon.hit.Try<Health>(out var life))
-                            life.Fluctuation(-1);
-
                         break;
 
                     case Constant.Layers.Ground:
+                    default:
                         // 壁にあたったら進行方向を反転
                         speed *= -1;
                         break;
 
-                    default: break;
                 }
             }
 
