@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-namespace trrne.utils
+namespace trrne.Appendix
 {
     public static class Coordinate
     {
@@ -13,6 +13,8 @@ namespace trrne.utils
 
         public static float g => 9.80665f;
         public static Vector3 gravity = -y * g;
+
+        public static Vector3 Position(this GameObject gob) => gob.transform.position;
 
         public static void SetPosition(this Transform t, float? x = null, float? y = null, float? z = null)
         {

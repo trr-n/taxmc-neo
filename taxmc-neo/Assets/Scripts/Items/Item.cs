@@ -1,9 +1,9 @@
 ﻿using System.Globalization;
 using System;
-using trrne.utils;
+using trrne.Appendix;
 using UnityEngine;
 
-namespace trrne.Game
+namespace trrne.Body
 {
     public abstract class Item : MonoBehaviour
     {
@@ -23,31 +23,32 @@ namespace trrne.Game
         /// </summary>
         protected bool animatable = true;
 
-        (int index, Stopwatch sw) anima = (0, new());
+        (int index, Stopwatch sw) anim = (0, new(true));
+        readonly Anima anima = new();
 
         void Start()
         {
             srenderer = GetComponent<SpriteRenderer>();
-
-            anima.sw.Start();
         }
 
         void Update()
         {
             Receive();
-            Animation();
+            // Animation();
+
+            anima.Sprite(animatable, sr, Time.deltaTime, itemSprites);
         }
 
         void Animation()
         {
             if (!animatable) { return; }
 
-            if (anima.sw.sf >= interval)
+            if (anim.sw.sf >= interval)
             {
-                anima.index = anima.index >= itemSprites.Length - 1 ? 0 : anima.index += 1;
-                sr.sprite = itemSprites[anima.index];
+                anim.index = anim.index >= itemSprites.Length - 1 ? 0 : anim.index += 1;
+                sr.sprite = itemSprites[anim.index];
 
-                anima.sw.Restart();
+                anim.sw.Restart();
             }
         }
 

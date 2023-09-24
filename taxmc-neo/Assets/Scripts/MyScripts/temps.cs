@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Text.RegularExpressions;
 
-namespace trrne.utils
+namespace trrne.Appendix
 {
     public enum TempsFormat { Standard, Rebirth }
 

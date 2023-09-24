@@ -1,9 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
-using trrne.utils;
+using trrne.Appendix;
 using UnityEngine;
 
-namespace trrne.Game
+namespace trrne.Body
 {
     // a rolling stone gathers no moss
     public class NoMoss : Objectt
@@ -20,7 +20,7 @@ namespace trrne.Game
         protected override void Behavior()
         {
             // 回転
-            transform.Rotate((dir == Spin.Left ? Coordinate.z : -Coordinate.z) * spinSpeed * Time.deltaTime, Space.World);
+            transform.Rotate(Time.deltaTime * spinSpeed * (dir == Spin.Left ? Coordinate.z : -Coordinate.z), Space.World);
         }
     }
 }

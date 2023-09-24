@@ -1,21 +1,13 @@
 using UnityEngine;
-using trrne.utils;
+using trrne.Appendix;
 using System.Collections;
 
-namespace trrne.Game
+namespace trrne.Body
 {
-    public class Blower : MonoBehaviour
+    public class Blower : Objectt
     {
         [SerializeField]
-        Sprite[] blowerSprites;
-
-        [SerializeField]
-        Sprite[] flowSprites;
-
-        /// <summary>
-        /// アニメーションのインターバル
-        /// </summary>
-        const float AnimationInterval = 0.02f;
+        Sprite[] blowerSprites, flowSprites;
 
         GameObject flowObj;
         SpriteRenderer flowSr;
@@ -35,16 +27,9 @@ namespace trrne.Game
             StartCoroutine(Animation2(blowerSr, blowerSprites));
         }
 
-        void Update()
+        protected override void Behavior()
         {
             Blowing();
-            Animation();
-        }
-
-        void Animation()
-        {
-            // blowerSr.Pic(AnimationInterval, blowerSprites);
-            // flowSr.Pic(Interval, flowSprites);
         }
 
         IEnumerator Animation2(SpriteRenderer sr, Sprite[] sprites)
@@ -56,31 +41,20 @@ namespace trrne.Game
                 sr.sprite = sprites[index];
 
                 index++;
-                if (index >= sprites.Length)
-                    index = 0;
+                if (index >= sprites.Length) { index = 0; }
 
                 // yield return new WaitForSeconds(AnimationInterval);
                 yield return new WaitForSeconds(Time.deltaTime);
             }
         }
 
-        (Vector2 centre, Vector2 size) cube;
         void Blowing()
         {
-            cube.centre = flowObj.transform.position;
-            cube.size = flowSr.bounds.size;
-
-            if (Gobject.BoxCast2D(out var hit, cube.centre, cube.size, Constant.Layers.Player))
+            if (Gobject.BoxCast2D(out var hit, flowObj.Position(), flowSr.bounds.size, Fixed.Layers.Player))
             {
                 // hit.Get<SpriteRenderer>().color = Color.HSVToRGB(Time.time % 1, 1, 1);
                 hit.Get<Rigidbody2D>().AddForce(pressure * transform.up);
             }
         }
-
-        // void OnDrawGizmos()
-        // {
-        //     Gizmos.color = Color.HSVToRGB(Time.time % 1, 1, 1);
-        //     Gizmos.DrawWireCube(cube.centre, cube.size);
-        // }
     }
 }

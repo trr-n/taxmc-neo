@@ -2,7 +2,7 @@ using System;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace trrne.utils
+namespace trrne.Appendix
 {
     public enum Active { Self, Hierarchy }
 

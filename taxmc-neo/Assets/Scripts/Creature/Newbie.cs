@@ -1,8 +1,8 @@
 using Cysharp.Threading.Tasks;
-using trrne.utils;
+using trrne.Appendix;
 using UnityEngine;
 
-namespace trrne.Game
+namespace trrne.Body
 {
     // [RequireComponent(typeof(Health))]
     public class Newbie : Enemy
@@ -12,8 +12,8 @@ namespace trrne.Game
         StartFacing facing = StartFacing.Right;
 
         readonly float distance = 1.5f;
-        (Ray ray, RaycastHit2D hit) horizon, vertical;
-        readonly int layers = Constant.Layers.Player | Constant.Layers.Ground;
+        (Ray ray, RaycastHit2D hit) horizon, top, bottom;
+        readonly int layers = Fixed.Layers.Player | Fixed.Layers.Ground;
 
         Player player;
         // Health health;
@@ -22,7 +22,7 @@ namespace trrne.Game
 
         void Start()
         {
-            player = Gobject.GetWithTag<Player>(Constant.Tags.Player);
+            player = Gobject.GetWithTag<Player>(Fixed.Tags.Player);
             // health = GetComponent<Health>();
 
             speed.real = Rand.Int(max: 2) switch
@@ -42,7 +42,7 @@ namespace trrne.Game
                 switch (horizon.hit.GetLayer())
                 {
                     // プレイヤーにあたったら56す
-                    case Constant.Layers.Player:
+                    case Fixed.Layers.Player:
                         await player.Die();
                         break;
 
@@ -54,25 +54,35 @@ namespace trrne.Game
                 }
             }
 
-            vertical.ray = new(transform.position + (distance * Coordinate.y / 2), transform.up);
-            vertical.hit = Physics2D.Raycast(vertical.ray.origin, vertical.ray.direction, distance, layers);
+            var rayconf = transform.position + (distance * Coordinate.y / 2);
+            top.ray = new(rayconf, transform.up);
+            top.hit = Physics2D.Raycast(top.ray.origin, top.ray.direction, distance, layers);
 
             // プレイヤーに踏まれたら死
-            if (vertical.hit && vertical.hit.Compare(Constant.Tags.Player))
+            if (top.hit && top.hit.Compare(Fixed.Tags.Player))
             {
                 Die();
             }
 
+            bottom.ray = new(rayconf, -transform.up);
+            bottom.hit = Physics2D.Raycast(bottom.ray.origin, bottom.ray.direction, distance, layers);
+
+            // プレイヤーをふんだら56す
+            if (bottom.hit && bottom.hit.Compare(Fixed.Tags.Player))
+            {
+                await bottom.hit.Get<Player>().Die();
+            }
+
 #if DEBUG
             Debug.DrawRay(horizon.ray.origin, horizon.ray.direction * distance, Color.red);
-            Debug.DrawRay(vertical.ray.origin, vertical.ray.direction * distance, Color.blue);
+            Debug.DrawRay(top.ray.origin, top.ray.direction * distance, Color.blue);
 #endif
         }
 
         protected override async void Die()
         {
             // エフェクト生成
-            dieFX.Generate(transform.position);
+            // dieFX.Generate(transform.position);
 
             // すこーし待機
             await UniTask.WaitForSeconds(0.1f);

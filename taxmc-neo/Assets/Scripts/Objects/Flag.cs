@@ -1,10 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
-using trrne.utils;
-using UnityEditor.Build.Content;
+using trrne.Appendix;
 using UnityEngine;
 
-namespace trrne.Game
+namespace trrne.Body
 {
     public class Flag : MonoBehaviour
     {
@@ -12,27 +11,34 @@ namespace trrne.Game
         Sprite[] flags;
 
         SpriteRenderer sr;
-
         Vector2 boxsize;
+
+        Player player;
+        bool used = false;
 
         void Start()
         {
+            player = Gobject.GetWithTag<Player>(Fixed.Tags.Player);
+
             sr = GetComponent<SpriteRenderer>();
             sr.sprite = flags[0];
+
             boxsize = new(sr.bounds.size.x / 2, sr.bounds.size.y);
         }
 
         void Update()
         {
-            HitMe();
-        }
+            if (used) { return; }
 
-        void HitMe()
-        {
             // プレイヤーが触れたらおろす
-            if (Gobject.BoxCast2D(out _, transform.position, boxsize, Constant.Layers.Player, 0, 0))
+            if (Gobject.BoxCast2D(out _, transform.position, boxsize, Fixed.Layers.Player, 0, 0))
             {
                 sr.sprite = flags[1];
+
+                print("ok");
+
+                player.SetCP(new(transform.position.x, Numeric.Cutail(transform.position.y)));
+                used = true;
             }
         }
 

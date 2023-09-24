@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
-namespace trrne.utils
+namespace trrne.Appendix
 {
     public sealed class Bag<T>
     {

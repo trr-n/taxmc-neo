@@ -1,8 +1,8 @@
 using UnityEngine;
-using trrne.utils;
+using trrne.Appendix;
 using Cysharp.Threading.Tasks;
 
-namespace trrne.Game
+namespace trrne.Body
 {
     public class NoProblem : Item
     {
@@ -12,16 +12,11 @@ namespace trrne.Game
         protected override async void Receive()
         {
             // プレイヤーに触れたらblankRate%の確率で初期値に戻す
-            if (Gobject.BoxCast2D(out var hit, transform.position, sr.bounds.size, Constant.Layers.Player))
+            if (Gobject.BoxCast2D(out var hit, transform.position, sr.bounds.size, Fixed.Layers.Player))
             {
+                try { hitFX.Generate(transform.position); } catch { }
                 // Blanc OR Negro
                 await hit.Get<Player>().Die();
-
-                if (hitFX != null)
-                {
-                    // TODO add fx
-                    hitFX.Generate(transform.position);
-                }
             }
         }
     }

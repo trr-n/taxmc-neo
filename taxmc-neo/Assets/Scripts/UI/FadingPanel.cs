@@ -1,10 +1,10 @@
 using System;
 using System.Collections;
-using trrne.utils;
+using trrne.Appendix;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace trrne.Game
+namespace trrne.Body
 {
     public enum FadeType { CutIn, CutOut }
 

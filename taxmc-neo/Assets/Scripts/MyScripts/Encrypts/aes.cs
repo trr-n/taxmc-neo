@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Security.Cryptography;
 
-namespace trrne.utils
+namespace trrne.Appendix
 {
     public class AES : IEncryption
     {

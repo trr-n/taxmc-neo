@@ -1,7 +1,7 @@
-using trrne.utils;
+using trrne.Appendix;
 using UnityEngine;
 
-namespace trrne.Game
+namespace trrne.Body
 {
     public class Stage : MonoBehaviour
     {

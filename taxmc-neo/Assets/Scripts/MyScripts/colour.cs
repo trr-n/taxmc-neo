@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 
-namespace trrne.utils
+namespace trrne.Appendix
 {
     public static class Colour
     {

@@ -2,7 +2,7 @@
 using System.Collections;
 using UnityEngine;
 
-namespace trrne.utils
+namespace trrne.Appendix
 {
     public class Runner
     {

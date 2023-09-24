@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using static UnityEngine.Application;
 
-namespace trrne.utils
+namespace trrne.Appendix
 {
     public enum FrameRate { Low = 30, Medium = 60, High = 144, Ultra = 200, VSync = -1 }
     public enum CursorAppearance { Invisible, Visible }
@@ -29,5 +29,7 @@ namespace trrne.utils
 
         public static Vector2 resolution => new(Screen.currentResolution.width, Screen.currentResolution.height);
         public static Vector2 screenSize => new(Screen.width, Screen.height);
+
+        public static void CameraSize(float size) => Camera.main.orthographicSize = size;
     }
 }

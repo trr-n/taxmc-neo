@@ -1,4 +1,4 @@
-﻿namespace trrne.Game
+﻿namespace trrne.Body
 {
     public class DataSaves
     {

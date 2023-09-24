@@ -1,9 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
-using trrne.utils;
+using trrne.Appendix;
 using UnityEngine;
 
-namespace trrne.Game
+namespace trrne.Body
 {
     public class Gunny : Enemy
     {
