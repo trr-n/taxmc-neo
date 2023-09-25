@@ -1,6 +1,7 @@
 using Cysharp.Threading.Tasks;
 using trrne.Appendix;
 using UnityEngine;
+using System.Collections;
 
 namespace trrne.Body
 {
@@ -13,28 +14,31 @@ namespace trrne.Body
         Vector2 to;
 
         bool warping = false;
+        RaycastHit2D hit;
 
         protected override async void Behavior()
         {
-            if (Gobject.BoxCast2D(out var box, transform.position, size * 0.66f, Fixed.Layers.Player)
-                && box.Compare(Fixed.Tags.Player)
-                && !warping)
+            if (!warping && Gobject.BoxCast2D(out hit, transform.position, size * 0.66f, Fixed.Layers.Player))
             {
                 warping = true;
 
-                // hitFX.Generate(transform.position);
-                print("warp fxed");
+                hitFX.Generate(transform.position);
+                // await UniTask.DelayFrame(Numeric.Cutail(App.fps / 10));
+                await UniTask.Delay(1000);
+                hit.SetPosition(to);
 
-                var hitSR = box.Get<SpriteRenderer>();
-                hitSR.SetAlpha(0);
-
-                await UniTask.DelayFrame(Numeric.Cutail(App.fps / 4));
-
-                hitSR.SetAlpha(1);
-                box.SetPosition(to);
-
-                warping = false;
+                //! 2回実行されちゃうからこるーちんで
+                // warping = false;
+                StartCoroutine(hoge());
             }
+
+        }
+
+        IEnumerator hoge()
+        {
+            print("yap");
+            yield return new WaitForSecondsRealtime(0);
+            warping = false;
         }
     }
 }

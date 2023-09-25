@@ -1050,7 +1050,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   dieFX: {fileID: 0}
   enable: 0
-  facing: 1
+  facing: 0
 --- !u!114 &1097181367
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2791,6 +2791,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: warp
       objectReference: {fileID: 0}
+    - target: {fileID: 7118889411306059896, guid: 32cbdcd7ca28d914eb397122850fe1c6, type: 3}
+      propertyPath: hitFX
+      value: 
+      objectReference: {fileID: 8771972552311404799, guid: bbf9e36a48d6c5648a13889afab076fd, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

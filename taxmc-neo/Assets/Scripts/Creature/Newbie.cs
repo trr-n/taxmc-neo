@@ -7,13 +7,12 @@ namespace trrne.Body
     // [RequireComponent(typeof(Health))]
     public class Newbie : Enemy
     {
-        public enum StartFacing { Left, Right }
+        public enum StartFacing { Left, Right, Random }
         [SerializeField]
         StartFacing facing = StartFacing.Right;
 
-        readonly float distance = 1.5f;
         (Ray ray, RaycastHit2D hit) horizon, top, bottom;
-        readonly int layers = Fixed.Layers.Player | Fixed.Layers.Ground;
+        readonly (float distance, int detect) layer = (1.2f, Fixed.Layers.Player | Fixed.Layers.Ground);
 
         Player player;
         // Health health;
@@ -23,25 +22,29 @@ namespace trrne.Body
         void Start()
         {
             player = Gobject.GetWithTag<Player>(Fixed.Tags.Player);
-            // health = GetComponent<Health>();
 
-            speed.real = Rand.Int(max: 2) switch
+            speed.real = facing switch
             {
-                1 => -speed.basis * 2,
-                _ => speed.basis
+                StartFacing.Left => -speed.basis,
+                StartFacing.Right => speed.basis,
+                StartFacing.Random or _ => Rand.Int(max: 2) switch
+                {
+                    1 => -speed.basis,
+                    _ => speed.basis
+                }
             };
         }
 
         protected override async void Behavior()
         {
-            horizon.ray = new(transform.position - (Coordinate.x * distance / 2), transform.right);
-            horizon.hit = Physics2D.Raycast(horizon.ray.origin, horizon.ray.direction, distance, layers);
+            horizon.ray = new(transform.position - (Coordinate.x * layer.distance / 2), transform.right);
+            horizon.hit = Physics2D.Raycast(horizon.ray.origin, horizon.ray.direction, layer.distance, layer.detect);
 
             if (horizon.hit)
             {
                 switch (horizon.hit.GetLayer())
                 {
-                    // プレイヤーにあたったら56す
+                    // プレイヤーにあたったらDie()
                     case Fixed.Layers.Player:
                         await player.Die();
                         break;
@@ -54,28 +57,26 @@ namespace trrne.Body
                 }
             }
 
-            var rayconf = transform.position + (distance * Coordinate.y / 2);
+            Vector2 rayconf = transform.position + (layer.distance * Coordinate.y / 2);
             top.ray = new(rayconf, transform.up);
-            top.hit = Physics2D.Raycast(top.ray.origin, top.ray.direction, distance, layers);
+            top.hit = Physics2D.Raycast(top.ray.origin, top.ray.direction, layer.distance, layer.detect);
 
-            // プレイヤーに踏まれたら死
             if (top.hit && top.hit.Compare(Fixed.Tags.Player))
             {
                 Die();
             }
 
             bottom.ray = new(rayconf, -transform.up);
-            bottom.hit = Physics2D.Raycast(bottom.ray.origin, bottom.ray.direction, distance, layers);
+            bottom.hit = Physics2D.Raycast(bottom.ray.origin, bottom.ray.direction, layer.distance, layer.detect);
 
-            // プレイヤーをふんだら56す
             if (bottom.hit && bottom.hit.Compare(Fixed.Tags.Player))
             {
                 await bottom.hit.Get<Player>().Die();
             }
 
 #if DEBUG
-            Debug.DrawRay(horizon.ray.origin, horizon.ray.direction * distance, Color.red);
-            Debug.DrawRay(top.ray.origin, top.ray.direction * distance, Color.blue);
+            Debug.DrawRay(horizon.ray.origin, horizon.ray.direction * layer.distance, Color.red);
+            Debug.DrawRay(top.ray.origin, top.ray.direction * layer.distance, Color.blue);
 #endif
         }
 
