@@ -1,3 +1,5 @@
+using System;
+
 namespace trrne.Bag
 {
     public static class Typing
@@ -21,5 +23,10 @@ namespace trrne.Bag
 
             return target;
         }
+
+        /// <summary>
+        /// objがtを継承していたらtrue
+        /// </summary>
+        public static bool Subclass(object obj, Type t) => obj.GetType().IsSubclassOf(t);
     }
 }

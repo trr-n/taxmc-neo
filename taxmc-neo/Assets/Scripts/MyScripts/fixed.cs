@@ -22,7 +22,7 @@ namespace trrne
             Player = 1 << 6,
             Ground = 1 << 7,
             Object = 1 << 8,
-            Entity = 1 << 9;
+            Creature = 1 << 9;
         }
 
         public readonly struct Keys

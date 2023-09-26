@@ -15,7 +15,7 @@ namespace trrne.Body
 
             switch (info.GetLayer())
             {
-                case Fixed.Layers.Entity:
+                case Fixed.Layers.Creature:
                     if (info.Try(out Enemy enemy))
                     {
                         await enemy.Die();
