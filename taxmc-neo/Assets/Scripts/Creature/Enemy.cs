@@ -7,7 +7,7 @@ namespace trrne.Body
 {
     public abstract class Enemy : MonoBehaviour
     {
-        public GameObject dieFX;
+        public GameObject diefx;
 
         public bool enable;
 

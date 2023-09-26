@@ -3,6 +3,7 @@ using UnityEngine.UI;
 using trrne.Bag;
 using Cysharp.Threading.Tasks;
 using System;
+using System.Collections;
 
 namespace trrne.Body
 {
@@ -15,7 +16,7 @@ namespace trrne.Body
         Sprite[] sprites;
 
         [SerializeField]
-        GameObject dieFx;
+        GameObject diefx;
 
         public bool ctrlable { get; set; }
         public bool jumpable { get; set; }
@@ -73,7 +74,7 @@ namespace trrne.Body
         /// <summary>
         /// チェックポイントに戻す
         /// </summary>
-        public void Return() => transform.SetPosition(checkpoint);
+        public void Return2CP() => transform.SetPosition(checkpoint);
 
         void Start()
         {
@@ -91,8 +92,8 @@ namespace trrne.Body
 
         void Update()
         {
-            // スペース チェックポイントに戻る
-            if (Inputs.Down(KeyCode.Space)) { Return(); }
+            // スペースでチェックポイントに戻る
+            if (Inputs.Down(KeyCode.Space)) { Return2CP(); }
 
             Flip();
         }
@@ -137,14 +138,6 @@ namespace trrne.Body
             }
         }
 
-        // void OnDrawGizmos()
-        // {
-        //     Gizmos.color = Color.HSVToRGB(Time.unscaledTime % 1, 1, 1);
-        //     // 足元のヒットボックス表示
-        //     Gizmos.DrawWireCube(new(transform.position.x, transform.position.y - sr.bounds.size.y / 2),
-        //         new(sr.bounds.size.x * jump.hitbox, rayconf.distance));
-        // }
-
         /// <summary>
         /// 移動
         /// </summary>
@@ -185,15 +178,21 @@ namespace trrne.Body
             // var fx = dieFx.Generate(transform.position);
 
             // // エフェクトの長さ分だけちと待機
-            // await UniTask.Delay(Numeric.Cutail(fx.FxDuration()));
+            // await UniTask.Delay(Numeric.Cutail(diefx.FxDuration()));
 
             // // 1/5フレーム待機
             // await UniTask.DelayFrame(Numeric.Cutail(App.fps / 5));
             await UniTask.Delay(1000);
 
+            StartCoroutine(functionName());
+        }
+
+        IEnumerator functionName()
+        {
+            yield return null;
+
             // 座標リセット
-            // transform.SetPosition(checkpoint);
-            Return();
+            Return2CP();
 
             // うごいていいよ
             ctrlable = true;

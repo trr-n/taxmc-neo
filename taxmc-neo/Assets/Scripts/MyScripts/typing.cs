@@ -1,4 +1,6 @@
 using System;
+using System.Runtime.InteropServices;
+using UnityEngine;
 
 namespace trrne.Bag
 {
@@ -27,6 +29,7 @@ namespace trrne.Bag
         /// <summary>
         /// objがtを継承していたらtrue
         /// </summary>
+        [Obsolete]
         public static bool Subclass(object obj, Type t) => obj.GetType().IsSubclassOf(t);
     }
 }

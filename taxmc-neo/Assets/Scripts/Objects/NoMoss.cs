@@ -20,6 +20,8 @@ namespace trrne.Body
         /// </summary>
         readonly float spinSpeed = 15f;
 
+        public bool rotatable { get; set; }
+
         void Start()
         {
             feet = new GameObject[transform.childCount];
@@ -45,17 +47,16 @@ namespace trrne.Body
                     switch (hit.GetLayer())
                     {
                         case Fixed.Layers.Player:
-                            if (hit.Compare(Fixed.Tags.Player))
+                            if (hit.Try(out Player player))
                             {
-                                await hit.Get<Player>().Die();
+                                await player.Die();
                             }
                             break;
 
                         case Fixed.Layers.Creature:
-                            if (hit.GetType().IsSubclassOf(typeof(Enemy)))
+                            if (hit.Try(out Enemy enemy))
                             {
-                                print("creature is passing.");
-                                await hit.Get<Enemy>().Die();
+                                await enemy.Die();
                             }
                             break;
                     }
@@ -65,6 +66,8 @@ namespace trrne.Body
 
         void Rotate()
         {
+            if (!rotatable) { return; }
+
             // 回転
             transform.Rotate(Time.deltaTime * spinSpeed * (dir == Spin.Left ? Coordinate.z : -Coordinate.z), Space.World);
         }

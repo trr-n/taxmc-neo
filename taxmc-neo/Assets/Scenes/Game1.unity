@@ -133,7 +133,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1282661750998988392, guid: bc903f7e28d610646bc2d5e89fb825b7, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 1.135005
+      value: 7.657
       objectReference: {fileID: 0}
     - target: {fileID: 1282661750998988392, guid: bc903f7e28d610646bc2d5e89fb825b7, type: 3}
       propertyPath: m_LocalPosition.y
@@ -639,7 +639,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fd17a8deaa7298b4ab1103849a287f06, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dieFX: {fileID: 0}
+  diefx: {fileID: 0}
   enable: 0
 --- !u!50 &848642998
 Rigidbody2D:
@@ -828,7 +828,6 @@ GameObject:
   - component: {fileID: 1019563280}
   - component: {fileID: 1019563281}
   - component: {fileID: 1019563279}
-  - component: {fileID: 1019563282}
   m_Layer: 6
   m_Name: player
   m_TagString: Player
@@ -897,7 +896,7 @@ Transform:
   m_GameObject: {fileID: 1019563276}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -9.69, y: -2.75, z: 0}
+  m_LocalPosition: {x: -7.58, y: -2.75, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -919,7 +918,7 @@ MonoBehaviour:
   velT: {fileID: 1692030582}
   sprites:
   - {fileID: 21300000, guid: 7877b652ee4fa054f99d9cb54aa39078, type: 3}
-  dieFx: {fileID: 0}
+  diefx: {fileID: 0}
 --- !u!61 &1019563280
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -992,19 +991,6 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
---- !u!114 &1019563282
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1019563276}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6b149b84d638c474d91df6119891f87c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  max: 0
 --- !u!1 &1316592539
 GameObject:
   m_ObjectHideFlags: 0
@@ -2060,6 +2046,30 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!1 &2024389318 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7480828792674330415, guid: 4116959be5ee7cc47a5d7e8a0d69756b, type: 3}
+  m_PrefabInstance: {fileID: 5770511733637915972}
+  m_PrefabAsset: {fileID: 0}
+--- !u!251 &2024389323
+PlatformEffector2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2024389318}
+  m_Enabled: 1
+  m_UseColliderMask: 1
+  m_ColliderMask:
+    serializedVersion: 2
+    m_Bits: 576
+  m_RotationalOffset: 0
+  m_UseOneWay: 0
+  m_UseOneWayGrouping: 0
+  m_SurfaceArc: 180
+  m_UseSideFriction: 0
+  m_UseSideBounce: 0
+  m_SideArc: 1
 --- !u!1001 &460473692115068235
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2070,11 +2080,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 5537703319015796537, guid: 08cf1e1d4496e984693571a99f65c59f, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -12.65
+      value: -9.42
       objectReference: {fileID: 0}
     - target: {fileID: 5537703319015796537, guid: 08cf1e1d4496e984693571a99f65c59f, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -4.4
+      value: -4.47
       objectReference: {fileID: 0}
     - target: {fileID: 5537703319015796537, guid: 08cf1e1d4496e984693571a99f65c59f, type: 3}
       propertyPath: m_LocalPosition.z
@@ -2290,7 +2300,7 @@ PrefabInstance:
     - target: {fileID: 6583199484258935708, guid: 6a550ffeb191e7d408a362590ce74a8d, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+      objectReference: {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -2408,7 +2418,10 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 7480828792674330415, guid: 4116959be5ee7cc47a5d7e8a0d69756b, type: 3}
+      insertIndex: 2
+      addedObject: {fileID: 2024389323}
   m_SourcePrefab: {fileID: 100100000, guid: 4116959be5ee7cc47a5d7e8a0d69756b, type: 3}
 --- !u!1001 &8946829036416567486
 PrefabInstance:

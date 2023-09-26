@@ -1,10 +1,10 @@
+using System.Collections;
 using Cysharp.Threading.Tasks;
 using trrne.Bag;
 using UnityEngine;
 
 namespace trrne.Body
 {
-    // [RequireComponent(typeof(Health))]
     public class Newbie : Enemy
     {
         public enum StartFacing { Left, Right, Random }
@@ -15,7 +15,8 @@ namespace trrne.Body
         readonly (float distance, int detect) layer = (1.2f, Fixed.Layers.Player | Fixed.Layers.Ground);
 
         Player player;
-        // Health health;
+
+        bool dying = false;
 
         (float basis, float real) speed = (2f, 0);
 
@@ -63,7 +64,7 @@ namespace trrne.Body
 
             if (top.hit && top.hit.Compare(Fixed.Tags.Player))
             {
-                Die();
+                await Die();
             }
 
             bottom.ray = new(rayconf, -transform.up);
@@ -73,17 +74,16 @@ namespace trrne.Body
             {
                 await bottom.hit.Get<Player>().Die();
             }
-
-#if DEBUG
-            Debug.DrawRay(horizon.ray.origin, horizon.ray.direction * layer.distance, Color.red);
-            Debug.DrawRay(top.ray.origin, top.ray.direction * layer.distance, Color.blue);
-#endif
         }
 
         public override async UniTask Die()
         {
+            if (dying) { return; }
+            dying = true;
+
             // TODO エフェクト生成
-            // dieFX.Generate(transform.position);
+            // diefx.Generate(transform.position);
+            print("generate vfx");
 
             // すこーし待機
             await UniTask.WaitForSeconds(0.1f);

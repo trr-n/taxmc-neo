@@ -39,6 +39,6 @@ namespace trrne.Bag
         /// <summary>
         /// 何もしないとき用
         /// </summary>
-        public static void NothingSpecial() {; }
+        public static void NothingSpecial() { return; }
     }
 }
