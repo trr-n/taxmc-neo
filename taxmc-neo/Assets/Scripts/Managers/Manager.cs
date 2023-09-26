@@ -37,7 +37,7 @@ namespace trrne.Body
 
         void Update()
         {
-            timeT.SetText(Numeric.Round(time.current, 1));
+            timeT.SetText($"{time.current.minutes}:{time.current.seconds}");
         }
     }
 }

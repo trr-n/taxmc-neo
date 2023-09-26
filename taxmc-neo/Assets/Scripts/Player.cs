@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Globalization;
+using UnityEngine;
 using UnityEngine.UI;
 using trrne.Bag;
 using Cysharp.Threading.Tasks;
@@ -21,6 +22,9 @@ namespace trrne.Body
         public bool ctrlable { get; set; }
         public bool jumpable { get; set; }
         public bool walkable { get; set; }
+
+        (float Recharge, float progress, bool able) respawn = (0.5f, 0f, false);
+        public float progress => respawn.progress;
 
         /// <summary>
         /// 氷の上に乗っていたらtrue
@@ -63,7 +67,7 @@ namespace trrne.Body
         SpriteRenderer sr;
         Rigidbody2D rb;
 
-        readonly float tolerance = 0.33f;
+        readonly float Tolerance = 0.33f;
 
         Vector3 checkpoint = Vector3.zero;
         /// <summary>
@@ -92,10 +96,8 @@ namespace trrne.Body
 
         void Update()
         {
-            // スペースでチェックポイントに戻る
-            if (Inputs.Down(KeyCode.Space)) { Return2CP(); }
-
             Flip();
+            Respawn();
         }
 
         void LateUpdate()
@@ -103,6 +105,8 @@ namespace trrne.Body
             // 速度表示
             velT.SetText(rb.velocity);
         }
+
+        void Respawn() => Runner.WriteALine(Inputs.Down(KeyCode.Space), () => Return2CP());
 
         /// <summary>
         /// 動きぶり
@@ -146,15 +150,14 @@ namespace trrne.Body
             Vector2 move = Input.GetAxisRaw(Fixed.Keys.Horizontal) * Coordinate.x;
 
             // 入力がtolerance以下、氷に乗っていない、浮いていない
-            if (move.magnitude <= tolerance && !onIce && !floating)
+            if (move.magnitude <= Tolerance && !onIce && !floating)
             {
-                // x軸の速度を0.9倍
+                // x軸の速度をspeed.reduction倍
                 rb.SetVelocityX(rb.velocity.x * speed.reduction);
             }
 
             // 速度を制限
             rb.velocity = new(onIce ?
-                // 氷に乗っていたら制限緩和
                 Mathf.Clamp(rb.velocity.x, -speed.max * 2, speed.max * 2) :
                 Mathf.Clamp(rb.velocity.x, -speed.max, speed.max),
                 rb.velocity.y);
@@ -174,6 +177,7 @@ namespace trrne.Body
             isDying = true;
             ctrlable = false;
 
+            // TODO below
             // エフェクト生成
             // var fx = dieFx.Generate(transform.position);
 
@@ -184,10 +188,10 @@ namespace trrne.Body
             // await UniTask.DelayFrame(Numeric.Cutail(App.fps / 5));
             await UniTask.Delay(1000);
 
-            StartCoroutine(functionName());
+            StartCoroutine(foo());
         }
 
-        IEnumerator functionName()
+        IEnumerator foo()
         {
             yield return null;
 
@@ -201,18 +205,12 @@ namespace trrne.Body
 
         void OnCollisionEnter2D(Collision2D info)
         {
-            if (info.Compare(Fixed.Tags.Ice))
-            {
-                onIce = true;
-            }
+            Runner.WriteALine(info.Compare(Fixed.Tags.Ice), () => onIce = true);
         }
 
         void OnCollisionExit2D(Collision2D info)
         {
-            if (info.Compare(Fixed.Tags.Ice))
-            {
-                onIce = false;
-            }
+            Runner.WriteALine(info.Compare(Fixed.Tags.Ice), () => onIce = false);
         }
     }
 }

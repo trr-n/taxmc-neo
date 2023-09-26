@@ -7,31 +7,31 @@ namespace trrne.Body
 {
     public class TimeManager : MonoBehaviour
     {
-        readonly Stopwatch stopwatch = new();
+        readonly Stopwatch sw = new();
 
         /// <summary>
         /// 現在のタイム
         /// </summary>
-        public float current => stopwatch.s;
+        public (int minutes, int seconds) current => (sw.m, sw.s);
 
         /// <summary>
         /// タイマーをスタート
         /// </summary>
-        public void Start() => stopwatch.Start();
+        public void Start() => sw.Start();
 
         /// <summary>
         /// タイマーをストップ
         /// </summary>
-        public void Stop() => stopwatch.Stop();
+        public void Stop() => sw.Stop();
 
         /// <summary>
         /// タイマーをリスタート
         /// </summary>
-        public void Restart() => stopwatch.Restart();
+        public void Restart() => sw.Restart();
 
         /// <summary>
         /// タイマーをリセット
         /// </summary>
-        public void Reset() => stopwatch.Reset();
+        public void Reset() => sw.Reset();
     }
 }

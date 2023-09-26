@@ -40,5 +40,13 @@ namespace trrne.Bag
         /// 何もしないとき用
         /// </summary>
         public static void NothingSpecial() { return; }
+
+        public static void WriteALine(bool passing, Action action)
+        {
+            if (passing)
+            {
+                action();
+            }
+        }
     }
 }

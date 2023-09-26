@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Text.RegularExpressions;
 
 namespace trrne.Bag
 {
@@ -9,24 +8,20 @@ namespace trrne.Bag
     {
         public static string Raw => (Date() + Time()).ReplaceLump("/  :", "");
 
-        public static string Date(TempsFormat style = TempsFormat.Standard)
+        public static string Date(TempsFormat format = TempsFormat.Standard)
+        => format switch
         {
-            return style switch
-            {
-                TempsFormat.Standard => $"{DateTime.Now.Year}/{DateTime.Now.Month}/{DateTime.Now.Day}",
-                TempsFormat.Rebirth => $"{DateTime.Now.Day}/{DateTime.Now.Month}/{DateTime.Now.Year}",
-                _ => throw null,
-            };
-        }
+            TempsFormat.Standard => $"{DateTime.Now.Year}/{DateTime.Now.Month}/{DateTime.Now.Day}",
+            TempsFormat.Rebirth => $"{DateTime.Now.Day}/{DateTime.Now.Month}/{DateTime.Now.Year}",
+            _ => throw null,
+        };
 
         public static string Time(TempsFormat style = TempsFormat.Standard)
+        => style switch
         {
-            return style switch
-            {
-                TempsFormat.Standard => $"{DateTime.Now.Hour}:{DateTime.Now.Minute}:{DateTime.Now.Second}",
-                TempsFormat.Rebirth => $"{DateTime.Now.Second}:{DateTime.Now.Minute}:{DateTime.Now.Hour}",
-                _ => throw null,
-            };
-        }
+            TempsFormat.Standard => $"{DateTime.Now.Hour}:{DateTime.Now.Minute}:{DateTime.Now.Second}",
+            TempsFormat.Rebirth => $"{DateTime.Now.Second}:{DateTime.Now.Minute}:{DateTime.Now.Hour}",
+            _ => throw null,
+        };
     }
 }

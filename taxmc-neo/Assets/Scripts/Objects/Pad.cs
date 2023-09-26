@@ -9,6 +9,8 @@ namespace trrne.Body
 {
     public class Pad : Objectt
     {
+        [SerializeField]
+        [Range(5f, float.MaxValue)]
         float power = 10f;
 
         protected override void Behavior() => Runner.NothingSpecial();

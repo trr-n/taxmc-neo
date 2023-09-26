@@ -23,6 +23,9 @@ namespace trrne.Bag
         /// </summary>
         public static void Load() => LoadScene(active);
 
+        /// <summary>
+        /// アクティブなシーンを取得
+        /// </summary>
         public static string active => GetActiveScene().name;
 
         /// <summary>
@@ -33,7 +36,10 @@ namespace trrne.Bag
             get
             {
                 var names = new string[sceneCount];
-                for (int i = 0; i < names.Length; i++) { names[i] = GetSceneByBuildIndex(i).name; }
+                for (int i = 0; i < names.Length; i++)
+                {
+                    names[i] = GetSceneByBuildIndex(i).name;
+                }
 
                 return names.Length switch
                 {

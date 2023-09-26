@@ -5,6 +5,7 @@ namespace trrne.Body
 {
     public class DeadZone : MonoBehaviour
     {
+        // 場外
         async void OnCollisionEnter2D(Collision2D info)
         {
             if (info.Compare(Fixed.Tags.Player))
@@ -22,9 +23,7 @@ namespace trrne.Body
                     }
                     break;
 
-                default:
-                    print("not yet");
-                    break;
+                default: throw null;
             }
         }
     }

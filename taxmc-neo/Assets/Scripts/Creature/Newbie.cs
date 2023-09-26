@@ -1,4 +1,3 @@
-using System.Collections;
 using Cysharp.Threading.Tasks;
 using trrne.Bag;
 using UnityEngine;
@@ -83,7 +82,6 @@ namespace trrne.Body
 
             // TODO エフェクト生成
             // diefx.Generate(transform.position);
-            print("generate vfx");
 
             // すこーし待機
             await UniTask.WaitForSeconds(0.1f);
