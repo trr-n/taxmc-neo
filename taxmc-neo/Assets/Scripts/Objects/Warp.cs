@@ -1,5 +1,5 @@
 using Cysharp.Threading.Tasks;
-using trrne.Appendix;
+using trrne.Bag;
 using UnityEngine;
 using System.Collections;
 
@@ -23,12 +23,9 @@ namespace trrne.Body
                 warping = true;
 
                 hitFX.Generate(transform.position);
-                // await UniTask.DelayFrame(Numeric.Cutail(App.fps / 10));
-                await UniTask.Delay(1000);
+                await UniTask.DelayFrame(App.fpsint / 10);
                 hit.SetPosition(to);
 
-                //! 2回実行されちゃうからこるーちんで
-                // warping = false;
                 StartCoroutine(hoge());
             }
 
@@ -36,8 +33,8 @@ namespace trrne.Body
 
         IEnumerator hoge()
         {
-            print("yap");
-            yield return new WaitForSecondsRealtime(0);
+            // yield return new WaitForSecondsRealtime(0);
+            yield return null;
             warping = false;
         }
     }

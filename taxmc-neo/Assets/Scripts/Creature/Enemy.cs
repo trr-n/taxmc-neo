@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Cysharp.Threading.Tasks;
 using UnityEngine;
 
 namespace trrne.Body
@@ -23,7 +24,7 @@ namespace trrne.Body
         /// <summary>
         /// 死
         /// </summary>
-        protected abstract void Die();
+        public abstract UniTask Die();
 
         protected void Update()
         {

@@ -1,4 +1,4 @@
-using trrne.Appendix;
+using trrne.Bag;
 using UnityEngine;
 
 namespace trrne.Body
@@ -12,6 +12,8 @@ namespace trrne.Body
         protected SpriteRenderer sr;
 
         protected Vector2 size => sr.bounds.size;
+
+        protected Vector2 here => transform.position;
 
         void Start()
         {
@@ -29,14 +31,13 @@ namespace trrne.Body
         /// </summary>
         protected abstract void Behavior();
 
+        readonly Anima anima = new();
         readonly Runner picset = new();
         void Animation()
         {
             switch (sprites.Length)
             {
-                case 0:
-                    // throw new Karappoyanke();
-                    break;
+                case 0: break;
 
                 case 1:
                     picset.RunOnce(() => sr.sprite = sprites[0]);
@@ -44,7 +45,7 @@ namespace trrne.Body
 
                 case 2:
                 default:
-                    // Anima.Pic(sr, interval, sprites);
+                    anima.Sprite(true, sr, interval, sprites);
                     break;
             }
         }

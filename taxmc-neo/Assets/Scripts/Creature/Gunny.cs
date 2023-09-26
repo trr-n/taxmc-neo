@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
-using trrne.Appendix;
+using Cysharp.Threading.Tasks;
+using trrne.Bag;
 using UnityEngine;
 
 namespace trrne.Body
@@ -37,7 +38,7 @@ namespace trrne.Body
             gun.line.startColor = gun.line.endColor = Color.HSVToRGB(Time.time % 1, 1, 1);
         }
 
-        protected override void Die()
+        public override UniTask Die()
         {
             throw new System.NotImplementedException();
         }

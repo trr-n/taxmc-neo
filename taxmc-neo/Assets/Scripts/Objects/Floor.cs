@@ -1,6 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
-using trrne.Appendix;
+using trrne.Bag;
 using UnityEngine;
 
 namespace trrne.Body
@@ -59,6 +59,25 @@ namespace trrne.Body
                     }
                     transform.Translate(Time.deltaTime * repetiteSpeed * Coordinate.y, Space.World);
                     break;
+            }
+        }
+
+        void OnCollisionEnter2D(Collision2D info)
+        {
+            if (info.Compare(Fixed.Tags.Player))
+            {
+                riding = true;
+                // info.transform.parent = transform;
+                info.transform.SetParent(transform);
+            }
+        }
+
+        void OnCollisionExit2D(Collision2D info)
+        {
+            if (info.Compare(Fixed.Tags.Player))
+            {
+                riding = false;
+                info.transform.SetParent(null);
             }
         }
     }

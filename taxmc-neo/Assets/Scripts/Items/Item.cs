@@ -1,6 +1,6 @@
 ﻿using System.Globalization;
 using System;
-using trrne.Appendix;
+using trrne.Bag;
 using UnityEngine;
 
 namespace trrne.Body
@@ -13,10 +13,12 @@ namespace trrne.Body
         SpriteRenderer srenderer;
         protected SpriteRenderer sr => srenderer;
 
+        protected Vector2 size => sr.bounds.size;
+
         /// <summary>
         /// アニメーションのインターバル<br/>初期値: 0.02
         /// </summary>
-        public float interval = 0.02f;
+        protected float interval = 0.02f;
 
         /// <summary>
         /// アニメーションするか

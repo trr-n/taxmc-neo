@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-namespace trrne.Appendix
+namespace trrne.Bag
 {
     public static class Coordinate
     {
@@ -56,6 +56,8 @@ namespace trrne.Appendix
 
             t.position = new(Mathf.Clamp(t.position.x, (float)x, (float)-x), Mathf.Clamp(t.position.y, (float)y, (float)-y));
         }
+
+        public static void SetVelocity(this Rigidbody2D rb, float x, float y) => rb.velocity = new(x, y);
 
         public static void SetVelocityX(this Rigidbody2D rb, float velocity) { rb.velocity = new(velocity, rb.velocity.y); }
 

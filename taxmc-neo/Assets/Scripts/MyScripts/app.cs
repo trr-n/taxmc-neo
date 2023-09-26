@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using static UnityEngine.Application;
 
-namespace trrne.Appendix
+namespace trrne.Bag
 {
     public enum FrameRate { Low = 30, Medium = 60, High = 144, Ultra = 200, VSync = -1 }
     public enum CursorAppearance { Invisible, Visible }
@@ -12,6 +12,7 @@ namespace trrne.Appendix
         public static void SetFPS(int fps = -1) => targetFrameRate = fps;
         public static void SetFPS(FrameRate fps) => targetFrameRate = (int)fps;
         public static float fps => Mathf.Floor(1 / Time.deltaTime);
+        public static int fpsint => Numeric.Cutail(fps);
 
         public static void SetGravity(Vector3 gravity) => Physics2D.gravity = gravity;
         public static Vector2 gravity => Physics2D.gravity;

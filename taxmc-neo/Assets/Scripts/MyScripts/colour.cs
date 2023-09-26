@@ -1,7 +1,8 @@
 ﻿using UnityEngine;
+using UnityEngine.Rendering;
 using UnityEngine.UI;
 
-namespace trrne.Appendix
+namespace trrne.Bag
 {
     public static class Colour
     {
@@ -22,5 +23,7 @@ namespace trrne.Appendix
         }
 
         public static bool Twins(Color n1, Color n2) => Mathf.Approximately(n1.r, n2.r) && Mathf.Approximately(n1.g, n2.g) && Mathf.Approximately(n1.b, n2.b);
+
+        public static Color gaming => Color.HSVToRGB(Time.unscaledTime % 1, 1, 1);
     }
 }

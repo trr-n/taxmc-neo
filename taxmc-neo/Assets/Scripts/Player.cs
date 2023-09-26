@@ -1,14 +1,15 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
-using trrne.Appendix;
+using trrne.Bag;
 using Cysharp.Threading.Tasks;
+using System;
 
 namespace trrne.Body
 {
     public class Player : MonoBehaviour
     {
         [SerializeField]
-        Text velocityText;
+        Text velT;
 
         [SerializeField]
         Sprite[] sprites;
@@ -28,10 +29,10 @@ namespace trrne.Body
         /// <summary>
         /// 死亡処理中はtrue
         /// </summary>
-        bool dying;
+        public bool isDying { get; set; }
 
         // readonly float speed = 10;
-        readonly (float basis, float max) speed = (20, 10);
+        readonly (float basis, float max, float freduction, float reduction) speed = (20, 10, 0.1f, 0.9f);
 
         /// <summary>
         /// 始点<br/>
@@ -44,7 +45,7 @@ namespace trrne.Body
         /// ジャンプ中<br/>
         /// 
         /// </summary>
-        (bool during, float power, float hitbox) jump = (false, 100f, 0.9f);
+        (bool during, float power, float hitbox) jump = (false, 67.5f, 0.9f);
 
         bool floating;
         /// <summary>
@@ -58,23 +59,21 @@ namespace trrne.Body
         /// </summary>
         public float velocity => vel;
 
-        readonly float floatingReduction = 10f;
-
         SpriteRenderer sr;
         Rigidbody2D rb;
 
         readonly float tolerance = 0.33f;
 
-        /// <summary>
-        /// 減速比
-        /// </summary>
-        readonly float reduction = 0.9f;
-
-        // Animator animator;
-
         Vector3 checkpoint = Vector3.zero;
-        public void SetCP(Vector3 cp) => checkpoint = cp;
-        public void Mds() => transform.SetPosition(checkpoint);
+        /// <summary>
+        /// チェックポイントを設定する
+        /// </summary>
+        public void SetCheckpoint(Vector3 point) => checkpoint = point;
+
+        /// <summary>
+        /// チェックポイントに戻す
+        /// </summary>
+        public void Return() => transform.SetPosition(checkpoint);
 
         void Start()
         {
@@ -93,10 +92,15 @@ namespace trrne.Body
         void Update()
         {
             // スペース チェックポイントに戻る
-            if (Inputs.Down(KeyCode.Space)) { transform.SetPosition(checkpoint); }
+            if (Inputs.Down(KeyCode.Space)) { Return(); }
 
-            if (Inputs.Down(KeyCode.A)) { sr.flipX = true; }
-            if (Inputs.Down(KeyCode.D)) { sr.flipX = false; }
+            Flip();
+        }
+
+        void LateUpdate()
+        {
+            // 速度表示
+            velT.SetText(rb.velocity);
         }
 
         /// <summary>
@@ -110,15 +114,25 @@ namespace trrne.Body
             Jump();
         }
 
+        void Flip()
+        {
+            if (!ctrlable) { return; }
+
+            if (Inputs.Down(KeyCode.A)) { sr.flipX = true; }
+            if (Inputs.Down(KeyCode.D)) { sr.flipX = false; }
+        }
+
         void Jump()
         {
-            (Vector2 origin, Vector2 size) box = (
+            (Vector2 origin, Vector2 size) hitbox = (
                 new(transform.position.x, transform.position.y - sr.bounds.size.y / 2),
                 new(sr.bounds.size.x * jump.hitbox, rayconf.distance));
 
-            if (floating = Gobject.BoxCast2D(out _, box.origin, box.size, layer: Fixed.Layers.Object | Fixed.Layers.Ground)
+            // オブジェクトか地面に足がついていて、ジャンプキーを押していたら
+            if (floating = Gobject.BoxCast2D(out _, hitbox.origin, hitbox.size, layer: Fixed.Layers.Object | Fixed.Layers.Ground)
                 && Inputs.Pressed(Fixed.Keys.Jump))
             {
+                // ジャンプ
                 rb.AddForce(Coordinate.y * jump.power, ForceMode2D.Impulse);
             }
         }
@@ -137,52 +151,53 @@ namespace trrne.Body
         void Move()
         {
             Vector2 move = Input.GetAxisRaw(Fixed.Keys.Horizontal) * Coordinate.x;
-            velocityText.SetText(rb.velocity);
 
-            // 入力されている値がtolerance以下、氷に乗っていない、浮いていない
+            // 入力がtolerance以下、氷に乗っていない、浮いていない
             if (move.magnitude <= tolerance && !onIce && !floating)
             {
                 // x軸の速度を0.9倍
-                rb.SetVelocityX(rb.velocity.x * reduction);
+                rb.SetVelocityX(rb.velocity.x * speed.reduction);
             }
 
-            // Xの速度を制限
-            rb.velocity = new(Mathf.Clamp(rb.velocity.x, -speed.max, speed.max), rb.velocity.y);
+            // 速度を制限
+            rb.velocity = new(onIce ?
+                // 氷に乗っていたら制限緩和
+                Mathf.Clamp(rb.velocity.x, -speed.max * 2, speed.max * 2) :
+                Mathf.Clamp(rb.velocity.x, -speed.max, speed.max),
+                rb.velocity.y);
 
             // 浮いていたら移動速度低下
-            rb.velocity += Time.fixedDeltaTime * (floating ? speed.basis / floatingReduction : speed.basis) * move;
+            rb.velocity += Time.fixedDeltaTime * (floating ? speed.basis * speed.freduction : speed.basis) * move;
         }
 
         /// <summary>
         /// 成仏
         /// </summary>
-        // public void Die()
         public async UniTask Die()
         {
-            if (dying) { return; }
-            // 死亡中
-            dying = true;
+            if (isDying) { return; }
 
-            // 制御不可に
+            // うごいちゃだめだよ
+            isDying = true;
             ctrlable = false;
 
             // エフェクト生成
-            var fx = dieFx.Generate(transform.position);
+            // var fx = dieFx.Generate(transform.position);
 
-            // エフェクトの長さ分だけちと待機
-            await UniTask.Delay(Numeric.Cutail(fx.FxDuration()));
+            // // エフェクトの長さ分だけちと待機
+            // await UniTask.Delay(Numeric.Cutail(fx.FxDuration()));
 
-            // 1/5フレーム待機
-            await UniTask.DelayFrame(Numeric.Cutail(App.fps / 5));
+            // // 1/5フレーム待機
+            // await UniTask.DelayFrame(Numeric.Cutail(App.fps / 5));
+            await UniTask.Delay(1000);
 
             // 座標リセット
-            transform.SetPosition(Fixed.SpawnPositions.Stage1);
+            // transform.SetPosition(checkpoint);
+            Return();
 
-            // 制御可能に
+            // うごいていいよ
             ctrlable = true;
-
-            // 復活していいよ
-            dying = false;
+            isDying = false;
         }
 
         void OnCollisionEnter2D(Collision2D info)

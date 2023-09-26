@@ -2,7 +2,7 @@ using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using trrne.Appendix;
+using trrne.Bag;
 
 namespace trrne.Body
 {
@@ -14,7 +14,7 @@ namespace trrne.Body
         {
             if (Gobject.BoxCast2D(out var hit, transform.position, size, Fixed.Layers.Player | Fixed.Layers.Entity))
             {
-                print("hit.");
+                // print("hit.");
                 hit.Get<Rigidbody2D>().AddForce(power * Coordinate.y, ForceMode2D.Impulse);
             }
         }

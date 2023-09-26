@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace trrne.Appendix
+namespace trrne.Bag
 {
     [Serializable]
     public class Karappoyanke : Exception

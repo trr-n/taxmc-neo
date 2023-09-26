@@ -3,7 +3,7 @@ using System.Runtime.InteropServices;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace trrne.Appendix
+namespace trrne.Bag
 {
     public static class Appear
     {

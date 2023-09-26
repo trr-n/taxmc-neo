@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEditor.IMGUI.Controls;
 using UnityEngine;
-using trrne.Appendix;
+using trrne.Bag;
 
 namespace trrne.Body
 {

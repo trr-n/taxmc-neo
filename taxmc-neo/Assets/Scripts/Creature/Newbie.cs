@@ -1,5 +1,5 @@
 using Cysharp.Threading.Tasks;
-using trrne.Appendix;
+using trrne.Bag;
 using UnityEngine;
 
 namespace trrne.Body
@@ -80,9 +80,9 @@ namespace trrne.Body
 #endif
         }
 
-        protected override async void Die()
+        public override async UniTask Die()
         {
-            // エフェクト生成
+            // TODO エフェクト生成
             // dieFX.Generate(transform.position);
 
             // すこーし待機

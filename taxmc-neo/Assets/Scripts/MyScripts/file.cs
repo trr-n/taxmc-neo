@@ -1,7 +1,7 @@
 using System.IO;
 using System.Runtime.CompilerServices;
 
-namespace trrne.Appendix
+namespace trrne.Bag
 {
     public static class File
     {

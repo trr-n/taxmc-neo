@@ -1,4 +1,4 @@
-﻿namespace trrne.Appendix
+﻿namespace trrne.Bag
 {
     public static class Boolean
     {

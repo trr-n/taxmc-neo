@@ -1,6 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
-using trrne.Appendix;
+using trrne.Bag;
 using UnityEngine;
 
 namespace trrne.Body
@@ -12,7 +12,7 @@ namespace trrne.Body
         /// <summary>
         /// 現在のタイム
         /// </summary>
-        public float current => stopwatch.sf;
+        public float current => stopwatch.s;
 
         /// <summary>
         /// タイマーをスタート

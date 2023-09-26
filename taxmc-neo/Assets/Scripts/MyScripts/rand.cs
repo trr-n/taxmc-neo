@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace trrne.Appendix
+namespace trrne.Bag
 {
     public static class Rand
     {

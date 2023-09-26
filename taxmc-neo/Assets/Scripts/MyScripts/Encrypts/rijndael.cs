@@ -2,7 +2,7 @@ using System.Text;
 using System.Collections.Generic;
 using System.Security.Cryptography;
 
-namespace trrne.Appendix
+namespace trrne.Bag
 {
     public class Rijndael : IEncryption
     {

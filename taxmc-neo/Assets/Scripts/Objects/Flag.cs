@@ -1,6 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
-using trrne.Appendix;
+using trrne.Bag;
 using UnityEngine;
 
 namespace trrne.Body
@@ -28,24 +28,16 @@ namespace trrne.Body
 
         void Update()
         {
-            if (used) { return; }
-
             // プレイヤーが触れたらおろす
-            if (Gobject.BoxCast2D(out _, transform.position, boxsize, Fixed.Layers.Player, 0, 0))
+            if (!used && Gobject.BoxCast2D(out var hit, transform.position, boxsize, Fixed.Layers.Player, 0, 0))
             {
+                if (!hit.Compare(Fixed.Tags.Player) && hit.Get<Player>().isDying) { return; }
+
                 sr.sprite = flags[1];
 
-                print("ok");
-
-                player.SetCP(new(transform.position.x, Numeric.Cutail(transform.position.y)));
+                player.SetCheckpoint(new(transform.position.x, Numeric.Cutail(transform.position.y)));
                 used = true;
             }
-        }
-
-        void OnDrawGizmos()
-        {
-            Gizmos.color = Color.HSVToRGB(Time.unscaledDeltaTime % 1, 1, 1);
-            Gizmos.DrawWireCube(transform.position, boxsize);
         }
     }
 }
