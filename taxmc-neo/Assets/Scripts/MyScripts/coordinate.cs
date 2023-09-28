@@ -26,6 +26,9 @@ namespace trrne.Bag
         public static void SetPosition(this Transform t, Vector2 position) => t.position = position;
         public static void SetPosition(this RaycastHit2D hit, Vector2 position) => hit.collider.transform.position = position;
 
+        public static void SetPosition(this RectTransform rt, Vector2 position) => rt.transform.position = position;
+        public static void SetPosition(this RectTransform rt, Vector3 position) => rt.transform.position = (Vector2)position;
+
         public static void ClampPosition22(this Transform t,
             float? minX = null, float? maxX = null, float? minY = null, float? maxY = null, float? minZ = null, float? maxZ = null)
         {

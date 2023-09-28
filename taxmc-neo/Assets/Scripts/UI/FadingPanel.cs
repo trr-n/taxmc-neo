@@ -73,7 +73,7 @@ namespace trrne.Body
                         break;
                 }
 
-                if (alfa >= 1 || alfa <= 0) { break; }
+                if (alfa >= 1 || alfa <= 0) { yield break; }
             }
 
             print("Faded.");

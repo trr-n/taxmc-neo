@@ -1,3 +1,7 @@
+using System;
+using System.Collections.Generic;
+using UnityEditor;
+using UnityEditor.SceneManagement;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using static UnityEngine.SceneManagement.SceneManager;
@@ -36,9 +40,9 @@ namespace trrne.Bag
             get
             {
                 var names = new string[sceneCount];
-                for (int i = 0; i < names.Length; i++)
+                for (int i = 0; i < sceneCount; i++)
                 {
-                    names[i] = GetSceneByBuildIndex(i).name;
+                    names[i] = GetSceneAt(i).name;
                 }
 
                 return names.Length switch
@@ -49,10 +53,7 @@ namespace trrne.Bag
             }
         }
 
-        /// <summary>
-        /// シーン数
-        /// </summary>
-        public static int total => names.Length;
+        public static int total => sceneCountInBuildSettings;
 
         public static AsyncOperation LoadAsync(string name) => LoadSceneAsync(name);
         public static AsyncOperation LoadAsync(int index) => LoadSceneAsync(index);

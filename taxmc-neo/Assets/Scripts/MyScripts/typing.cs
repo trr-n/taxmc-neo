@@ -31,5 +31,11 @@ namespace trrne.Bag
         /// </summary>
         [Obsolete]
         public static bool Subclass(object obj, Type t) => obj.GetType().IsSubclassOf(t);
+
+        public static string Join(this string[] str, string sep) => string.Join(sep, str);
+
+        // public static RectTransform ToRectTransform(this Transform transform)
+        // {
+        // }
     }
 }

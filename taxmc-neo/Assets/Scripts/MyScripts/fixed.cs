@@ -1,3 +1,5 @@
+using System;
+using System.Collections.Generic;
 using trrne.Bag;
 using UnityEngine;
 
@@ -5,6 +7,26 @@ namespace trrne
 {
     public static partial class Fixed
     {
+        static string dataPath => Application.dataPath;
+
+        public static string[] Paths2
+        {
+            get
+            {
+                List<string> scenes = new();
+                foreach (var scene in Bag.Scenes.names)
+                {
+                    Runner.WriteALine(scene.Contains(Scenes.Prefix), () => scenes.Add(scene));
+                    // if (scene.Contains(Scenes.Prefix))
+                    // {
+                    //     scenes.Add(scene);
+                    // }
+                }
+
+                return scenes.ToArray();
+            }
+        }
+
         public readonly struct Scenes
         {
             public static string
