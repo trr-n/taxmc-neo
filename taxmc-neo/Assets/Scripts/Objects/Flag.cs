@@ -18,7 +18,7 @@ namespace trrne.Body
 
         void Start()
         {
-            player = Gobject.GetWithTag<Player>(Fixed.Tags.Player);
+            player = Gobject.GetWithTag<Player>(Constant.Tags.Player);
 
             sr = GetComponent<SpriteRenderer>();
             sr.sprite = flags[0];
@@ -29,9 +29,9 @@ namespace trrne.Body
         void Update()
         {
             // プレイヤーが触れたらおろす
-            if (!used && Gobject.BoxCast2D(out var hit, transform.position, boxsize, Fixed.Layers.Player, 0, 0))
+            if (!used && Gobject.BoxCast2D(out var hit, transform.position, boxsize, Constant.Layers.Player, 0, 0))
             {
-                if (!hit.Compare(Fixed.Tags.Player)) { return; }
+                if (!hit.Compare(Constant.Tags.Player)) { return; }
                 if (hit.Get<Player>().IsDieProcessing) { return; }
 
                 sr.sprite = flags[1];

@@ -18,7 +18,7 @@ namespace trrne.Body
 
         protected override async void Behavior()
         {
-            if (!warping && Gobject.BoxCast2D(out hit, transform.position, size * 0.66f, Fixed.Layers.Player))
+            if (!warping && Gobject.BoxCast2D(out hit, transform.position, size * 0.66f, Constant.Layers.Player))
             {
                 if (hit.Try(out Player player) && player.IsDieProcessing) { return; }
                 warping = true;

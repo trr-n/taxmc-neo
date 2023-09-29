@@ -19,7 +19,7 @@ namespace trrne.Body
 
         void Start()
         {
-            player = Gobject.GetWithTag(Fixed.Tags.Player);
+            player = Gobject.GetWithTag(Constant.Tags.Player);
         }
 
         void Update()
@@ -33,7 +33,7 @@ namespace trrne.Body
 
         void Zoom()
         {
-            if ((zoom = Input.GetAxisRaw(Fixed.Keys.Zoom)) == 0) { return; }
+            if ((zoom = Input.GetAxisRaw(Constant.Keys.Zoom)) == 0) { return; }
 
             size = Mathf.Sign(zoom) / 4;
             Camera.main.orthographicSize += size;

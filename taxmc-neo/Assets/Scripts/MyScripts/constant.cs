@@ -2,25 +2,20 @@ using System;
 using System.Collections.Generic;
 using trrne.Bag;
 using UnityEngine;
+using AnotherScenes = trrne.Bag.Scenes;
 
 namespace trrne
 {
-    public static partial class Fixed
+    public static partial class Constant
     {
-        static string dataPath => Application.dataPath;
-
         public static string[] Paths2
         {
             get
             {
                 List<string> scenes = new();
-                foreach (var scene in Bag.Scenes.names)
+                foreach (var scene in AnotherScenes.names)
                 {
-                    Runner.WriteALine(scene.Contains(Scenes.Prefix), () => scenes.Add(scene));
-                    // if (scene.Contains(Scenes.Prefix))
-                    // {
-                    //     scenes.Add(scene);
-                    // }
+                    Runner.Simple(scene.Contains(Scenes.Prefix), () => scenes.Add(scene));
                 }
 
                 return scenes.ToArray();
@@ -31,10 +26,7 @@ namespace trrne
         {
             public static string
             Prefix = "Game",
-            Title = "StageSelect";
-
-            public static string[]
-            Game = { Prefix + 1 };
+            StageSelect = "StageSelect";
         }
 
         public readonly struct Layers

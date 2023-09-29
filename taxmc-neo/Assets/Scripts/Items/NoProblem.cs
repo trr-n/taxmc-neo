@@ -12,7 +12,7 @@ namespace trrne.Body
         protected override async void Receive()
         {
             // プレイヤーに触れたらblankRate%の確率で初期値に戻す
-            if (Gobject.BoxCast2D(out var hit, transform.position, size - .5f * (Vector2)Coordinate.x, Fixed.Layers.Player))
+            if (Gobject.BoxCast2D(out var hit, transform.position, size - .5f * (Vector2)Coordinate.x, Constant.Layers.Player))
             {
                 try { hitFX.Generate(transform.position); } catch { }
                 // Blanc OR Negro

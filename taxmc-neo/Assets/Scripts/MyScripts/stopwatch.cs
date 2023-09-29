@@ -11,6 +11,12 @@ namespace trrne.Bag
         MS, ms, MilliSecond, millisecond
     }
 
+    public enum StopwatchSpentOutput
+    {
+        HMS, HourMinuteSecond,
+        MS, MinuteSecond,
+    }
+
     public sealed class Stopwatch
     {
         SystemStopwatch sw;
@@ -51,7 +57,14 @@ namespace trrne.Bag
         public int MSecond() => sw.Elapsed.Milliseconds;
         public float MSecondF(int digit = 6) => Numeric.Round((float)sw.Elapsed.TotalMilliseconds, digit);
 
-        public string Spent() => sw.Elapsed.ToString();
+        public TimeSpan spent => sw.Elapsed;
+        public string Spent(StopwatchSpentOutput output) => output switch
+        {
+            StopwatchSpentOutput.HMS or StopwatchSpentOutput.HourMinuteSecond => spent.ToString("hh\\:mm\\:ss"),
+            StopwatchSpentOutput.MS or StopwatchSpentOutput.MinuteSecond => spent.ToString("mm\\:ss"),
+            _ => "NullNull Lotion"
+        };
+
         public int Spent(StopwatchFormat style)
         {
             return style switch
@@ -63,6 +76,7 @@ namespace trrne.Bag
                 _ => -1,
             };
         }
+
         public float SpentF(StopwatchFormat style)
         {
             return style switch

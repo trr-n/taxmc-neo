@@ -24,13 +24,13 @@ namespace trrne.Body
 
             Physics2D.gravity = Coordinate.gravity;
 
-            cam = Gobject.GetWithTag<Cam>(Fixed.Tags.MainCamera);
+            cam = Gobject.GetWithTag<Cam>(Constant.Tags.MainCamera);
             cam.Followable = true;
 
-            player = Gobject.GetWithTag<Player>(Fixed.Tags.Player);
+            player = Gobject.GetWithTag<Player>(Constant.Tags.Player);
             player.Ctrlable = true;
 
-            var enemies = Gobject.Finds(Fixed.Tags.Enemy);
+            var enemies = Gobject.Finds(Constant.Tags.Enemy);
             foreach (var enemy in enemies)
             {
                 var en = enemy.GetComponent<Enemy>();
@@ -40,7 +40,7 @@ namespace trrne.Body
 
         void Update()
         {
-            timeT.SetText($"{time.current.minutes}:{time.current.seconds}");
+            timeT.SetText(time.Currentstr);
         }
     }
 }

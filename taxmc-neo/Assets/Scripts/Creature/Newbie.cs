@@ -11,7 +11,7 @@ namespace trrne.Body
         StartFacing facing = StartFacing.Right;
 
         (Ray ray, RaycastHit2D hit) horizon, top, bottom;
-        readonly (float distance, int detect) layer = (1.2f, Fixed.Layers.Player | Fixed.Layers.Ground);
+        readonly (float distance, int detect) layer = (1.2f, Constant.Layers.Player | Constant.Layers.Ground);
 
         Player player;
 
@@ -21,7 +21,7 @@ namespace trrne.Body
 
         void Start()
         {
-            player = Gobject.GetWithTag<Player>(Fixed.Tags.Player);
+            player = Gobject.GetWithTag<Player>(Constant.Tags.Player);
 
             speed.real = facing switch
             {
@@ -45,7 +45,7 @@ namespace trrne.Body
                 switch (horizon.hit.GetLayer())
                 {
                     // プレイヤーにあたったらDie()
-                    case Fixed.Layers.Player:
+                    case Constant.Layers.Player:
                         await player.Die();
                         break;
 
@@ -61,7 +61,7 @@ namespace trrne.Body
             top.ray = new(rayconf, transform.up);
             top.hit = Physics2D.Raycast(top.ray.origin, top.ray.direction, layer.distance, layer.detect);
 
-            if (top.hit && top.hit.Compare(Fixed.Tags.Player))
+            if (top.hit && top.hit.Compare(Constant.Tags.Player))
             {
                 await Die();
             }
@@ -69,7 +69,7 @@ namespace trrne.Body
             bottom.ray = new(rayconf, -transform.up);
             bottom.hit = Physics2D.Raycast(bottom.ray.origin, bottom.ray.direction, layer.distance, layer.detect);
 
-            if (bottom.hit && bottom.hit.Compare(Fixed.Tags.Player))
+            if (bottom.hit && bottom.hit.Compare(Constant.Tags.Player))
             {
                 await bottom.hit.Get<Player>().Die();
             }

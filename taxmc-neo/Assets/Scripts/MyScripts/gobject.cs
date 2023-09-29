@@ -1,4 +1,5 @@
 using System;
+using Cysharp.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -48,6 +49,15 @@ namespace trrne.Bag
         public static bool Try<T>(this GameObject gob, out T t) => gob.TryGetComponent(out t);
         public static bool Try<T>(this RaycastHit2D hit, out T t) => hit.collider.TryGetComponent(out t);
         public static T Try<T>(this GameObject gob) { gob.TryGetComponent(out T t); return t is null ? default : t; }
+
+        public static void TryAction<T>(this Collider2D info, Action<T> action)
+        {
+            Runner.Simple(info.TryGetComponent(out T t), () => action(t));
+            // if (info.TryGetComponent(out T t))
+            // {
+            //     action(t);
+            // }
+        }
 
         public static GameObject Find(string tag) => GameObject.FindGameObjectWithTag(tag);
         public static GameObject[] Finds(string tag) => GameObject.FindGameObjectsWithTag(tag);

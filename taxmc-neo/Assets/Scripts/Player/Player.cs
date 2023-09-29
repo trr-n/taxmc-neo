@@ -39,7 +39,7 @@ namespace trrne.Body
         /// 長さ<br/>
         /// 対象のレイヤー
         /// </summary>
-        (Vector3 offset, float distance, int layers) rayconf = (new(), 0.25f, Fixed.Layers.Ground | Fixed.Layers.Object);
+        (Vector3 offset, float distance, int layers) rayconf = (new(), 0.25f, Constant.Layers.Ground | Constant.Layers.Object);
 
         (bool during, float power, float hitbox) jump = (false, 2f, 0.9f);
 
@@ -85,7 +85,7 @@ namespace trrne.Body
             rb = GetComponent<Rigidbody2D>();
             rb.mass = 60f;
 
-            cam = Gobject.GetWithTag<Cam>(Fixed.Tags.MainCamera);
+            cam = Gobject.GetWithTag<Cam>(Constant.Tags.MainCamera);
             cam.Followable = true;
         }
 
@@ -110,15 +110,37 @@ namespace trrne.Body
         /// <summary>
         /// スペースでリスポーンする
         /// </summary>
-        void Respawn() => Runner.WriteALine(Inputs.Down(KeyCode.Space), () => Return2CP());
+        void Respawn() => Runner.Simple(Inputs.Down(KeyCode.Space), () => Return2CP());
 
         float h;
         void Flip()
         {
-            if (!Ctrlable) { return; }
-            if ((h = Input.GetAxisRaw(Fixed.Keys.Horizontal)) == 0) { return; }
+            if (!Ctrlable || !Input.GetButtonDown(Constant.Keys.Horizontal))
+            {
+                return;
+            }
 
-            transform.SetScale(x: Mathf.Sign(h));
+            var scale = Mathf.Sign(transform.localScale.x);
+            switch (Mathf.Sign(Input.GetAxisRaw(Constant.Keys.Horizontal)))
+            {
+                case 0: break;
+
+                case 1:
+                    if (scale != 1)
+                    {
+                        print(1);
+                        transform.localScale *= new Vector2(-1, 1);
+                    }
+                    break;
+
+                case -1:
+                    if (scale != -1)
+                    {
+                        print(-1);
+                        transform.localScale *= new Vector2(-1, 1);
+                    }
+                    break;
+            }
         }
 
         void Jump()
@@ -131,7 +153,7 @@ namespace trrne.Body
 
             // if (isFloating = Gobject.BoxCast2D(out _, hitbox.origin, hitbox.size, layer: Fixed.Layers.Object | Fixed.Layers.Ground)
             //      && Inputs.Pressed(Fixed.Keys.Jump))
-            if (pjf.Hit && Inputs.Down(Fixed.Keys.Jump))
+            if (pjf.Hit && Inputs.Down(Constant.Keys.Jump))
             {
                 // ジャンプ
                 rb.velocity += jump.power * 3 * (Vector2)Coordinate.y;
@@ -145,7 +167,7 @@ namespace trrne.Body
         {
             if (!Ctrlable) { return; }
 
-            Vector2 move = Input.GetAxisRaw(Fixed.Keys.Horizontal) * Coordinate.x;
+            Vector2 move = Input.GetAxisRaw(Constant.Keys.Horizontal) * Coordinate.x;
 
             // 入力がtolerance以下、氷に乗っていない、浮いていない
             if (move.magnitude <= tolerance && !onIce && !isFloating)
@@ -204,12 +226,12 @@ namespace trrne.Body
 
         void OnCollisionEnter2D(Collision2D info)
         {
-            onIce = info.Compare(Fixed.Tags.Ice);
+            onIce = info.Compare(Constant.Tags.Ice);
         }
 
         void OnCollisionExit2D(Collision2D info)
         {
-            onIce = info.Compare(Fixed.Tags.Ice);
+            onIce = info.Compare(Constant.Tags.Ice);
         }
     }
 }

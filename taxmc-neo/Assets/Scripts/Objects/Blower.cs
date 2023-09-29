@@ -50,7 +50,7 @@ namespace trrne.Body
 
         void Blowing()
         {
-            if (Gobject.BoxCast2D(out var hit, flowObj.Position(), flowSr.bounds.size, Fixed.Layers.Player))
+            if (Gobject.BoxCast2D(out var hit, flowObj.Position(), flowSr.bounds.size, Constant.Layers.Player))
             {
                 // hit.Get<SpriteRenderer>().color = Color.HSVToRGB(Time.time % 1, 1, 1);
                 hit.Get<Rigidbody2D>().AddForce(pressure * transform.up);

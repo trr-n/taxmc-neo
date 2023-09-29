@@ -45,18 +45,18 @@ namespace trrne.Body
             foreach (var foot in feet)
             {
                 if (Gobject.BoxCast2D(out var hit,
-                    foot.transform.position, foot.GetComponent<SpriteRenderer>().bounds.size, Fixed.Layers.Player | Fixed.Layers.Creature))
+                    foot.transform.position, foot.GetComponent<SpriteRenderer>().bounds.size, Constant.Layers.Player | Constant.Layers.Creature))
                 {
                     switch (hit.GetLayer())
                     {
-                        case Fixed.Layers.Player:
+                        case Constant.Layers.Player:
                             if (hit.Try(out Player player))
                             {
                                 await player.Die();
                             }
                             break;
 
-                        case Fixed.Layers.Creature:
+                        case Constant.Layers.Creature:
                             if (hit.Try(out Enemy enemy))
                             {
                                 await enemy.Die();

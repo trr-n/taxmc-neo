@@ -11,7 +11,7 @@ namespace trrne.Body
 
         protected override void Receive()
         {
-            if (Gobject.BoxCast2D(out var hit, transform.position, sr.bounds.size, Fixed.Layers.Player)
+            if (Gobject.BoxCast2D(out var hit, transform.position, sr.bounds.size, Constant.Layers.Player)
                 && hit.Try<Health>(out var health))
             {
                 // 残機+1

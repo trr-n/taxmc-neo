@@ -12,7 +12,8 @@ namespace trrne.Body
         /// <summary>
         /// 現在のタイム
         /// </summary>
-        public (int minutes, int seconds) current => (sw.m, sw.s);
+        public (int minutes, int seconds) Current => (sw.m, sw.s);
+        public string Currentstr => sw.Spent(StopwatchSpentOutput.MS);
 
         /// <summary>
         /// タイマーをスタート

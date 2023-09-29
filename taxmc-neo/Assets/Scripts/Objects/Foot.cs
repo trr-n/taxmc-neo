@@ -11,14 +11,14 @@ namespace trrne.Body
         {
             switch (info.GetLayer())
             {
-                case Fixed.Layers.Player:
+                case Constant.Layers.Player:
                     if (info.Try(out Player player))
                     {
                         await player.Die();
                     }
                     break;
 
-                case Fixed.Layers.Creature:
+                case Constant.Layers.Creature:
                     if (info.Try(out Enemy enemy))
                     {
                         await enemy.Die();

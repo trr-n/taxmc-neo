@@ -37,12 +37,6 @@ namespace trrne.Bag
         /// </summary>
         public static void NothingSpecial() { return; }
 
-        public static void WriteALine(bool passing, Action action)
-        {
-            if (passing)
-            {
-                action();
-            }
-        }
+        public static void Simple(bool pass, Action action) { if (pass) { action(); } }
     }
 }
