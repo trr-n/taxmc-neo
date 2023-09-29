@@ -32,8 +32,6 @@ namespace trrne.Body
             // venom
             venom.text.SetText(venom.message);
             venom.rtransform.transform.position = venom.transform.position;
-
-            print("rt: " + venom.rtransform.transform.position + "\nt: " + venom.transform.position);
         }
 
         void Set(params Pair[] pairs)

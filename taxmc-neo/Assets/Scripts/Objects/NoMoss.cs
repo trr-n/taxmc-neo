@@ -1,3 +1,4 @@
+using System;
 using trrne.Bag;
 using UnityEngine;
 
@@ -36,15 +37,15 @@ namespace trrne.Body
         protected override void Behavior()
         {
             Rotate();
-            Detect();
+            // Detect();
         }
 
         async void Detect()
         {
-            foreach (var i in feet)
+            foreach (var foot in feet)
             {
                 if (Gobject.BoxCast2D(out var hit,
-                    i.transform.position, i.GetComponent<SpriteRenderer>().bounds.size, Fixed.Layers.Player | Fixed.Layers.Creature))
+                    foot.transform.position, foot.GetComponent<SpriteRenderer>().bounds.size, Fixed.Layers.Player | Fixed.Layers.Creature))
                 {
                     switch (hit.GetLayer())
                     {
@@ -65,6 +66,29 @@ namespace trrne.Body
                 }
             }
         }
+
+        // async void OnTriggerEnter2D(Collider2D info)
+        // {
+        //     switch (info.GetLayer())
+        //     {
+        //         case Fixed.Layers.Player:
+        //             if (info.Try(out Player player))
+        //             {
+        //                 await player.Die();
+        //             }
+        //             break;
+
+        //         case Fixed.Layers.Creature:
+        //             if (info.Try(out Enemy enemy))
+        //             {
+        //                 await enemy.Die();
+        //             }
+        //             break;
+
+        //         default:
+        //             break;
+        //     }
+        // }
 
         void Rotate()
         {

@@ -20,7 +20,7 @@ namespace trrne.Body
 
         void Start()
         {
-            flowObj = transform.GetChildGameObject();
+            flowObj = transform.GetChildGobject();
             flowSr = flowObj.GetComponent<SpriteRenderer>();
             blowerSr = GetComponent<SpriteRenderer>();
 

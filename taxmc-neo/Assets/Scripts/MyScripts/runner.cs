@@ -14,11 +14,7 @@ namespace trrne.Bag
             {
                 if (flag0) { return; }
 
-                foreach (var action in actions)
-                {
-                    action();
-                }
-
+                Array.ForEach(actions, action => action());
                 flag0 = true;
             }
             catch (Exception e) { MonoBehaviour.print(e.Message); }

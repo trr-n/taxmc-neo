@@ -4,7 +4,7 @@ using UnityEngine.UI;
 
 namespace trrne.Bag
 {
-    public enum Active { Self, Hierarchy }
+    public enum ActiveStatus { Self, Hierarchy }
 
     public static class Gobject
     {
@@ -23,6 +23,7 @@ namespace trrne.Bag
         public static bool Contain(this Collision2D info, string tag) => info.gameObject.tag.Contains(tag);
         public static bool Contain(this Collider2D info, string tag) => info.gameObject.tag.Contains(tag);
 
+        public static GameObject GetWithTag(string tag) => Find(tag);
         public static T GetWithTag<T>(string tag) => Find(tag).GetComponent<T>();
         public static T GetWithTag<T>(this GameObject gob) => gob.GetComponent<T>();
         public static bool TryWithTag<T>(out T t, string tag) => Find(tag).TryGetComponent(out t);
@@ -30,6 +31,7 @@ namespace trrne.Bag
 
         public static int GetLayer(this RaycastHit2D hit) => 1 << hit.collider.gameObject.layer;
         public static int GetLayer(this Collision2D info) => 1 << info.gameObject.layer;
+        public static int GetLayer(this Collider2D info) => 1 << info.gameObject.layer;
 
         public static T Get<T>(this Collision2D info) => info.gameObject.GetComponent<T>();
         public static bool Get<T>(this Collision2D info, out T t) { t = info.Get<T>(); return t is null; }
@@ -56,30 +58,21 @@ namespace trrne.Bag
         public static void Destroy(this Collision2D info, float lifetime = 0) => Destroy(info.gameObject, lifetime);
 
         public static bool IsActive(this Text text) => text.IsActive();
-        public static bool IsActive(this GameObject gob, Active? active = null)
-        => active switch { Active.Self => gob.activeSelf, Active.Hierarchy => gob.activeInHierarchy, _ => throw null, };
+        public static bool IsActive(this GameObject gob, ActiveStatus? active = null)
+        => active switch { ActiveStatus.Self => gob.activeSelf, ActiveStatus.Hierarchy => gob.activeInHierarchy, _ => throw null, };
 
         public static void SetActives(this GameObject[] gobs, bool state) { foreach (var gob in gobs) { gob.SetActive(state); } }
 
-        public static bool BoxCast2D(out RaycastHit2D hit, Vector2 origin, Vector2 size, int layer = 1 << 0, float distance = 1, float angle = 0, Vector2 direction = new())
-        {
-            hit = Physics2D.BoxCast(origin, size, angle, direction, distance, layer);
-            return hit;
-        }
+        public static bool BoxCast2D(out RaycastHit2D hit,
+            Vector2 origin, Vector2 size, int layer = 1 << 0, float distance = 1, float angle = 0, Vector2 direction = new())
+        => hit = Physics2D.BoxCast(origin, size, angle, direction, distance, layer);
 
         public static bool Raycast2D(out RaycastHit2D hit, Vector2 origin, Vector2 direction, int layer = 1 << 0, float distance = 1)
-        {
-            hit = Physics2D.Raycast(origin, direction, distance, layer);
-            return hit;
-        }
+        => hit = Physics2D.Raycast(origin, direction, distance, layer);
 
-        public static GameObject GetChildGameObject(this Transform t, int? specify = null) => t.GetChild(specify is null ? 0 : (int)specify).gameObject;
+        public static GameObject GetChildGobject(this Transform t, int? specify = null)
+        => t.GetChild(specify is null ? 0 : (int)specify).gameObject;
 
-        /// <summary>
-        /// エフェクトの長さ
-        /// </summary>
-        /// <param name="gob"></param>
-        /// <returns></returns>
-        public static float FxDuration(this GameObject gob) => gob.GetComponent<ParticleSystem>().main.duration;
+        public static float ParticleDuration(this GameObject gob) => gob.GetComponent<ParticleSystem>().main.duration;
     }
 }

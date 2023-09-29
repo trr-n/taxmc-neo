@@ -20,20 +20,20 @@ namespace trrne.Body
         {
             if (!warping && Gobject.BoxCast2D(out hit, transform.position, size * 0.66f, Fixed.Layers.Player))
             {
+                if (hit.Try(out Player player) && player.IsDieProcessing) { return; }
                 warping = true;
 
-                hitFX.Generate(transform.position);
+                // hitFX.Generate(transform.position);
                 await UniTask.DelayFrame(App.fpsint / 10);
                 hit.SetPosition(to);
 
-                StartCoroutine(hoge());
+                StartCoroutine(AfterDelay());
             }
 
         }
 
-        IEnumerator hoge()
+        IEnumerator AfterDelay()
         {
-            // yield return new WaitForSecondsRealtime(0);
             yield return null;
             warping = false;
         }

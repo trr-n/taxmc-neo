@@ -24,8 +24,6 @@ namespace trrne.Body
             {
                 size = sr.bounds.size;
             }
-
-            print("size: " + size);
         }
     }
 }

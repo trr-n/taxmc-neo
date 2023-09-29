@@ -19,12 +19,12 @@ namespace trrne.Body
         [SerializeField]
         GameObject diefx;
 
-        public bool ctrlable { get; set; }
-        public bool jumpable { get; set; }
-        public bool walkable { get; set; }
+        public bool Ctrlable { get; set; }
+        public bool Jumpable { get; set; }
+        public bool Walkable { get; set; }
 
         (float Recharge, float progress, bool able) respawn = (0.5f, 0f, false);
-        public float progress => respawn.progress;
+        public float Progress => respawn.progress;
 
         /// <summary>
         /// 氷の上に乗っていたらtrue
@@ -34,9 +34,8 @@ namespace trrne.Body
         /// <summary>
         /// 死亡処理中はtrue
         /// </summary>
-        public bool isDying { get; set; }
+        public bool IsDieProcessing { get; set; }
 
-        // readonly float speed = 10;
         readonly (float basis, float max, float freduction, float reduction) speed = (20, 10, 0.1f, 0.9f);
 
         /// <summary>
@@ -50,24 +49,26 @@ namespace trrne.Body
         /// ジャンプ中<br/>
         /// 
         /// </summary>
-        (bool during, float power, float hitbox) jump = (false, 67.5f, 0.9f);
+        (bool during, float power, float hitbox) jump = (false, 2f, 0.9f);
 
-        bool floating;
+        bool isFloating;
         /// <summary>
         /// 地に足がついていなかったらtrue
         /// </summary>
-        public bool isFloating => floating;
+        public bool IsFloating => isFloating;
 
-        float vel;
+        float velocity;
         /// <summary>
         /// 移動速度
         /// </summary>
-        public float velocity => vel;
+        public float Velocity => velocity;
 
         SpriteRenderer sr;
         Rigidbody2D rb;
 
-        readonly float Tolerance = 0.33f;
+        readonly float tolerance = 0.33f;
+
+        Cam cam;
 
         Vector3 checkpoint = Vector3.zero;
         /// <summary>
@@ -87,6 +88,9 @@ namespace trrne.Body
 
             rb = GetComponent<Rigidbody2D>();
             rb.mass = 60f;
+
+            cam = Gobject.GetWithTag<Cam>(Fixed.Tags.MainCamera);
+            cam.Followable = true;
         }
 
         void FixedUpdate()
@@ -106,6 +110,9 @@ namespace trrne.Body
             velT.SetText(rb.velocity);
         }
 
+        /// <summary>
+        /// スペースでリスポーンする
+        /// </summary>
         void Respawn() => Runner.WriteALine(Inputs.Down(KeyCode.Space), () => Return2CP());
 
         /// <summary>
@@ -113,7 +120,7 @@ namespace trrne.Body
         /// </summary>
         void Movement()
         {
-            if (!ctrlable) { return; }
+            if (!Ctrlable) { return; }
 
             Move();
             Jump();
@@ -121,7 +128,7 @@ namespace trrne.Body
 
         void Flip()
         {
-            if (!ctrlable) { return; }
+            if (!Ctrlable) { return; }
 
             if (Inputs.Down(KeyCode.A)) { sr.flipX = true; }
             if (Inputs.Down(KeyCode.D)) { sr.flipX = false; }
@@ -130,15 +137,14 @@ namespace trrne.Body
         void Jump()
         {
             (Vector2 origin, Vector2 size) hitbox = (
-                new(transform.position.x, transform.position.y - sr.bounds.size.y / 2),
-                new(sr.bounds.size.x * jump.hitbox, rayconf.distance));
+                new(transform.position.x, transform.position.y - sr.bounds.size.y / 2), new(sr.bounds.size.x * jump.hitbox, rayconf.distance));
 
             // オブジェクトか地面に足がついていて、ジャンプキーを押していたら
-            if (floating = Gobject.BoxCast2D(out _, hitbox.origin, hitbox.size, layer: Fixed.Layers.Object | Fixed.Layers.Ground)
+            if (isFloating = Gobject.BoxCast2D(out _, hitbox.origin, hitbox.size, layer: Fixed.Layers.Object | Fixed.Layers.Ground)
                 && Inputs.Pressed(Fixed.Keys.Jump))
             {
                 // ジャンプ
-                rb.AddForce(Coordinate.y * jump.power, ForceMode2D.Impulse);
+                rb.velocity += jump.power * (Vector2)Coordinate.y;
             }
         }
 
@@ -150,7 +156,7 @@ namespace trrne.Body
             Vector2 move = Input.GetAxisRaw(Fixed.Keys.Horizontal) * Coordinate.x;
 
             // 入力がtolerance以下、氷に乗っていない、浮いていない
-            if (move.magnitude <= Tolerance && !onIce && !floating)
+            if (move.magnitude <= tolerance && !onIce && !isFloating)
             {
                 // x軸の速度をspeed.reduction倍
                 rb.SetVelocityX(rb.velocity.x * speed.reduction);
@@ -163,7 +169,7 @@ namespace trrne.Body
                 rb.velocity.y);
 
             // 浮いていたら移動速度低下
-            rb.velocity += Time.fixedDeltaTime * (floating ? speed.basis * speed.freduction : speed.basis) * move;
+            rb.velocity += Time.fixedDeltaTime * (isFloating ? speed.basis * speed.freduction : speed.basis) * move;
         }
 
         /// <summary>
@@ -171,11 +177,11 @@ namespace trrne.Body
         /// </summary>
         public async UniTask Die()
         {
-            if (isDying) { return; }
+            if (IsDieProcessing) { return; }
 
-            // うごいちゃだめだよ
-            isDying = true;
-            ctrlable = false;
+            IsDieProcessing = true;
+            Ctrlable = false;
+            cam.Followable = false;
 
             // TODO below
             // エフェクト生成
@@ -188,10 +194,10 @@ namespace trrne.Body
             // await UniTask.DelayFrame(Numeric.Cutail(App.fps / 5));
             await UniTask.Delay(1000);
 
-            StartCoroutine(foo());
+            StartCoroutine(AfterDelay());
         }
 
-        IEnumerator foo()
+        IEnumerator AfterDelay()
         {
             yield return null;
 
@@ -199,8 +205,9 @@ namespace trrne.Body
             Return2CP();
 
             // うごいていいよ
-            ctrlable = true;
-            isDying = false;
+            cam.Followable = true;
+            Ctrlable = true;
+            IsDieProcessing = false;
         }
 
         void OnCollisionEnter2D(Collision2D info)

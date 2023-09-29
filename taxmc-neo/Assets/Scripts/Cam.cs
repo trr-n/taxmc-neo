@@ -8,31 +8,32 @@ namespace trrne.Body
 {
     public class Cam : MonoBehaviour
     {
-        public bool followable { get; set; } = true;
+        public bool Followable { get; set; } = true;
 
         GameObject player;
 
         float size;
+        float zoom;
+
+        readonly Vector3 offset = new(0, -0.25f, -10);
 
         void Start()
         {
-            player = GameObject.FindGameObjectWithTag(Fixed.Tags.Player);
+            player = Gobject.GetWithTag(Fixed.Tags.Player);
         }
 
         void Update()
         {
             Zoom();
 
-            if (!followable) { return; }
+            if (!Followable) { return; }
 
-            transform.position = player.transform.position + -Coordinate.y * 0.25f + Coordinate.z * -10;
+            transform.position = player.transform.position + offset;
         }
 
         void Zoom()
         {
-            float zoom = Input.GetAxisRaw(Fixed.Keys.Zoom);
-
-            if (zoom == 0) { return; }
+            if ((zoom = Input.GetAxisRaw(Fixed.Keys.Zoom)) == 0) { return; }
 
             size = Mathf.Sign(zoom) / 4;
             Camera.main.orthographicSize += size;

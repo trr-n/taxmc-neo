@@ -8,7 +8,8 @@ namespace trrne.Body
     public class Floor : Objectt
     {
         [SerializeField]
-        float repetiteSpeed, repetiteRange;
+        [Min(0.1f)]
+        float speed, range;
 
         public enum MoveType { Fixed, Horizontal, Vertical }
         [SerializeField]
@@ -32,6 +33,7 @@ namespace trrne.Body
         /// </summary>
         void Move()
         {
+            // TODO たまに固まる
             switch (style)
             {
                 // 固定
@@ -39,25 +41,25 @@ namespace trrne.Body
 
                 // 左右
                 case MoveType.Horizontal:
-                    var x = Coordinate.x * repetiteRange;
+                    var x = Coordinate.x * range;
 
                     // 可動域を超えたら速度反転
                     if (transform.position.x < (center - x).x || transform.position.x > (center + x).x)
                     {
-                        repetiteSpeed *= -1;
+                        speed *= -1;
                     }
-                    transform.Translate(Time.deltaTime * repetiteSpeed * Coordinate.x, Space.World);
+                    transform.Translate(Time.deltaTime * speed * Coordinate.x, Space.World);
                     break;
 
                 // 上下
                 case MoveType.Vertical:
-                    var y = Coordinate.y * repetiteRange;
+                    var y = Coordinate.y * range;
 
                     if (transform.position.y < (center - y).y || transform.position.y > (center + y).y)
                     {
-                        repetiteSpeed *= -1;
+                        speed *= -1;
                     }
-                    transform.Translate(Time.deltaTime * repetiteSpeed * Coordinate.y, Space.World);
+                    transform.Translate(Time.deltaTime * speed * Coordinate.y, Space.World);
                     break;
             }
         }
