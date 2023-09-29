@@ -16,7 +16,6 @@ namespace trrne.Body
         MoveType style = MoveType.Fixed;
 
         Vector3 center;
-        bool riding = false;
 
         void Start()
         {
@@ -44,7 +43,7 @@ namespace trrne.Body
                     var x = Coordinate.x * range;
 
                     // 可動域を超えたら速度反転
-                    if (transform.position.x < (center - x).x || transform.position.x > (center + x).x)
+                    if (transform.position.x <= (center - x).x || transform.position.x >= (center + x).x)
                     {
                         speed *= -1;
                     }
@@ -55,7 +54,7 @@ namespace trrne.Body
                 case MoveType.Vertical:
                     var y = Coordinate.y * range;
 
-                    if (transform.position.y < (center - y).y || transform.position.y > (center + y).y)
+                    if (transform.position.y <= (center - y).y || transform.position.y >= (center + y).y)
                     {
                         speed *= -1;
                     }
@@ -68,8 +67,6 @@ namespace trrne.Body
         {
             if (info.Compare(Fixed.Tags.Player))
             {
-                riding = true;
-                // info.transform.parent = transform;
                 info.transform.SetParent(transform);
             }
         }
@@ -78,7 +75,6 @@ namespace trrne.Body
         {
             if (info.Compare(Fixed.Tags.Player))
             {
-                riding = false;
                 info.transform.SetParent(null);
             }
         }

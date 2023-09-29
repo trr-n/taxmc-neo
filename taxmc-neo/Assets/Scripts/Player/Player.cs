@@ -3,7 +3,6 @@ using UnityEngine;
 using UnityEngine.UI;
 using trrne.Bag;
 using Cysharp.Threading.Tasks;
-using System;
 using System.Collections;
 
 namespace trrne.Body
@@ -12,9 +11,6 @@ namespace trrne.Body
     {
         [SerializeField]
         Text velT;
-
-        [SerializeField]
-        Sprite[] sprites;
 
         [SerializeField]
         GameObject diefx;
@@ -45,10 +41,6 @@ namespace trrne.Body
         /// </summary>
         (Vector3 offset, float distance, int layers) rayconf = (new(), 0.25f, Fixed.Layers.Ground | Fixed.Layers.Object);
 
-        /// <summary>
-        /// ジャンプ中<br/>
-        /// 
-        /// </summary>
         (bool during, float power, float hitbox) jump = (false, 2f, 0.9f);
 
         bool isFloating;
@@ -63,8 +55,11 @@ namespace trrne.Body
         /// </summary>
         public float Velocity => velocity;
 
-        SpriteRenderer sr;
+        // SpriteRenderer sr;
         Rigidbody2D rb;
+        new BoxCollider2D collider;
+
+        PlayerJumpFlag pjf;
 
         readonly float tolerance = 0.33f;
 
@@ -83,8 +78,9 @@ namespace trrne.Body
 
         void Start()
         {
-            sr = GetComponent<SpriteRenderer>();
-            rayconf.offset = ((sr.bounds.size.y / 2) - 0.2f) * Coordinate.y;
+            pjf = transform.GetFromChild<PlayerJumpFlag>(0);
+
+            collider = GetComponent<BoxCollider2D>();
 
             rb = GetComponent<Rigidbody2D>();
             rb.mass = 60f;
@@ -95,11 +91,12 @@ namespace trrne.Body
 
         void FixedUpdate()
         {
-            Movement();
+            Move();
         }
 
         void Update()
         {
+            Jump();
             Flip();
             Respawn();
         }
@@ -115,36 +112,29 @@ namespace trrne.Body
         /// </summary>
         void Respawn() => Runner.WriteALine(Inputs.Down(KeyCode.Space), () => Return2CP());
 
-        /// <summary>
-        /// 動きぶり
-        /// </summary>
-        void Movement()
-        {
-            if (!Ctrlable) { return; }
-
-            Move();
-            Jump();
-        }
-
+        float h;
         void Flip()
         {
             if (!Ctrlable) { return; }
+            if ((h = Input.GetAxisRaw(Fixed.Keys.Horizontal)) == 0) { return; }
 
-            if (Inputs.Down(KeyCode.A)) { sr.flipX = true; }
-            if (Inputs.Down(KeyCode.D)) { sr.flipX = false; }
+            transform.SetScale(x: Mathf.Sign(h));
         }
 
         void Jump()
         {
-            (Vector2 origin, Vector2 size) hitbox = (
-                new(transform.position.x, transform.position.y - sr.bounds.size.y / 2), new(sr.bounds.size.x * jump.hitbox, rayconf.distance));
+            if (!Ctrlable) { return; }
 
-            // オブジェクトか地面に足がついていて、ジャンプキーを押していたら
-            if (isFloating = Gobject.BoxCast2D(out _, hitbox.origin, hitbox.size, layer: Fixed.Layers.Object | Fixed.Layers.Ground)
-                && Inputs.Pressed(Fixed.Keys.Jump))
+            // (Vector2 origin, Vector2 size) hitbox = (
+            //     (Vector2)transform.position + collider.offset - collider.size.y / 2 * (Vector2)Coordinate.y,
+            //     new(collider.bounds.size.x, 0.2f));
+
+            // if (isFloating = Gobject.BoxCast2D(out _, hitbox.origin, hitbox.size, layer: Fixed.Layers.Object | Fixed.Layers.Ground)
+            //      && Inputs.Pressed(Fixed.Keys.Jump))
+            if (pjf.Hit && Inputs.Down(Fixed.Keys.Jump))
             {
                 // ジャンプ
-                rb.velocity += jump.power * (Vector2)Coordinate.y;
+                rb.velocity += jump.power * 3 * (Vector2)Coordinate.y;
             }
         }
 
@@ -153,6 +143,8 @@ namespace trrne.Body
         /// </summary>
         void Move()
         {
+            if (!Ctrlable) { return; }
+
             Vector2 move = Input.GetAxisRaw(Fixed.Keys.Horizontal) * Coordinate.x;
 
             // 入力がtolerance以下、氷に乗っていない、浮いていない
@@ -212,12 +204,12 @@ namespace trrne.Body
 
         void OnCollisionEnter2D(Collision2D info)
         {
-            Runner.WriteALine(info.Compare(Fixed.Tags.Ice), () => onIce = true);
+            onIce = info.Compare(Fixed.Tags.Ice);
         }
 
         void OnCollisionExit2D(Collision2D info)
         {
-            Runner.WriteALine(info.Compare(Fixed.Tags.Ice), () => onIce = false);
+            onIce = info.Compare(Fixed.Tags.Ice);
         }
     }
 }

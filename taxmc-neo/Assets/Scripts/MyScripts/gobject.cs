@@ -28,6 +28,7 @@ namespace trrne.Bag
         public static T GetWithTag<T>(this GameObject gob) => gob.GetComponent<T>();
         public static bool TryWithTag<T>(out T t, string tag) => Find(tag).TryGetComponent(out t);
         [Obsolete] public static T GetWithName<T>(string name) => GameObject.Find(name).GetComponent<T>();
+        public static T GetFromChild<T>(this Transform transform, int index) => transform.GetChildGobject(index).GetComponent<T>();
 
         public static int GetLayer(this RaycastHit2D hit) => 1 << hit.collider.gameObject.layer;
         public static int GetLayer(this Collision2D info) => 1 << info.gameObject.layer;

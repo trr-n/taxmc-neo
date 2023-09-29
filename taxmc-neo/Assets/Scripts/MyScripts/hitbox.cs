@@ -4,15 +4,16 @@ namespace trrne.Bag
 {
     public class HitBox
     {
-        Vector2 _origin, _size;
+        // Vector2 _origin, _size;
+        (float x, float y) o, s;
 
-        public HitBox(Vector2 origin, Vector2 size)
+        public HitBox((float x, float y) origin, (float x, float y) size)
         {
-            _origin = origin;
-            _size = size;
+            o = origin;
+            s = size;
         }
 
-        public Vector2 origin => _origin;
-        public Vector2 size => _size;
+        public Vector2 origin => new(o.x, o.y);
+        public Vector2 size => new(s.x, s.y);
     }
 }
