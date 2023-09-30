@@ -31,11 +31,17 @@ namespace trrne.Body
             player.Ctrlable = true;
 
             var enemies = Gobject.Finds(Constant.Tags.Enemy);
-            foreach (var enemy in enemies)
+            // foreach (var enemy in enemies)
+            // {
+            //     var en = enemy.GetComponent<Enemy>();
+            //     en.enable = true;
+            // }
+
+            enemies.ForEach(enemy =>
             {
                 var en = enemy.GetComponent<Enemy>();
                 en.enable = true;
-            }
+            });
         }
 
         void Update()

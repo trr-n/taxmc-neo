@@ -10,17 +10,12 @@ namespace trrne.Bag
         /// <summary>actionを一回実行</summary>
         public void RunOnce(params Action[] actions)
         {
-            try
+            SimpleRunner.BoolAction(!flag0, () =>
             {
-                if (flag0) { return; }
-
                 Array.ForEach(actions, action => action());
                 flag0 = true;
-            }
-            catch (Exception e) { MonoBehaviour.print(e.Message); }
+            });
         }
-
-        public static T Function<T>(Func<T> func) => func();
 
         readonly static Stopwatch bookingSW = new(true);
         public static void Book(float time, Action action)
@@ -32,11 +27,16 @@ namespace trrne.Bag
             }
         }
 
-        /// <summary>
-        /// 何もしないとき用
-        /// </summary>
         public static void NothingSpecial() { return; }
+    }
 
-        public static void Simple(bool pass, Action action) { if (pass) { action(); } }
+    public static class SimpleRunner
+    {
+        public static void BoolAction(bool pass, Action action) { if (pass) { action(); } }
+        public static T Function<T>(Func<T> func) => func();
+
+        public static void ForEach<T>(this T[] array, Action<T> action) => Array.ForEach(array, action);
+
+        public static void For(int loop, int increment, Action action) { for (int i = 0; i < loop; i += increment) { action(); } }
     }
 }

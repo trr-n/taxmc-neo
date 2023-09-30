@@ -65,17 +65,17 @@ namespace trrne.Body
 
         void OnCollisionEnter2D(Collision2D info)
         {
-            if (info.Compare(Constant.Tags.Player))
+            if (info.Compare(Constant.Tags.Player) && info.transform.parent != transform)
             {
-                info.transform.SetParent(transform);
+                info.transform.parent = transform;
             }
         }
 
         void OnCollisionExit2D(Collision2D info)
         {
-            if (info.Compare(Constant.Tags.Player))
+            if (info.Compare(Constant.Tags.Player) && info.transform.parent != null)
             {
-                info.transform.SetParent(null);
+                info.transform.parent = null;
             }
         }
     }

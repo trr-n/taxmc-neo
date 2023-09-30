@@ -8,7 +8,7 @@ namespace trrne.Body
         static int cur;
         public static int current => cur;
 
-        public static int max => Scenes.total;
+        public static int max => Scenes.Total(Counting.Built);
 
         public static bool isClear => cur >= max;
         public static float progress => max / cur;

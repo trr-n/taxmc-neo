@@ -12,11 +12,9 @@ namespace trrne
         {
             get
             {
-                List<string> scenes = new();
-                foreach (var scene in AnotherScenes.names)
-                {
-                    Runner.Simple(scene.Contains(Scenes.Prefix), () => scenes.Add(scene));
-                }
+                List<string> scenes = new(AnotherScenes.Total(Counting.Built));
+                AnotherScenes.names.ForEach(
+                    scene => SimpleRunner.BoolAction(scene.Contains(Scenes.Prefix), () => scenes.Add(scene)));
 
                 return scenes.ToArray();
             }
@@ -60,6 +58,13 @@ namespace trrne
             Enemy = "Enemy",
             Panel = "Panel",
             Ice = "Ice";
+        }
+
+        public readonly struct Paramaters
+        {
+            public static string
+            Jump = "Jump",
+            Walk = "Walk";
         }
 
         public readonly struct SpawnPositions

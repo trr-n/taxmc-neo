@@ -58,7 +58,7 @@ namespace trrne.Body
         // SpriteRenderer sr;
         Rigidbody2D rb;
         new BoxCollider2D collider;
-
+        Animator animator;
         PlayerJumpFlag pjf;
 
         readonly float tolerance = 0.33f;
@@ -79,6 +79,8 @@ namespace trrne.Body
         void Start()
         {
             pjf = transform.GetFromChild<PlayerJumpFlag>(0);
+
+            animator = GetComponent<Animator>();
 
             collider = GetComponent<BoxCollider2D>();
 
@@ -110,36 +112,27 @@ namespace trrne.Body
         /// <summary>
         /// スペースでリスポーンする
         /// </summary>
-        void Respawn() => Runner.Simple(Inputs.Down(KeyCode.Space), () => Return2CP());
+        void Respawn() => SimpleRunner.BoolAction(Inputs.Down(KeyCode.Space), () => Return2CP());
 
-        float h;
         void Flip()
         {
-            if (!Ctrlable || !Input.GetButtonDown(Constant.Keys.Horizontal))
+            if (!Ctrlable) { return; }
+
+            if (Input.GetButtonDown(Constant.Keys.Horizontal))
             {
-                return;
-            }
+                var current = Mathf.Sign(transform.localScale.x);
+                switch (Mathf.Sign(Input.GetAxisRaw(Constant.Keys.Horizontal)))
+                {
+                    case 1:
+                        SimpleRunner.BoolAction(current != 1, () => transform.localScale *= new Vector2(-1, 1));
+                        break;
 
-            var scale = Mathf.Sign(transform.localScale.x);
-            switch (Mathf.Sign(Input.GetAxisRaw(Constant.Keys.Horizontal)))
-            {
-                case 0: break;
+                    case -1:
+                        SimpleRunner.BoolAction(current != -1, () => transform.localScale *= new Vector2(-1, 1));
+                        break;
 
-                case 1:
-                    if (scale != 1)
-                    {
-                        print(1);
-                        transform.localScale *= new Vector2(-1, 1);
-                    }
-                    break;
-
-                case -1:
-                    if (scale != -1)
-                    {
-                        print(-1);
-                        transform.localScale *= new Vector2(-1, 1);
-                    }
-                    break;
+                    default: break;
+                }
             }
         }
 
@@ -147,17 +140,16 @@ namespace trrne.Body
         {
             if (!Ctrlable) { return; }
 
-            // (Vector2 origin, Vector2 size) hitbox = (
-            //     (Vector2)transform.position + collider.offset - collider.size.y / 2 * (Vector2)Coordinate.y,
-            //     new(collider.bounds.size.x, 0.2f));
-
-            // if (isFloating = Gobject.BoxCast2D(out _, hitbox.origin, hitbox.size, layer: Fixed.Layers.Object | Fixed.Layers.Ground)
-            //      && Inputs.Pressed(Fixed.Keys.Jump))
-            if (pjf.Hit && Inputs.Down(Constant.Keys.Jump))
+            if (pjf.Hit)
             {
-                // ジャンプ
-                rb.velocity += jump.power * 3 * (Vector2)Coordinate.y;
+                if (Inputs.Down(Constant.Keys.Jump))
+                {
+                    rb.velocity += jump.power * 3 * (Vector2)Coordinate.y;
+                }
+                animator.SetBool(Constant.Paramaters.Jump, false);
+                return;
             }
+            animator.SetBool(Constant.Paramaters.Jump, true);
         }
 
         /// <summary>
@@ -166,6 +158,8 @@ namespace trrne.Body
         void Move()
         {
             if (!Ctrlable) { return; }
+
+            animator.SetBool(Constant.Paramaters.Walk, Input.GetButton(Constant.Keys.Horizontal) && pjf.Hit);
 
             Vector2 move = Input.GetAxisRaw(Constant.Keys.Horizontal) * Coordinate.x;
 
@@ -199,14 +193,13 @@ namespace trrne.Body
 
             // TODO below
             // エフェクト生成
-            // var fx = dieFx.Generate(transform.position);
+            diefx.TryGenerate(transform.position);
 
-            // // エフェクトの長さ分だけちと待機
+            // エフェクトの長さ分だけちと待機
             // await UniTask.Delay(Numeric.Cutail(diefx.FxDuration()));
 
-            // // 1/5フレーム待機
-            // await UniTask.DelayFrame(Numeric.Cutail(App.fps / 5));
-            await UniTask.Delay(1000);
+            // 1/5フレーム待機
+            await UniTask.DelayFrame(Numeric.Cutail(App.fps / 5));
 
             StartCoroutine(AfterDelay());
         }

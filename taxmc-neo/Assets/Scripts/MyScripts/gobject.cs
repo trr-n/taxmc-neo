@@ -9,9 +9,10 @@ namespace trrne.Bag
 
     public static class Gobject
     {
-        public static GameObject Generate(this GameObject[] g, Vector3 p = new(), Quaternion r = new()) => GameObject.Instantiate(g.Choice(), p, r);
+        public static GameObject Generate(this GameObject[] gs, Vector3 p = new(), Quaternion r = new()) => GameObject.Instantiate(gs.Choice(), p, r);
         public static GameObject Generate(this GameObject g, Vector3 p = new(), Quaternion r = new()) => GameObject.Instantiate(g, p, r);
-        public static GameObject Generate(this GameObject gob) => GameObject.Instantiate(gob);
+        public static GameObject Generate(this GameObject g) => GameObject.Instantiate(g);
+        public static GameObject TryGenerate(this GameObject g, Vector3 p = new(), Quaternion r = new()) => g != null ? g.Generate(p, r) : null;
 
         public static bool Compare(this Collision info, string tag) => info.gameObject.CompareTag(tag);
         public static bool Compare(this Collider info, string tag) => info.CompareTag(tag);
@@ -29,11 +30,7 @@ namespace trrne.Bag
         public static T GetWithTag<T>(this GameObject gob) => gob.GetComponent<T>();
         public static bool TryWithTag<T>(out T t, string tag) => Find(tag).TryGetComponent(out t);
         [Obsolete] public static T GetWithName<T>(string name) => GameObject.Find(name).GetComponent<T>();
-        public static T GetFromChild<T>(this Transform transform, int index) => transform.GetChildGobject(index).GetComponent<T>();
-
-        public static int GetLayer(this RaycastHit2D hit) => 1 << hit.collider.gameObject.layer;
-        public static int GetLayer(this Collision2D info) => 1 << info.gameObject.layer;
-        public static int GetLayer(this Collider2D info) => 1 << info.gameObject.layer;
+        public static T GetFromChild<T>(this Transform transform, int index) => GetChild(transform, index).GetComponent<T>();
 
         public static T Get<T>(this Collision2D info) => info.gameObject.GetComponent<T>();
         public static bool Get<T>(this Collision2D info, out T t) { t = info.Get<T>(); return t is null; }
@@ -41,6 +38,8 @@ namespace trrne.Bag
         public static T Get<T>(this Collision info) => info.gameObject.GetComponent<T>();
         public static T Get<T>(this Collider info) => info.gameObject.GetComponent<T>();
         public static T Get<T>(this RaycastHit2D hit) => hit.collider.Get<T>();
+
+        public static GameObject GetChild(this Transform t, int? specify = null) => t.GetChild(specify is null ? 0 : (int)specify).gameObject;
 
         public static bool Try<T>(this Collision2D info, out T t) => info.gameObject.TryGetComponent(out t);
         public static bool Try<T>(this Collider2D info, out T t) => info.gameObject.TryGetComponent(out t);
@@ -50,14 +49,11 @@ namespace trrne.Bag
         public static bool Try<T>(this RaycastHit2D hit, out T t) => hit.collider.TryGetComponent(out t);
         public static T Try<T>(this GameObject gob) { gob.TryGetComponent(out T t); return t is null ? default : t; }
 
-        public static void TryAction<T>(this Collider2D info, Action<T> action)
-        {
-            Runner.Simple(info.TryGetComponent(out T t), () => action(t));
-            // if (info.TryGetComponent(out T t))
-            // {
-            //     action(t);
-            // }
-        }
+        public static void TryAction<T>(this Collider2D info, Action<T> action) => SimpleRunner.BoolAction(info.TryGetComponent(out T t), () => action(t));
+
+        public static int GetLayer(this RaycastHit2D hit) => 1 << hit.collider.gameObject.layer;
+        public static int GetLayer(this Collision2D info) => 1 << info.gameObject.layer;
+        public static int GetLayer(this Collider2D info) => 1 << info.gameObject.layer;
 
         public static GameObject Find(string tag) => GameObject.FindGameObjectWithTag(tag);
         public static GameObject[] Finds(string tag) => GameObject.FindGameObjectsWithTag(tag);
@@ -80,9 +76,6 @@ namespace trrne.Bag
 
         public static bool Raycast2D(out RaycastHit2D hit, Vector2 origin, Vector2 direction, int layer = 1 << 0, float distance = 1)
         => hit = Physics2D.Raycast(origin, direction, distance, layer);
-
-        public static GameObject GetChildGobject(this Transform t, int? specify = null)
-        => t.GetChild(specify is null ? 0 : (int)specify).gameObject;
 
         public static float ParticleDuration(this GameObject gob) => gob.GetComponent<ParticleSystem>().main.duration;
     }
