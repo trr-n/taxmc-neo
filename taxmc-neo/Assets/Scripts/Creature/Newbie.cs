@@ -19,7 +19,7 @@ namespace trrne.Body
 
         (float basis, float real) speed = (2f, 0);
 
-        void Start()
+        protected override void Start()
         {
             player = Gobject.GetWithTag<Player>(Constant.Tags.Player);
 
@@ -50,7 +50,6 @@ namespace trrne.Body
                         break;
 
                     // プレイヤー以外にあたったら進行方向を反転
-                    // case Constant.Layers.Ground:
                     default:
                         speed.real *= -1;
                         break;

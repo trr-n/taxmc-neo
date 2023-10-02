@@ -5,28 +5,24 @@ using UnityEngine;
 
 namespace trrne.Body
 {
-    public class Flag : MonoBehaviour
+    public class Flag : Objectt
     {
-        [SerializeField]
-        Sprite[] flags;
-
-        SpriteRenderer sr;
         Vector2 boxsize;
 
         Player player;
         bool used = false;
 
-        void Start()
+        protected override void Start()
         {
             player = Gobject.GetWithTag<Player>(Constant.Tags.Player);
 
             sr = GetComponent<SpriteRenderer>();
-            sr.sprite = flags[0];
+            sr.sprite = sprites[0];
 
             boxsize = new(sr.bounds.size.x / 2, sr.bounds.size.y);
         }
 
-        void Update()
+        protected override void Behavior()
         {
             // プレイヤーが触れたらおろす
             if (!used && Gobject.BoxCast2D(out var hit, transform.position, boxsize, Constant.Layers.Player, 0, 0))
@@ -34,7 +30,7 @@ namespace trrne.Body
                 if (!hit.Compare(Constant.Tags.Player)) { return; }
                 if (hit.Get<Player>().IsDieProcessing) { return; }
 
-                sr.sprite = flags[1];
+                sr.sprite = sprites[1];
 
                 player.SetCheckpoint(new(transform.position.x, Numeric.Cutail(transform.position.y)));
                 used = true;

@@ -23,8 +23,10 @@ namespace trrne.Body
 
         public bool rotatable { get; set; }
 
-        void Start()
+        protected override void Start()
         {
+            base.Start();
+
             rotatable = true;
 
             feet = new GameObject[transform.childCount];
@@ -37,9 +39,9 @@ namespace trrne.Body
         protected override void Behavior()
         {
             Rotate();
-            // Detect();
         }
 
+        [Obsolete]
         async void Detect()
         {
             foreach (var foot in feet)
@@ -66,29 +68,6 @@ namespace trrne.Body
                 }
             }
         }
-
-        // async void OnTriggerEnter2D(Collider2D info)
-        // {
-        //     switch (info.GetLayer())
-        //     {
-        //         case Fixed.Layers.Player:
-        //             if (info.Try(out Player player))
-        //             {
-        //                 await player.Die();
-        //             }
-        //             break;
-
-        //         case Fixed.Layers.Creature:
-        //             if (info.Try(out Enemy enemy))
-        //             {
-        //                 await enemy.Die();
-        //             }
-        //             break;
-
-        //         default:
-        //             break;
-        //     }
-        // }
 
         void Rotate()
         {

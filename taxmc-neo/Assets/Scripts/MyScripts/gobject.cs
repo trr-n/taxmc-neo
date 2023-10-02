@@ -19,6 +19,7 @@ namespace trrne.Bag
         public static bool Compare(this Collision2D info, string tag) => info.gameObject.CompareTag(tag);
         public static bool Compare(this Collider2D info, string tag) => info.CompareTag(tag);
         public static bool Compare(this RaycastHit2D hit, string tag) => hit.collider.CompareTag(tag);
+        public static bool Compare(this Collider2D info, int layer) => info.GetLayer() == layer;
 
         public static bool Contain(this Collision info, string tag) => info.gameObject.tag.Contains(tag);
         public static bool Contain(this Collider info, string tag) => info.tag.Contains(tag);
@@ -30,7 +31,7 @@ namespace trrne.Bag
         public static T GetWithTag<T>(this GameObject gob) => gob.GetComponent<T>();
         public static bool TryWithTag<T>(out T t, string tag) => Find(tag).TryGetComponent(out t);
         [Obsolete] public static T GetWithName<T>(string name) => GameObject.Find(name).GetComponent<T>();
-        public static T GetFromChild<T>(this Transform transform, int index) => GetChild(transform, index).GetComponent<T>();
+        public static T GetFromChild<T>(this Transform transform, int index) where T : MonoBehaviour => transform.GetChild(index).GetComponent<T>();
 
         public static T Get<T>(this Collision2D info) => info.gameObject.GetComponent<T>();
         public static bool Get<T>(this Collision2D info, out T t) { t = info.Get<T>(); return t is null; }
@@ -54,6 +55,7 @@ namespace trrne.Bag
         public static int GetLayer(this RaycastHit2D hit) => 1 << hit.collider.gameObject.layer;
         public static int GetLayer(this Collision2D info) => 1 << info.gameObject.layer;
         public static int GetLayer(this Collider2D info) => 1 << info.gameObject.layer;
+        public static bool GetLayer(this Collision2D info, int layer) => info.GetLayer() == layer;
 
         public static GameObject Find(string tag) => GameObject.FindGameObjectWithTag(tag);
         public static GameObject[] Finds(string tag) => GameObject.FindGameObjectsWithTag(tag);

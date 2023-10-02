@@ -11,10 +11,10 @@ namespace trrne.Bag
         MS, ms, MilliSecond, millisecond
     }
 
-    public enum StopwatchSpentOutput
+    public enum StopwatchOutput
     {
-        HMS, HourMinuteSecond,
-        MS, MinuteSecond,
+        HMS, HourMinuteSecond, hms,
+        MS, MinuteSecond, ms
     }
 
     public sealed class Stopwatch
@@ -58,35 +58,31 @@ namespace trrne.Bag
         public float MSecondF(int digit = 6) => Numeric.Round((float)sw.Elapsed.TotalMilliseconds, digit);
 
         public TimeSpan spent => sw.Elapsed;
-        public string Spent(StopwatchSpentOutput output) => output switch
+        public string Spent(StopwatchOutput output) => output switch
         {
-            StopwatchSpentOutput.HMS or StopwatchSpentOutput.HourMinuteSecond => spent.ToString("hh\\:mm\\:ss"),
-            StopwatchSpentOutput.MS or StopwatchSpentOutput.MinuteSecond => spent.ToString("mm\\:ss"),
+            StopwatchOutput.HMS or StopwatchOutput.HourMinuteSecond or StopwatchOutput.hms => spent.ToString("hh\\:mm\\:ss"),
+            StopwatchOutput.MS or StopwatchOutput.MinuteSecond or StopwatchOutput.ms => spent.ToString("mm\\:ss"),
             _ => "NullNull Lotion"
         };
 
-        public int Spent(StopwatchFormat style)
+        public int Spent(StopwatchFormat format)
+        => format switch
         {
-            return style switch
-            {
-                StopwatchFormat.H or StopwatchFormat.h or StopwatchFormat.Hour or StopwatchFormat.hour => Hour(),
-                StopwatchFormat.M or StopwatchFormat.m or StopwatchFormat.Minute or StopwatchFormat.minute => Minute(),
-                StopwatchFormat.S or StopwatchFormat.s or StopwatchFormat.Second or StopwatchFormat.second => Second(),
-                StopwatchFormat.MS or StopwatchFormat.ms or StopwatchFormat.MilliSecond or StopwatchFormat.millisecond => MSecond(),
-                _ => -1,
-            };
-        }
+            StopwatchFormat.H or StopwatchFormat.h or StopwatchFormat.Hour or StopwatchFormat.hour => Hour(),
+            StopwatchFormat.M or StopwatchFormat.m or StopwatchFormat.Minute or StopwatchFormat.minute => Minute(),
+            StopwatchFormat.S or StopwatchFormat.s or StopwatchFormat.Second or StopwatchFormat.second => Second(),
+            StopwatchFormat.MS or StopwatchFormat.ms or StopwatchFormat.MilliSecond or StopwatchFormat.millisecond => MSecond(),
+            _ => -1,
+        };
 
-        public float SpentF(StopwatchFormat style)
+        public float SpentF(StopwatchFormat format)
+        => format switch
         {
-            return style switch
-            {
-                StopwatchFormat.H or StopwatchFormat.h or StopwatchFormat.Hour or StopwatchFormat.hour => HourF(),
-                StopwatchFormat.M or StopwatchFormat.m or StopwatchFormat.Minute or StopwatchFormat.minute => MinuteF(),
-                StopwatchFormat.S or StopwatchFormat.s or StopwatchFormat.Second or StopwatchFormat.second => SecondF(),
-                StopwatchFormat.MS or StopwatchFormat.ms or StopwatchFormat.MilliSecond or StopwatchFormat.millisecond => MSecondF(),
-                _ => -1f,
-            };
-        }
+            StopwatchFormat.H or StopwatchFormat.h or StopwatchFormat.Hour or StopwatchFormat.hour => HourF(),
+            StopwatchFormat.M or StopwatchFormat.m or StopwatchFormat.Minute or StopwatchFormat.minute => MinuteF(),
+            StopwatchFormat.S or StopwatchFormat.s or StopwatchFormat.Second or StopwatchFormat.second => SecondF(),
+            StopwatchFormat.MS or StopwatchFormat.ms or StopwatchFormat.MilliSecond or StopwatchFormat.millisecond => MSecondF(),
+            _ => -1f,
+        };
     }
 }

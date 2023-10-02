@@ -5,7 +5,6 @@ namespace trrne.Bag
 {
     public class AES : IEncryption
     {
-        // TODO make aes encryption
         public byte[] Decrypt(byte[] src)
         {
             throw new NotImplementedException();

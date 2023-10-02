@@ -14,11 +14,10 @@ namespace trrne.Body
         Vector2 to;
 
         bool warping = false;
-        RaycastHit2D hit;
 
         protected override async void Behavior()
         {
-            if (!warping && Gobject.BoxCast2D(out hit, transform.position, size * 0.66f, Constant.Layers.Player))
+            if (!warping && Gobject.BoxCast2D(out var hit, transform.position, size * 0.66f, Constant.Layers.Player))
             {
                 if (hit.Try(out Player player) && player.IsDieProcessing) { return; }
                 warping = true;

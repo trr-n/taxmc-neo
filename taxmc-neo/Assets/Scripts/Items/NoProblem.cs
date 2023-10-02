@@ -14,7 +14,8 @@ namespace trrne.Body
             // プレイヤーに触れたらblankRate%の確率で初期値に戻す
             if (Gobject.BoxCast2D(out var hit, transform.position, size - .5f * (Vector2)Coordinate.x, Constant.Layers.Player))
             {
-                try { hitFX.Generate(transform.position); } catch { }
+                // hitFX.Generate(transform.position);
+
                 // Blanc OR Negro
                 await hit.Get<Player>().Die();
             }

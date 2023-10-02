@@ -56,7 +56,6 @@ namespace trrne.Bag
             };
 
             List<byte> compile = new(src);
-
             List<byte> salt = compile.GetRange(0, size.bufferKey);
             rijndaelManaged.IV = compile.GetRange(size.bufferKey, size.bufferKey).ToArray();
 

@@ -30,14 +30,7 @@ namespace trrne.Body
             player = Gobject.GetWithTag<Player>(Constant.Tags.Player);
             player.Ctrlable = true;
 
-            var enemies = Gobject.Finds(Constant.Tags.Enemy);
-            // foreach (var enemy in enemies)
-            // {
-            //     var en = enemy.GetComponent<Enemy>();
-            //     en.enable = true;
-            // }
-
-            enemies.ForEach(enemy =>
+            Gobject.Finds(Constant.Tags.Enemy).ForEach(enemy =>
             {
                 var en = enemy.GetComponent<Enemy>();
                 en.enable = true;
@@ -46,7 +39,7 @@ namespace trrne.Body
 
         void Update()
         {
-            timeT.SetText(time.Currentstr);
+            timeT.SetText(time.CurrentSTR);
         }
     }
 }

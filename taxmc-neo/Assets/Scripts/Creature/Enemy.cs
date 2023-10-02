@@ -26,7 +26,11 @@ namespace trrne.Body
         /// </summary>
         public abstract UniTask Die();
 
-        protected void Update()
+        protected virtual void Start()
+        {
+        }
+
+        void Update()
         {
             if (!enable) { return; }
 

@@ -8,14 +8,13 @@ namespace trrne.Body
     {
         public Sprite[] sprites;
         protected float interval = 0.02f;
+        protected bool animatable { get; set; }
 
         protected SpriteRenderer sr;
-
         protected Vector2 size => sr.bounds.size;
-
         protected Vector2 here => transform.position;
 
-        void Start()
+        protected virtual void Start()
         {
             sr = GetComponent<SpriteRenderer>();
         }
@@ -35,6 +34,8 @@ namespace trrne.Body
         readonly Runner picset = new();
         void Animation()
         {
+            if (!animatable) { return; }
+
             switch (sprites.Length)
             {
                 case 0: break;

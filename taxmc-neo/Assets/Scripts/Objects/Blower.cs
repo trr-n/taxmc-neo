@@ -18,8 +18,10 @@ namespace trrne.Body
         /// </summary>
         readonly float pressure = 500f;
 
-        void Start()
+        protected override void Start()
         {
+            base.Start();
+
             flowObj = transform.GetChild();
             flowSr = flowObj.GetComponent<SpriteRenderer>();
             blowerSr = GetComponent<SpriteRenderer>();

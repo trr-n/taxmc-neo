@@ -17,8 +17,10 @@ namespace trrne.Body
 
         Vector3 center;
 
-        void Start()
+        protected override void Start()
         {
+            base.Start();
+
             center = transform.position;
         }
 
@@ -32,7 +34,6 @@ namespace trrne.Body
         /// </summary>
         void Move()
         {
-            // TODO たまに固まる
             switch (style)
             {
                 // 固定

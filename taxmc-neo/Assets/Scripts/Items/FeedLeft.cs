@@ -5,8 +5,7 @@ namespace trrne.Body
 {
     public class FeedLeft : Item
     {
-        [SerializeField]
-        [Tooltip("")]
+        [SerializeField, Tooltip("")]
         bool up = true;
 
         protected override void Receive()

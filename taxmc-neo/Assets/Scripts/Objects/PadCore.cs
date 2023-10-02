@@ -7,8 +7,7 @@ namespace trrne.Body
 {
     public class PadCore : MonoBehaviour
     {
-        [SerializeField]
-        [Range(0f, 15)]
+        [SerializeField, Range(0f, 15)]
         float power = 0.1f;
         public float Power => power;
     }

@@ -1,6 +1,7 @@
 ﻿namespace trrne.Body
 {
-    public class DataSaves
+    public struct SaveData
     {
+        public (float m, float s) time;
     }
 }

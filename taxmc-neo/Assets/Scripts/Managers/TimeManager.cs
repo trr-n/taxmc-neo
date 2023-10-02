@@ -13,7 +13,12 @@ namespace trrne.Body
         /// 現在のタイム
         /// </summary>
         public (int minutes, int seconds) Current => (sw.m, sw.s);
-        public string Currentstr => sw.Spent(StopwatchSpentOutput.MS);
+        public string CurrentSTR => sw.Spent(StopwatchOutput.MS);
+
+        /// <summary>
+        /// 動いているか
+        /// </summary>
+        public bool IsRunning() => sw.isRunning;
 
         /// <summary>
         /// タイマーをスタート
@@ -34,5 +39,19 @@ namespace trrne.Body
         /// タイマーをリセット
         /// </summary>
         public void Reset() => sw.Reset();
+
+        /// <summary>
+        /// 記録を出力
+        /// </summary>
+        public void Record()
+        {
+            Stop();
+
+            Save.Write(
+                data: new SaveData { time = (Current.minutes, Current.seconds) },
+                password: "rid456",
+                path: Application.dataPath + "/save" + Temps.Raw + ".sav"
+            );
+        }
     }
 }

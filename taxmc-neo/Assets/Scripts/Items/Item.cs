@@ -36,7 +36,7 @@ namespace trrne.Body
         void Update()
         {
             Receive();
-            // Animation();
+            Animation();
 
             anima.Sprite(animatable, sr, Time.deltaTime, itemSprites);
         }

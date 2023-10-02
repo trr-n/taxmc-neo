@@ -7,8 +7,10 @@ namespace trrne.Body
     {
         PadCore core;
 
-        void Start()
+        protected override void Start()
         {
+            base.Start();
+
             core = Gobject.GetWithTag<PadCore>(transform.parent.gameObject);
         }
 

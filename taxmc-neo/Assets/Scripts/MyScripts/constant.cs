@@ -45,7 +45,8 @@ namespace trrne
             Wheel = "Mouse ScrollWheel",
             Jump = "Jump",
             Down = "Down",
-            Zoom = "Zoom";
+            Zoom = "Zoom",
+            Button = "Button";
         }
 
         public readonly struct Tags

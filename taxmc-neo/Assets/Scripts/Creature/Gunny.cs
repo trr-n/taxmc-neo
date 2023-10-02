@@ -15,7 +15,7 @@ namespace trrne.Body
 
         Rigidbody2D rb;
 
-        void Start()
+        protected override void Start()
         {
             rb = GetComponent<Rigidbody2D>();
 
