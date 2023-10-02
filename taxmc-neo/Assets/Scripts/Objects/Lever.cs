@@ -1,11 +1,9 @@
-using System.Collections;
-using System.Collections.Generic;
 using trrne.Bag;
 using UnityEngine;
 
 namespace trrne.Body
 {
-    public class Button : Objectt
+    public class Lever : Objectt
     {
         [SerializeField]
         GameObject[] targetObjs;
@@ -14,18 +12,19 @@ namespace trrne.Body
         float duration = 2;
 
         readonly Stopwatch effectiveSW = new();
-        ButtonEnableFlag enable;
+        LeverFlag enable;
 
         bool pressing = false;
 
         protected override void Start()
         {
-            animatable = false;
             base.Start();
+            animatable = false;
+            enable = transform.GetFromChild<LeverFlag>(0);
 
-            sr.sprite = sprites[0];
-
-            enable = transform.GetFromChild<ButtonEnableFlag>(0);
+#if !DEBUG
+            sr.color = Colour.transparent;
+#endif
         }
 
         protected override void Behavior()
@@ -36,6 +35,8 @@ namespace trrne.Body
                 pressing = true;
                 sr.sprite = sprites[0];
 
+                source.clip = sounds.Choice();
+
                 effectiveSW.Restart();
                 targetObjs.ForEach(obj => obj.SetActive(!obj.activeSelf));
             }
@@ -45,6 +46,8 @@ namespace trrne.Body
             {
                 effectiveSW.Reset();
                 targetObjs.ForEach(obj => obj.SetActive(!obj.activeSelf));
+
+                source.clip = sounds.Choice();
 
                 pressing = false;
                 sr.sprite = sprites[1];

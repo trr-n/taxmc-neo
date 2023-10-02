@@ -11,6 +11,8 @@ namespace trrne.Body
         public static int max => Scenes.Total(Counting.Built);
 
         public static bool isClear => cur >= max;
+        public static bool IsClear(int index) => cur > index;
+
         public static float progress => max / cur;
 
         public static void Next() => cur += 1;

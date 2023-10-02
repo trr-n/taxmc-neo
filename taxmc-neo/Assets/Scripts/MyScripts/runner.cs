@@ -7,7 +7,9 @@ namespace trrne.Bag
     public class Runner
     {
         bool flag0;
-        /// <summary>actionを一回実行</summary>
+        /// <summary>
+        /// actionを一回実行
+        /// </summary>
         public void RunOnce(params Action[] actions)
         {
             SimpleRunner.BoolAction(!flag0, () =>
@@ -36,7 +38,5 @@ namespace trrne.Bag
         public static T Function<T>(Func<T> func) => func();
 
         public static void ForEach<T>(this T[] array, Action<T> action) => Array.ForEach(array, action);
-
-        public static void For(int loop, int increment, Action action) { for (int i = 0; i < loop; i += increment) { action(); } }
     }
 }

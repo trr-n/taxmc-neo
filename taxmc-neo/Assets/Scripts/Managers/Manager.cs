@@ -25,10 +25,10 @@ namespace trrne.Body
             Physics2D.gravity = Coordinate.gravity;
 
             cam = Gobject.GetWithTag<Cam>(Constant.Tags.MainCamera);
-            cam.Followable = true;
+            cam.followable = true;
 
             player = Gobject.GetWithTag<Player>(Constant.Tags.Player);
-            player.Ctrlable = true;
+            player.ctrlable = true;
 
             Gobject.Finds(Constant.Tags.Enemy).ForEach(enemy =>
             {

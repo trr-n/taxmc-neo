@@ -4,9 +4,14 @@ using UnityEngine;
 namespace trrne.Body
 {
     [RequireComponent(typeof(SpriteRenderer))]
+    [RequireComponent(typeof(AudioSource))]
     public abstract class Objectt : MonoBehaviour
     {
-        public Sprite[] sprites;
+        [SerializeField]
+        protected AudioClip[] sounds;
+
+        [SerializeField]
+        protected Sprite[] sprites;
         protected float interval = 0.02f;
         protected bool animatable { get; set; }
 
@@ -14,9 +19,12 @@ namespace trrne.Body
         protected Vector2 size => sr.bounds.size;
         protected Vector2 here => transform.position;
 
+        protected AudioSource source;
+
         protected virtual void Start()
         {
             sr = GetComponent<SpriteRenderer>();
+            source = GetComponent<AudioSource>();
         }
 
         void Update()

@@ -7,8 +7,11 @@ namespace trrne.Body
 {
     public abstract class Item : MonoBehaviour
     {
-        [Tooltip("アニメーション用の画像")]
-        public Sprite[] itemSprites;
+        [SerializeField]
+        protected GameObject effect;
+
+        [SerializeField, Tooltip("アニメーション用の画像")]
+        protected Sprite[] sprites;
 
         SpriteRenderer srenderer;
         protected SpriteRenderer sr => srenderer;
@@ -38,7 +41,7 @@ namespace trrne.Body
             Receive();
             Animation();
 
-            anima.Sprite(animatable, sr, Time.deltaTime, itemSprites);
+            anima.Sprite(animatable, sr, Time.deltaTime, sprites);
         }
 
         void Animation()
@@ -47,8 +50,8 @@ namespace trrne.Body
 
             if (anim.sw.sf >= interval)
             {
-                anim.index = anim.index >= itemSprites.Length - 1 ? 0 : anim.index += 1;
-                sr.sprite = itemSprites[anim.index];
+                anim.index = anim.index >= sprites.Length - 1 ? 0 : anim.index += 1;
+                sr.sprite = sprites[anim.index];
 
                 anim.sw.Restart();
             }

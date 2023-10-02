@@ -15,22 +15,19 @@ namespace trrne.Body
         [SerializeField]
         GameObject diefx;
 
-        public bool Ctrlable { get; set; }
-        public bool Jumpable { get; set; }
-        public bool Walkable { get; set; }
-
-        (float Recharge, float progress, bool able) respawn = (0.5f, 0f, false);
-        public float Progress => respawn.progress;
+        public bool ctrlable { get; set; }
+        public bool jumpable { get; set; }
+        public bool walkable { get; set; }
 
         /// <summary>
         /// 氷の上に乗っていたらtrue
         /// </summary>
-        bool onIce;
+        // bool onIce;
 
         /// <summary>
         /// 死亡処理中はtrue
         /// </summary>
-        public bool IsDieProcessing { get; set; }
+        public bool isDieProcessing { get; set; }
 
         readonly (float basis, float max, float freduction, float reduction) speed = (20, 10, 0.1f, 0.9f);
 
@@ -57,9 +54,9 @@ namespace trrne.Body
 
         // SpriteRenderer sr;
         Rigidbody2D rb;
-        new BoxCollider2D collider;
+        // new BoxCollider2D collider;
         Animator animator;
-        PlayerJumpFlag pjf;
+        PlayerFlag pjf;
 
         readonly float tolerance = 0.33f;
 
@@ -78,17 +75,17 @@ namespace trrne.Body
 
         void Start()
         {
-            pjf = transform.GetFromChild<PlayerJumpFlag>(0);
+            pjf = transform.GetFromChild<PlayerFlag>(0);
 
             animator = GetComponent<Animator>();
 
-            collider = GetComponent<BoxCollider2D>();
+            // collider = GetComponent<BoxCollider2D>();
 
             rb = GetComponent<Rigidbody2D>();
             rb.mass = 60f;
 
             cam = Gobject.GetWithTag<Cam>(Constant.Tags.MainCamera);
-            cam.Followable = true;
+            cam.followable = true;
         }
 
         void FixedUpdate()
@@ -116,7 +113,10 @@ namespace trrne.Body
 
         void Flip()
         {
-            if (!Ctrlable) { return; }
+            if (!ctrlable)
+            {
+                return;
+            }
 
             if (Input.GetButtonDown(Constant.Keys.Horizontal))
             {
@@ -138,9 +138,12 @@ namespace trrne.Body
 
         void Jump()
         {
-            if (!Ctrlable) { return; }
+            if (!ctrlable)
+            {
+                return;
+            }
 
-            if (pjf.Hit)
+            if (pjf.isHit)
             {
                 if (Inputs.Down(Constant.Keys.Jump))
                 {
@@ -159,27 +162,32 @@ namespace trrne.Body
         /// </summary>
         void Move()
         {
-            if (!Ctrlable) { return; }
+            if (!ctrlable)
+            {
+                return;
+            }
 
-            animator.SetBool(Constant.Animations.Walk, Input.GetButton(Constant.Keys.Horizontal) && pjf.Hit);
+            animator.SetBool(Constant.Animations.Walk, Input.GetButton(Constant.Keys.Horizontal) && pjf.isHit);
 
             Vector2 move = Input.GetAxisRaw(Constant.Keys.Horizontal) * Coordinate.x;
 
             // 入力がtolerance以下、氷に乗っていない、浮いていない
-            if (move.magnitude <= tolerance && !onIce && !isFloating)
+            if (move.magnitude <= tolerance && !pjf.onIce && !isFloating)
             {
                 // x軸の速度をspeed.reduction倍
                 rb.SetVelocityX(rb.velocity.x * speed.reduction);
             }
 
             // 速度を制限
-            rb.velocity = new(onIce ?
+            rb.velocity = new(pjf.onIce ?
                 Mathf.Clamp(rb.velocity.x, -speed.max * 2, speed.max * 2) :
                 Mathf.Clamp(rb.velocity.x, -speed.max, speed.max),
                 rb.velocity.y);
 
+            float velocity = isFloating ? speed.basis * speed.freduction : speed.basis;
+
             // 浮いていたら移動速度低下
-            rb.velocity += Time.fixedDeltaTime * (isFloating ? speed.basis * speed.freduction : speed.basis) * move;
+            rb.velocity += Time.fixedDeltaTime * velocity * move;
         }
 
         /// <summary>
@@ -187,21 +195,22 @@ namespace trrne.Body
         /// </summary>
         public async UniTask Die()
         {
-            if (IsDieProcessing) { return; }
+            if (isDieProcessing)
+            {
+                return;
+            }
 
-            IsDieProcessing = true;
-            Ctrlable = false;
-            cam.Followable = false;
+            isDieProcessing = true;
+            ctrlable = false;
+            cam.followable = false;
 
-            // TODO below
             // エフェクト生成
             diefx.TryGenerate(transform.position);
 
-            // エフェクトの長さ分だけちと待機
-            // await UniTask.Delay(Numeric.Cutail(diefx.FxDuration()));
-
-            // 1/5フレーム待機
-            await UniTask.DelayFrame(Numeric.Cutail(App.fps / 5));
+            // // 1/5フレーム待機
+            // await UniTask.DelayFrame(Numeric.Cutail(App.fps / 5));
+            // 1秒待機
+            await UniTask.Delay(1000);
 
             StartCoroutine(AfterDelay());
         }
@@ -214,19 +223,19 @@ namespace trrne.Body
             Return2CP();
 
             // うごいていいよ
-            cam.Followable = true;
-            Ctrlable = true;
-            IsDieProcessing = false;
+            cam.followable = true;
+            ctrlable = true;
+            isDieProcessing = false;
         }
 
-        void OnCollisionEnter2D(Collision2D info)
-        {
-            onIce = info.Compare(Constant.Tags.Ice);
-        }
+        // void OnCollisionEnter2D(Collision2D info)
+        // {
+        //     onIce = info.Compare(Constant.Tags.Ice);
+        // }
 
-        void OnCollisionExit2D(Collision2D info)
-        {
-            onIce = info.Compare(Constant.Tags.Ice);
-        }
+        // void OnCollisionExit2D(Collision2D info)
+        // {
+        //     onIce = info.Compare(Constant.Tags.Ice);
+        // }
     }
 }

@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 
 namespace trrne.Bag
 {
@@ -17,12 +16,13 @@ namespace trrne.Bag
 
         public static string String(int? count = null)
         {
-            var characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+            string characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
             var charaArr = count is null ? new char[Int(2, 16)] : new char[((int)count)];
             for (int i = 0; i < charaArr.Length; i++)
             {
                 charaArr[i] = characters[new Random().Next(characters.Length)];
             }
+
             return charaArr.ToString();
         }
 

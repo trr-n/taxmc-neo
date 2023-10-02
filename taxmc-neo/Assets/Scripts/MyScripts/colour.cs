@@ -6,10 +6,10 @@ namespace trrne.Bag
 {
     public static class Colour
     {
-        public static Color transparent => new(0, 0, 0, 0);
+        public static Color transparent => Vector4.zero;
 
-        public static Color SetAlpha(this Image image, float alpha) => image.color = new(image.color.r, image.color.g, image.color.b, alpha);
-        public static Color SetAlpha(this SpriteRenderer sr, float alpha) => sr.color = new(sr.color.r, sr.color.g, sr.color.b, alpha);
+        public static Color SetAlpha(this Image image, float alpha = 0) => image.color = new(image.color.r, image.color.g, image.color.b, alpha);
+        public static Color SetAlpha(this SpriteRenderer sr, float alpha = 0) => sr.color = new(sr.color.r, sr.color.g, sr.color.b, alpha);
 
         public static float GetAlpha(this Image image) => image.color.a;
 

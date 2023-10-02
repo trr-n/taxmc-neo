@@ -1,18 +1,16 @@
-using System.Collections;
-using System.Collections.Generic;
 using trrne.Bag;
 using UnityEngine;
 
 namespace trrne.Body
 {
-    public class ButtonEnableFlag : MonoBehaviour
+    public class LeverFlag : MonoBehaviour
     {
         bool hit;
         public bool Hit => hit;
 
         void OnTriggerEnter2D(Collider2D info)
         {
-            if (info.Compare(Constant.Layers.Player))
+            if (info.CompareLayer(Constant.Layers.Player))
             {
                 hit = true;
             }
@@ -20,7 +18,7 @@ namespace trrne.Body
 
         void OnTriggerExit2D(Collider2D info)
         {
-            if (info.Compare(Constant.Layers.Player))
+            if (info.CompareLayer(Constant.Layers.Player))
             {
                 hit = false;
             }
