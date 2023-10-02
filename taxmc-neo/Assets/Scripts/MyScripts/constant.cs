@@ -60,9 +60,10 @@ namespace trrne
             Ice = "Ice";
         }
 
-        public readonly struct Paramaters
+        public readonly struct Animations
         {
             public static string
+            Idle = "Idle",
             Jump = "Jump",
             Walk = "Walk";
         }

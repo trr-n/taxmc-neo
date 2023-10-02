@@ -146,10 +146,12 @@ namespace trrne.Body
                 {
                     rb.velocity += jump.power * 3 * (Vector2)Coordinate.y;
                 }
-                animator.SetBool(Constant.Paramaters.Jump, false);
-                return;
+                animator.SetBool(Constant.Animations.Jump, false);
             }
-            animator.SetBool(Constant.Paramaters.Jump, true);
+            else
+            {
+                animator.SetBool(Constant.Animations.Jump, true);
+            }
         }
 
         /// <summary>
@@ -159,7 +161,7 @@ namespace trrne.Body
         {
             if (!Ctrlable) { return; }
 
-            animator.SetBool(Constant.Paramaters.Walk, Input.GetButton(Constant.Keys.Horizontal) && pjf.Hit);
+            animator.SetBool(Constant.Animations.Walk, Input.GetButton(Constant.Keys.Horizontal) && pjf.Hit);
 
             Vector2 move = Input.GetAxisRaw(Constant.Keys.Horizontal) * Coordinate.x;
 

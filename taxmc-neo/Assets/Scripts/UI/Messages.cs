@@ -35,6 +35,6 @@ namespace trrne.Body
         }
 
         void Set(params Pair[] pairs)
-        => Array.ForEach(pairs, pair => pair.text.TextSettings(TextAnchor.MiddleCenter, VerticalWrapMode.Overflow, HorizontalWrapMode.Overflow));
+        => pairs.ForEach(pair => pair.text.TextSettings(TextAnchor.MiddleCenter, VerticalWrapMode.Overflow, HorizontalWrapMode.Overflow));
     }
 }
