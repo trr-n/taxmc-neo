@@ -199,6 +199,7 @@ namespace trrne.Body
             {
                 return;
             }
+            print("Die()");
 
             isDieProcessing = true;
             ctrlable = false;

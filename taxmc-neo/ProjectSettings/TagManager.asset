@@ -11,6 +11,7 @@ TagManager:
   - Pad
   - Panel
   - Ice
+  - TutorialMessages
   layers:
   - Default
   - TransparentFX

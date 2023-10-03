@@ -13,13 +13,13 @@ namespace trrne.Body
             core = transform.GetFromParent<PadCore>();
         }
 
-        protected override void Behavior() => Runner.NothingSpecial();
+        protected override void Behavior() { }
 
         void OnCollisionEnter2D(Collision2D info)
         {
             if (info.Try(out Rigidbody2D rb))
             {
-                rb.velocity += rb.mass * core.Power * (Vector2)Coordinate.y;
+                rb.velocity += rb.mass * core.Power * Coordinate.y2d;
             }
         }
     }

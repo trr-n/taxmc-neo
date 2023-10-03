@@ -4,24 +4,32 @@ namespace trrne.Bag
 {
     public class Anima
     {
-        (int index, Stopwatch sw) colour = (0, new()), sprite = (0, new());
+        (int i, Stopwatch sw) colour = (0, new(true)), sprite = (0, new(true));
 
         public void Colour(bool enable, SpriteRenderer sr, in float interval, params Color[] colours)
         {
-            if (colour.sw.sf <= interval && !enable) { return; }
+            if (!enable && colour.sw.sf <= interval)
+            {
+                return;
+            }
+            sprite.sw.Reset();
 
-            colour.index = colour.index >= colours.Length - 1 ? colour.index = 0 : colour.index += 1;
-            sr.color = colours[colour.index];
+            colour.i = colour.i >= colours.Length - 1 ? colour.i = 0 : colour.i += 1;
+            sr.color = colours[colour.i];
 
             colour.sw.Restart();
         }
 
         public void Sprite(bool enable, SpriteRenderer sr, in float interval, params Sprite[] pics)
         {
-            if (sprite.sw.sf <= interval && !enable) { return; }
+            if (!enable) { return; }
+            if (sprite.sw.s <= interval) { return; }
 
-            sprite.index = sprite.index >= pics.Length - 1 ? 0 : sprite.index += 1;
-            sr.sprite = pics[sprite.index];
+            sprite.sw.Reset();
+
+            MonoBehaviour.print("anima!");
+            sprite.i = sprite.i >= pics.Length - 1 ? 0 : sprite.i += 1;
+            sr.sprite = pics[sprite.i];
 
             sprite.sw.Restart();
         }

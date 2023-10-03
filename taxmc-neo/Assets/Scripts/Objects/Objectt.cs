@@ -24,7 +24,7 @@ namespace trrne.Body
         protected bool animatable { get; set; }
 
         protected SpriteRenderer sr;
-        protected Vector2 size => sr.bounds.size;
+        // protected Vector2 size => sr.bounds.size;
         protected Vector2 here => transform.position;
 
         protected virtual void Start()
@@ -60,7 +60,7 @@ namespace trrne.Body
 
                 case 2:
                 default:
-                    anima.Sprite(true, sr, interval, sprites);
+                    anima.Sprite(animatable, sr, interval, sprites);
                     break;
             }
         }

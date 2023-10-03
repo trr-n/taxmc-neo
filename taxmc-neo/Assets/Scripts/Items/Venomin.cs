@@ -12,13 +12,14 @@ namespace trrne.Body
             animatable = false;
         }
 
-        protected override async void Behavior()
+        protected override void Behavior() { }
+
+        async void OnTriggerEnter2D(Collider2D info)
         {
-            // プレイヤーが触れたら死
-            if (Gobject.BoxCast2D(out var hit, transform.position, size - .5f * (Vector2)Coordinate.x, Constant.Layers.Player))
+            if (info.CompareBoth(Constant.Layers.Player, Constant.Tags.Player))
             {
                 effects.TryGenerate(transform.position);
-                await hit.Get<Player>().Die();
+                await info.Get<Player>().Die();
             }
         }
     }

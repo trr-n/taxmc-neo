@@ -1,32 +1,18 @@
-using System;
-using trrne.Bag;
 using UnityEngine;
-using UnityEngine.UI;
+using trrne.Bag;
 
 namespace trrne.Body
 {
-    [ExecuteAlways]
     public class Messages : MonoBehaviour
     {
-        [Serializable]
-        struct Pair
-        {
-            public Text text;
-            public RectTransform rtransform;
-            public Transform transform;
-            public string message;
-        }
-
-        [SerializeField]
-        Pair[] pairs;
+        GameObject[] msgs;
 
         void Start()
         {
-            foreach (var pair in pairs)
+            msgs = new GameObject[transform.childCount];
+            for (int i = 0; i < transform.childCount; i++)
             {
-                pair.text.TextSettings(TextAnchor.MiddleCenter, VerticalWrapMode.Overflow, HorizontalWrapMode.Overflow);
-                pair.text.SetText(pair.message);
-                pair.rtransform.transform.position = pair.transform.position;
+                msgs[i] = transform.GetChilda(i);
             }
         }
     }

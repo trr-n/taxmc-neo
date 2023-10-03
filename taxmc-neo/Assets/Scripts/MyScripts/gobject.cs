@@ -48,14 +48,13 @@ namespace trrne.Bag
         public static T GetFromRoot<T>(this Transform transform) where T : MonoBehaviour => transform.root.GetComponent<T>();
 
         public static T Get<T>(this Collision2D info) => info.gameObject.GetComponent<T>();
-        public static bool Get<T>(this Collision2D info, out T t) { t = info.Get<T>(); return t is null; }
         public static T Get<T>(this Collider2D info) => info.gameObject.GetComponent<T>();
         public static T Get<T>(this Collision info) => info.gameObject.GetComponent<T>();
         public static T Get<T>(this Collider info) => info.gameObject.GetComponent<T>();
         public static T Get<T>(this RaycastHit2D hit) => hit.collider.Get<T>();
 
-        public static GameObject GetChild(this Transform t) => t.GetChild(0).gameObject;
-        public static GameObject GetChild(this Transform t, int index) => t.GetChild(index).gameObject;
+        public static GameObject GetChilda(this Transform t) => t.GetChild(0).gameObject;
+        public static GameObject GetChilda(this Transform t, int index) => t.GetChild(index).gameObject;
 
         public static bool Try<T>(this Collision2D info, out T t) => info.gameObject.TryGetComponent(out t);
         public static bool Try<T>(this Collider2D info, out T t) => info.gameObject.TryGetComponent(out t);
@@ -89,8 +88,9 @@ namespace trrne.Bag
 
         public static void SetActives(this GameObject[] gobs, bool state) => gobs.ForEach(gob => gob.SetActive(state));
 
-        public static bool BoxCast2D(out RaycastHit2D hit,
-            Vector2 origin, Vector2 size, int layer = 1 << 0, float distance = 1, float angle = 0, Vector2 direction = default)
+        public static bool BoxCast2D(out RaycastHit2D hit, Vector2 origin, Vector2 size) => hit = Physics2D.BoxCast(origin, size, 0, Vector2.up);
+        public static bool BoxCast2D(out RaycastHit2D hit, Vector2 origin, Vector2 size, int layer) => hit = Physics2D.BoxCast(origin, size, 0, Vector2.up, 1, layer);
+        public static bool BoxCast2D(out RaycastHit2D hit, Vector2 origin, Vector2 size, int layer = 1 << 0, float distance = 1, float angle = 0, Vector2 direction = default)
         => hit = Physics2D.BoxCast(origin, size, angle, direction, distance, layer);
 
         public static bool Raycast2D(out RaycastHit2D hit, Vector2 origin, Vector2 direction, int layer = 1 << 0, float distance = 1)

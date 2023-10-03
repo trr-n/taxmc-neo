@@ -26,16 +26,10 @@ namespace trrne.Bag
             return target;
         }
 
-        /// <summary>
-        /// objがtを継承していたらtrue
-        /// </summary>
         [Obsolete]
-        public static bool Subclass(object obj, Type t) => obj.GetType().IsSubclassOf(t);
+        public static bool Subclass(this object obj, Type t) => obj.GetType().IsSubclassOf(t);
+        public static bool Subclass(this object[] objs, Type t) => objs.GetType().IsSubclassOf(t);
 
-        public static string Join(this string[] str, string sep) => string.Join(sep, str);
-
-        // public static RectTransform ToRectTransform(this Transform transform)
-        // {
-        // }
+        public static string Join(this object[] objs, string sep) => string.Join(sep, objs);
     }
 }
