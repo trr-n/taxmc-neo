@@ -60,7 +60,7 @@ namespace trrne.Body
             top.ray = new(rayconf, transform.up);
             top.hit = Physics2D.Raycast(top.ray.origin, top.ray.direction, layer.distance, layer.detect);
 
-            if (top.hit && top.hit.Compare(Constant.Tags.Player))
+            if (top.hit && top.hit.CompareTag(Constant.Tags.Player))
             {
                 await Die();
             }
@@ -68,7 +68,7 @@ namespace trrne.Body
             bottom.ray = new(rayconf, -transform.up);
             bottom.hit = Physics2D.Raycast(bottom.ray.origin, bottom.ray.direction, layer.distance, layer.detect);
 
-            if (bottom.hit && bottom.hit.Compare(Constant.Tags.Player))
+            if (bottom.hit && bottom.hit.CompareTag(Constant.Tags.Player))
             {
                 await bottom.hit.Get<Player>().Die();
             }

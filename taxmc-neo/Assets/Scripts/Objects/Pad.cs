@@ -10,8 +10,7 @@ namespace trrne.Body
         protected override void Start()
         {
             base.Start();
-
-            core = Gobject.GetWithTag<PadCore>(transform.parent.gameObject);
+            core = transform.GetFromParent<PadCore>();
         }
 
         protected override void Behavior() => Runner.NothingSpecial();

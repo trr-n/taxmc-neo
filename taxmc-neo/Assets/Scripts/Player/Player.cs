@@ -109,7 +109,7 @@ namespace trrne.Body
         /// <summary>
         /// スペースでリスポーンする
         /// </summary>
-        void Respawn() => SimpleRunner.BoolAction(Inputs.Down(KeyCode.Space), () => Return2CP());
+        void Respawn() => SimpleRunner.BoolAction(!isDieProcessing && Inputs.Down(KeyCode.Space), () => Return2CP());
 
         void Flip()
         {

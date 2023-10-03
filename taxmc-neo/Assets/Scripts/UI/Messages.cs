@@ -1,12 +1,11 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using trrne.Bag;
 using UnityEngine;
 using UnityEngine.UI;
 
 namespace trrne.Body
 {
+    [ExecuteAlways]
     public class Messages : MonoBehaviour
     {
         [Serializable]
@@ -19,24 +18,16 @@ namespace trrne.Body
         }
 
         [SerializeField]
-        Pair venom, flag;
+        Pair[] pairs;
 
         void Start()
         {
-            // textの設定
-            Set(venom, flag);
+            foreach (var pair in pairs)
+            {
+                pair.text.TextSettings(TextAnchor.MiddleCenter, VerticalWrapMode.Overflow, HorizontalWrapMode.Overflow);
+                pair.text.SetText(pair.message);
+                pair.rtransform.transform.position = pair.transform.position;
+            }
         }
-
-        void LateUpdate()
-        {
-            // venom
-            venom.text.SetText(venom.message);
-            venom.rtransform.transform.position = venom.transform.position;
-
-            flag.text.SetText(flag.message);
-            flag.rtransform.transform.position = flag.transform.position;
-        }
-
-        void Set(params Pair[] pairs) => pairs.ForEach(pair => pair.text.TextSettings(TextAnchor.MiddleCenter, VerticalWrapMode.Overflow, HorizontalWrapMode.Overflow));
     }
 }

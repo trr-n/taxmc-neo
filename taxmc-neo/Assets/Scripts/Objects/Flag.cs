@@ -27,7 +27,7 @@ namespace trrne.Body
             // プレイヤーが触れたらおろす
             if (!used && Gobject.BoxCast2D(out var hit, transform.position, boxsize, Constant.Layers.Player, 0, 0))
             {
-                if (!hit.Compare(Constant.Tags.Player)) { return; }
+                if (!hit.CompareTag(Constant.Tags.Player)) { return; }
                 if (hit.Get<Player>().isDieProcessing) { return; }
 
                 sr.sprite = sprites[1];

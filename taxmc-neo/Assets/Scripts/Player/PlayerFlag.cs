@@ -11,23 +11,23 @@ namespace trrne.Body
         bool ice;
         public bool onIce => ice;
 
-        void OnTriggerEnter2D(Collider2D info)
-        {
-            hitting = true;
-
-            if (info.CompareLayer(Constant.Layers.Ground) && info.CompareTag(Constant.Tags.Ice))
-            {
-                ice = true;
-            }
-        }
-
         void OnTriggerExit2D(Collider2D info)
         {
-            hitting = false;
+            BoolChanger(info, false);
+        }
+
+        void OnTriggerStay2D(Collider2D info)
+        {
+            BoolChanger(info, true);
+        }
+
+        void BoolChanger(Collider2D info, bool boo)
+        {
+            hitting = boo;
 
             if (info.CompareLayer(Constant.Layers.Ground) && info.CompareTag(Constant.Tags.Ice))
             {
-                ice = false;
+                ice = boo;
             }
         }
     }

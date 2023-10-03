@@ -6,16 +6,24 @@ namespace trrne.Bag
 {
     public static class Coordinate
     {
-        public static Vector3 x => new(1, 0);
-        public static Vector3 y => new(0, 1);
+        public static Vector3 x => new(1, 0, 0);
+        public static Vector3 y => new(0, 1, 0);
         public static Vector3 z => new(0, 0, 1);
         public static Vector3 zero => Vector3.zero;
         public static Vector3 one => Vector3.one;
+
+        public static Vector2 x2d => new(1, 0);
+        public static Vector2 y2d => new(0, 1);
+        public static Vector2 z2d => new(0, 0);
+        public static Vector2 zero2d => Vector2.zero;
+        public static Vector2 one2d => Vector2.one;
 
         public static float g => 9.80665f;
         public static Vector3 gravity = -y * g;
 
         public static Vector3 Position(this GameObject gob) => gob.transform.position;
+
+        public static Vector2 Position2(this Collider2D info) => info.gameObject.transform.position;
 
         public static void SetPosition(this Transform t, float? x = null, float? y = null, float? z = null)
         {

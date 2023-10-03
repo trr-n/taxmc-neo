@@ -31,7 +31,7 @@ namespace trrne.Body
         (int index, Stopwatch sw) anim = (0, new(true));
         readonly Anima anima = new();
 
-        void Start()
+        protected virtual void Start()
         {
             srenderer = GetComponent<SpriteRenderer>();
         }
@@ -46,7 +46,10 @@ namespace trrne.Body
 
         void Animation()
         {
-            if (!animatable) { return; }
+            if (!animatable)
+            {
+                return;
+            }
 
             if (anim.sw.sf >= interval)
             {

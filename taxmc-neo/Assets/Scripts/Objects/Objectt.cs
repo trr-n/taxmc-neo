@@ -4,27 +4,32 @@ using UnityEngine;
 namespace trrne.Body
 {
     [RequireComponent(typeof(SpriteRenderer))]
-    [RequireComponent(typeof(AudioSource))]
+    // [RequireComponent(typeof(AudioSource))]
     public abstract class Objectt : MonoBehaviour
     {
         [SerializeField]
-        protected AudioClip[] sounds;
+        protected GameObject[] effects;
 
         [SerializeField]
         protected Sprite[] sprites;
+
+        /// <summary>
+        /// アニメーションの間隔
+        /// </summary>
         protected float interval = 0.02f;
+
+        /// <summary>
+        /// アニメーションさせるか
+        /// </summary>
         protected bool animatable { get; set; }
 
         protected SpriteRenderer sr;
         protected Vector2 size => sr.bounds.size;
         protected Vector2 here => transform.position;
 
-        protected AudioSource source;
-
         protected virtual void Start()
         {
             sr = GetComponent<SpriteRenderer>();
-            source = GetComponent<AudioSource>();
         }
 
         void Update()
@@ -34,22 +39,23 @@ namespace trrne.Body
         }
 
         /// <summary>
-        /// 振舞
+        /// 振舞(Update)
         /// </summary>
         protected abstract void Behavior();
 
         readonly Anima anima = new();
-        readonly Runner picset = new();
+        readonly Runner set = new();
         void Animation()
         {
-            if (!animatable) { return; }
+            if (!animatable || sprites.Length <= 0)
+            {
+                return;
+            }
 
             switch (sprites.Length)
             {
-                case 0: break;
-
                 case 1:
-                    picset.RunOnce(() => sr.sprite = sprites[0]);
+                    set.RunOnce(() => sr.sprite = sprites[0]);
                     break;
 
                 case 2:

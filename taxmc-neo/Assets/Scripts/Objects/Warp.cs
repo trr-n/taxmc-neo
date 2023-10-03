@@ -8,9 +8,6 @@ namespace trrne.Body
     public class Warp : Objectt
     {
         [SerializeField]
-        GameObject hitFX;
-
-        [SerializeField]
         Vector2 to;
 
         bool warping = false;
@@ -19,10 +16,14 @@ namespace trrne.Body
         {
             if (!warping && Gobject.BoxCast2D(out var hit, transform.position, size * 0.66f, Constant.Layers.Player))
             {
-                if (hit.Try(out Player player) && player.isDieProcessing) { return; }
+                if (hit.Try(out Player player) && player.isDieProcessing)
+                {
+                    return;
+                }
                 warping = true;
 
-                // hitFX.Generate(transform.position);
+                effects.TryGenerate(transform.position);
+
                 await UniTask.DelayFrame(App.fpsint / 10);
                 hit.SetPosition(to);
 

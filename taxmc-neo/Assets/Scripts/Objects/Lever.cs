@@ -11,6 +11,11 @@ namespace trrne.Body
         [SerializeField]
         float duration = 2;
 
+        [SerializeField]
+        AudioClip[] sounds;
+
+        AudioSource speaker;
+
         readonly Stopwatch effectiveSW = new();
         LeverFlag enable;
 
@@ -21,6 +26,8 @@ namespace trrne.Body
             base.Start();
             animatable = false;
             enable = transform.GetFromChild<LeverFlag>(0);
+
+            speaker = GetComponent<AudioSource>();
 
 #if !DEBUG
             sr.color = Colour.transparent;
@@ -35,7 +42,7 @@ namespace trrne.Body
                 pressing = true;
                 sr.sprite = sprites[0];
 
-                source.clip = sounds.Choice();
+                speaker.clip = sounds.Choice();
 
                 effectiveSW.Restart();
                 targetObjs.ForEach(obj => obj.SetActive(!obj.activeSelf));
@@ -47,7 +54,7 @@ namespace trrne.Body
                 effectiveSW.Reset();
                 targetObjs.ForEach(obj => obj.SetActive(!obj.activeSelf));
 
-                source.clip = sounds.Choice();
+                speaker.clip = sounds.Choice();
 
                 pressing = false;
                 sr.sprite = sprites[1];
