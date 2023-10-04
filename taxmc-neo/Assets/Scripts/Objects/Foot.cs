@@ -10,14 +10,14 @@ namespace trrne.Body
             switch (info.GetLayer())
             {
                 case Constant.Layers.Player:
-                    if (info.Try(out Player player))
+                    if (info.TryGet(out Player player))
                     {
                         await player.Die();
                     }
                     break;
 
                 case Constant.Layers.Creature:
-                    if (info.Try(out Enemy enemy))
+                    if (info.TryGet(out Enemy enemy))
                     {
                         await enemy.Die();
                     }

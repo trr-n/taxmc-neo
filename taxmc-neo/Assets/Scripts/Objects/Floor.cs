@@ -11,9 +11,14 @@ namespace trrne.Body
         [Min(0.1f)]
         float speed, range;
 
-        public enum MoveType { Fixed, Horizontal, Vertical }
+        public enum MovingType
+        {
+            Fixed,      // 固定
+            Horizontal, // 左右
+            Vertical    // 上下
+        }
         [SerializeField]
-        MoveType style = MoveType.Fixed;
+        MovingType type = MovingType.Fixed;
 
         Vector3 center;
 
@@ -26,21 +31,14 @@ namespace trrne.Body
 
         protected override void Behavior()
         {
-            Move();
-        }
-
-        /// <summary>
-        /// 移動
-        /// </summary>
-        void Move()
-        {
-            switch (style)
+            // 移動
+            switch (type)
             {
                 // 固定
-                case MoveType.Fixed: break;
+                case MovingType.Fixed: break;
 
                 // 左右
-                case MoveType.Horizontal:
+                case MovingType.Horizontal:
                     var x = Coordinate.x * range;
 
                     // 可動域を超えたら速度反転
@@ -52,7 +50,7 @@ namespace trrne.Body
                     break;
 
                 // 上下
-                case MoveType.Vertical:
+                case MovingType.Vertical:
                     var y = Coordinate.y * range;
 
                     if (transform.position.y <= (center - y).y || transform.position.y >= (center + y).y)

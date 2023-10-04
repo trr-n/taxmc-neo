@@ -4,7 +4,6 @@ using UnityEngine;
 namespace trrne.Body
 {
     [RequireComponent(typeof(SpriteRenderer))]
-    // [RequireComponent(typeof(AudioSource))]
     public abstract class Objectt : MonoBehaviour
     {
         [SerializeField]

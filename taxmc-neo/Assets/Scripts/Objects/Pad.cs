@@ -17,9 +17,9 @@ namespace trrne.Body
 
         void OnCollisionEnter2D(Collision2D info)
         {
-            if (info.Try(out Rigidbody2D rb))
+            if (info.TryGet(out Rigidbody2D rb))
             {
-                rb.velocity += rb.mass * core.Power * Coordinate.y2d;
+                rb.velocity += rb.mass * core.power * Coordinate.y2d * Time.fixedDeltaTime;
             }
         }
     }

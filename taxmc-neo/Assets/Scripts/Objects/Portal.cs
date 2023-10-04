@@ -1,4 +1,5 @@
 using Cysharp.Threading.Tasks;
+using DG.Tweening;
 using trrne.Bag;
 using UnityEngine;
 using System.Collections;
@@ -10,57 +11,70 @@ namespace trrne.Body
         [SerializeField]
         Vector2 to;
 
-        GameObject[] frames;
-        float[] speeds;
-        float myspeed;
+        [SerializeField]
+        float speed_range = 30;
 
+        (GameObject[] frames, float[] speeds) child;
+        float myspeed;
         bool warping = false;
+        int loop;
 
         protected override void Start()
         {
             base.Start();
 
-            frames = new GameObject[transform.childCount];
-            speeds = new float[transform.childCount];
-            for (int i = 0; i < transform.childCount; i++)
+            // パーティクルを除くため-1
+            loop = transform.childCount - 1;
+
+            child.frames = new GameObject[loop];
+            child.speeds = new float[loop];
+            for (int i = 0; i < loop; i++)
             {
-                frames[i] = transform.GetChilda(i);
-                speeds[i] = Rand.Float(-30, 30);
+                child.frames[i] = transform.GetChilda(i);
+                child.speeds[i] = Rand.Float(-speed_range, speed_range);
             }
-            myspeed = Rand.Float(-10, 10);
+
+            myspeed = Rand.Float(-speed_range, speed_range);
+
+            foreach (var frame in child.frames)
+            {
+                frame.GetComponent<SpriteRenderer>().SetAlpha(0.75f);
+            }
         }
 
         protected override void Behavior()
         {
-            for (int i = 0; i < transform.childCount; i++)
+            for (int i = 0; i < loop; i++)
             {
-                frames[i].transform.Rotate(speeds[i] * Coordinate.z * Time.deltaTime);
+                // フレームを回転させる
+                child.frames[i].transform.Rotate(Time.deltaTime * child.speeds[i] * Coordinate.z);
             }
-            transform.Rotate(myspeed * Coordinate.z * Time.deltaTime);
+
+            // ついでに中心も回転させる
+            transform.Rotate(Time.deltaTime * myspeed * Coordinate.z);
         }
 
         async void OnTriggerEnter2D(Collider2D info)
         {
             if (!warping && info.CompareBoth(Constant.Layers.Player, Constant.Tags.Player))
             {
-                if (info.Try(out Player player) && player.isDieProcessing)
+                if (!info.Get<Player>().isDieProcessing)
                 {
-                    return;
+                    warping = true;
+                    effects.TryGenerate(transform.position);
+
+                    await UniTask.Delay(1000);
+
+                    StartCoroutine(AfterDelay(info));
                 }
-                warping = true;
-
-                effects.TryGenerate(transform.position);
-
-                await UniTask.DelayFrame(App.fpsint / 10);
-                info.transform.SetPosition(to);
-
-                StartCoroutine(AfterDelay());
             }
         }
 
-        IEnumerator AfterDelay()
+        IEnumerator AfterDelay(Collider2D info)
         {
             yield return null;
+
+            info.transform.SetPosition(to);
             warping = false;
         }
     }

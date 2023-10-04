@@ -1,6 +1,4 @@
 using System;
-using System.Runtime.InteropServices;
-using UnityEngine;
 
 namespace trrne.Bag
 {
@@ -31,5 +29,7 @@ namespace trrne.Bag
         public static bool Subclass(this object[] objs, Type t) => objs.GetType().IsSubclassOf(t);
 
         public static string Join(this object[] objs, string sep) => string.Join(sep, objs);
+
+        public static string Link(this char[] objs) => string.Join("", objs);
     }
 }

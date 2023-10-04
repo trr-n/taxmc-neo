@@ -36,7 +36,7 @@ namespace trrne.Body
 
         protected override void Behavior()
         {
-            // 押されていない、プレイヤーが範囲内にいる、キーが押された
+            // レバーが動作中じゃない、プレイヤーが範囲内にいる、キーが押された
             if (!pressing && enable.Hit && Inputs.Down(Constant.Keys.Button))
             {
                 pressing = true;
@@ -48,7 +48,7 @@ namespace trrne.Body
                 targetObjs.ForEach(obj => obj.SetActive(!obj.activeSelf));
             }
 
-            // 押されている、効果時間がduration以上
+            // 動作中、効果時間がduration以上
             if (pressing && effectiveSW.sf >= duration)
             {
                 effectiveSW.Reset();

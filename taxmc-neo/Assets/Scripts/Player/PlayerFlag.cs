@@ -13,15 +13,15 @@ namespace trrne.Body
 
         void OnTriggerExit2D(Collider2D info)
         {
-            BoolChanger(info, false);
+            Boolean(info, false);
         }
 
         void OnTriggerStay2D(Collider2D info)
         {
-            BoolChanger(info, true);
+            Boolean(info, true);
         }
 
-        void BoolChanger(Collider2D info, bool boo)
+        void Boolean(Collider2D info, bool boo)
         {
             hitting = boo;
 

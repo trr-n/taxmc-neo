@@ -14,15 +14,15 @@ namespace trrne.Body
         float fadingSpeed = 1;
 
         float alfa;
-        public float Alpha => panel.GetAlpha();
+        public float alpha => panel.GetAlpha();
 
         RectTransform recT;
         (Vector2 panel, Vector2 screen) size;
 
         Image panel;
 
-        bool isFading = false;
-        public bool IsFading => isFading;
+        bool fading = false;
+        public bool isFading => fading;
 
         void Start()
         {
@@ -73,10 +73,12 @@ namespace trrne.Body
                         break;
                 }
 
-                if (alfa >= 1 || alfa <= 0) { break; }
+                // if (alfa.IsCaged(0, 1))
+                if (alfa >= 1 || alfa <= 0)
+                {
+                    break;
+                }
             }
-
-            print("Faded.");
         }
 
         /// <summary>
@@ -84,22 +86,5 @@ namespace trrne.Body
         /// </summary>
         /// <param name="cut">cut in or out</param>
         public void Fade(FadeType cut) => StartCoroutine(Fader(cut));
-
-        /// <summary>
-        /// 
-        /// </summary>
-        public void Fade2(FadeType cut)
-        {
-            while (isFading)
-            {
-                switch (cut)
-                {
-                    case FadeType.CutIn:
-                        break;
-                    case FadeType.CutOut:
-                        break;
-                }
-            }
-        }
     }
 }

@@ -56,13 +56,13 @@ namespace trrne.Bag
         public static GameObject GetChilda(this Transform t) => t.GetChild(0).gameObject;
         public static GameObject GetChilda(this Transform t, int index) => t.GetChild(index).gameObject;
 
-        public static bool Try<T>(this Collision2D info, out T t) => info.gameObject.TryGetComponent(out t);
-        public static bool Try<T>(this Collider2D info, out T t) => info.gameObject.TryGetComponent(out t);
-        public static bool Try<T>(this Collision info, out T t) => info.gameObject.TryGetComponent(out t);
-        public static bool Try<T>(this Collider info, out T t) => info.gameObject.TryGetComponent(out t);
-        public static bool Try<T>(this GameObject gob, out T t) => gob.TryGetComponent(out t);
-        public static bool Try<T>(this RaycastHit2D hit, out T t) => hit.collider.TryGetComponent(out t);
-        public static T Try<T>(this GameObject gob) { gob.TryGetComponent(out T t); return t is null ? default : t; }
+        public static bool TryGet<T>(this Collision2D info, out T t) => info.gameObject.TryGetComponent(out t);
+        public static bool TryGet<T>(this Collider2D info, out T t) => info.gameObject.TryGetComponent(out t);
+        public static bool TryGet<T>(this Collision info, out T t) => info.gameObject.TryGetComponent(out t);
+        public static bool TryGet<T>(this Collider info, out T t) => info.gameObject.TryGetComponent(out t);
+        public static bool TryGet<T>(this GameObject gob, out T t) => gob.TryGetComponent(out t);
+        public static bool TryGet<T>(this RaycastHit2D hit, out T t) => hit.collider.TryGetComponent(out t);
+        [Obsolete] public static T TryGet<T>(this GameObject gob) { gob.TryGetComponent(out T t); return t != null ? t : default; }
 
         public static void TryAction<T>(this Collider2D info, Action<T> action) => SimpleRunner.BoolAction(info.TryGetComponent(out T t), () => action(t));
 
@@ -90,12 +90,12 @@ namespace trrne.Bag
 
         public static bool BoxCast2D(out RaycastHit2D hit, Vector2 origin, Vector2 size) => hit = Physics2D.BoxCast(origin, size, 0, Vector2.up);
         public static bool BoxCast2D(out RaycastHit2D hit, Vector2 origin, Vector2 size, int layer) => hit = Physics2D.BoxCast(origin, size, 0, Vector2.up, 1, layer);
-        public static bool BoxCast2D(out RaycastHit2D hit, Vector2 origin, Vector2 size, int layer = 1 << 0, float distance = 1, float angle = 0, Vector2 direction = default)
+        public static bool BoxCast2D(out RaycastHit2D hit, Vector2 origin, Vector2 size, int layer, float distance, float angle, Vector2 direction)
         => hit = Physics2D.BoxCast(origin, size, angle, direction, distance, layer);
 
         public static bool Raycast2D(out RaycastHit2D hit, Vector2 origin, Vector2 direction, int layer = 1 << 0, float distance = 1)
         => hit = Physics2D.Raycast(origin, direction, distance, layer);
 
-        public static float ParticleDuration(this GameObject gob) => gob.GetComponent<ParticleSystem>().main.duration;
+        public static float Duration(this GameObject gob) => gob.GetComponent<ParticleSystem>().main.duration;
     }
 }

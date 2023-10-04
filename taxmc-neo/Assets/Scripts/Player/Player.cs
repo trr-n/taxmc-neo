@@ -1,5 +1,4 @@
-﻿using System.Globalization;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 using trrne.Bag;
 using Cysharp.Threading.Tasks;
@@ -31,42 +30,33 @@ namespace trrne.Body
 
         readonly (float basis, float max, float freduction, float reduction) speed = (20, 10, 0.1f, 0.9f);
 
-        /// <summary>
-        /// 始点<br/>
-        /// 長さ<br/>
-        /// 対象のレイヤー
-        /// </summary>
-        (Vector3 offset, float distance, int layers) rayconf = (new(), 0.25f, Constant.Layers.Ground | Constant.Layers.Object);
+        readonly float jumpPower = 6f;
 
-        (bool during, float power, float hitbox) jump = (false, 2f, 0.9f);
-
-        bool isFloating;
+        bool floating;
         /// <summary>
         /// 地に足がついていなかったらtrue
         /// </summary>
-        public bool IsFloating => isFloating;
+        public bool isFloating => floating;
 
-        float velocity;
+        float vel;
         /// <summary>
         /// 移動速度
         /// </summary>
-        public float Velocity => velocity;
+        public float velocity => vel;
 
-        // SpriteRenderer sr;
         Rigidbody2D rb;
-        // new BoxCollider2D collider;
         Animator animator;
-        PlayerFlag pjf;
+        PlayerFlag flag;
+        Cam cam;
 
         readonly float tolerance = 0.33f;
-
-        Cam cam;
 
         Vector3 checkpoint = Vector3.zero;
         /// <summary>
         /// チェックポイントを設定する
         /// </summary>
-        public void SetCheckpoint(Vector3 point) => checkpoint = point;
+        public void SetCheckpoint(float x, float y) => checkpoint = new(x, y);
+        public void SetCheckpoint(Vector2 position) => checkpoint = position;
 
         /// <summary>
         /// チェックポイントに戻す
@@ -75,7 +65,7 @@ namespace trrne.Body
 
         void Start()
         {
-            pjf = transform.GetFromChild<PlayerFlag>(0);
+            flag = transform.GetFromChild<PlayerFlag>(0);
 
             animator = GetComponent<Animator>();
 
@@ -102,8 +92,10 @@ namespace trrne.Body
 
         void LateUpdate()
         {
+#if DEBUG
             // 速度表示
             velT.SetText(rb.velocity);
+#endif
         }
 
         /// <summary>
@@ -143,11 +135,11 @@ namespace trrne.Body
                 return;
             }
 
-            if (pjf.isHit)
+            if (flag.isHit)
             {
                 if (Inputs.Down(Constant.Keys.Jump))
                 {
-                    rb.velocity += jump.power * 3 * (Vector2)Coordinate.y;
+                    rb.velocity += jumpPower * (Vector2)Coordinate.y;
                 }
                 animator.SetBool(Constant.Animations.Jump, false);
             }
@@ -167,24 +159,25 @@ namespace trrne.Body
                 return;
             }
 
-            animator.SetBool(Constant.Animations.Walk, Input.GetButton(Constant.Keys.Horizontal) && pjf.isHit);
+            animator.SetBool(Constant.Animations.Walk, Input.GetButton(Constant.Keys.Horizontal) && flag.isHit);
 
             Vector2 move = Input.GetAxisRaw(Constant.Keys.Horizontal) * Coordinate.x;
 
             // 入力がtolerance以下、氷に乗っていない、浮いていない
-            if (move.magnitude <= tolerance && !pjf.onIce && !isFloating)
+            if (move.magnitude <= tolerance && !flag.onIce && !floating)
             {
                 // x軸の速度をspeed.reduction倍
                 rb.SetVelocityX(rb.velocity.x * speed.reduction);
             }
 
             // 速度を制限
-            rb.velocity = new(pjf.onIce ?
+            rb.velocity = new(flag.onIce ?
                 Mathf.Clamp(rb.velocity.x, -speed.max * 2, speed.max * 2) :
                 Mathf.Clamp(rb.velocity.x, -speed.max, speed.max),
-                rb.velocity.y);
+                rb.velocity.y
+            );
 
-            float velocity = isFloating ? speed.basis * speed.freduction : speed.basis;
+            float velocity = floating ? speed.basis * speed.freduction : speed.basis;
 
             // 浮いていたら移動速度低下
             rb.velocity += Time.fixedDeltaTime * velocity * move;
@@ -199,7 +192,6 @@ namespace trrne.Body
             {
                 return;
             }
-            print("Die()");
 
             isDieProcessing = true;
             ctrlable = false;
@@ -208,8 +200,6 @@ namespace trrne.Body
             // エフェクト生成
             diefx.TryGenerate(transform.position);
 
-            // // 1/5フレーム待機
-            // await UniTask.DelayFrame(Numeric.Cutail(App.fps / 5));
             // 1秒待機
             await UniTask.Delay(1000);
 
@@ -228,15 +218,5 @@ namespace trrne.Body
             ctrlable = true;
             isDieProcessing = false;
         }
-
-        // void OnCollisionEnter2D(Collision2D info)
-        // {
-        //     onIce = info.Compare(Constant.Tags.Ice);
-        // }
-
-        // void OnCollisionExit2D(Collision2D info)
-        // {
-        //     onIce = info.Compare(Constant.Tags.Ice);
-        // }
     }
 }

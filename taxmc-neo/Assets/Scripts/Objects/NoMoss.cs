@@ -4,7 +4,6 @@ using UnityEngine;
 
 namespace trrne.Body
 {
-    // a rolling stone gathers no moss
     public class NoMoss : Objectt
     {
         public enum Spin { Left, Right }
@@ -27,13 +26,13 @@ namespace trrne.Body
         {
             base.Start();
 
-            rotatable = true;
-
             feet = new GameObject[transform.childCount];
             for (int i = 0; i < transform.childCount; i++)
             {
-                feet[i] = transform.GetChild(i).gameObject;
+                feet[i] = transform.GetChilda(i);
             }
+
+            rotatable = true;
         }
 
         protected override void Behavior()
@@ -52,14 +51,14 @@ namespace trrne.Body
                     switch (hit.GetLayer())
                     {
                         case Constant.Layers.Player:
-                            if (hit.Try(out Player player))
+                            if (hit.TryGet(out Player player))
                             {
                                 await player.Die();
                             }
                             break;
 
                         case Constant.Layers.Creature:
-                            if (hit.Try(out Enemy enemy))
+                            if (hit.TryGet(out Enemy enemy))
                             {
                                 await enemy.Die();
                             }
@@ -71,10 +70,11 @@ namespace trrne.Body
 
         void Rotate()
         {
-            if (!rotatable) { return; }
-
-            // 回転
-            transform.Rotate(Time.deltaTime * spinSpeed * (dir == Spin.Left ? Coordinate.z : -Coordinate.z), Space.World);
+            if (rotatable)
+            {
+                // 回転
+                transform.Rotate(Time.deltaTime * spinSpeed * (dir == Spin.Left ? Coordinate.z : -Coordinate.z), Space.World);
+            }
         }
     }
 }
