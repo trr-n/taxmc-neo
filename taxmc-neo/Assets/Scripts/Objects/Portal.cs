@@ -12,6 +12,9 @@ namespace trrne.Body
         Vector2 to;
 
         [SerializeField]
+        float teleportSpeed = 3f;
+
+        [SerializeField]
         float speed_range = 30;
 
         (GameObject[] frames, float[] speeds) child;
@@ -47,25 +50,30 @@ namespace trrne.Body
             for (int i = 0; i < loop; i++)
             {
                 // フレームを回転させる
-                child.frames[i].transform.Rotate(Time.deltaTime * child.speeds[i] * Coordinate.z);
+                child.frames[i].transform.Rotate(Time.deltaTime * child.speeds[i] * Coord.z);
             }
 
             // ついでに中心も回転させる
-            transform.Rotate(Time.deltaTime * myspeed * Coordinate.z);
+            transform.Rotate(Time.deltaTime * myspeed * Coord.z);
         }
 
-        async void OnTriggerEnter2D(Collider2D info)
+        void OnTriggerEnter2D(Collider2D info)
         {
             if (!warping && info.CompareBoth(Constant.Layers.Player, Constant.Tags.Player))
             {
-                if (!info.Get<Player>().isDieProcessing)
+                var player = info.Get<Player>();
+                if (!player.isDieProcessing)
                 {
                     warping = true;
                     effects.TryGenerate(transform.position);
 
-                    await UniTask.Delay(1000);
+                    info.transform.DOMove(to, teleportSpeed)
+                        .SetEase(Ease.OutCubic)
+                        .OnPlay(() => player.isTeleporting = true)
+                        .OnComplete(() => player.isTeleporting = false);
 
-                    StartCoroutine(AfterDelay(info));
+                    warping = false;
+                    // StartCoroutine(AfterDelay(info));
                 }
             }
         }

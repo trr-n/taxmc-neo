@@ -39,25 +39,25 @@ namespace trrne.Body
 
                 // 左右
                 case MovingType.Horizontal:
-                    var x = Coordinate.x * range;
+                    var x = Coord.x * range;
 
                     // 可動域を超えたら速度反転
                     if (transform.position.x <= (center - x).x || transform.position.x >= (center + x).x)
                     {
                         speed *= -1;
                     }
-                    transform.Translate(Time.deltaTime * speed * Coordinate.x, Space.World);
+                    transform.Translate(Time.deltaTime * speed * Coord.x, Space.World);
                     break;
 
                 // 上下
                 case MovingType.Vertical:
-                    var y = Coordinate.y * range;
+                    var y = Coord.y * range;
 
                     if (transform.position.y <= (center - y).y || transform.position.y >= (center + y).y)
                     {
                         speed *= -1;
                     }
-                    transform.Translate(Time.deltaTime * speed * Coordinate.y, Space.World);
+                    transform.Translate(Time.deltaTime * speed * Coord.y, Space.World);
                     break;
             }
         }

@@ -72,7 +72,7 @@ namespace trrne
         public readonly struct SpawnPositions
         {
             public static Vector2
-            Stage1 = Coordinate.zero;
+            Stage1 = Coord.zero;
         }
     }
 }

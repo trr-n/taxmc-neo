@@ -1,8 +1,5 @@
-using System;
-using System.Collections.Generic;
 using trrne.Bag;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 namespace trrne.Body
@@ -14,7 +11,6 @@ namespace trrne.Body
 
         Cam cam;
         Player player;
-
         TimeManager time;
 
         void Start()
@@ -22,7 +18,7 @@ namespace trrne.Body
             time = GetComponent<TimeManager>();
             time.Start();
 
-            Physics2D.gravity = Coordinate.gravity;
+            Physics2D.gravity = Coord.gravity;
 
             cam = Gobject.GetWithTag<Cam>(Constant.Tags.MainCamera);
             cam.followable = true;
@@ -30,11 +26,8 @@ namespace trrne.Body
             player = Gobject.GetWithTag<Player>(Constant.Tags.Player);
             player.ctrlable = true;
 
-            Gobject.Finds(Constant.Tags.Enemy).ForEach(enemy =>
-            {
-                var en = enemy.GetComponent<Enemy>();
-                en.enable = true;
-            });
+            Gobject.Finds(Constant.Tags.Enemy)
+                .ForEach(enemy => enemy.GetComponent<Enemy>().enable = true);
         }
 
         void Update()

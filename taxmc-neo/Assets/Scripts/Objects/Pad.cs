@@ -19,7 +19,7 @@ namespace trrne.Body
         {
             if (info.TryGet(out Rigidbody2D rb))
             {
-                rb.velocity += rb.mass * core.power * Coordinate.y2d * Time.fixedDeltaTime;
+                rb.velocity += rb.mass * core.power * Coord.y2d * Time.fixedDeltaTime;
             }
         }
     }

@@ -12,7 +12,7 @@ namespace trrne.Bag
         public static void SetFPS(int fps = -1) => targetFrameRate = fps;
         public static void SetFPS(FrameRate fps) => targetFrameRate = (int)fps;
         public static float fps => Mathf.Floor(1 / Time.deltaTime);
-        public static int fpsint => Numeric.Cutail(fps);
+        public static int fpsint => Numero.Cutail(fps);
 
         public static void SetGravity(Vector3 gravity) => Physics2D.gravity = gravity;
         public static Vector2 gravity => Physics2D.gravity;

@@ -20,7 +20,7 @@ namespace trrne.Body
                 && info.TryGet(out Rigidbody2D rb))
             {
                 distance = Vector2.Distance(transform.position, info.Position2());
-                rb.velocity += distance * fan.power * Time.fixedDeltaTime * Coordinate.y2d;
+                rb.velocity += distance * fan.power * Time.fixedDeltaTime * Coord.y2d;
             }
         }
     }

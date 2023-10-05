@@ -19,9 +19,9 @@ namespace trrne.Body
         public bool walkable { get; set; }
 
         /// <summary>
-        /// 氷の上に乗っていたらtrue
+        /// テレポート中か
         /// </summary>
-        // bool onIce;
+        public bool isTeleporting { get; set; }
 
         /// <summary>
         /// 死亡処理中はtrue
@@ -29,7 +29,6 @@ namespace trrne.Body
         public bool isDieProcessing { get; set; }
 
         readonly (float basis, float max, float freduction, float reduction) speed = (20, 10, 0.1f, 0.9f);
-
         readonly float jumpPower = 6f;
 
         bool floating;
@@ -88,6 +87,7 @@ namespace trrne.Body
             Jump();
             Flip();
             Respawn();
+            RBDisable();
         }
 
         void LateUpdate()
@@ -102,6 +102,11 @@ namespace trrne.Body
         /// スペースでリスポーンする
         /// </summary>
         void Respawn() => SimpleRunner.BoolAction(!isDieProcessing && Inputs.Down(KeyCode.Space), () => Return2CP());
+
+        /// <summary>
+        /// テレポート中はRB無効化
+        /// </summary>
+        void RBDisable() => rb.isKinematic = isTeleporting;
 
         void Flip()
         {
@@ -139,7 +144,7 @@ namespace trrne.Body
             {
                 if (Inputs.Down(Constant.Keys.Jump))
                 {
-                    rb.velocity += jumpPower * (Vector2)Coordinate.y;
+                    rb.velocity += jumpPower * (Vector2)Coord.y;
                 }
                 animator.SetBool(Constant.Animations.Jump, false);
             }
@@ -161,7 +166,7 @@ namespace trrne.Body
 
             animator.SetBool(Constant.Animations.Walk, Input.GetButton(Constant.Keys.Horizontal) && flag.isHit);
 
-            Vector2 move = Input.GetAxisRaw(Constant.Keys.Horizontal) * Coordinate.x;
+            Vector2 move = Input.GetAxisRaw(Constant.Keys.Horizontal) * Coord.x;
 
             // 入力がtolerance以下、氷に乗っていない、浮いていない
             if (move.magnitude <= tolerance && !flag.onIce && !floating)
@@ -172,6 +177,7 @@ namespace trrne.Body
 
             // 速度を制限
             rb.velocity = new(flag.onIce ?
+                // 氷の上になら制限を緩和
                 Mathf.Clamp(rb.velocity.x, -speed.max * 2, speed.max * 2) :
                 Mathf.Clamp(rb.velocity.x, -speed.max, speed.max),
                 rb.velocity.y

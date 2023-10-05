@@ -36,7 +36,7 @@ namespace trrne.Body
                 {
                     sr.sprite = sprites[1];
 
-                    player.SetCheckpoint(new(transform.position.x, Numeric.Cutail(transform.position.y)));
+                    player.SetCheckpoint(new(transform.position.x, Numero.Cutail(transform.position.y)));
                     used = true;
                 }
             }

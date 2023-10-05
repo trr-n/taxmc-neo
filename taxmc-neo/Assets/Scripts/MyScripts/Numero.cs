@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace trrne.Bag
 {
-    public static class Numeric
+    public static class Numero
     {
         public static float Clamping(this float n, float min, float max) => Mathf.Clamp(n, min, max);
         public static int Clamping(this int n, int min, int max) => Mathf.Clamp(n, min, max);
@@ -16,11 +16,7 @@ namespace trrne.Bag
         public static float Round(float n, int digit = 0) => MathF.Round(n, digit);
         public static int Round(int n, int digit = 0) => (int)MathF.Round(n, digit);
 
-        public static int Cutail(float n)
-        {
-            string n2str = n.ToString();
-            return int.Parse(n2str.Split(".")[0]);
-        }
+        public static int Cutail(float n) => int.Parse(n.ToString().Split(".")[0]);
 
         public static int Percent(float n, int digit = 0) => (int)MathF.Round(n * 100, digit);
         public static int Percent(int w, int per) => Round(w * per / 100);
