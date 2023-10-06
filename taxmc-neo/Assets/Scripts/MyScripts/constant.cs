@@ -66,13 +66,14 @@ namespace trrne
             public static string
             Idle = "Idle",
             Jump = "Jump",
-            Walk = "Walk";
+            Walk = "Walk",
+            Venom = "Venom";
         }
 
         public readonly struct SpawnPositions
         {
             public static Vector2
-            Stage1 = Coord.zero;
+            Stage1 = Coordinate.zero;
         }
     }
 }

@@ -19,7 +19,7 @@ namespace trrne.Body
             if (info.CompareBoth(Constant.Layers.Player, Constant.Tags.Player))
             {
                 effects.TryGenerate(transform.position);
-                await info.Get<Player>().Die();
+                await info.Get<Player>().Die(CauseOfDeath.Venom);
             }
         }
     }

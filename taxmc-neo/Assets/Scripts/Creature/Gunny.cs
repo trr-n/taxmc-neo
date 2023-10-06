@@ -10,7 +10,7 @@ namespace trrne.Body
     {
         (GameObject obj, LineRenderer line, float lineLength) gun;
 
-        Vector3 direction = Coord.x;
+        Vector3 direction = Coordinate.x;
         float speed = 10f;
 
         Rigidbody2D rb;

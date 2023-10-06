@@ -18,7 +18,7 @@ namespace trrne.Body
             time = GetComponent<TimeManager>();
             time.Start();
 
-            Physics2D.gravity = Coord.gravity;
+            Physics2D.gravity = Coordinate.gravity;
 
             cam = Gobject.GetWithTag<Cam>(Constant.Tags.MainCamera);
             cam.followable = true;

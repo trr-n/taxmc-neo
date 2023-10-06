@@ -50,11 +50,11 @@ namespace trrne.Body
             for (int i = 0; i < loop; i++)
             {
                 // フレームを回転させる
-                child.frames[i].transform.Rotate(Time.deltaTime * child.speeds[i] * Coord.z);
+                child.frames[i].transform.Rotate(Time.deltaTime * child.speeds[i] * Coordinate.z);
             }
 
             // ついでに中心も回転させる
-            transform.Rotate(Time.deltaTime * myspeed * Coord.z);
+            transform.Rotate(Time.deltaTime * myspeed * Coordinate.z);
         }
 
         void OnTriggerEnter2D(Collider2D info)

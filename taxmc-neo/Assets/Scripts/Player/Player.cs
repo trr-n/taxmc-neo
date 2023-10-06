@@ -6,6 +6,12 @@ using System.Collections;
 
 namespace trrne.Body
 {
+    public enum CauseOfDeath
+    {
+        Venom,  // 毒死
+        None    // 何もしない
+    }
+
     public class Player : MonoBehaviour
     {
         [SerializeField]
@@ -101,12 +107,21 @@ namespace trrne.Body
         /// <summary>
         /// スペースでリスポーンする
         /// </summary>
-        void Respawn() => SimpleRunner.BoolAction(!isDieProcessing && Inputs.Down(KeyCode.Space), () => Return2CP());
+        void Respawn() // => SimpleRunner.BoolAction(!isDieProcessing && Inputs.Down(KeyCode.Space), () => Return2CP());
+        {
+            if (!isDieProcessing && Inputs.Down(KeyCode.Space))
+            {
+                Return2CP();
+            }
+        }
 
         /// <summary>
         /// テレポート中はRB無効化
         /// </summary>
-        void RBDisable() => rb.isKinematic = isTeleporting;
+        void RBDisable()
+        {
+            rb.isKinematic = isTeleporting;
+        }
 
         void Flip()
         {
@@ -144,7 +159,7 @@ namespace trrne.Body
             {
                 if (Inputs.Down(Constant.Keys.Jump))
                 {
-                    rb.velocity += jumpPower * (Vector2)Coord.y;
+                    rb.velocity += jumpPower * (Vector2)Coordinate.y;
                 }
                 animator.SetBool(Constant.Animations.Jump, false);
             }
@@ -166,7 +181,7 @@ namespace trrne.Body
 
             animator.SetBool(Constant.Animations.Walk, Input.GetButton(Constant.Keys.Horizontal) && flag.isHit);
 
-            Vector2 move = Input.GetAxisRaw(Constant.Keys.Horizontal) * Coord.x;
+            Vector2 move = Input.GetAxisRaw(Constant.Keys.Horizontal) * Coordinate.x;
 
             // 入力がtolerance以下、氷に乗っていない、浮いていない
             if (move.magnitude <= tolerance && !flag.onIce && !floating)
@@ -183,16 +198,15 @@ namespace trrne.Body
                 rb.velocity.y
             );
 
-            float velocity = floating ? speed.basis * speed.freduction : speed.basis;
-
             // 浮いていたら移動速度低下
+            float velocity = floating ? speed.basis * speed.freduction : speed.basis;
             rb.velocity += Time.fixedDeltaTime * velocity * move;
         }
 
         /// <summary>
         /// 成仏
         /// </summary>
-        public async UniTask Die()
+        public async UniTask Die(CauseOfDeath cause)
         {
             if (isDieProcessing)
             {
@@ -203,13 +217,25 @@ namespace trrne.Body
             ctrlable = false;
             cam.followable = false;
 
-            // エフェクト生成
-            diefx.TryGenerate(transform.position);
+            switch (cause)
+            {
+                case CauseOfDeath.Venom:
+                    rb.velocity = Vector2.zero;
+                    animator.Play("venom_die");
+                    break;
+
+                default: break;
+            }
 
             // 1秒待機
-            await UniTask.Delay(1000);
+            await UniTask.Delay(1250);
 
             StartCoroutine(AfterDelay());
+        }
+
+        public async UniTask Die()
+        {
+            await Die(CauseOfDeath.None);
         }
 
         IEnumerator AfterDelay()
@@ -218,6 +244,9 @@ namespace trrne.Body
 
             // 座標リセット
             Return2CP();
+
+            // 死亡アニメーション停止
+            animator.StopPlayback();
 
             // うごいていいよ
             cam.followable = true;

@@ -1,5 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
+using System.Xml.Schema;
 using trrne.Bag;
 using UnityEngine;
 
@@ -8,7 +7,6 @@ namespace trrne.Body
     public class Floor : Objectt
     {
         [SerializeField]
-        [Min(0.1f)]
         float speed, range;
 
         public enum MovingType
@@ -17,20 +15,25 @@ namespace trrne.Body
             Horizontal, // 左右
             Vertical    // 上下
         }
+
         [SerializeField]
         MovingType type = MovingType.Fixed;
 
         Vector3 center;
 
+        Rigidbody2D rb;
+
         protected override void Start()
         {
             base.Start();
 
+            rb = GetComponent<Rigidbody2D>();
             center = transform.position;
         }
 
         protected override void Behavior()
         {
+            print("rb velocity: " + rb.velocity);
             // 移動
             switch (type)
             {
@@ -39,42 +42,28 @@ namespace trrne.Body
 
                 // 左右
                 case MovingType.Horizontal:
-                    var x = Coord.x * range;
+                    var x = Coordinate.x * range;
 
                     // 可動域を超えたら速度反転
                     if (transform.position.x <= (center - x).x || transform.position.x >= (center + x).x)
                     {
                         speed *= -1;
                     }
-                    transform.Translate(Time.deltaTime * speed * Coord.x, Space.World);
+                    transform.Translate(Time.deltaTime * speed * Coordinate.x, Space.World);
+                    // rb.velocity += speed * Time.deltaTime * Coordinate.x2d;
                     break;
 
                 // 上下
                 case MovingType.Vertical:
-                    var y = Coord.y * range;
+                    var y = Coordinate.y * range;
 
                     if (transform.position.y <= (center - y).y || transform.position.y >= (center + y).y)
                     {
                         speed *= -1;
                     }
-                    transform.Translate(Time.deltaTime * speed * Coord.y, Space.World);
+                    transform.Translate(Time.deltaTime * speed * Coordinate.y, Space.World);
+                    // rb.velocity += speed * Time.deltaTime * Coordinate.y2d;
                     break;
-            }
-        }
-
-        void OnCollisionEnter2D(Collision2D info)
-        {
-            if (info.CompareTag(Constant.Tags.Player) && info.transform.parent != transform)
-            {
-                info.transform.parent = transform;
-            }
-        }
-
-        void OnCollisionExit2D(Collision2D info)
-        {
-            if (info.CompareTag(Constant.Tags.Player) && info.transform.parent != null)
-            {
-                info.transform.parent = null;
             }
         }
     }
