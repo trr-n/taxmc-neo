@@ -1,4 +1,3 @@
-using System.Xml.Schema;
 using trrne.Bag;
 using UnityEngine;
 
@@ -19,6 +18,9 @@ namespace trrne.Body
         [SerializeField]
         MovingType type = MovingType.Fixed;
 
+        /// <summary>
+        /// 上下左右移動の中心座標
+        /// </summary>
         Vector3 center;
 
         Rigidbody2D rb;
@@ -33,7 +35,6 @@ namespace trrne.Body
 
         protected override void Behavior()
         {
-            print("rb velocity: " + rb.velocity);
             // 移動
             switch (type)
             {
@@ -50,7 +51,6 @@ namespace trrne.Body
                         speed *= -1;
                     }
                     transform.Translate(Time.deltaTime * speed * Vector100.x, Space.World);
-                    // rb.velocity += speed * Time.deltaTime * Coordinate.x2d;
                     break;
 
                 // 上下
@@ -62,7 +62,6 @@ namespace trrne.Body
                         speed *= -1;
                     }
                     transform.Translate(Time.deltaTime * speed * Vector100.y, Space.World);
-                    // rb.velocity += speed * Time.deltaTime * Coordinate.y2d;
                     break;
             }
         }

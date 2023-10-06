@@ -1,3 +1,4 @@
+using System;
 using trrne.Bag;
 using UnityEngine;
 
@@ -7,7 +8,10 @@ namespace trrne.Body
     {
         [SerializeField]
         [Tooltip("limit回踏んだらアウト")]
-        int limit = 2;
+        int limitSteps = 2;
+
+        [SerializeField]
+        Sprite[] sprites;
 
         HoleFlag flag;
 
@@ -15,7 +19,12 @@ namespace trrne.Body
         new BoxCollider2D collider;
 
         bool breaking = false;
+        /// <summary>
+        /// 耐久値ぜろだったらtrue
+        /// </summary>
         public bool isBreaking => breaking;
+
+        public float ratio => (float)flag.count / limitSteps;
 
         void Start()
         {
@@ -23,24 +32,27 @@ namespace trrne.Body
             flag.count = 0;
 
             sr = GetComponent<SpriteRenderer>();
+            sr.sprite = sprites[0];
+
             collider = GetComponent<BoxCollider2D>();
         }
 
         void Update()
         {
-            if (!breaking && flag.count >= limit)
+            if (!breaking && flag.count >= limitSteps)
             {
                 breaking = true;
                 sr.enabled = false;
                 collider.enabled = false;
             }
 
-            // sr.color = colors[flag.count];
+            print("ratio: " + ratio + ": " + (ratio > 0.5f));
+            sr.sprite = ratio < 0.5f ? sprites[0] : sprites[1];
         }
 
         public void Mending()
         {
-            print("修繕中");
+            print("now mending...");
             breaking = false;
             flag.count = 0;
 
