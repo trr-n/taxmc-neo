@@ -73,7 +73,7 @@ namespace trrne.Body
             if (rotatable)
             {
                 // 回転
-                transform.Rotate(Time.deltaTime * spinSpeed * (dir == Spin.Left ? Coordinate.z : -Coordinate.z), Space.World);
+                transform.Rotate(Time.deltaTime * spinSpeed * (dir == Spin.Left ? Vector100.z : -Vector100.z), Space.World);
             }
         }
     }

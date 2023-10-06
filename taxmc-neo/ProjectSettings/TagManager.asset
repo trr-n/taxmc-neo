@@ -12,6 +12,8 @@ TagManager:
   - Panel
   - Ice
   - TutorialMessages
+  - FxTemporaire
+  - Hole
   layers:
   - Default
   - TransparentFX

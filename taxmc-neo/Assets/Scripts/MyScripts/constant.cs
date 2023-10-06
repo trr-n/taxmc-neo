@@ -58,7 +58,8 @@ namespace trrne
             MainCamera = "MainCamera",
             Enemy = "Enemy",
             Panel = "Panel",
-            Ice = "Ice";
+            Ice = "Ice",
+            Hole = "Hole";
         }
 
         public readonly struct Animations
@@ -73,7 +74,7 @@ namespace trrne
         public readonly struct SpawnPositions
         {
             public static Vector2
-            Stage1 = Coordinate.zero;
+            Stage1 = Vector100.zero;
         }
     }
 }

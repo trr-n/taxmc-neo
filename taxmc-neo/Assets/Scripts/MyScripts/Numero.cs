@@ -5,13 +5,8 @@ namespace trrne.Bag
 {
     public static class Numero
     {
-        public static float Clamping(this float n, float min, float max) => Mathf.Clamp(n, min, max);
-        public static int Clamping(this int n, int min, int max) => Mathf.Clamp(n, min, max);
-        public static float Clamp(float n, float min, float max) => Mathf.Clamp(n, min, max);
-        public static int Clamp(int n, int min, int max) => Mathf.Clamp(n, min, max);
-
-        public static float Clamp01(float n) => Mathf.Clamp01(n);
-        public static int Clamp01(int n) => Cutail(Clamp(n, 0, 1));
+        public static float Clamp(this float n, float min, float max) => Mathf.Clamp(n, min, max);
+        public static int Clamp(this int n, int min, int max) => Mathf.Clamp(n, min, max);
 
         public static float Round(float n, int digit = 0) => MathF.Round(n, digit);
         public static int Round(int n, int digit = 0) => (int)MathF.Round(n, digit);

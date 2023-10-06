@@ -31,6 +31,7 @@ namespace trrne.Bag
         public static bool CompareTag(this RaycastHit2D hit, string tag) => hit.collider.CompareTag(tag);
         public static bool CompareLayer(this Collider2D info, int layer) => info.GetLayer() == layer;
 
+        public static bool CompareBoth(this Collision2D info, int layer, string tag) => info.GetLayer(layer) && info.gameObject.CompareTag(tag);
         public static bool CompareBoth(this Collider2D info, int layer, string tag) => info.GetLayer(layer) && info.gameObject.CompareTag(tag);
 
         public static bool Contain(this Collision info, string tag) => info.gameObject.tag.Contains(tag);

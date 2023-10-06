@@ -37,7 +37,7 @@ namespace trrne.Body
 
         protected override async void Behavior()
         {
-            horizon.ray = new(transform.position - (Coordinate.x * layer.distance / 2), transform.right);
+            horizon.ray = new(transform.position - (Vector100.x * layer.distance / 2), transform.right);
             horizon.hit = Physics2D.Raycast(horizon.ray.origin, horizon.ray.direction, layer.distance, layer.detect);
 
             if (horizon.hit)
@@ -56,7 +56,7 @@ namespace trrne.Body
                 }
             }
 
-            Vector2 rayconf = transform.position + (layer.distance * Coordinate.y / 2);
+            Vector2 rayconf = transform.position + (layer.distance * Vector100.y / 2);
             top.ray = new(rayconf, transform.up);
             top.hit = Physics2D.Raycast(top.ray.origin, top.ray.direction, layer.distance, layer.detect);
 
@@ -91,7 +91,7 @@ namespace trrne.Body
 
         protected override void Move()
         {
-            transform.Translate(Time.deltaTime * speed.real * Coordinate.x);
+            transform.Translate(Time.deltaTime * speed.real * Vector100.x);
         }
     }
 }

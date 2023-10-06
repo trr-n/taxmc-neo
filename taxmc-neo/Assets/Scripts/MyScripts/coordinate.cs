@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace trrne.Bag
 {
-    public static class Coordinate
+    public static class Vector100
     {
         public static Vector3 x => new(1, 0, 0);
         public static Vector3 y => new(0, 1, 0);
