@@ -1533,6 +1533,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   limitSteps: 2
+  destroyEffect: {fileID: 2263529840219616135, guid: 6812100ffb788a948b01b3387d0054c7, type: 3}
   sprites:
   - {fileID: 21300000, guid: 49c00d56b24733c4d990118d8dea4094, type: 3}
   - {fileID: 21300000, guid: d373cf9d57935c946a80b4ce8f47d31b, type: 3}
@@ -2577,7 +2578,7 @@ GameObject:
   - component: {fileID: 1840430661}
   - component: {fileID: 1840430662}
   m_Layer: 0
-  m_Name: managers
+  m_Name: .manager
   m_TagString: Manager
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3412,63 +3413,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9422df6054deb464c93ad0dc08f8396b, type: 3}
---- !u!1001 &8043087001895073103
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 2263529840219616135, guid: 6812100ffb788a948b01b3387d0054c7, type: 3}
-      propertyPath: m_Name
-      value: kierutoki
-      objectReference: {fileID: 0}
-    - target: {fileID: 4145106388841284670, guid: 6812100ffb788a948b01b3387d0054c7, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 11.43881
-      objectReference: {fileID: 0}
-    - target: {fileID: 4145106388841284670, guid: 6812100ffb788a948b01b3387d0054c7, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: -0.90652955
-      objectReference: {fileID: 0}
-    - target: {fileID: 4145106388841284670, guid: 6812100ffb788a948b01b3387d0054c7, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 557.444
-      objectReference: {fileID: 0}
-    - target: {fileID: 4145106388841284670, guid: 6812100ffb788a948b01b3387d0054c7, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 0.7071068
-      objectReference: {fileID: 0}
-    - target: {fileID: 4145106388841284670, guid: 6812100ffb788a948b01b3387d0054c7, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: -0.7071068
-      objectReference: {fileID: 0}
-    - target: {fileID: 4145106388841284670, guid: 6812100ffb788a948b01b3387d0054c7, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4145106388841284670, guid: 6812100ffb788a948b01b3387d0054c7, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4145106388841284670, guid: 6812100ffb788a948b01b3387d0054c7, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: -90
-      objectReference: {fileID: 0}
-    - target: {fileID: 4145106388841284670, guid: 6812100ffb788a948b01b3387d0054c7, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4145106388841284670, guid: 6812100ffb788a948b01b3387d0054c7, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 6812100ffb788a948b01b3387d0054c7, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
@@ -3500,4 +3444,3 @@ SceneRoots:
   - {fileID: 2120796326}
   - {fileID: 931703648}
   - {fileID: 974253017}
-  - {fileID: 8043087001895073103}

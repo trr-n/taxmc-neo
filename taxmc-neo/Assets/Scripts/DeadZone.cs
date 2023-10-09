@@ -15,7 +15,7 @@ namespace trrne.Body
                     break;
 
                 case Constant.Layers.Creature:
-                    info.TryAction<Enemy>(async enemy => await enemy.Die());
+                    info.TryAction<Creature>(async enemy => await enemy.Die());
                     break;
 
                 default: throw null;

@@ -1,10 +1,14 @@
 using System;
+using UnityEngine;
 
 namespace trrne.Bag
 {
     public static class Typing
     {
+        #region Casting
         public static T Cast<T>(this object obj) => (T)obj;
+        public static Vector2 ToVec2(this Vector3 vector) => (Vector2)vector;
+        #endregion
 
         /// <summary>
         /// 置換したい文字をスペース二つはさんで記述<br/><br/>
@@ -29,7 +33,6 @@ namespace trrne.Bag
         public static bool Subclass(this object[] objs, Type t) => objs.GetType().IsSubclassOf(t);
 
         public static string Join(this object[] objs, string sep) => string.Join(sep, objs);
-
         public static string Link(this char[] objs) => string.Join("", objs);
     }
 }

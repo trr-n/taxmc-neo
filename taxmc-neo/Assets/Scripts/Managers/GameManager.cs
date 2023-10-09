@@ -4,7 +4,7 @@ using UnityEngine.UI;
 
 namespace trrne.Body
 {
-    public class Manager : MonoBehaviour
+    public class GameManager : MonoBehaviour
     {
         [SerializeField]
         Text timeT;
@@ -24,10 +24,10 @@ namespace trrne.Body
             cam.followable = true;
 
             player = Gobject.GetWithTag<Player>(Constant.Tags.Player);
-            player.ctrlable = true;
+            player.controllable = true;
 
             Gobject.Finds(Constant.Tags.Enemy)
-                .ForEach(enemy => enemy.GetComponent<Enemy>().enable = true);
+                .ForEach(enemy => enemy.GetComponent<Creature>().enable = true);
         }
 
         void Update()

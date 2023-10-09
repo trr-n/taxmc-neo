@@ -20,7 +20,7 @@ namespace trrne.Body
         [SerializeField]
         GameObject diefx;
 
-        public bool ctrlable { get; set; }
+        public bool controllable { get; set; }
         public bool jumpable { get; set; }
         public bool walkable { get; set; }
 
@@ -124,7 +124,7 @@ namespace trrne.Body
 
         void Flip()
         {
-            if (!ctrlable)
+            if (!controllable)
             {
                 return;
             }
@@ -151,7 +151,7 @@ namespace trrne.Body
 
         void Jump()
         {
-            if (!ctrlable)
+            if (!controllable)
             {
                 return;
             }
@@ -175,7 +175,7 @@ namespace trrne.Body
         /// </summary>
         void Move()
         {
-            if (!ctrlable)
+            if (!controllable)
             {
                 return;
             }
@@ -215,7 +215,7 @@ namespace trrne.Body
             }
 
             isDieProcessing = true;
-            ctrlable = false;
+            controllable = false;
             cam.followable = false;
 
             switch (cause)
@@ -258,7 +258,7 @@ namespace trrne.Body
 
             // うごいていいよ
             cam.followable = true;
-            ctrlable = true;
+            controllable = true;
             isDieProcessing = false;
         }
     }

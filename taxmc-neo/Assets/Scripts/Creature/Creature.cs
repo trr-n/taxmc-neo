@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace trrne.Body
 {
-    public abstract class Enemy : MonoBehaviour
+    public abstract class Creature : MonoBehaviour
     {
         public GameObject diefx;
 

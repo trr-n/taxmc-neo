@@ -21,10 +21,8 @@ namespace trrne.Body
         /// アニメーションさせるか
         /// </summary>
         protected bool animatable { get; set; }
-
         protected SpriteRenderer sr;
-        // protected Vector2 size => sr.bounds.size;
-        protected Vector2 here => transform.position;
+        protected Vector2 size => sr.bounds.size;
 
         protected virtual void Start()
         {
@@ -42,8 +40,7 @@ namespace trrne.Body
         /// </summary>
         protected abstract void Behavior();
 
-        readonly Anima anima = new();
-        readonly Runner set = new();
+        new readonly (Anima anima, Runner runner) animation = (new(), new());
         void Animation()
         {
             if (!animatable || sprites.Length <= 0)
@@ -54,12 +51,12 @@ namespace trrne.Body
             switch (sprites.Length)
             {
                 case 1:
-                    set.RunOnce(() => sr.sprite = sprites[0]);
+                    animation.runner.RunOnce(() => sr.sprite = sprites[0]);
                     break;
 
                 case 2:
                 default:
-                    anima.Sprite(animatable, sr, interval, sprites);
+                    animation.anima.Sprite(animatable, sr, interval, sprites);
                     break;
             }
         }

@@ -11,6 +11,9 @@ namespace trrne.Body
         int limitSteps = 2;
 
         [SerializeField]
+        GameObject destroyEffect;
+
+        [SerializeField]
         Sprite[] sprites;
 
         HoleFlag flag;
@@ -41,12 +44,14 @@ namespace trrne.Body
         {
             if (!breaking && flag.count >= limitSteps)
             {
+                // ぽわっ
+                destroyEffect.TryGenerate(transform.position);
+
                 breaking = true;
                 sr.enabled = false;
                 collider.enabled = false;
             }
 
-            print("ratio: " + ratio + ": " + (ratio > 0.5f));
             sr.sprite = ratio < 0.5f ? sprites[0] : sprites[1];
         }
 

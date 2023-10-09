@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace trrne.Body
 {
-    public class Newbie : Enemy
+    public class Newbie : Creature
     {
         public enum StartFacing { Left, Right, Random }
         [SerializeField]

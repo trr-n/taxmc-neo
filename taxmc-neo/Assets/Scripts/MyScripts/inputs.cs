@@ -19,5 +19,8 @@ namespace trrne.Bag
         public static bool Released(int click) => Input.GetMouseButtonUp(click);
         public static bool Released(KeyCode key) => Input.GetKeyUp(key);
         public static bool Released(string name) => Input.GetButtonUp(name);
+
+        public static Vector2 Axis() => new(Input.GetAxis(Constant.Keys.Horizontal), Input.GetAxis(Constant.Keys.Vertical));
+        public static Vector2 AxisRaw() => new(Input.GetAxisRaw(Constant.Keys.Horizontal), Input.GetAxisRaw(Constant.Keys.Vertical));
     }
 }

@@ -58,7 +58,7 @@ namespace trrne.Body
                             break;
 
                         case Constant.Layers.Creature:
-                            if (hit.TryGet(out Enemy enemy))
+                            if (hit.TryGet(out Creature enemy))
                             {
                                 await enemy.Die();
                             }

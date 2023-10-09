@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace trrne.Body
 {
-    public class Gunny : Enemy
+    public class Gunny : Creature
     {
         (GameObject obj, LineRenderer line, float lineLength) gun;
 

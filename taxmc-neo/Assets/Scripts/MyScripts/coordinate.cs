@@ -19,9 +19,9 @@ namespace trrne.Bag
         public static float g => 9.80665f;
         public static Vector3 gravity = -y * g;
 
-        public static Vector3 Position(this GameObject gob) => gob.transform.position;
-
+        public static Vector2 Position2(this GameObject gob) => gob.transform.position;
         public static Vector2 Position2(this Collider2D info) => info.gameObject.transform.position;
+        public static Vector2 Position2(this Collision2D info) => info.gameObject.transform.position;
 
         public static void SetPosition(this Transform t, float? x = null, float? y = null, float? z = null)
         => t.position = new(x is null ? t.position.x : (float)x, y is null ? t.position.y : (float)y, z is null ? t.position.z : (float)z);
