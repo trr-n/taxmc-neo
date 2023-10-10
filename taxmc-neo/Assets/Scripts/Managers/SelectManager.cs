@@ -1,4 +1,7 @@
-﻿using trrne.Bag;
+﻿using System.Collections.Generic;
+using System.Linq;
+using System.Security.Principal;
+using trrne.Bag;
 using UnityEngine;
 
 namespace trrne.Body
@@ -26,19 +29,20 @@ namespace trrne.Body
 
         void Update()
         {
-            In2Home();
+            Welcome();
         }
 
-        void In2Home()
+        void Welcome()
         {
-            foreach (var hitbox in hitboxes)
+            // https://baba-s.hatenablog.com/entry/2020/01/10/090000
+            var houses1 = homes.Merge(hitboxes);
+
+            foreach (var (home, hitbox) in houses1)
             {
-                foreach (var home in homes)
+                if (Gobject.BoxCast2D(out var hit,
+                    home.Position2() + hitbox.offset, hitbox.bounds.size * 1.01f, Constant.Layers.Player))
                 {
-                    if (Gobject.BoxCast2D(out _,
-                        home.transform.position.ToVec2() + hitbox.offset, hitbox.bounds.size * 1.01f, Constant.Layers.Player))
-                    {
-                    }
+                    print(hit.collider.name);
                 }
             }
         }

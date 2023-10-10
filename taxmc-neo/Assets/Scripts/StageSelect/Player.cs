@@ -28,10 +28,5 @@ namespace trrne.Body.Select
 
             transform.Translate(Inputs.AxisRaw() * speed * Time.unscaledDeltaTime);
         }
-
-        void OnCollisionEnter2D(Collision2D info)
-        {
-            print("hit");
-        }
     }
 }
