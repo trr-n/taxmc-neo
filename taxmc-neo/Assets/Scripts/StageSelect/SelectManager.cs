@@ -32,7 +32,6 @@ namespace trrne.Body
 
         void Update()
         {
-            print(ProgressRecorder.progress);
             Welcome();
         }
 
@@ -49,8 +48,7 @@ namespace trrne.Body
                         switch (int.Parse(home.name.Split(prefix)[1]))
                         {
                             case 0:
-                                Scenes.LoadAsync(Constant.Scenes.Game1);
-                                Scenes.UnloadAsync(Scenes.active);
+                                Recorder.Instance.Next(Constant.Scenes.Game1);
                                 break;
 
                             case 1:

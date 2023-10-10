@@ -24,8 +24,7 @@ namespace trrne
         {
             public static string
             Prefix = "Game",
-            StageManager = "StageManager",
-            StageSelect = "StageSelect",
+            StageSelect = Prefix + 0,
             Game1 = Prefix + 1,
             Game2 = Prefix + 2;
         }

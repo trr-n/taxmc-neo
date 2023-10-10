@@ -1,6 +1,5 @@
 using trrne.Bag;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 namespace trrne.Body
@@ -16,8 +15,6 @@ namespace trrne.Body
 
         void Start()
         {
-            SceneManager.UnloadSceneAsync(Constant.Scenes.StageSelect);
-
             time = GetComponent<TimeManager>();
             time.Start();
 

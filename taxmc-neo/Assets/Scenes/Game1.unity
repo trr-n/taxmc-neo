@@ -3206,6 +3206,10 @@ PrefabInstance:
       propertyPath: velT
       value: 
       objectReference: {fileID: 1692030582}
+    - target: {fileID: 7281095245200427739, guid: 442ace25410a6cc4eb70cdb6ed501a58, type: 3}
+      propertyPath: diefx
+      value: 
+      objectReference: {fileID: 5565991161832110117, guid: 3909e1890e2aefe458a5b72b5ee3a948, type: 3}
     - target: {fileID: 7533838126954174317, guid: 442ace25410a6cc4eb70cdb6ed501a58, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0

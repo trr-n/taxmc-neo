@@ -218,6 +218,8 @@ namespace trrne.Body
             controllable = false;
             cam.followable = false;
 
+            diefx.TryGenerate(transform.position);
+
             switch (cause)
             {
                 case CauseOfDeath.Venom:
