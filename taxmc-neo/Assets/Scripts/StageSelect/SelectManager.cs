@@ -1,4 +1,5 @@
 ﻿using trrne.Bag;
+using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -11,11 +12,14 @@ namespace trrne.Body
         Text text;
 
         [SerializeField]
+        GameObject key;
+
+        [SerializeField]
         GameObject[] homes;
         BoxCollider2D[] hitboxes;
         readonly string prefix = "level";
 
-        GameObject player;
+        GameObject player, switched;
 
         void Start()
         {
@@ -32,30 +36,27 @@ namespace trrne.Body
 
         void Update()
         {
+            print(Physics2D.gravity);
             Welcome();
         }
 
         void Welcome()
         {
-            // https://baba-s.hatenablog.com/entry/2020/01/10/090000
             foreach (var (home, hitbox) in homes.Merge(hitboxes))
             {
-                if (Gobject.BoxCast2D(out var door,
-                    home.Position2() + hitbox.offset, hitbox.bounds.size * 1.01f, Constant.Layers.Player))
+                if (Gobject.BoxCast2D(out _, home.Position2() + hitbox.offset, hitbox.bounds.size * 1.01f, Constant.Layers.Player))
                 {
-                    if (Inputs.Down(KeyCode.J))
+                    switch (int.Parse(home.name.Replace(prefix, "")))
                     {
-                        switch (int.Parse(home.name.Split(prefix)[1]))
-                        {
-                            case 0:
-                                Recorder.Instance.Next(Constant.Scenes.Game1);
-                                break;
+                        case 0:
+                            key.TryGenerate(transform.position);
+                            Shorthand.BoolAction(Inputs.Down(Constant.Keys.Button), () => Recorder.Instance.Next(Constant.Scenes.Game1));
+                            break;
 
-                            case 1:
-                            default:
-                                print("not yet");
-                                break;
-                        }
+                        case 1:
+                        default:
+                            print("not yet");
+                            break;
                     }
                 }
             }

@@ -14,7 +14,7 @@ namespace trrne
             {
                 List<string> scenes = new(AnotherScenes.Total(Counting.Built));
                 AnotherScenes.names.ForEach(
-                    scene => SimpleRunner.BoolAction(scene.Contains(Scenes.Prefix), () => scenes.Add(scene)));
+                    scene => Shorthand.BoolAction(scene.Contains(Scenes.Prefix), () => scenes.Add(scene)));
 
                 return scenes.ToArray();
             }

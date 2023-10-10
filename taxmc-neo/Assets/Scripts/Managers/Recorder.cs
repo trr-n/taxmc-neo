@@ -49,7 +49,7 @@ namespace trrne.Body
         {
             if (Scenes.active == Constant.Scenes.StageSelect)
             {
-                Physics2D.gravity = Vector100.gravity;
+                Physics2D.gravity = Vector100.zero2d;
             }
         }
 

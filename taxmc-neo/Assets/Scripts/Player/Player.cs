@@ -135,11 +135,11 @@ namespace trrne.Body
                 switch (Mathf.Sign(Input.GetAxisRaw(Constant.Keys.Horizontal)))
                 {
                     case 1:
-                        SimpleRunner.BoolAction(current != 1, () => transform.localScale *= new Vector2(-1, 1));
+                        Shorthand.BoolAction(current != 1, () => transform.localScale *= new Vector2(-1, 1));
                         break;
 
                     case -1:
-                        SimpleRunner.BoolAction(current != -1, () => transform.localScale *= new Vector2(-1, 1));
+                        Shorthand.BoolAction(current != -1, () => transform.localScale *= new Vector2(-1, 1));
                         break;
 
                     case 0:

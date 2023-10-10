@@ -1,4 +1,5 @@
 using System;
+using System.Reflection;
 using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.UI;
@@ -15,7 +16,6 @@ namespace trrne.Bag
         public static GameObject Generate(this GameObject[] gs) => GameObject.Instantiate(gs.Choice());
         public static GameObject Generate(this GameObject[] gs, Vector3 p) => GameObject.Instantiate(gs.Choice(), p, quaternion.identity);
         public static GameObject Generate(this GameObject[] gs, Vector3 p, Quaternion r) => GameObject.Instantiate(gs.Choice(), p, r);
-
         public static GameObject TryGenerate(this GameObject g) => g != null ? g.Generate() : null;
         public static GameObject TryGenerate(this GameObject g, Vector3 p) => g != null ? g.Generate(p, quaternion.identity) : null;
         public static GameObject TryGenerate(this GameObject g, Vector3 p, Quaternion r) => g != null ? g.Generate(p, r) : null;
@@ -65,7 +65,7 @@ namespace trrne.Bag
         public static bool TryGet<T>(this RaycastHit2D hit, out T t) => hit.collider.TryGetComponent(out t);
         [Obsolete] public static T TryGet<T>(this GameObject gob) { gob.TryGetComponent(out T t); return t != null ? t : default; }
 
-        public static void TryAction<T>(this Collider2D info, Action<T> action) => SimpleRunner.BoolAction(info.TryGetComponent(out T t), () => action(t));
+        public static void TryAction<T>(this Collider2D info, Action<T> action) => Shorthand.BoolAction(info.TryGetComponent(out T t), () => action(t));
 
         public static int GetLayer(this RaycastHit2D hit) => 1 << hit.collider.gameObject.layer;
         public static int GetLayer(this Collision2D info) => 1 << info.gameObject.layer;
