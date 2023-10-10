@@ -6,6 +6,9 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
+    path: Assets/Scenes/StageManager.unity
+    guid: 234c1fe6b5af8ec468980cbc7c7ff601
+  - enabled: 1
     path: Assets/Scenes/StageSelect.unity
     guid: 81787af212cf46f4f8716b44b945eddf
   - enabled: 1

@@ -29,6 +29,8 @@ namespace trrne.Bag
         /// </summary>
         public static void Load() => LoadScene(active);
 
+        public static void LoadAdditive(string name) => LoadScene(name, LoadSceneMode.Additive);
+
         /// <summary>
         /// アクティブなシーンを取得
         /// </summary>
@@ -63,6 +65,13 @@ namespace trrne.Bag
         };
 
         public static AsyncOperation LoadAsync(string name) => LoadSceneAsync(name);
+        public static AsyncOperation LoadAsync(string name, LoadSceneMode mode) => LoadSceneAsync(name, mode);
         public static AsyncOperation LoadAsync(int index) => LoadSceneAsync(index);
+        public static AsyncOperation LoadAsync(int index, LoadSceneMode mode) => LoadSceneAsync(index, mode);
+
+        public static AsyncOperation UnloadAsync(string name) => UnloadSceneAsync(name);
+        public static AsyncOperation UnloadAsync(string name, UnloadSceneOptions options) => UnloadSceneAsync(name, options);
+        public static AsyncOperation UnloadAsync(int index) => UnloadSceneAsync(index);
+        public static AsyncOperation UnloadAsync(int index, UnloadSceneOptions options) => UnloadSceneAsync(index, options);
     }
 }

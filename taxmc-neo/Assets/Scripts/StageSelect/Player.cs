@@ -1,17 +1,21 @@
 using trrne.Bag;
+using UnityEditor.Callbacks;
 using UnityEngine;
 
 namespace trrne.Body.Select
 {
     public class Player : MonoBehaviour
     {
-        float speed = 5;
-
         public bool controllable { get; set; }
+
+        float speed = 5;
+        float limit = 7.5f;
+        Rigidbody2D rb;
 
         void Start()
         {
             controllable = true;
+            rb = GetComponent<Rigidbody2D>();
         }
 
         void Update()
@@ -26,7 +30,16 @@ namespace trrne.Body.Select
                 return;
             }
 
-            transform.Translate(Inputs.AxisRaw() * speed * Time.unscaledDeltaTime);
+            if (!(Inputs.Pressed(Constant.Keys.Horizontal) || Inputs.Pressed(Constant.Keys.Vertical)))
+            {
+                rb.velocity *= 0.5f;
+                return;
+            }
+
+            rb.velocity = new(
+                Mathf.Clamp(rb.velocity.x, -limit, limit), Mathf.Clamp(rb.velocity.y, -limit, limit));
+            rb.velocity += Inputs.AxisRaw() * speed * Time.fixedDeltaTime;
+            // transform.Translate(Inputs.AxisRaw() * speed * Time.unscaledDeltaTime);
         }
     }
 }

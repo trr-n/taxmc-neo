@@ -24,7 +24,10 @@ namespace trrne
         {
             public static string
             Prefix = "Game",
-            StageSelect = "StageSelect";
+            StageManager = "StageManager",
+            StageSelect = "StageSelect",
+            Game1 = Prefix + 1,
+            Game2 = Prefix + 2;
         }
 
         public readonly struct Layers

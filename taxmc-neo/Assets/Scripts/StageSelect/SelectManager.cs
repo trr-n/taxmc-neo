@@ -1,16 +1,19 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System.Security.Principal;
-using trrne.Bag;
+﻿using trrne.Bag;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 namespace trrne.Body
 {
     public class SelectManager : MonoBehaviour
     {
         [SerializeField]
+        Text text;
+
+        [SerializeField]
         GameObject[] homes;
         BoxCollider2D[] hitboxes;
+        readonly string prefix = "level";
 
         GameObject player;
 
@@ -29,20 +32,33 @@ namespace trrne.Body
 
         void Update()
         {
+            print(ProgressRecorder.progress);
             Welcome();
         }
 
         void Welcome()
         {
             // https://baba-s.hatenablog.com/entry/2020/01/10/090000
-            var houses1 = homes.Merge(hitboxes);
-
-            foreach (var (home, hitbox) in houses1)
+            foreach (var (home, hitbox) in homes.Merge(hitboxes))
             {
-                if (Gobject.BoxCast2D(out var hit,
+                if (Gobject.BoxCast2D(out var door,
                     home.Position2() + hitbox.offset, hitbox.bounds.size * 1.01f, Constant.Layers.Player))
                 {
-                    print(hit.collider.name);
+                    if (Inputs.Down(KeyCode.J))
+                    {
+                        switch (int.Parse(home.name.Split(prefix)[1]))
+                        {
+                            case 0:
+                                Scenes.LoadAsync(Constant.Scenes.Game1);
+                                Scenes.UnloadAsync(Scenes.active);
+                                break;
+
+                            case 1:
+                            default:
+                                print("not yet");
+                                break;
+                        }
+                    }
                 }
             }
         }
