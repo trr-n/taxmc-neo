@@ -1,7 +1,6 @@
-﻿using trrne.Bag;
-using Unity.Mathematics;
+﻿using System.Reflection;
+using trrne.Bag;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 namespace trrne.Body
@@ -9,23 +8,16 @@ namespace trrne.Body
     public class SelectManager : MonoBehaviour
     {
         [SerializeField]
-        Text text;
-
-        [SerializeField]
-        GameObject key;
+        Image panel;
 
         [SerializeField]
         GameObject[] homes;
         BoxCollider2D[] hitboxes;
         readonly string prefix = "level";
 
-        GameObject player, switched;
-
         void Start()
         {
             Physics2D.gravity = Vector100.zero2d;
-
-            player = Gobject.Find(Constant.Tags.Player);
 
             hitboxes = new BoxCollider2D[homes.Length];
             for (int i = 0; i < homes.Length; i++)
@@ -33,6 +25,7 @@ namespace trrne.Body
                 hitboxes[i] = homes[i].GetComponent<BoxCollider2D>();
             }
         }
+
 
         void Update()
         {
@@ -46,20 +39,38 @@ namespace trrne.Body
             {
                 if (Gobject.BoxCast2D(out _, home.Position2() + hitbox.offset, hitbox.bounds.size * 1.01f, Constant.Layers.Player))
                 {
-                    switch (int.Parse(home.name.Replace(prefix, "")))
+                    Fade(true);
+                    switch (int.Parse(home.name.Delete(prefix)))
                     {
                         case 0:
-                            key.TryGenerate(transform.position);
                             Shorthand.BoolAction(Inputs.Down(Constant.Keys.Button), () => Recorder.Instance.Next(Constant.Scenes.Game1));
                             break;
 
                         case 1:
                         default:
-                            print("not yet");
+                            print("not yet, not soon");
                             break;
                     }
                 }
+                else
+                {
+                    Fade(false);
+                }
             }
+        }
+
+        bool fading = false;
+        void Fade(bool fin)
+        {
+            if (fading)
+            {
+                return;
+            }
+            fading = true;
+
+            // フェードの処理
+
+            fading = false;
         }
     }
 }

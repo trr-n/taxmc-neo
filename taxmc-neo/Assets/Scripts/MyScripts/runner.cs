@@ -35,11 +35,12 @@ namespace trrne.Bag
     public static class Shorthand
     {
         public static void BoolAction(bool boo, Action action) { if (boo) { action(); } }
+        public static void BoolAction(bool boo, Action<bool> o, Action<bool> x) { if (boo) { o(boo); } else { x(boo); } }
         public static T Function<T>(Func<T> func) => func();
         public static void ForEach<T>(this T[] array, Action<T> action) => Array.ForEach(array, action);
 
         /// <summary>
-        /// ｵｫｰﾝ…ｫｫｵｵｫｫｫﾝﾝ‼‼‼
+        /// ｵｫｰﾝ…ｫｫｵｵｫｫｫﾝﾝ‼‼‼(ｶﾞﾁｬｺﾝ)
         /// </summary>
         // https://baba-s.hatenablog.com/entry/2020/01/10/090000
         public static IEnumerable<(OO, QQ)> Merge<OO, QQ>(this OO[] oo, QQ[] qq) => oo.SelectMany(o => qq.Select(q => (o, q)));

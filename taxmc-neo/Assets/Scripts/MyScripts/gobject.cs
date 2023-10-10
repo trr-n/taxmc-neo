@@ -1,6 +1,7 @@
 using System;
 using System.Reflection;
 using Unity.Mathematics;
+using UnityEditor.MemoryProfiler;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -47,6 +48,22 @@ namespace trrne.Bag
         public static T GetFromChild<T>(this Transform transform, int index) where T : MonoBehaviour => transform.GetChild(index).GetComponent<T>();
         public static T GetFromParent<T>(this Transform transform) where T : MonoBehaviour => transform.parent.GetComponent<T>();
         public static T GetFromRoot<T>(this Transform transform) where T : MonoBehaviour => transform.root.GetComponent<T>();
+
+        public static GameObject GetWithInstanceID(int id) => (GameObject)FindObjectFromInstanceID(id);
+        static UnityEngine.Object FindObjectFromInstanceID(int id)
+        {
+            try
+            {
+                var type = typeof(UnityEngine.Object);
+                var flags = BindingFlags.NonPublic | BindingFlags.Static | BindingFlags.InvokeMethod;
+                var ret = type.InvokeMember(nameof(FindObjectFromInstanceID), flags, null, null, new object[] { id });
+                return (UnityEngine.Object)ret;
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
 
         public static T Get<T>(this Collision2D info) => info.gameObject.GetComponent<T>();
         public static T Get<T>(this Collider2D info) => info.gameObject.GetComponent<T>();

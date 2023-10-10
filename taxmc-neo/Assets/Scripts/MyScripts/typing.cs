@@ -28,6 +28,11 @@ namespace trrne.Bag
             return target;
         }
 
+        /// <summary>
+        /// 文字列から指定の文字を削除する
+        /// </summary>
+        public static string Delete(this string target, string be) => target.Replace(be, "");
+
         [Obsolete]
         public static bool Subclass(this object obj, Type t) => obj.GetType().IsSubclassOf(t);
         public static bool Subclass(this object[] objs, Type t) => objs.GetType().IsSubclassOf(t);

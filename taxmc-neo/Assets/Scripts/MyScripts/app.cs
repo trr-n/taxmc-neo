@@ -30,6 +30,7 @@ namespace trrne.Bag
 
         public static Vector2 resolution => new(Screen.currentResolution.width, Screen.currentResolution.height);
         public static Vector2 screenSize => new(Screen.width, Screen.height);
+        public static Vector2 screenCenter => screenSize / 2;
 
         public static void CameraSize(float size) => Camera.main.orthographicSize = size;
     }

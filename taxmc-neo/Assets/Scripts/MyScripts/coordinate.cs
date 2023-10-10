@@ -26,6 +26,7 @@ namespace trrne.Bag
         public static void SetPosition(this Transform t, float? x = null, float? y = null, float? z = null)
         => t.position = new(x is null ? t.position.x : (float)x, y is null ? t.position.y : (float)y, z is null ? t.position.z : (float)z);
 
+        public static void SetPosition(this GameObject gob, Vector2 position) => gob.transform.position = position;
         public static void SetPosition(this Transform t, Vector3 position) => t.position = position;
         public static void SetPosition(this Transform t, Vector2 position) => t.position = position;
         public static void SetPosition(this RaycastHit2D hit, Vector2 position) => hit.collider.transform.position = position;
