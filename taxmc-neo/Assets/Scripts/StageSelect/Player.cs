@@ -1,5 +1,4 @@
 using trrne.Bag;
-using UnityEditor.Callbacks;
 using UnityEngine;
 
 namespace trrne.Body.Select
@@ -14,7 +13,6 @@ namespace trrne.Body.Select
 
         void Start()
         {
-            controllable = true;
             rb = GetComponent<Rigidbody2D>();
         }
 

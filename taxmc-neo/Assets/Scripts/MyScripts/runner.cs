@@ -6,16 +6,16 @@ namespace trrne.Bag
 {
     public class Runner
     {
-        bool flag0;
+        bool runonce_flag;
         /// <summary>
         /// actionを一回実行
         /// </summary>
         public void RunOnce(params Action[] actions)
         {
-            Shorthand.BoolAction(!flag0, () =>
+            Shorthand.BoolAction(!runonce_flag, () =>
             {
-                Array.ForEach(actions, action => action());
-                flag0 = true;
+                actions.ForEach(action => action());
+                runonce_flag = true;
             });
         }
 
@@ -28,14 +28,12 @@ namespace trrne.Bag
                 bookingSW.Rubbish();
             }
         }
-
-        public static void NothingSpecial() { return; }
     }
 
     public static class Shorthand
     {
         public static void BoolAction(bool boo, Action action) { if (boo) { action(); } }
-        public static void BoolAction(bool boo, Action<bool> o, Action<bool> x) { if (boo) { o(boo); } else { x(boo); } }
+        public static void BoolAction(bool boo, Action o, Action x) { if (boo) { o(); } else { x(); } }
         public static T Function<T>(Func<T> func) => func();
         public static void ForEach<T>(this T[] array, Action<T> action) => Array.ForEach(array, action);
 
@@ -44,5 +42,11 @@ namespace trrne.Bag
         /// </summary>
         // https://baba-s.hatenablog.com/entry/2020/01/10/090000
         public static IEnumerable<(OO, QQ)> Merge<OO, QQ>(this OO[] oo, QQ[] qq) => oo.SelectMany(o => qq.Select(q => (o, q)));
+
+        /// <summary>
+        /// さんこがっちゃんこ
+        /// </summary>
+        public static IEnumerable<(T1, T2, T3)> Merge<T1, T2, T3>(this T1[] t1, T2[] t2, T3[] t3)
+        => t1.SelectMany(name => t2.SelectMany(age => t3.Select(gender => (name, age, gender))));
     }
 }
