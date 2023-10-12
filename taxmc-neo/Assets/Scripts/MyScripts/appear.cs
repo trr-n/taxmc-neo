@@ -5,14 +5,30 @@ namespace trrne.Bag
 {
     public static class Appearance
     {
-        public static bool Compare(this SpriteRenderer sr, Sprite sprite) => sr.sprite == sprite;
+        public static bool Compare(this SpriteRenderer sr, Sprite sprite)
+        {
+            return sr.sprite == sprite;
+        }
 
-        public static void SetSprite(this SpriteRenderer sr, Sprite sprite) => sr.sprite = sprite;
-        public static void SetSprite(this SpriteRenderer sr, Sprite[] sprites) => sr.sprite = sprites.Choice();
+        public static void SetSprite(this SpriteRenderer sr, Sprite sprite)
+        {
+            sr.sprite = sprite;
+        }
 
-        public static void SetColor(this Image image, Color color) => image.color = color;
+        public static void SetSprite(this SpriteRenderer sr, Sprite[] sprites)
+        {
+            sr.sprite = sprites.Choice();
+        }
 
-        public static Vector2 GetSpriteSize(this SpriteRenderer sr) => sr.bounds.size;
+        public static void SetColor(this Image image, Color color)
+        {
+            image.color = color;
+        }
+
+        public static Vector2 GetSpriteSize(this SpriteRenderer sr)
+        {
+            return sr.bounds.size;
+        }
 
         public static string SetText(this Text text, object obj) => text.text = obj.ToString();
         public static void SetTextSize(this Text text, int size) => text.fontSize = size;

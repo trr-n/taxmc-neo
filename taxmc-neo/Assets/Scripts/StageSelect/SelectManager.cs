@@ -8,7 +8,7 @@ namespace trrne.Body.Select
     public class SelectManager : MonoBehaviour
     {
         [SerializeField]
-        Image whenStartedPanel, panel;
+        Image escmenu, panel;
 
         [SerializeField]
         GameObject[] homes;
@@ -64,7 +64,7 @@ namespace trrne.Body.Select
         async UniTask WhenStartGame()
         {
             // 操作方法を記載されているパネルを表示
-            whenStartedPanel.SetAlpha(.75f);
+            escmenu.SetAlpha(1f);
 
             // 操作不可に
             player.controllable = false;
@@ -73,7 +73,7 @@ namespace trrne.Body.Select
             await UniTask.WaitUntil(() => Inputs.Down(Constant.Keys.Button));
 
             // パネルを非表示に
-            whenStartedPanel.SetAlpha(0);
+            escmenu.SetAlpha(0);
 
             // 操作可能に
             player.controllable = true;

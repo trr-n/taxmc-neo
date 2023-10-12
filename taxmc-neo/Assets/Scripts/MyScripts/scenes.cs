@@ -16,20 +16,32 @@ namespace trrne.Bag
         /// nameで指定したシーンをロード
         /// </summary>
         /// <param name="name">name</param>
-        public static void Load(string name) => LoadScene(name);
+        public static void Load(string name)
+        {
+            LoadScene(name);
+        }
 
         /// <summary>
         /// build indexで指定したシーンをロード
         /// </summary>
         /// <param name="index">build index</param>
-        public static void Load(int index) => LoadScene(index);
+        public static void Load(int index)
+        {
+            LoadScene(index);
+        }
 
         /// <summary>
         /// シーンをリロード
         /// </summary>
-        public static void Load() => LoadScene(active);
+        public static void Load()
+        {
+            LoadScene(active);
+        }
 
-        public static void LoadAdditive(string name) => LoadScene(name, LoadSceneMode.Additive);
+        public static void LoadAdditive(string name)
+        {
+            LoadScene(name, LoadSceneMode.Additive);
+        }
 
         /// <summary>
         /// アクティブなシーンを取得
@@ -64,14 +76,44 @@ namespace trrne.Bag
             _ => -1
         };
 
-        public static AsyncOperation LoadAsync(string name) => LoadSceneAsync(name);
-        public static AsyncOperation LoadAsync(string name, LoadSceneMode mode) => LoadSceneAsync(name, mode);
-        public static AsyncOperation LoadAsync(int index) => LoadSceneAsync(index);
-        public static AsyncOperation LoadAsync(int index, LoadSceneMode mode) => LoadSceneAsync(index, mode);
+        public static AsyncOperation LoadAsync(string name)
+        {
+            return LoadSceneAsync(name);
+        }
 
-        public static AsyncOperation UnloadAsync(string name) => UnloadSceneAsync(name);
-        public static AsyncOperation UnloadAsync(string name, UnloadSceneOptions options) => UnloadSceneAsync(name, options);
-        public static AsyncOperation UnloadAsync(int index) => UnloadSceneAsync(index);
-        public static AsyncOperation UnloadAsync(int index, UnloadSceneOptions options) => UnloadSceneAsync(index, options);
+        public static AsyncOperation LoadAsync(string name, LoadSceneMode mode)
+        {
+            return LoadSceneAsync(name, mode);
+        }
+
+        public static AsyncOperation LoadAsync(int index)
+        {
+            return LoadSceneAsync(index);
+        }
+
+        public static AsyncOperation LoadAsync(int index, LoadSceneMode mode)
+        {
+            return LoadSceneAsync(index, mode);
+        }
+
+        public static AsyncOperation UnloadAsync(string name)
+        {
+            return UnloadSceneAsync(name);
+        }
+
+        public static AsyncOperation UnloadAsync(string name, UnloadSceneOptions options)
+        {
+            return UnloadSceneAsync(name, options);
+        }
+
+        public static AsyncOperation UnloadAsync(int index)
+        {
+            return UnloadSceneAsync(index);
+        }
+
+        public static AsyncOperation UnloadAsync(int index, UnloadSceneOptions options)
+        {
+            return UnloadSceneAsync(index, options);
+        }
     }
 }
