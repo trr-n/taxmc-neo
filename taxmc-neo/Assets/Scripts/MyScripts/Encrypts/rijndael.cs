@@ -68,7 +68,7 @@ namespace trrne.Bag
             return decrypt.TransformFinalBlock(plain, 0, plain.Length);
         }
 
-        public string DecryptToString(byte[] src) => Encoding.UTF8.GetString(Decrypt(src));
+        public string Decrypt2String(byte[] src) => Encoding.UTF8.GetString(Decrypt(src));
     }
 }
 

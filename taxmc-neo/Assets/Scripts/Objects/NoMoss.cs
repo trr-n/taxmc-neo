@@ -29,7 +29,7 @@ namespace trrne.Body
             feet = new GameObject[transform.childCount];
             for (int i = 0; i < transform.childCount; i++)
             {
-                feet[i] = transform.GetChilda(i);
+                feet[i] = transform.GetChildObject(i);
             }
 
             rotatable = true;

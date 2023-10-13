@@ -27,7 +27,7 @@ namespace trrne.Bag
             return (short)UnityEngine.Random.Range(min, max);
         }
 
-        readonly static char[] alphabets = "0123456789".ToCharArray(),
+        static readonly char[] alphabets = "0123456789".ToCharArray(),
             numbers = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz".ToCharArray();
 
         public static string String()

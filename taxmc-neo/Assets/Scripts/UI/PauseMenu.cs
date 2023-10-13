@@ -8,19 +8,8 @@ namespace trrne.Brain
         [SerializeField]
         GameObject panel;
 
-        // IPlayer player;
-
         bool active;
         public bool isActive => active;
-
-        void Start()
-        {
-            // player = Scenes.active switch
-            // {
-            //     Constant.Scenes.StageSelect => Gobject.GetWithTag<Arm.Player>(Constant.Tags.Player),
-            //     _ => Gobject.GetWithTag<Body.Player>(Constant.Tags.Player)
-            // };
-        }
 
         void Update()
         {
@@ -49,6 +38,7 @@ namespace trrne.Brain
         void Act(bool active)
         {
             panel.SetActive(active);
+            App.SetTimeScale(active ? 0 : 1);
         }
     }
 }

@@ -79,6 +79,9 @@ namespace trrne.Body
 
             cam = Gobject.GetWithTag<Cam>(Constant.Tags.MainCamera);
             cam.followable = true;
+
+            // string str = "igaito, atui";
+            // print(str.ReplaceLump());
         }
 
         void FixedUpdate()

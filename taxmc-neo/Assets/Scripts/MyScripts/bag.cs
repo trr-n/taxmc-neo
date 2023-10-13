@@ -17,7 +17,7 @@ namespace trrne.Bag
 
         public Bag()
         {
-            this.capacity = 10;
+            capacity = 10;
             collection = new T[capacity];
             count = 0;
         }

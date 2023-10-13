@@ -6,7 +6,7 @@ namespace trrne.Bag
 
     public static class Temps
     {
-        public static string Raw => (Date() + Time()).ReplaceLump("/  :", "");
+        public static string raw => (Date() + Time()).ReplaceLump("/  :", "");
 
         public static string Date(TempsFormat format = TempsFormat.Standard)
         => format switch

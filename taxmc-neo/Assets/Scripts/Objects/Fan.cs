@@ -14,7 +14,7 @@ namespace trrne.Body
         protected override void Start()
         {
             base.Start();
-            collision = transform.GetChilda();
+            collision = transform.GetChildObject();
         }
 
         protected override void Behavior()

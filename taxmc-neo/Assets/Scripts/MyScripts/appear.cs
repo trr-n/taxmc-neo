@@ -40,8 +40,7 @@ namespace trrne.Bag
             text.fontSize = size;
         }
 
-        public static void TextSettings(this Text text,
-            TextAnchor anchor, VerticalWrapMode vWrap, HorizontalWrapMode hWrap)
+        public static void TextSettings(this Text text, TextAnchor anchor, VerticalWrapMode vWrap, HorizontalWrapMode hWrap)
         {
             text.alignment = anchor;
             text.verticalOverflow = vWrap;

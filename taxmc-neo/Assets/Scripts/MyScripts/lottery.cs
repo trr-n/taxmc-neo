@@ -6,6 +6,7 @@ namespace trrne.Bag
 {
     public static class Lottery
     {
+        // https://nekojara.city/unity-weighted-random-selection
         // https://youtu.be/3CQCBQRq0FA
         public static int Weighted(params float[] weights)
         {

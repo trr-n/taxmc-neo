@@ -49,7 +49,7 @@ namespace trrne.Brain
             Save.Write(
                 data: new SaveData { time = (Current.minutes, Current.seconds) },
                 password: "rid456",
-                path: Application.dataPath + "/save" + Temps.Raw + ".sav"
+                path: Application.dataPath + "/save" + Temps.raw + ".sav"
             );
         }
     }

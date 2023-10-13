@@ -24,7 +24,7 @@ namespace trrne.Bag
                 byte[] readArr = new byte[stream.Length];
                 stream.Read(readArr, 0, (int)stream.Length);
                 IEncryption decrypt = new Rijndael(password);
-                read = JsonUtility.FromJson<T>(decrypt.DecryptToString(readArr));
+                read = JsonUtility.FromJson<T>(decrypt.Decrypt2String(readArr));
             }
         }
 
@@ -53,7 +53,7 @@ namespace trrne.Bag
                 byte[] arr = new byte[stream.Length];
                 stream.Read(arr, 0, (int)stream.Length);
                 Rijndael dec = new(password);
-                return JsonSerializer.Deserialize<T>(dec.DecryptToString(arr));
+                return JsonSerializer.Deserialize<T>(dec.Decrypt2String(arr));
             }
         }
     }

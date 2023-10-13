@@ -1,5 +1,4 @@
-﻿using System;
-using System.Security.Cryptography;
+﻿using System.Security.Cryptography;
 
 namespace trrne.Bag
 {
@@ -7,22 +6,22 @@ namespace trrne.Bag
     {
         public byte[] Decrypt(byte[] src)
         {
-            throw new NotImplementedException();
+            return default;
         }
 
-        public string DecryptToString(byte[] src)
+        public string Decrypt2String(byte[] src)
         {
-            throw new NotImplementedException();
+            return default;
         }
 
         public byte[] Encrypt(byte[] src)
         {
-            throw new NotImplementedException();
+            return default;
         }
 
         public byte[] Encrypt(string src)
         {
-            throw new NotImplementedException();
+            return default;
         }
     }
 }

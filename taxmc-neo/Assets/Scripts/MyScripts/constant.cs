@@ -1,25 +1,10 @@
-using System;
-using System.Collections.Generic;
 using trrne.Bag;
 using UnityEngine;
-using AnotherScenes = trrne.Bag.Scenes;
 
 namespace trrne
 {
     public static partial class Constant
     {
-        public static string[] Paths2
-        {
-            get
-            {
-                List<string> scenes = new(AnotherScenes.Total(Counting.Built));
-                AnotherScenes.names.ForEach(
-                    scene => Shorthand.BoolAction(scene.Contains(Scenes.Prefix), () => scenes.Add(scene)));
-
-                return scenes.ToArray();
-            }
-        }
-
         public readonly struct Scenes
         {
             public const string

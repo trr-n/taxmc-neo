@@ -4,7 +4,8 @@ namespace trrne.Bag
 {
     public class Anima
     {
-        (int i, Stopwatch sw) colour = (0, new(true)), sprite = (0, new(true));
+        (int i, Stopwatch sw) colour = (0, new(true)),
+            sprite = (0, new(true));
 
         public void Colour(bool enable, SpriteRenderer sr, in float interval, params Color[] colours)
         {

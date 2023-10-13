@@ -19,6 +19,7 @@ namespace trrne.Bag
         {
             return Path.GetDirectoryName(name);
         }
+
         public static string __Path__()
         {
             return __Path__(CallerPath());

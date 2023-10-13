@@ -33,7 +33,7 @@ namespace trrne.Body
             child.speeds = new float[loop];
             for (int i = 0; i < loop; i++)
             {
-                child.frames[i] = transform.GetChilda(i);
+                child.frames[i] = transform.GetChildObject(i);
                 child.speeds[i] = Rand.Float(-speed_range, speed_range);
             }
 

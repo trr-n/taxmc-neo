@@ -15,7 +15,6 @@ namespace trrne.Bag
         /// <summary>
         /// nameで指定したシーンをロード
         /// </summary>
-        /// <param name="name">name</param>
         public static void Load(string name)
         {
             LoadScene(name);
@@ -24,7 +23,6 @@ namespace trrne.Bag
         /// <summary>
         /// build indexで指定したシーンをロード
         /// </summary>
-        /// <param name="index">build index</param>
         public static void Load(int index)
         {
             LoadScene(index);

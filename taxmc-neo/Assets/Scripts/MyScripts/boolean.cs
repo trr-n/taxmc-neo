@@ -9,14 +9,11 @@
         {
             foreach (var obj in objs)
             {
-                // ひとつでもぬるがあったらtrue
                 if (obj == null)
                 {
                     return true;
                 }
             }
-
-            // 走り切ったらfalse
             return false;
         }
 

@@ -33,6 +33,21 @@ namespace trrne.Bag
             return target;
         }
 
+        public static string ReplaceLump(this string target, string[] befores, string after)
+        {
+            befores.ForEach(before => target = target.Replace(before, after));
+            return target;
+        }
+
+        /// <summary>
+        /// basisからtargetsを削除
+        /// </summary>
+        public static string DeleteLump(this string basis, params string[] targets)
+        {
+            targets.ForEach(target => basis = basis.Delete(target));
+            return basis;
+        }
+
         /// <summary>
         /// 文字列から指定の文字を削除する
         /// </summary>

@@ -12,7 +12,7 @@ namespace trrne.Body
             msgs = new GameObject[transform.childCount];
             for (int i = 0; i < transform.childCount; i++)
             {
-                msgs[i] = transform.GetChilda(i);
+                msgs[i] = transform.GetChildObject(i);
             }
         }
     }

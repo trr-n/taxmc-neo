@@ -40,6 +40,11 @@ namespace trrne.Bag
             return Time.timeScale == scale;
         }
 
+        public static void SetTimeScale(float scale)
+        {
+            Time.timeScale = scale;
+        }
+
         public static string platform => Application.platform.ToString();
 
         public static Vector2 resolution => new(Screen.currentResolution.width, Screen.currentResolution.height);
