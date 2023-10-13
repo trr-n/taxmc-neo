@@ -5,10 +5,15 @@ namespace trrne.Bag
 {
     public static class Typing
     {
-        #region Casting
-        public static T Cast<T>(this object obj) => (T)obj;
-        public static Vector2 ToVec2(this Vector3 vector) => (Vector2)vector;
-        #endregion
+        public static T Cast<T>(this object obj)
+        {
+            return (T)obj;
+        }
+
+        public static Vector2 ToVec2(this Vector3 vector)
+        {
+            return (Vector2)vector;
+        }
 
         /// <summary>
         /// 置換したい文字をスペース二つはさんで記述<br/><br/>
@@ -31,13 +36,29 @@ namespace trrne.Bag
         /// <summary>
         /// 文字列から指定の文字を削除する
         /// </summary>
-        public static string Delete(this string target, string be) => target.Replace(be, "");
+        public static string Delete(this string target, string be)
+        {
+            return target.Replace(be, "");
+        }
 
-        [Obsolete]
-        public static bool Subclass(this object obj, Type t) => obj.GetType().IsSubclassOf(t);
-        public static bool Subclass(this object[] objs, Type t) => objs.GetType().IsSubclassOf(t);
+        public static bool Subclass(this object obj, Type t)
+        {
+            return obj.GetType().IsSubclassOf(t);
+        }
 
-        public static string Join(this object[] objs, string sep) => string.Join(sep, objs);
-        public static string Link(this char[] objs) => string.Join("", objs);
+        public static bool Subclass(this object[] objs, Type t)
+        {
+            return objs.GetType().IsSubclassOf(t);
+        }
+
+        public static string Join(this object[] objs, string sep)
+        {
+            return string.Join(sep, objs);
+        }
+
+        public static string Link(this char[] objs)
+        {
+            return string.Join("", objs);
+        }
     }
 }

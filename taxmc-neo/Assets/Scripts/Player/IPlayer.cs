@@ -2,6 +2,6 @@
 {
     public interface IPlayer
     {
-        bool controllable { get; set; }
+        bool ctrlable { get; set; }
     }
 }

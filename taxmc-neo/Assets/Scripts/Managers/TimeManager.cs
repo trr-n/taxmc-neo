@@ -1,9 +1,8 @@
-using System.Collections;
-using System.Collections.Generic;
+using trrne.Body;
 using trrne.Bag;
 using UnityEngine;
 
-namespace trrne.Body
+namespace trrne.Brain
 {
     public class TimeManager : MonoBehaviour
     {

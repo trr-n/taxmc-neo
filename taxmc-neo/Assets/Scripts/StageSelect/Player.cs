@@ -1,16 +1,18 @@
+using trrne.Body;
 using trrne.Bag;
 using UnityEngine;
 
-namespace trrne.Body.Select
+namespace trrne.Arm
 {
-    public class Player : MonoBehaviour, IPlayer
+    public class Player : MonoBehaviour//, IPlayer
     {
-        public bool controllable { get; set; }
+        public bool ctrlable { get; set; }
         readonly (float basis, float limit) speed = (5, 7.5f);
         Rigidbody2D rb;
 
         void Start()
         {
+            ctrlable = false;
             rb = GetComponent<Rigidbody2D>();
         }
 
@@ -21,7 +23,7 @@ namespace trrne.Body.Select
 
         void Move()
         {
-            if (!controllable)
+            if (!ctrlable)
             {
                 return;
             }

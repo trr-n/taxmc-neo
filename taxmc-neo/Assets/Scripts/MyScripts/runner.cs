@@ -40,6 +40,15 @@ namespace trrne.Bag
             }
         }
 
+        public static T BoolAction<T>(bool boo, Func<T> action)
+        {
+            if (boo)
+            {
+                return action();
+            }
+            return default;
+        }
+
         public static void BoolAction(bool boo, Action o, Action x)
         {
             BoolAction(boo, o);

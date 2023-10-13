@@ -8,54 +8,47 @@ namespace trrne.Brain
         [SerializeField]
         GameObject panel;
 
-        Body.IPlayer player;
+        // IPlayer player;
 
-        bool active = false;
+        bool active;
+        public bool isActive => active;
 
         void Start()
         {
-            panel.SetActive(active);
-
-            player = Scenes.active == Constant.Scenes.StageSelect ?
-                Gobject.GetWithTag<Body.Select.Player>(Constant.Tags.Player) :
-                Gobject.GetWithTag<Body.Player>(Constant.Tags.Player);
+            // player = Scenes.active switch
+            // {
+            //     Constant.Scenes.StageSelect => Gobject.GetWithTag<Arm.Player>(Constant.Tags.Player),
+            //     _ => Gobject.GetWithTag<Body.Player>(Constant.Tags.Player)
+            // };
         }
 
-        public void PanelActivator()
+        void Update()
+        {
+            active = gameObject.activeSelf;
+            Activate();
+        }
+
+        void Activate()
         {
             if (Inputs.Down(Constant.Keys.Pause))
             {
-                // pause
-                if (!panel.activeSelf)
-                {
-                    Act(true);
-                    // active = true;
-                    // panel.SetActive(true);
-                    // player.controllable = false;
-                }
-
-                // resume
-                else
-                {
-                    Act(false);
-                    active = false;
-                    panel.SetActive(false);
-                    player.controllable = true;
-                }
+                Act(!panel.activeSelf);
             }
         }
 
-        public void PanelActivator(bool active)
+        public void Active()
         {
-            Act(active);
+            Act(true);
+        }
+
+        public void Inactive()
+        {
+            Act(false);
         }
 
         void Act(bool active)
         {
-            this.active = active;
             panel.SetActive(active);
-            player.controllable = !active;
-
         }
     }
 }

@@ -42,7 +42,7 @@ namespace trrne.Bag
         public static GameObject GetWithTag(string tag) => Find(tag);
         public static T GetWithTag<T>(string tag) => Find(tag).GetComponent<T>();
         public static T GetWithTag<T>(this GameObject gob) => gob.GetComponent<T>();
-        public static bool TryWithTag<T>(out T t, string tag) => Find(tag).TryGetComponent(out t);
+        public static bool TryGetWithTag<T>(out T t, string tag) => Find(tag).TryGetComponent(out t);
         [Obsolete] public static T GetWithName<T>(string name) => GameObject.Find(name).GetComponent<T>();
         public static T GetFromChild<T>(this Transform transform) where T : MonoBehaviour => transform.GetChild(0).GetComponent<T>();
         public static T GetFromChild<T>(this Transform transform, int index) where T : MonoBehaviour => transform.GetChild(index).GetComponent<T>();

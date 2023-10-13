@@ -46,8 +46,8 @@ namespace trrne.Bag
             {
                 capacity += 4;
 
-                TKey[] keys = new TKey[capacity];
-                TValue[] values = new TValue[capacity];
+                var keys = new TKey[capacity];
+                var values = new TValue[capacity];
 
                 for (int index = 0; index < count; index++)
                 {
@@ -70,8 +70,8 @@ namespace trrne.Bag
                 throw new IndexOutOfRangeException();
             }
 
-            TKey[] keys = new TKey[capacity];
-            TValue[] values = new TValue[capacity];
+            var keys = new TKey[capacity];
+            var values = new TValue[capacity];
 
             for (int index = 0; index < count - 1; index++)
             {

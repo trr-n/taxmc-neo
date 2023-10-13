@@ -30,8 +30,15 @@ namespace trrne.Bag
             return sr.bounds.size;
         }
 
-        public static string SetText(this Text text, object obj) => text.text = obj.ToString();
-        public static void SetTextSize(this Text text, int size) => text.fontSize = size;
+        public static string SetText(this Text text, object obj)
+        {
+            return text.text = obj.ToString();
+        }
+
+        public static void SetTextSize(this Text text, int size)
+        {
+            text.fontSize = size;
+        }
 
         public static void TextSettings(this Text text,
             TextAnchor anchor, VerticalWrapMode vWrap, HorizontalWrapMode hWrap)
@@ -42,13 +49,28 @@ namespace trrne.Bag
         }
 
         public static Color transparent => Vector4.zero;
+        public static Color gaming => Color.HSVToRGB(Time.unscaledTime % 1, 1, 1);
 
-        public static Color SetAlpha(this Image image, float alpha) => image.color = new(image.color.r, image.color.g, image.color.b, alpha);
-        public static Color SetAlpha(this SpriteRenderer sr, float alpha) => sr.color = new(sr.color.r, sr.color.g, sr.color.b, alpha);
-        public static float GetAlpha(this Image image) => image.color.a;
+        public static void SetAlpha(this Image image, float alpha)
+        {
+            image.color = new(image.color.r, image.color.g, image.color.b, alpha);
+        }
 
-        public static void SetColor(this SpriteRenderer sr, Color color) => sr.color = color;
-        // public static void SetColor(this Color c, Color color) => c = color;
+        public static void SetAlpha(this SpriteRenderer sr, float alpha)
+        {
+            sr.color = new(sr.color.r, sr.color.g, sr.color.b, alpha);
+        }
+
+        public static float GetAlpha(this Image image)
+        {
+            return image.color.a;
+        }
+
+        public static void SetColor(this SpriteRenderer sr, Color color)
+        {
+            sr.color = color;
+        }
+
         public static Color SetColor(this Color color,
             float? red = null, float? green = null, float? blue = null, float? alpha = null)
         {
@@ -65,8 +87,11 @@ namespace trrne.Bag
             );
         }
 
-        public static bool Twins(Color n1, Color n2) => Mathf.Approximately(n1.r, n2.r) && Mathf.Approximately(n1.g, n2.g) && Mathf.Approximately(n1.b, n2.b);
-        public static Color gaming => Color.HSVToRGB(Time.unscaledTime % 1, 1, 1);
-
+        public static bool Twins(Color n1, Color n2)
+        {
+            return Mathf.Approximately(n1.r, n2.r)
+                && Mathf.Approximately(n1.g, n2.g)
+                && Mathf.Approximately(n1.b, n2.b);
+        }
     }
 }

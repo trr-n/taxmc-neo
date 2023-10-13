@@ -4,7 +4,7 @@ using UnityEngine.UI;
 using trrne.Bag;
 using trrne.Brain;
 
-namespace trrne.Body.Select
+namespace trrne.Arm
 {
     public class SelectManager : MonoBehaviour
     {
@@ -40,7 +40,6 @@ namespace trrne.Body.Select
 
         void Update()
         {
-            print(player.controllable);
             Welcome();
         }
 
@@ -68,22 +67,22 @@ namespace trrne.Body.Select
 
         async UniTask WhenStartGame()
         {
-            // 操作不可に
-            player.controllable = false;
+            // // 操作不可に
+            // player.ctrlable = false;
 
             // パネルを表示
-            // menu.SetActive(true);
-            menu.PanelActivator(true);
+            menu.Active();
 
             // Buttonを押すまで待機
             await UniTask.WaitUntil(() => Inputs.Down(Constant.Keys.Button));
 
+            print("pressed.");
+
             // パネルを非表示に
-            // menu.SetActive(false);
-            menu.PanelActivator(false);
+            menu.Inactive();
 
             // 操作可能に
-            player.controllable = true;
+            player.ctrlable = true;
         }
     }
 }

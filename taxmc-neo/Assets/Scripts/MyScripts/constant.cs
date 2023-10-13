@@ -22,11 +22,11 @@ namespace trrne
 
         public readonly struct Scenes
         {
-            public static string
+            public const string
             Prefix = "Game",
-            StageSelect = Prefix + 0,
-            Game1 = Prefix + 1,
-            Game2 = Prefix + 2;
+            StageSelect = "Game0",
+            Game1 = "Game1",
+            Game2 = "Game2";
         }
 
         public readonly struct Layers

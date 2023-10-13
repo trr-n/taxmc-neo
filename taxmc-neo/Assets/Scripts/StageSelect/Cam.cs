@@ -1,7 +1,7 @@
 using trrne.Bag;
 using UnityEngine;
 
-namespace trrne.Body.Select
+namespace trrne.Arm
 {
     public class Cam : MonoBehaviour
     {

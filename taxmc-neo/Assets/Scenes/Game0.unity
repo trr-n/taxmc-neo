@@ -1263,6 +1263,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   panel: {fileID: 2050355656}
+  aplayer: {fileID: 1471783891}
 --- !u!1 &1931193908
 GameObject:
   m_ObjectHideFlags: 0
