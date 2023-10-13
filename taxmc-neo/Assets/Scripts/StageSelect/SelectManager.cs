@@ -1,14 +1,18 @@
 ﻿using Cysharp.Threading.Tasks;
-using trrne.Bag;
 using UnityEngine;
 using UnityEngine.UI;
+using trrne.Bag;
+using trrne.Brain;
 
 namespace trrne.Body.Select
 {
     public class SelectManager : MonoBehaviour
     {
         [SerializeField]
-        Image escmenu, panel;
+        Image panel;
+
+        [SerializeField]
+        PauseMenu menu;
 
         [SerializeField]
         GameObject[] homes;
@@ -20,7 +24,6 @@ namespace trrne.Body.Select
         async void Start()
         {
             player = Gobject.GetWithTag<Player>(Constant.Tags.Player);
-            await WhenStartGame();
 
             Physics2D.gravity = Vector100.zero2d;
 
@@ -29,19 +32,21 @@ namespace trrne.Body.Select
             {
                 hitboxes[i] = homes[i].GetComponent<BoxCollider2D>();
             }
-
             panel.SetAlpha(0);
+
+            await WhenStartGame();
         }
 
 
         void Update()
         {
+            print(player.controllable);
             Welcome();
         }
 
         void Welcome()
         {
-            foreach (var (home, hitbox) in homes.Merge(hitboxes))
+            foreach (var (home, hitbox) in Shorthand.Merge(homes, hitboxes))
             {
                 if (Gobject.BoxCast2D(out _, home.Position2() + hitbox.offset, hitbox.bounds.size * 1.01f, Constant.Layers.Player))
                 {
@@ -63,17 +68,19 @@ namespace trrne.Body.Select
 
         async UniTask WhenStartGame()
         {
-            // 操作方法を記載されているパネルを表示
-            escmenu.SetAlpha(1f);
-
             // 操作不可に
             player.controllable = false;
 
-            // Buttonを押すまで表示
+            // パネルを表示
+            // menu.SetActive(true);
+            menu.PanelActivator(true);
+
+            // Buttonを押すまで待機
             await UniTask.WaitUntil(() => Inputs.Down(Constant.Keys.Button));
 
             // パネルを非表示に
-            escmenu.SetAlpha(0);
+            // menu.SetActive(false);
+            menu.PanelActivator(false);
 
             // 操作可能に
             player.controllable = true;

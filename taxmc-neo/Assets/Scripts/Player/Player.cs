@@ -12,7 +12,7 @@ namespace trrne.Body
         None    // 何もしない
     }
 
-    public class Player : MonoBehaviour
+    public class Player : MonoBehaviour, IPlayer
     {
         [SerializeField]
         Text velT;

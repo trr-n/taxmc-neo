@@ -3,12 +3,10 @@ using UnityEngine;
 
 namespace trrne.Body.Select
 {
-    public class Player : MonoBehaviour
+    public class Player : MonoBehaviour, IPlayer
     {
         public bool controllable { get; set; }
-
-        float speed = 5;
-        float limit = 7.5f;
+        readonly (float basis, float limit) speed = (5, 7.5f);
         Rigidbody2D rb;
 
         void Start()
@@ -34,10 +32,11 @@ namespace trrne.Body.Select
                 return;
             }
 
+            // 速度制限
+            var vel = rb.velocity;
             rb.velocity = new(
-                Mathf.Clamp(rb.velocity.x, -limit, limit), Mathf.Clamp(rb.velocity.y, -limit, limit));
-            rb.velocity += Inputs.AxisRaw() * speed * Time.fixedDeltaTime;
-            // transform.Translate(Inputs.AxisRaw() * speed * Time.unscaledDeltaTime);
+                Mathf.Clamp(vel.x, -speed.limit, speed.limit), Mathf.Clamp(vel.y, -speed.limit, speed.limit));
+            rb.velocity += speed.basis * Time.fixedDeltaTime * Inputs.AxisRaw();
         }
     }
 }

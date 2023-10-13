@@ -68,12 +68,12 @@ namespace trrne.Bag
             return t1.SelectMany(t11 => t2.Select(t22 => (t11, t22)));
         }
 
-        /// <summary>
-        /// さんこがっちゃんこ
-        /// </summary>
-        public static IEnumerable<(T1, T2, T3)> Merge<T1, T2, T3>(this T1[] t1, T2[] t2, T3[] t3)
-        {
-            return t1.SelectMany(name => t2.SelectMany(age => t3.Select(gender => (name, age, gender))));
-        }
+        // /// <summary>
+        // /// さんこがっちゃんこ
+        // /// </summary>
+        // public static IEnumerable<(T1, T2, T3)> Merge<T1, T2, T3>(this T1[] t1, T2[] t2, T3[] t3)
+        // {
+        //     return t1.SelectMany(name => t2.SelectMany(age => t3.Select(gender => (name, age, gender))));
+        // }
     }
 }

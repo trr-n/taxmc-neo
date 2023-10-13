@@ -21,6 +21,8 @@ namespace trrne.Bag
         public static bool Released(string name) => Input.GetButtonUp(name);
 
         public static Vector2 Axis() => new(Input.GetAxis(Constant.Keys.Horizontal), Input.GetAxis(Constant.Keys.Vertical));
+        public static Vector2 Axis(string x, string y) => new(Input.GetAxis(x), Input.GetAxis(y));
         public static Vector2 AxisRaw() => new(Input.GetAxisRaw(Constant.Keys.Horizontal), Input.GetAxisRaw(Constant.Keys.Vertical));
+        public static Vector2 AxisRaw(string x, string y) => new(Input.GetAxisRaw(x), Input.GetAxisRaw(y));
     }
 }

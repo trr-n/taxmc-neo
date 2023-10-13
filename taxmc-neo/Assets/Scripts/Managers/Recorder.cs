@@ -1,35 +1,37 @@
 using trrne.Bag;
 using UnityEngine;
 
-namespace trrne.Body
+namespace trrne.Brain
 {
     public class Recorder : Singleton<Recorder>
     {
-        protected override bool notDestroy => true;
+        protected override bool alive => true;
 
-        int playing = 0;
-        int cleared = 0;
+        (int stay, int cleared) idx;
 
         /// <summary>
         /// ステージ数
         /// </summary>
         public int max => 2;
 
-        public int current => int.Parse(Scenes.active.Split(Constant.Scenes.Prefix)[1]);
+        public int current => int.Parse(Scenes.active.Delete(Constant.Scenes.Prefix));
 
-        public int playingIdx => playing;
+        public int stay => idx.stay;
 
         /// <summary>
         /// 進捗
         /// </summary>
-        public float progress => (float)cleared / max;
+        public float progress => (float)idx.cleared / max;
 
         /// <summary>
         /// 次のステージに
         /// </summary>
         public void Next(string name)
         {
-            playing++;
+            if (int.TryParse(name.Delete(Constant.Scenes.Prefix), out int idx))
+            {
+                this.idx.stay = idx;
+            }
             Scenes.Load(name);
         }
 
@@ -39,9 +41,9 @@ namespace trrne.Body
         public void Clear()
         {
             // クリアしたと思われるシーンにPrefixと整数が含まれていたら+1
-            if (int.TryParse(Scenes.active.Split(Constant.Scenes.Prefix)[1], out _))
+            if (int.TryParse(Scenes.active.Delete(Constant.Scenes.Prefix), out _))
             {
-                cleared++;
+                idx.cleared++;
             }
         }
 
@@ -55,7 +57,7 @@ namespace trrne.Body
 
         void Update()
         {
-            print($"inProgress: {playingIdx}\ncleared: {cleared}\ncurrent: {current}");
+            print($"inProgress: {stay}\ncleared: {idx.cleared}\ncurrent: {current}");
         }
     }
 }

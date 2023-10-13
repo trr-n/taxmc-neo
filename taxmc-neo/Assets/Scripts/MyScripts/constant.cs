@@ -48,7 +48,8 @@ namespace trrne
             Jump = "Jump",
             Down = "Down",
             Zoom = "Zoom",
-            Button = "Button";
+            Button = "Button",
+            Pause = "Pause";
         }
 
         public readonly struct Tags
