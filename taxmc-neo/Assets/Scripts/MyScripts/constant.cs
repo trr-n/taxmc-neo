@@ -40,6 +40,7 @@ namespace trrne
         public readonly struct Tags
         {
             public static string
+            Manager = "Manager",
             Player = "Player",
             Ladder = "Ladder",
             Pad = "Pad",

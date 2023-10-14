@@ -8,8 +8,6 @@ using static UnityEngine.SceneManagement.SceneManager;
 
 namespace trrne.Bag
 {
-    public enum Counting { Built, Unbuilt }
-
     public class Scenes
     {
         /// <summary>
@@ -67,10 +65,10 @@ namespace trrne.Bag
             }
         }
 
-        public static int Total(Counting which) => which switch
+        public static int Total(ScenesCountingFormat which) => which switch
         {
-            Counting.Unbuilt => sceneCountInBuildSettings,
-            Counting.Built => sceneCount,
+            ScenesCountingFormat.Unbuilt => sceneCountInBuildSettings,
+            ScenesCountingFormat.Built => sceneCount,
             _ => -1
         };
 

@@ -3,6 +3,7 @@ using UnityEngine.UI;
 using trrne.Bag;
 using Cysharp.Threading.Tasks;
 using System.Collections;
+using trrne.Brain;
 
 namespace trrne.Body
 {
@@ -12,7 +13,7 @@ namespace trrne.Body
         None    // 何もしない
     }
 
-    public class Player : MonoBehaviour, IPlayer
+    public class Player : MonoBehaviour //, IPlayer
     {
         [SerializeField]
         Text velT;
@@ -20,7 +21,7 @@ namespace trrne.Body
         [SerializeField]
         GameObject diefx;
 
-        public bool ctrlable { get; set; }
+        public bool controllable { get; set; }
         public bool jumpable { get; set; }
         public bool walkable { get; set; }
 
@@ -53,8 +54,9 @@ namespace trrne.Body
         Animator animator;
         PlayerFlag flag;
         Cam cam;
+        PauseMenu menu;
 
-        readonly float tolerance = 0.33f;
+        readonly float inputTolerance = 0.33f;
 
         Vector2 cp = Vector2.zero;
         public Vector2 checkpoint => cp;
@@ -70,7 +72,9 @@ namespace trrne.Body
 
         void Start()
         {
-            flag = transform.GetFromChild<PlayerFlag>(0);
+            menu = Gobject.GetWithTag<PauseMenu>(Constant.Tags.Manager);
+
+            flag = transform.GetFromChild<PlayerFlag>();
 
             animator = GetComponent<Animator>();
 
@@ -79,9 +83,6 @@ namespace trrne.Body
 
             cam = Gobject.GetWithTag<Cam>(Constant.Tags.MainCamera);
             cam.followable = true;
-
-            // string str = "igaito, atui";
-            // print(str.ReplaceLump());
         }
 
         void FixedUpdate()
@@ -127,7 +128,7 @@ namespace trrne.Body
 
         void Flip()
         {
-            if (!ctrlable)
+            if (!controllable || menu.isPausing)
             {
                 return;
             }
@@ -144,17 +145,13 @@ namespace trrne.Body
                     case -1:
                         Shorthand.BoolAction(current != -1, () => transform.localScale *= new Vector2(-1, 1));
                         break;
-
-                    case 0:
-                    default:
-                        break;
                 }
             }
         }
 
         void Jump()
         {
-            if (!ctrlable)
+            if (!controllable)
             {
                 return;
             }
@@ -178,7 +175,7 @@ namespace trrne.Body
         /// </summary>
         void Move()
         {
-            if (!ctrlable)
+            if (!controllable)
             {
                 return;
             }
@@ -188,7 +185,7 @@ namespace trrne.Body
             Vector2 move = Input.GetAxisRaw(Constant.Keys.Horizontal) * Vector100.x;
 
             // 入力がtolerance以下、氷に乗っていない、浮いていない
-            if (move.magnitude <= tolerance && !flag.onIce && !floating)
+            if (move.magnitude <= inputTolerance && !flag.onIce && !floating)
             {
                 // x軸の速度をspeed.reduction倍
                 rb.SetVelocityX(rb.velocity.x * speed.reduction);
@@ -218,7 +215,7 @@ namespace trrne.Body
             }
 
             isDieProcessing = true;
-            ctrlable = false;
+            controllable = false;
             cam.followable = false;
 
             diefx.TryGenerate(transform.position);
@@ -263,7 +260,7 @@ namespace trrne.Body
 
             // うごいていいよ
             cam.followable = true;
-            ctrlable = true;
+            controllable = true;
             isDieProcessing = false;
         }
     }

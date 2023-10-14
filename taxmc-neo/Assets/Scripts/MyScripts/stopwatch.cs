@@ -3,20 +3,6 @@ using SystemStopwatch = System.Diagnostics.Stopwatch;
 
 namespace trrne.Bag
 {
-    public enum StopwatchFormat
-    {
-        H, h, Hour, hour,
-        M, m, Minute, minute,
-        S, s, Second, second,
-        MS, ms, MilliSecond, millisecond
-    }
-
-    public enum StopwatchOutput
-    {
-        HMS, HourMinuteSecond, hms,
-        MS, MinuteSecond, ms
-    }
-
     public sealed class Stopwatch
     {
         SystemStopwatch sw;

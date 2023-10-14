@@ -1,8 +1,10 @@
-﻿using Cysharp.Threading.Tasks;
+﻿using System.ComponentModel.Design;
+using Cysharp.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.UI;
 using trrne.Bag;
 using trrne.Brain;
+using System;
 
 namespace trrne.Arm
 {
@@ -76,13 +78,11 @@ namespace trrne.Arm
             // Buttonを押すまで待機
             await UniTask.WaitUntil(() => Inputs.Down(Constant.Keys.Button));
 
-            print("pressed.");
-
             // パネルを非表示に
             menu.Inactive();
 
             // 操作可能に
-            player.ctrlable = true;
+            player.controllable = true;
         }
     }
 }

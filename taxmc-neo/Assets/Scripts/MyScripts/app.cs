@@ -3,10 +3,6 @@ using static UnityEngine.Application;
 
 namespace trrne.Bag
 {
-    public enum FrameRate { Low = 30, Medium = 60, High = 144, Ultra = 200, VSync = -1 }
-    public enum CursorAppearance { Invisible, Visible }
-    public enum CursorRangeOfMotion { InScene = CursorLockMode.Confined, Fixed = CursorLockMode.Locked, Limitless = CursorLockMode.None }
-
     public class App
     {
         public static void SetFPS(int fps = -1)
@@ -51,7 +47,7 @@ namespace trrne.Bag
         public static Vector2 screenSize => new(Screen.width, Screen.height);
         public static Vector2 screenCenter => screenSize / 2;
 
-        public static void CameraSize(float size)
+        public static void SetCameraSize(float size)
         {
             Camera.main.orthographicSize = size;
         }

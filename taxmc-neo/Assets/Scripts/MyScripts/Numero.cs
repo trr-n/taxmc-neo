@@ -72,9 +72,9 @@ namespace trrne.Bag
             return Enum.GetNames(t.GetType()).Length;
         }
 
-        public static bool IsCaged(this float n, float min, float max)
+        public static bool IsHardStucked(this float n, float min, float max)
         {
-            return n >= min || n <= max;
+            return n > max || n < min;
         }
     }
 }

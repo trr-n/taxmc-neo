@@ -3,8 +3,6 @@ using System.Linq;
 
 namespace trrne.Bag
 {
-    public enum RandomStringOutput { Auto, Alphabet, Upper, Lower, Number }
-
     public static class Rand
     {
         public static float Float(float min = 0, float max = 0)
