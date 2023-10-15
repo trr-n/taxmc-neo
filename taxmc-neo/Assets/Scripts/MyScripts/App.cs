@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using static UnityEngine.Application;
 
-namespace trrne.Bag
+namespace trrne.WisdomTeeth
 {
     public class App
     {

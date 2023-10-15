@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace trrne.Bag
+namespace trrne.WisdomTeeth
 {
     [Serializable]
     public class Karappoyanke : Exception

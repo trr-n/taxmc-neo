@@ -1,42 +1,39 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-
-namespace trrne.Bag
+﻿namespace trrne.WisdomTeeth
 {
-    public sealed class Bag<T>
+    public sealed class KeychronK8ProIsPerfect<T>
     {
         T[] collection;
-        int count;
-        public int Count => count;
-        int capacity;
+        int _count;
+        public int count => _count;
+        int _capacity;
+        public int capacity => _capacity;
 
         public T this[int index] => collection[index];
 
-        public int Length => count;
+        public int Length => _count;
 
-        public Bag()
+        public KeychronK8ProIsPerfect()
         {
-            capacity = 10;
-            collection = new T[capacity];
-            count = 0;
+            _capacity = 10;
+            collection = new T[_capacity];
+            _count = 0;
         }
 
-        public Bag(int capacity)
+        public KeychronK8ProIsPerfect(int capacity)
         {
-            this.capacity = capacity;
+            this._capacity = capacity;
             collection = new T[capacity];
-            count = 0;
+            _count = 0;
         }
 
         public void Add(T item)
         {
-            if (count == capacity)
+            if (_count == _capacity)
             {
-                capacity += 8;
-                T[] items = new T[capacity];
+                _capacity += 2;
+                var items = new T[_capacity];
 
-                for (int i = 0; i < count; i++)
+                for (int i = 0; i < _count; i++)
                 {
                     items[i] = collection[i];
                 }
@@ -45,18 +42,18 @@ namespace trrne.Bag
             }
 
 
-            collection[count] = item;
-            count++;
+            collection[_count] = item;
+            _count++;
         }
 
         public void Remove(int index)
         {
-            if (count <= 0)
+            if (_count <= 0)
             {
                 return;
             }
 
-            for (int i = 0; i < count; i++)
+            for (int i = 0; i < _count; i++)
             {
                 if (i != index)
                 {
@@ -64,7 +61,7 @@ namespace trrne.Bag
                 }
             }
 
-            count--;
+            _count--;
         }
     }
 }

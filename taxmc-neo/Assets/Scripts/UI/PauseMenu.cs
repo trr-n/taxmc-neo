@@ -1,7 +1,6 @@
 using System.Collections;
-using trrne.Bag;
+using trrne.WisdomTeeth;
 using UnityEngine;
-using UnityEngine.UI;
 
 namespace trrne.Brain
 {
@@ -14,7 +13,7 @@ namespace trrne.Brain
         bool pausing;
         public bool isPausing => pausing;
 
-        (float speed, bool during) fade = (5f, false);
+        (float speed, bool during) fade = (10f, false);
 
         void Start()
         {
@@ -39,7 +38,7 @@ namespace trrne.Brain
 
         void State(bool active)
         {
-            Fading(active);
+            FadingHandle(active);
             App.SetTimeScale(active ? 0 : 1);
         }
 
@@ -58,7 +57,7 @@ namespace trrne.Brain
             }
         }
 
-        void Fading(bool fin)
+        void FadingHandle(bool fin)
         {
             if (fade.during)
             {
@@ -66,64 +65,15 @@ namespace trrne.Brain
             }
 
             StartCoroutine(Fader(fin));
-            // StartCoroutine(fin ? nameof(FadeIn) : nameof(FadeOut));
-        }
-
-        IEnumerator FadeIn()
-        {
-            fade.during = true;
-
-            float alpha = 0;
-            print("fadein called");
-
-            while (true)
-            {
-                yield return null;
-
-                alpha += Time.unscaledDeltaTime * fade.speed;
-                canvas.alpha = alpha;
-
-                if (alpha >= 1)
-                {
-                    break;
-                }
-            }
-
-            fade.during = false;
-        }
-
-        IEnumerator FadeOut()
-        {
-            float alpha = 1;
-            print("fadeout called");
-
-            while (true)
-            {
-                yield return null;
-
-                alpha -= Time.unscaledDeltaTime * fade.speed;
-                canvas.alpha = alpha;
-
-                if (alpha <= 0)
-                {
-                    break;
-                }
-            }
-
-            fade.during = false;
         }
 
         // フェード処理
         IEnumerator Fader(bool fin)
         {
-            yield return null;
-
             fade.during = true;
-            float alpha = fin ? 0 : 1;
+            var alpha = fin ? 0f : 1;
 
-            // canvas.alpha = fin ? 1 : 0;
-
-            while (true)
+            while (alpha.IsCaged(0, 1))
             {
                 yield return null;
 
@@ -132,11 +82,6 @@ namespace trrne.Brain
                     alpha -= Time.unscaledDeltaTime * fade.speed;
 
                 canvas.alpha = alpha;
-
-                if (alpha.IsHardStucked(0, 1))
-                {
-                    break;
-                }
             }
 
             // フェード処理終了

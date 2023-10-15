@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace trrne.Bag
+namespace trrne.WisdomTeeth
 {
     public static class Inputs
     {

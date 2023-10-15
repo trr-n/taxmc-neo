@@ -6,7 +6,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using static UnityEngine.SceneManagement.SceneManager;
 
-namespace trrne.Bag
+namespace trrne.WisdomTeeth
 {
     public class Scenes
     {

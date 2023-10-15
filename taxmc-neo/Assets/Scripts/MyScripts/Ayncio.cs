@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace trrne.Bag
+namespace trrne.WisdomTeeth
 {
     public sealed class Asyncio
     {

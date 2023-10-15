@@ -1,7 +1,7 @@
 using System;
 using SystemStopwatch = System.Diagnostics.Stopwatch;
 
-namespace trrne.Bag
+namespace trrne.WisdomTeeth
 {
     public sealed class Stopwatch
     {

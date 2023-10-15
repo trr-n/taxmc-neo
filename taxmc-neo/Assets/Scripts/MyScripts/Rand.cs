@@ -1,7 +1,7 @@
 using System;
 using System.Linq;
 
-namespace trrne.Bag
+namespace trrne.WisdomTeeth
 {
     public static class Rand
     {

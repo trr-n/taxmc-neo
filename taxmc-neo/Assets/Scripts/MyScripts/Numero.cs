@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
-namespace trrne.Bag
+namespace trrne.WisdomTeeth
 {
     public static class Numero
     {
@@ -72,9 +72,14 @@ namespace trrne.Bag
             return Enum.GetNames(t.GetType()).Length;
         }
 
-        public static bool IsHardStucked(this float n, float min, float max)
+        public static bool IsGrazing(this float n, float min, float max)
         {
             return n > max || n < min;
+        }
+
+        public static bool IsCaged(this float n, float min, float max)
+        {
+            return !(n > max || n < min);
         }
     }
 }

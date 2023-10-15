@@ -1,6 +1,6 @@
 ﻿using System.Security.Cryptography;
 
-namespace trrne.Bag
+namespace trrne.WisdomTeeth
 {
     public class AES : IEncryption
     {

@@ -3,7 +3,7 @@ using System.IO;
 using System.Text.Json;
 using UnityEngine;
 
-namespace trrne.Bag
+namespace trrne.WisdomTeeth
 {
     public sealed class Save
     {

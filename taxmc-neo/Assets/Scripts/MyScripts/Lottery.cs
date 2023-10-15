@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
-namespace trrne.Bag
+namespace trrne.WisdomTeeth
 {
     public static class Lottery
     {

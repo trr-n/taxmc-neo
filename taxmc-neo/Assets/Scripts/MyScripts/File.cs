@@ -1,7 +1,7 @@
 using System.IO;
 using System.Runtime.CompilerServices;
 
-namespace trrne.Bag
+namespace trrne.WisdomTeeth
 {
     public static class File
     {

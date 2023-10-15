@@ -1,7 +1,7 @@
 ﻿using System;
 using static UnityEngine.SystemInfo;
 
-namespace trrne.Bag
+namespace trrne.WisdomTeeth
 {
     public static class Sys
     {

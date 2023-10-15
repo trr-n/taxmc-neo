@@ -2,7 +2,7 @@ using System.Text;
 using System.Collections.Generic;
 using System.Security.Cryptography;
 
-namespace trrne.Bag
+namespace trrne.WisdomTeeth
 {
     public class Rijndael : IEncryption
     {

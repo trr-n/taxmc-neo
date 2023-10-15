@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace trrne.Bag
+namespace trrne.WisdomTeeth
 {
     public static class Temps
     {

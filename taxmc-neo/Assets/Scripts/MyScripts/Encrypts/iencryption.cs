@@ -1,4 +1,4 @@
-﻿namespace trrne.Bag
+﻿namespace trrne.WisdomTeeth
 {
     public interface IEncryption
     {

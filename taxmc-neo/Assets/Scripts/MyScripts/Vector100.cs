@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-namespace trrne.Bag
+namespace trrne.WisdomTeeth
 {
     public static class Vector100
     {

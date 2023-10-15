@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace trrne.Bag
+namespace trrne.WisdomTeeth
 {
     public static class Appearance
     {

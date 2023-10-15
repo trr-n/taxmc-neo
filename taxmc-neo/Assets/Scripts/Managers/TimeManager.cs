@@ -1,5 +1,5 @@
 using trrne.Body;
-using trrne.Bag;
+using trrne.WisdomTeeth;
 using UnityEngine;
 
 namespace trrne.Brain
