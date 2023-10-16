@@ -1,3 +1,4 @@
+using System;
 using trrne.WisdomTeeth;
 using UnityEngine;
 
@@ -28,11 +29,18 @@ namespace trrne.Brain
         /// </summary>
         public void Next(string name)
         {
-            if (int.TryParse(name.Delete(Constant.Scenes.Prefix), out int idx))
+            try
             {
-                this.idx.stay = idx;
+                if (int.TryParse(name.Delete(Constant.Scenes.Prefix), out int idx))
+                {
+                    this.idx.stay = idx;
+                    Scenes.Load(name);
+                }
             }
-            Scenes.Load(name);
+            catch (Exception e)
+            {
+                throw e;
+            }
         }
 
         /// <summary>

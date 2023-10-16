@@ -24,6 +24,10 @@ namespace trrne.Body
         protected SpriteRenderer sr;
         protected Vector2 size => sr.bounds.size;
 
+        /// <summary>
+        /// base.Start();<br/>
+        /// ↑を忘れずに
+        /// </summary>
         protected virtual void Start()
         {
             sr = GetComponent<SpriteRenderer>();
