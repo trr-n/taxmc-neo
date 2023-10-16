@@ -57,7 +57,7 @@ namespace trrne.Brain
 
         void Start()
         {
-            if (Scenes.active == Constant.Scenes.StageSelect)
+            if (Scenes.active == Constant.Scenes.Game0)
             {
                 Physics2D.gravity = Vector100.zero2d;
             }

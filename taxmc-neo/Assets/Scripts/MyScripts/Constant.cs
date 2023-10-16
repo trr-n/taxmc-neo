@@ -9,7 +9,7 @@ namespace trrne
         {
             public const string
             Prefix = "Game",
-            StageSelect = "Game0",
+            Game0 = "Game0",
             Game1 = "Game1",
             Game2 = "Game2";
         }

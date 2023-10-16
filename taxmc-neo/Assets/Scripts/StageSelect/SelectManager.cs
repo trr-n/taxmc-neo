@@ -1,88 +1,49 @@
-﻿using System.ComponentModel.Design;
-using Cysharp.Threading.Tasks;
+﻿using trrne.WisdomTeeth;
 using UnityEngine;
-using UnityEngine.UI;
-using trrne.WisdomTeeth;
-using trrne.Brain;
-using System;
 
 namespace trrne.Arm
 {
     public class SelectManager : MonoBehaviour
     {
         [SerializeField]
-        Image panel;
+        GameObject[] buttons;
+        RectTransform core;
 
-        [SerializeField]
-        PauseMenu menu;
+        Vector3 xy0 = new(1, 0, 0);
+        // int[] points => new int[] { 2048, 0, -2048 };
+        Vector3[] points => new Vector3[] { Vector100.x * 2048, Vector100.x * 0, Vector100.x * -2048 };
 
-        [SerializeField]
-        GameObject[] homes;
-        BoxCollider2D[] hitboxes;
-        readonly string prefix = "level";
-
-        Player player;
-
-        async void Start()
+        void Start()
         {
-            player = Gobject.GetWithTag<Player>(Constant.Tags.Player);
-
-            Physics2D.gravity = Vector100.zero2d;
-
-            hitboxes = new BoxCollider2D[homes.Length];
-            for (int i = 0; i < hitboxes.Length; i++)
-            {
-                hitboxes[i] = homes[i].GetComponent<BoxCollider2D>();
-            }
-            panel.SetAlpha(0);
-
-            await WhenStartGame();
+            core = buttons[0].transform.parent.GetComponent<RectTransform>();
+            core.position = points[0];
         }
-
 
         void Update()
         {
-            Welcome();
+            print($"t: {core.transform.position}, rt: {core.position}");
         }
 
-        void Welcome()
+        void Side()
         {
-            foreach (var (home, hitbox) in Shorthand.Merge(homes, hitboxes))
-            {
-                if (Gobject.BoxCast2D(out _, home.Position2() + hitbox.offset, hitbox.bounds.size * 1.01f, Constant.Layers.Player))
-                {
-                    switch (int.Parse(home.name.Delete(prefix)))
-                    {
-                        case 0:
-                            Shorthand.BoolAction(Inputs.Down(Constant.Keys.Button),
-                                () => Recorder.Instance.Next(name: Constant.Scenes.Game1));
-                            break;
+        }
 
-                        case 1:
-                        default:
-                            print("not yet, not soon");
-                            break;
+        /// <summary>
+        /// 中央(xが0)のボタンを取得
+        /// </summary>
+        GameObject center
+        {
+            get
+            {
+                foreach (var button in buttons)
+                {
+                    if (button.GetComponent<RectTransform>().position.x == 0)
+                    {
+                        return button;
                     }
                 }
+                return null;
             }
-        }
-
-        async UniTask WhenStartGame()
-        {
-            // // 操作不可に
-            // player.ctrlable = false;
-
-            // パネルを表示
-            menu.Active();
-
-            // Buttonを押すまで待機
-            await UniTask.WaitUntil(() => Inputs.Down(Constant.Keys.Button));
-
-            // パネルを非表示に
-            menu.Inactive();
-
-            // 操作可能に
-            player.controllable = true;
         }
     }
 }

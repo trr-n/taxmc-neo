@@ -5,19 +5,19 @@ namespace trrne.Arm
 {
     public class Cam : MonoBehaviour
     {
-        [SerializeField]
-        Vector2 leftUp, rightBottom;
+        // [SerializeField]
+        // Vector2 leftUp, rightBottom;
 
-        GameObject player;
+        // GameObject player;
 
         void Start()
         {
-            player = Gobject.Find(Constant.Tags.Player);
+            // player = Gobject.Find(Constant.Tags.Player);
         }
 
         void Update()
         {
-            Follow();
+            // Follow();
         }
 
         void Follow()
@@ -28,7 +28,7 @@ namespace trrne.Arm
             //     y: Mathf.Clamp(transform.position.y, rightBottom.y, leftUp.y)
             // );
 
-            transform.SetPosition(player.transform.position + Vector100.z * transform.position.z);
+            // transform.SetPosition(player.transform.position + Vector100.z * transform.position.z);
         }
     }
 }
