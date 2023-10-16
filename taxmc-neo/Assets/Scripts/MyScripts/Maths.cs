@@ -1,9 +1,10 @@
 ﻿using System;
+using Unity.Mathematics;
 using UnityEngine;
 
 namespace trrne.WisdomTeeth
 {
-    public static class Numero
+    public static class Maths
     {
         public static float Clamp(this float n, float min, float max)
         {
@@ -48,6 +49,16 @@ namespace trrne.WisdomTeeth
         public static bool Twins(this float a, float b)
         {
             return Mathf.Approximately(a, b);
+        }
+
+        public static bool Twins(this float a, float b, float tolerance)
+        {
+            return (a - b) < tolerance;
+        }
+
+        public static float Sign(this float n)
+        {
+            return Mathf.Sign(n);
         }
 
         public static bool IsPrime(int n)

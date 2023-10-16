@@ -1,49 +1,103 @@
-﻿using trrne.WisdomTeeth;
+﻿using Cysharp.Threading.Tasks;
+using DG.Tweening;
+using trrne.WisdomTeeth;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace trrne.Arm
 {
     public class SelectManager : MonoBehaviour
     {
         [SerializeField]
-        GameObject[] buttons;
+        Text debugT, centerT;
+
+        [SerializeField]
+        RectTransform[] buttonRTs;
+
+        [SerializeField]
         RectTransform core;
 
-        Vector3 xy0 = new(1, 0, 0);
-        // int[] points => new int[] { 2048, 0, -2048 };
-        Vector3[] points => new Vector3[] { Vector100.x * 2048, Vector100.x * 0, Vector100.x * -2048 };
+        const float Offset = 18.96f;
+        readonly Vector2[] points = new Vector2[] {
+            Vector100.x * Offset,
+            Vector100.zero,
+            Vector100.x * -Offset
+        };
+
+        bool isScrolling = false;
+        readonly float scrollSpeed = 0.5f;
+
+        float horizon;
 
         void Start()
         {
-            core = buttons[0].transform.parent.GetComponent<RectTransform>();
             core.position = points[0];
         }
 
         void Update()
         {
-            print($"t: {core.transform.position}, rt: {core.position}");
-        }
+            debugT.SetText(buttonRTs[0].transform.position.x + "\n" +
+                buttonRTs[1].transform.position.x + "\n" +
+                buttonRTs[2].transform.position.x);
+            centerT.text = GetCenterButton() != null ? GetCenterButton().name : "null";
 
-        void Side()
-        {
+            Scroll();
         }
 
         /// <summary>
-        /// 中央(xが0)のボタンを取得
+        /// xが一番0に近いボタンを取得
         /// </summary>
-        GameObject center
+        GameObject GetCenterButton()
         {
-            get
+            foreach (var button in buttonRTs)
             {
-                foreach (var button in buttons)
+                if (Maths.Twins(Maths.Cutail(button.transform.position.x), 0))
                 {
-                    if (button.GetComponent<RectTransform>().position.x == 0)
-                    {
-                        return button;
-                    }
+                    return button.gameObject;
                 }
-                return null;
             }
+            return null;
+        }
+
+        void Scroll()
+        {
+            horizon = Input.GetAxisRaw(Constant.Keys.Horizontal);
+            if (horizon.Twins(0))
+            {
+                return;
+            }
+
+            switch (horizon.Sign())
+            {
+                // D
+                case 1:
+                    if (GetCenterButton() != buttonRTs[^1].gameObject)
+                    {
+                        Scroller(core.position.x - Offset);
+                    }
+                    break;
+
+                // A
+                case -1:
+                    if (GetCenterButton() != buttonRTs[0].gameObject)
+                    {
+                        Scroller(core.position.x + Offset);
+                    }
+                    break;
+            }
+        }
+
+        void Scroller(float targetx)
+        {
+            if (isScrolling)
+            {
+                return;
+            }
+            isScrolling = true;
+
+            core.DOMoveX(targetx, scrollSpeed)
+                .SetEase(Ease.InOutCubic)
+                .OnComplete(() => isScrolling = false);
         }
     }
 }

@@ -22,7 +22,7 @@ namespace trrne.Body
                 isUsed = true;
 
                 sr.sprite = sprites[1];
-                player.SetCheckpoint(new(transform.position.x, Numero.Cutail(transform.position.y)));
+                player.SetCheckpoint(new(transform.position.x, Maths.Cutail(transform.position.y)));
             }
         }
     }

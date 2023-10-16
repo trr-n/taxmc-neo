@@ -24,24 +24,24 @@ namespace trrne.WisdomTeeth
         public void Rubbish() { sw.Stop(); sw = null; }
 
         public int h => sw.Elapsed.Hours;
-        public float hf => Numero.Round((float)sw.Elapsed.TotalHours, 6);
+        public float hf => Maths.Round((float)sw.Elapsed.TotalHours, 6);
         public int Hour() => sw.Elapsed.Hours;
-        public float HourF(int digit = 6) => Numero.Round((float)sw.Elapsed.TotalHours, digit);
+        public float HourF(int digit = 6) => Maths.Round((float)sw.Elapsed.TotalHours, digit);
 
         public int m => sw.Elapsed.Minutes;
-        public float mf => Numero.Round((float)sw.Elapsed.TotalMinutes, 6);
+        public float mf => Maths.Round((float)sw.Elapsed.TotalMinutes, 6);
         public int Minute() => sw.Elapsed.Minutes;
-        public float MinuteF(int digit = 6) => Numero.Round((float)sw.Elapsed.TotalMinutes, digit);
+        public float MinuteF(int digit = 6) => Maths.Round((float)sw.Elapsed.TotalMinutes, digit);
 
         public int s => sw.Elapsed.Seconds;
-        public float sf => Numero.Round((float)sw.Elapsed.TotalSeconds, 6);
+        public float sf => Maths.Round((float)sw.Elapsed.TotalSeconds, 6);
         public int Second() => sw.Elapsed.Seconds;
-        public float SecondF(int digit = 6) => Numero.Round((float)sw.Elapsed.TotalSeconds, digit);
+        public float SecondF(int digit = 6) => Maths.Round((float)sw.Elapsed.TotalSeconds, digit);
 
         public int ms => sw.Elapsed.Milliseconds;
-        public float msf => Numero.Round((float)sw.Elapsed.TotalMilliseconds, 6);
+        public float msf => Maths.Round((float)sw.Elapsed.TotalMilliseconds, 6);
         public int MSecond() => sw.Elapsed.Milliseconds;
-        public float MSecondF(int digit = 6) => Numero.Round((float)sw.Elapsed.TotalMilliseconds, digit);
+        public float MSecondF(int digit = 6) => Maths.Round((float)sw.Elapsed.TotalMilliseconds, digit);
 
         public TimeSpan spent => sw.Elapsed;
         public string Spent(StopwatchOutput output) => output switch

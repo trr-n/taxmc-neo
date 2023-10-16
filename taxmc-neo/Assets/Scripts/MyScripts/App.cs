@@ -16,7 +16,7 @@ namespace trrne.WisdomTeeth
         }
 
         public static float fps => Mathf.Floor(1 / Time.deltaTime);
-        public static int fpsint => Numero.Cutail(fps);
+        public static int fpsint => Maths.Cutail(fps);
 
         public static void SetGravity(Vector3 gravity)
         {
