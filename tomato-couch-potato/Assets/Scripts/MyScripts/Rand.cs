@@ -1,7 +1,6 @@
-using System;
 using System.Linq;
 
-namespace trrne.Teeth
+namespace trrne.Pancreas
 {
     public static class Rand
     {
@@ -30,15 +29,15 @@ namespace trrne.Teeth
 
         public static string String()
         {
-            return String(RandomStringOutput.Auto, Int(2, 10));
+            return String(Int(2, 10), RandomStringOutput.Auto);
         }
 
         public static string String(int count)
         {
-            return String(RandomStringOutput.Auto, count);
+            return String(count, RandomStringOutput.Auto);
         }
 
-        public static string String(RandomStringOutput output, int count)
+        public static string String(int count, RandomStringOutput output)
         {
             switch (output)
             {
@@ -51,21 +50,21 @@ namespace trrne.Teeth
                     return chars.Link();
 
                 case RandomStringOutput.Alphabet:
-                    return Mix(count, alphabets, 0, alphabets.Length).Link();
+                    return Mixer(count, alphabets, 0, alphabets.Length).Link();
 
                 case RandomStringOutput.Upper:
-                    return Mix(count, alphabets, alphabets.Length / 2, alphabets.Length).Link();
+                    return Mixer(count, alphabets, alphabets.Length / 2, alphabets.Length).Link();
 
                 case RandomStringOutput.Lower:
-                    return Mix(count, alphabets, 0, alphabets.Length).Link();
+                    return Mixer(count, alphabets, 0, alphabets.Length).Link();
 
                 case RandomStringOutput.Number:
-                    return Mix(count, numbers, 0, numbers.Length).Link();
+                    return Mixer(count, numbers, 0, numbers.Length).Link();
             }
             throw null;
         }
 
-        static char[] Mix(int count, char[] array, int start, int end)
+        static char[] Mixer(int count, char[] array, int start, int end)
         {
             var chars = new char[count];
             for (int i = 0; i < count; i++)

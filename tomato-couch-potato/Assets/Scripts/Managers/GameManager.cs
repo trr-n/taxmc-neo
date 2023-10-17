@@ -1,5 +1,5 @@
-using trrne.Body;
-using trrne.Teeth;
+using trrne.Heart;
+using trrne.Pancreas;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -23,13 +23,13 @@ namespace trrne.Brain
             menu = GetComponent<PauseMenu>();
             menu.Inactive();
 
-            Physics2D.gravity = Vector100.gravity;
+            Physics2D.gravity = Vector100.Gravity;
 
             cam = Gobject.GetWithTag<Cam>(Constant.Tags.MainCamera);
-            cam.followable = true;
+            cam.Followable = true;
 
             player = Gobject.GetWithTag<Player>(Constant.Tags.Player);
-            player.controllable = true;
+            player.Controllable = true;
 
             Gobject.Finds(Constant.Tags.Enemy)
                 .ForEach(enemy => enemy.GetComponent<Creature>().enable = true);

@@ -1,7 +1,7 @@
 using System.Collections;
 using UnityEngine;
 
-namespace trrne.Body
+namespace trrne.Heart
 {
     public class FlashFloor : Object
     {

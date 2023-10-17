@@ -1,11 +1,11 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
-using trrne.Teeth;
+using trrne.Pancreas;
 using Cysharp.Threading.Tasks;
 using System.Collections;
 using trrne.Brain;
 
-namespace trrne.Body
+namespace trrne.Heart
 {
     public enum CuzOfDeath
     {
@@ -21,34 +21,34 @@ namespace trrne.Body
         [SerializeField]
         GameObject diefx;
 
-        public bool controllable { get; set; }
-        public bool jumpable { get; set; }
-        public bool walkable { get; set; }
+        public bool Controllable { get; set; }
+        public bool Jumpable { get; set; }
+        public bool Walkable { get; set; }
 
         /// <summary>
         /// テレポート中か
         /// </summary>
-        public bool isTeleporting { get; set; }
+        public bool IsTeleporting { get; set; }
 
         /// <summary>
         /// 死亡処理中はtrue
         /// </summary>
-        public bool isDieProcessing { get; set; }
+        public bool IsDieProcessing { get; set; }
 
         readonly (float basis, float max, float freduction, float reduction) speed = (20, 10, 0.1f, 0.9f);
         readonly float jumpPower = 6f;
 
-        bool floating;
+        bool isFloating;
         /// <summary>
         /// 地に足がついていなかったらtrue
         /// </summary>
-        public bool isFloating => floating;
+        public bool IsFloating => isFloating;
 
-        Vector2 vel;
+        Vector2 velocity;
         /// <summary>
         /// 移動速度
         /// </summary>
-        public Vector2 velocity => vel;
+        public Vector2 Velocity => velocity;
 
         Rigidbody2D rb;
         Animator animator;
@@ -59,7 +59,7 @@ namespace trrne.Body
         readonly float inputTolerance = 0.33f;
 
         Vector2 cp = Vector2.zero;
-        public Vector2 checkpoint => cp;
+        public Vector2 Checkpoint => cp;
         /// <summary>
         /// チェックポイントを設定する
         /// </summary>
@@ -82,7 +82,7 @@ namespace trrne.Body
             rb.mass = 60f;
 
             cam = Gobject.GetWithTag<Cam>(Constant.Tags.MainCamera);
-            cam.followable = true;
+            cam.Followable = true;
         }
 
         void FixedUpdate()
@@ -101,9 +101,9 @@ namespace trrne.Body
         void LateUpdate()
         {
 #if DEBUG
-            vel = rb.velocity;
+            velocity = rb.velocity;
             // 速度表示
-            velT.SetText(vel);
+            velT.SetText(velocity);
 #endif
         }
 
@@ -112,7 +112,7 @@ namespace trrne.Body
         /// </summary>
         void Respawn()
         {
-            if (!isDieProcessing && Inputs.Down(KeyCode.Space))
+            if (!IsDieProcessing && Inputs.Down(KeyCode.Space))
             {
                 Return2CP();
             }
@@ -123,12 +123,12 @@ namespace trrne.Body
         /// </summary>
         void RBDisable()
         {
-            rb.isKinematic = isTeleporting;
+            rb.isKinematic = IsTeleporting;
         }
 
         void Flip()
         {
-            if (!controllable || menu.isPausing)
+            if (!Controllable || menu.IsPausing)
             {
                 return;
             }
@@ -151,16 +151,16 @@ namespace trrne.Body
 
         void Jump()
         {
-            if (!controllable)
+            if (!Controllable)
             {
                 return;
             }
 
-            if (flag.isHit)
+            if (flag.IsHit)
             {
                 if (Inputs.Down(Constant.Keys.Jump))
                 {
-                    rb.velocity += jumpPower * (Vector2)Vector100.y;
+                    rb.velocity += jumpPower * (Vector2)Vector100.Y;
                 }
                 animator.SetBool(Constant.Animations.Jump, false);
             }
@@ -175,24 +175,24 @@ namespace trrne.Body
         /// </summary>
         void Move()
         {
-            if (!controllable)
+            if (!Controllable)
             {
                 return;
             }
 
-            animator.SetBool(Constant.Animations.Walk, Input.GetButton(Constant.Keys.Horizontal) && flag.isHit);
+            animator.SetBool(Constant.Animations.Walk, Input.GetButton(Constant.Keys.Horizontal) && flag.IsHit);
 
-            Vector2 move = Input.GetAxisRaw(Constant.Keys.Horizontal) * Vector100.x;
+            Vector2 move = Input.GetAxisRaw(Constant.Keys.Horizontal) * Vector100.X;
 
             // 入力がtolerance以下、氷に乗っていない、浮いていない
-            if (move.magnitude <= inputTolerance && !flag.onIce && !floating)
+            if (move.magnitude <= inputTolerance && !flag.OnIce && !isFloating)
             {
                 // x軸の速度をspeed.reduction倍
                 rb.SetVelocityX(rb.velocity.x * speed.reduction);
             }
 
             // 速度を制限
-            rb.velocity = new(flag.onIce ?
+            rb.velocity = new(flag.OnIce ?
                 // 氷の上になら制限を緩和
                 Mathf.Clamp(rb.velocity.x, -speed.max * 2, speed.max * 2) :
                 Mathf.Clamp(rb.velocity.x, -speed.max, speed.max),
@@ -200,7 +200,7 @@ namespace trrne.Body
             );
 
             // 浮いていたら移動速度低下
-            float velocity = floating ? speed.basis * speed.freduction : speed.basis;
+            float velocity = isFloating ? speed.basis * speed.freduction : speed.basis;
             rb.velocity += Time.fixedDeltaTime * velocity * move;
         }
 
@@ -209,14 +209,14 @@ namespace trrne.Body
         /// </summary>
         public async UniTask Die(CuzOfDeath cause)
         {
-            if (isDieProcessing)
+            if (IsDieProcessing)
             {
                 return;
             }
 
-            isDieProcessing = true;
-            controllable = false;
-            cam.followable = false;
+            IsDieProcessing = true;
+            Controllable = false;
+            cam.Followable = false;
 
             diefx.TryGenerate(transform.position);
 
@@ -262,9 +262,9 @@ namespace trrne.Body
             animator.StopPlayback();
 
             // うごいていいよ
-            cam.followable = true;
-            controllable = true;
-            isDieProcessing = false;
+            cam.Followable = true;
+            Controllable = true;
+            IsDieProcessing = false;
         }
     }
 }

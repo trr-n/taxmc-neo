@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace trrne.Teeth
+namespace trrne.Pancreas
 {
     public class Runner
     {
@@ -22,7 +22,7 @@ namespace trrne.Teeth
         readonly static Stopwatch bookingSW = new(true);
         public static void Book(float time, Action action)
         {
-            if (bookingSW.sf >= time)
+            if (bookingSW.Sf >= time)
             {
                 action();
                 bookingSW.Rubbish();

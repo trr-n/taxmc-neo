@@ -1,8 +1,8 @@
 using Cysharp.Threading.Tasks;
-using trrne.Teeth;
+using trrne.Pancreas;
 using UnityEngine;
 
-namespace trrne.Body
+namespace trrne.Heart
 {
     public class Newbie : Creature
     {
@@ -37,7 +37,7 @@ namespace trrne.Body
 
         protected override async void Behavior()
         {
-            horizon.ray = new(transform.position - (Vector100.x * layer.distance / 2), transform.right);
+            horizon.ray = new(transform.position - (Vector100.X * layer.distance / 2), transform.right);
             horizon.hit = Physics2D.Raycast(horizon.ray.origin, horizon.ray.direction, layer.distance, layer.detect);
 
             if (horizon.hit)
@@ -56,7 +56,7 @@ namespace trrne.Body
                 }
             }
 
-            Vector2 rayconf = transform.position + (layer.distance * Vector100.y / 2);
+            Vector2 rayconf = transform.position + (layer.distance * Vector100.Y / 2);
             top.ray = new(rayconf, transform.up);
             top.hit = Physics2D.Raycast(top.ray.origin, top.ray.direction, layer.distance, layer.detect);
 
@@ -91,7 +91,7 @@ namespace trrne.Body
 
         protected override void Move()
         {
-            transform.Translate(Time.deltaTime * speed.real * Vector100.x);
+            transform.Translate(Time.deltaTime * speed.real * Vector100.X);
         }
     }
 }

@@ -2,7 +2,7 @@
 using Unity.Mathematics;
 using UnityEngine;
 
-namespace trrne.Teeth
+namespace trrne.Pancreas
 {
     public static class Maths
     {
@@ -56,9 +56,14 @@ namespace trrne.Teeth
             return (a - b) < tolerance;
         }
 
-        public static float Sign(this Single n)
+        public static bool CutailedTwins(this float a_cutail, float b)
         {
-            return Mathf.Sign(n);
+            return Twins(Cutail(a_cutail), b);
+        }
+
+        public static int Sign(this float n)
+        {
+            return Cutail((n >= 0f) ? 1f : (-1f));
         }
 
         public static bool IsPrime(int n)

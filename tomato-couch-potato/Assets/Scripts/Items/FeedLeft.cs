@@ -1,7 +1,7 @@
 using UnityEngine;
-using trrne.Teeth;
+using trrne.Pancreas;
 
-namespace trrne.Body
+namespace trrne.Heart
 {
     public class FeedLeft : Item
     {

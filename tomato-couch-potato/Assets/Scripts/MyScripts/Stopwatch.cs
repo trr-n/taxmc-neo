@@ -1,55 +1,122 @@
 using System;
 using SystemStopwatch = System.Diagnostics.Stopwatch;
 
-namespace trrne.Teeth
+namespace trrne.Pancreas
 {
     public sealed class Stopwatch
     {
-        SystemStopwatch sw;
+        SystemStopwatch syswatch;
 
-        public Stopwatch() => sw = new();
-        public Stopwatch(bool start)
+        public Stopwatch()
         {
-            sw = new();
-            Shorthand.BoolAction(start, () => sw.Start());
+            syswatch = new();
         }
 
-        public void Start() => sw.Start();
-        public static void Start(params Stopwatch[] sws) => sws.ForEach(sw => sw.Start());
-        public void Stop() => sw.Stop();
-        public void Restart() => sw.Restart();
-        public void Reset() => sw.Reset();
-        public bool isRunning => sw.IsRunning;
-        public static void Rubbish(params Stopwatch[] sws) => sws.ForEach(sw => sw.Rubbish());
-        public void Rubbish() { sw.Stop(); sw = null; }
-
-        public int h => sw.Elapsed.Hours;
-        public float hf => Maths.Round((float)sw.Elapsed.TotalHours, 6);
-        public int Hour() => sw.Elapsed.Hours;
-        public float HourF(int digit = 6) => Maths.Round((float)sw.Elapsed.TotalHours, digit);
-
-        public int m => sw.Elapsed.Minutes;
-        public float mf => Maths.Round((float)sw.Elapsed.TotalMinutes, 6);
-        public int Minute() => sw.Elapsed.Minutes;
-        public float MinuteF(int digit = 6) => Maths.Round((float)sw.Elapsed.TotalMinutes, digit);
-
-        public int s => sw.Elapsed.Seconds;
-        public float sf => Maths.Round((float)sw.Elapsed.TotalSeconds, 6);
-        public int Second() => sw.Elapsed.Seconds;
-        public float SecondF(int digit = 6) => Maths.Round((float)sw.Elapsed.TotalSeconds, digit);
-
-        public int ms => sw.Elapsed.Milliseconds;
-        public float msf => Maths.Round((float)sw.Elapsed.TotalMilliseconds, 6);
-        public int MSecond() => sw.Elapsed.Milliseconds;
-        public float MSecondF(int digit = 6) => Maths.Round((float)sw.Elapsed.TotalMilliseconds, digit);
-
-        public TimeSpan spent => sw.Elapsed;
-        public string Spent(StopwatchOutput output) => output switch
+        public Stopwatch(bool start)
         {
-            StopwatchOutput.HMS or StopwatchOutput.HourMinuteSecond or StopwatchOutput.hms => spent.ToString("hh\\:mm\\:ss"),
-            StopwatchOutput.MS or StopwatchOutput.MinuteSecond or StopwatchOutput.ms => spent.ToString("mm\\:ss"),
-            _ => "nullnull lotion"
-        };
+            syswatch = new();
+            Shorthand.BoolAction(start, () => syswatch.Start());
+        }
+
+        public void Start()
+        {
+            syswatch.Start();
+        }
+
+        public static void Start(params Stopwatch[] sws)
+        {
+            sws.ForEach(sw => sw.Start());
+        }
+
+        public void Stop()
+        {
+            syswatch.Stop();
+        }
+
+        public void Restart()
+        {
+            syswatch.Restart();
+        }
+
+        public void Reset()
+        {
+            syswatch.Reset();
+        }
+
+        public bool IsRunning()
+        {
+            return syswatch.IsRunning;
+        }
+
+        public void Rubbish()
+        {
+            syswatch.Stop();
+            syswatch = null;
+        }
+
+        public static void Rubbish(params Stopwatch[] sws)
+        {
+            sws.ForEach(sw => sw.Rubbish());
+        }
+
+        public int H => syswatch.Elapsed.Hours;
+        public float Hf => Maths.Round((float)syswatch.Elapsed.TotalHours, 6);
+        public int Hour()
+        {
+            return syswatch.Elapsed.Hours;
+        }
+        public float HourF(int digit = 6)
+        {
+            return Maths.Round((float)syswatch.Elapsed.TotalHours, digit);
+        }
+
+        public int M => syswatch.Elapsed.Minutes;
+        public float Mf => Maths.Round((float)syswatch.Elapsed.TotalMinutes, 6);
+        public int Minute()
+        {
+            return syswatch.Elapsed.Minutes;
+        }
+        public float MinuteF(int digit = 6)
+        {
+            return Maths.Round((float)syswatch.Elapsed.TotalMinutes, digit);
+        }
+
+        public int S => syswatch.Elapsed.Seconds;
+        public float Sf => Maths.Round((float)syswatch.Elapsed.TotalSeconds, 6);
+        public int Second()
+        {
+            return syswatch.Elapsed.Seconds;
+        }
+        public float SecondF(int digit = 6)
+        {
+            return Maths.Round((float)syswatch.Elapsed.TotalSeconds, digit);
+        }
+
+        public int MS => syswatch.Elapsed.Milliseconds;
+        public float MSf => Maths.Round((float)syswatch.Elapsed.TotalMilliseconds, 6);
+        public int MSecond()
+        {
+            return syswatch.Elapsed.Milliseconds;
+        }
+        public float MSecondF(int digit = 6)
+        {
+            return Maths.Round((float)syswatch.Elapsed.TotalMilliseconds, digit);
+        }
+
+        public TimeSpan Spent()
+        {
+            return syswatch.Elapsed;
+        }
+
+        public string Spent(StopwatchOutput output)
+        {
+            return output switch
+            {
+                StopwatchOutput.HMS or StopwatchOutput.HourMinuteSecond or StopwatchOutput.hms => Spent().ToString("hh\\:mm\\:ss"),
+                StopwatchOutput.MS or StopwatchOutput.MinuteSecond or StopwatchOutput.ms => Spent().ToString("mm\\:ss"),
+                _ => "nullnull lotion"
+            };
+        }
 
         public int Spent(StopwatchFormat format)
         {

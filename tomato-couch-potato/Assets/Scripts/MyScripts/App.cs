@@ -1,8 +1,14 @@
 ﻿using UnityEngine;
 using UniApp = UnityEngine.Application;
 
-namespace trrne.Teeth
+namespace trrne.Pancreas
 {
+    public static class Paths
+    {
+        public static string Data => UniApp.dataPath;
+        public static string Persistant => UniApp.persistentDataPath;
+    }
+
     public class App
     {
         public static void SetFPS(int fps = -1)
@@ -15,8 +21,8 @@ namespace trrne.Teeth
             UniApp.targetFrameRate = (int)fps;
         }
 
-        public static float fpsf => Mathf.Floor(1 / Time.deltaTime);
-        public static int fpsint => Maths.Cutail(fpsf);
+        public static float Fpsf => Mathf.Floor(1 / Time.deltaTime);
+        public static int Fpsint => Maths.Cutail(Fpsf);
 
         public static void SetCursorStatus(CursorAppearance appear, CursorRangeOfMotion rangeOfMotion)
         {

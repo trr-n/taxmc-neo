@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace trrne.Teeth
+namespace trrne.Pancreas
 {
     [Serializable]
     public class Karappoyanke : Exception

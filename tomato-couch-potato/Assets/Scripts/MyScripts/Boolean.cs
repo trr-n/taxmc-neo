@@ -1,4 +1,4 @@
-﻿namespace trrne.Teeth
+﻿namespace trrne.Pancreas
 {
     public static class Boolean
     {

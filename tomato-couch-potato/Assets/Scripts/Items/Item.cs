@@ -1,9 +1,9 @@
 ﻿using System.Globalization;
 using System;
-using trrne.Teeth;
+using trrne.Pancreas;
 using UnityEngine;
 
-namespace trrne.Body
+namespace trrne.Heart
 {
     public abstract class Item : MonoBehaviour
     {
@@ -51,7 +51,7 @@ namespace trrne.Body
                 return;
             }
 
-            if (anim.sw.sf >= interval)
+            if (anim.sw.Sf >= interval)
             {
                 anim.index = anim.index >= sprites.Length - 1 ? 0 : anim.index += 1;
                 sr.sprite = sprites[anim.index];

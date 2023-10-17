@@ -1,9 +1,9 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace trrne.Teeth
+namespace trrne.Pancreas
 {
-    public static class Appearance
+    public static class Surface
     {
         public static bool Compare(this SpriteRenderer sr, Sprite sprite)
         {
@@ -47,8 +47,8 @@ namespace trrne.Teeth
             text.horizontalOverflow = hWrap;
         }
 
-        public static Color transparent => Vector4.zero;
-        public static Color gaming => Color.HSVToRGB(Time.unscaledTime % 1, 1, 1);
+        public static Color Transparent => Vector4.zero;
+        public static Color Gaming => Color.HSVToRGB(Time.unscaledTime % 1, 1, 1);
 
         public static void SetAlpha(this Image image, float alpha)
         {
@@ -79,11 +79,18 @@ namespace trrne.Teeth
             }
 
             return new Color(
-                red is null ? color.r : (float)red,
-                green is null ? color.g : (float)green,
-                blue is null ? color.b : (float)blue,
-                alpha is null ? color.a : (float)alpha
+                red ?? color.r,
+                green ?? color.g,
+                blue ?? color.b,
+                alpha ?? color.a
             );
+
+            // return new Color(
+            //     red is null ? color.r : (float)red,
+            //     green is null ? color.g : (float)green,
+            //     blue is null ? color.b : (float)blue,
+            //     alpha is null ? color.a : (float)alpha
+            // );
         }
 
         public static bool Twins(Color n1, Color n2)

@@ -1,5 +1,5 @@
-using trrne.Body;
-using trrne.Teeth;
+using trrne.Heart;
+using trrne.Pancreas;
 using UnityEngine;
 
 namespace trrne.Brain
@@ -11,33 +11,48 @@ namespace trrne.Brain
         /// <summary>
         /// 現在のタイム
         /// </summary>
-        public (int minutes, int seconds) Current => (sw.m, sw.s);
+        public (int minutes, int seconds) Current => (sw.M, sw.S);
         public string CurrentSTR => sw.Spent(StopwatchOutput.MS);
 
         /// <summary>
         /// 動いているか
         /// </summary>
-        public bool IsRunning() => sw.isRunning;
+        public bool IsRunning()
+        {
+            return sw.IsRunning();
+        }
 
         /// <summary>
         /// タイマーをスタート
         /// </summary>
-        public void Start() => sw.Start();
+        public void Start()
+        {
+            sw.Start();
+        }
 
         /// <summary>
         /// タイマーをストップ
         /// </summary>
-        public void Stop() => sw.Stop();
+        public void Stop()
+        {
+            sw.Stop();
+        }
 
         /// <summary>
         /// タイマーをリスタート
         /// </summary>
-        public void Restart() => sw.Restart();
+        public void Restart()
+        {
+            sw.Restart();
+        }
 
         /// <summary>
         /// タイマーをリセット
         /// </summary>
-        public void Reset() => sw.Reset();
+        public void Reset()
+        {
+            sw.Reset();
+        }
 
         /// <summary>
         /// 記録を出力
@@ -49,7 +64,7 @@ namespace trrne.Brain
             Save.Write(
                 data: new SaveData { time = (Current.minutes, Current.seconds) },
                 password: "rid456",
-                path: Application.dataPath + "/save" + Temps.raw + ".sav"
+                path: Application.dataPath + "/save" + Temps.Raw + ".sav"
             );
         }
     }

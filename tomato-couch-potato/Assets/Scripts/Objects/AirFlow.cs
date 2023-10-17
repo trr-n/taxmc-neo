@@ -1,7 +1,7 @@
-using trrne.Teeth;
+using trrne.Pancreas;
 using UnityEngine;
 
-namespace trrne.Body
+namespace trrne.Heart
 {
     public class AirFlow : MonoBehaviour
     {
@@ -20,7 +20,7 @@ namespace trrne.Body
                 && info.TryGet(out Rigidbody2D rb))
             {
                 distance = Vector2.Distance(transform.position, info.Position2());
-                rb.velocity += distance * fan.power * Time.fixedDeltaTime * Vector100.y2d;
+                rb.velocity += distance * fan.power * Time.fixedDeltaTime * Vector100.Y2D;
             }
         }
     }

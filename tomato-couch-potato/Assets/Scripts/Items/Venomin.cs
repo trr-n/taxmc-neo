@@ -1,15 +1,15 @@
 using UnityEngine;
-using trrne.Teeth;
+using trrne.Pancreas;
 using Cysharp.Threading.Tasks;
 
-namespace trrne.Body
+namespace trrne.Heart
 {
     public class Venomin : Object
     {
         protected override void Start()
         {
             base.Start();
-            animatable = false;
+            Animatable = false;
         }
 
         protected override void Behavior() { }

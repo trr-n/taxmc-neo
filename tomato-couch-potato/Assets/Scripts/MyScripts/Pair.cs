@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace trrne.Teeth
+namespace trrne.Pancreas
 {
     public class Pair<TKey, TValue>
     // where TValue : struct, IComparable, IFormattable, IConvertible, IComparable<TValue>, IEquatable<TValue>

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 
-namespace trrne.Body
+namespace trrne.Heart
 {
     public abstract class Creature : MonoBehaviour
     {

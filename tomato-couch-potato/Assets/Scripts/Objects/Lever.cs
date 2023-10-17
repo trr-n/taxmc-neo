@@ -1,7 +1,7 @@
-using trrne.Teeth;
+using trrne.Pancreas;
 using UnityEngine;
 
-namespace trrne.Body
+namespace trrne.Heart
 {
     public class Lever : Object
     {
@@ -24,7 +24,7 @@ namespace trrne.Body
         protected override void Start()
         {
             base.Start();
-            animatable = false;
+            Animatable = false;
             enable = transform.GetFromChild<LeverFlag>(0);
 
             speaker = GetComponent<AudioSource>();
@@ -49,7 +49,7 @@ namespace trrne.Body
             }
 
             // 動作中、効果時間がduration以上
-            if (pressing && effectiveSW.sf >= duration)
+            if (pressing && effectiveSW.Sf >= duration)
             {
                 effectiveSW.Reset();
                 targetObjs.ForEach(obj => obj.SetActive(!obj.activeSelf));

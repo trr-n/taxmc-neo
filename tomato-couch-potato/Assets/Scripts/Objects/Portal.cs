@@ -1,10 +1,10 @@
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
-using trrne.Teeth;
+using trrne.Pancreas;
 using UnityEngine;
 using System.Collections;
 
-namespace trrne.Body
+namespace trrne.Heart
 {
     public class Portal : Object
     {
@@ -50,11 +50,11 @@ namespace trrne.Body
             for (int i = 0; i < loop; i++)
             {
                 // フレームを回転させる
-                child.frames[i].transform.Rotate(Time.deltaTime * child.speeds[i] * Vector100.z);
+                child.frames[i].transform.Rotate(Time.deltaTime * child.speeds[i] * Vector100.Z);
             }
 
             // ついでに中心も回転させる
-            transform.Rotate(Time.deltaTime * myspeed * Vector100.z);
+            transform.Rotate(Time.deltaTime * myspeed * Vector100.Z);
         }
 
         void OnTriggerEnter2D(Collider2D info)
@@ -62,15 +62,15 @@ namespace trrne.Body
             if (!warping && info.CompareBoth(Constant.Layers.Player, Constant.Tags.Player))
             {
                 var player = info.Get<Player>();
-                if (!player.isDieProcessing)
+                if (!player.IsDieProcessing)
                 {
                     warping = true;
                     effects.TryGenerate(transform.position);
 
                     info.transform.DOMove(to, teleportSpeed)
                         .SetEase(Ease.OutCubic)
-                        .OnPlay(() => player.isTeleporting = true)
-                        .OnComplete(() => player.isTeleporting = false);
+                        .OnPlay(() => player.IsTeleporting = true)
+                        .OnComplete(() => player.IsTeleporting = false);
 
                     warping = false;
                     // StartCoroutine(AfterDelay(info));

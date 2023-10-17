@@ -1,15 +1,15 @@
-using trrne.Teeth;
+using trrne.Pancreas;
 using UnityEngine;
 
-namespace trrne.Body
+namespace trrne.Heart
 {
     public class PlayerFlag : MonoBehaviour
     {
-        bool hitting;
-        public bool isHit => hitting;
+        bool isHit;
+        public bool IsHit => isHit;
 
-        bool ice;
-        public bool onIce => ice;
+        bool onIce;
+        public bool OnIce => onIce;
 
         void OnTriggerExit2D(Collider2D info)
         {
@@ -23,11 +23,11 @@ namespace trrne.Body
 
         void Boolean(Collider2D info, bool boo)
         {
-            hitting = boo;
+            isHit = boo;
 
             if (info.CompareLayer(Constant.Layers.Ground) && info.CompareTag(Constant.Tags.Ice))
             {
-                ice = boo;
+                onIce = boo;
             }
         }
     }

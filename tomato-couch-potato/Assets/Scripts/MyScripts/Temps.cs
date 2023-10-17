@@ -1,10 +1,10 @@
 ﻿using System;
 
-namespace trrne.Teeth
+namespace trrne.Pancreas
 {
     public static class Temps
     {
-        public static string raw => (Date(TempsFormat.Domestics) + Time(TempsFormat.Domestics)).DeleteLump("/", ":"); // ReplaceLump("/  :", "");
+        public static string Raw => (Date(TempsFormat.Domestics) + Time(TempsFormat.Domestics)).DeleteLump("/", ":"); // ReplaceLump("/  :", "");
 
         public static string Date(TempsFormat format)
         {

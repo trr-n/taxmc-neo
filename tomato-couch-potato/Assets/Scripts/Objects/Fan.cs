@@ -1,9 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
-using trrne.Teeth;
+using trrne.Pancreas;
 using UnityEngine;
 
-namespace trrne.Body
+namespace trrne.Heart
 {
     public class Fan : Object
     {

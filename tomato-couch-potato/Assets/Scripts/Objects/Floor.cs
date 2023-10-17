@@ -1,7 +1,7 @@
-using trrne.Teeth;
+using trrne.Pancreas;
 using UnityEngine;
 
-namespace trrne.Body
+namespace trrne.Heart
 {
     public class Floor : Object
     {
@@ -43,25 +43,25 @@ namespace trrne.Body
 
                 // 左右
                 case MovingType.Horizontal:
-                    var x = Vector100.x * range;
+                    var x = Vector100.X * range;
 
                     // 可動域を超えたら速度反転
                     if (transform.position.x <= (center - x).x || transform.position.x >= (center + x).x)
                     {
                         speed *= -1;
                     }
-                    transform.Translate(Time.deltaTime * speed * Vector100.x, Space.World);
+                    transform.Translate(Time.deltaTime * speed * Vector100.X, Space.World);
                     break;
 
                 // 上下
                 case MovingType.Vertical:
-                    var y = Vector100.y * range;
+                    var y = Vector100.Y * range;
 
                     if (transform.position.y <= (center - y).y || transform.position.y >= (center + y).y)
                     {
                         speed *= -1;
                     }
-                    transform.Translate(Time.deltaTime * speed * Vector100.y, Space.World);
+                    transform.Translate(Time.deltaTime * speed * Vector100.Y, Space.World);
                     break;
             }
         }

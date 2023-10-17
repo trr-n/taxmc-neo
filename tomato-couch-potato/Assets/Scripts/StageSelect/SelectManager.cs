@@ -1,5 +1,6 @@
 ﻿using DG.Tweening;
-using trrne.Teeth;
+using trrne.Brain;
+using trrne.Pancreas;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -11,48 +12,64 @@ namespace trrne.Arm
         Text centerT;
 
         [SerializeField]
-        RectTransform[] buttonRTs;
+        Sprite[] backs;
+
+        [SerializeField]
+        RectTransform[] buttons;
 
         [SerializeField]
         RectTransform core;
 
-        const float Offset = 18.96f;
-        readonly Vector2[] points = new Vector2[] {
-            Vector100.x * Offset,
-            Vector100.zero,
-            Vector100.x * -Offset
-        };
+        const string Prefix = "stage";
 
-        bool isScrolling = false;
+        const float Offset = 18.96f;
+        Vector2 init => Vector100.X * Offset;
+
+        bool scrolling = false;
         readonly float scrollSpeed = 0.5f;
 
         float horizon;
 
         void Start()
         {
-            core.position = points[0];
+            core.position = init;
         }
 
         void Update()
         {
-            centerT.text = GetCenterButton() != null ? GetCenterButton().name : "null";
-
+            centerT.text = CenterButton?.name ?? "null";
             Scroll();
+            Transition();
+        }
+
+        void Transition()
+        {
+            if (CenterButton != null && int.TryParse(Typing.Delete(CenterButton.name, Prefix), out int idx))
+            {
+                if (idx <= Recorder.Instance.Done && Inputs.Down(Constant.Keys.Button))
+                {
+                    print(Constant.Scenes.Prefix + idx);
+                    Scenes.Load(Constant.Scenes.Prefix + idx);
+                }
+            }
         }
 
         /// <summary>
         /// xが一番0に近いボタンを取得
         /// </summary>
-        GameObject GetCenterButton()
+        GameObject CenterButton
         {
-            foreach (var button in buttonRTs)
+            get
             {
-                if (Maths.Twins(Maths.Cutail(button.transform.position.x), 0))
+                foreach (var button in buttons)
                 {
-                    return button.gameObject;
+                    if (Maths.CutailedTwins(button.transform.position.x, 0))
+                    {
+                        return button.gameObject;
+                    }
                 }
+                return null;
             }
-            return null;
         }
 
         void Scroll()
@@ -65,9 +82,12 @@ namespace trrne.Arm
 
             switch (horizon.Sign())
             {
+                case 0:
+                    return;
+
                 // D
                 case 1:
-                    if (GetCenterButton() != buttonRTs[^1].gameObject)
+                    if (CenterButton != buttons[^1].gameObject)
                     {
                         Scroller(core.position.x - Offset);
                     }
@@ -75,7 +95,7 @@ namespace trrne.Arm
 
                 // A
                 case -1:
-                    if (GetCenterButton() != buttonRTs[0].gameObject)
+                    if (CenterButton != buttons[0].gameObject)
                     {
                         Scroller(core.position.x + Offset);
                     }
@@ -85,16 +105,16 @@ namespace trrne.Arm
 
         void Scroller(float targetx)
         {
-            if (isScrolling)
+            if (scrolling)
             {
                 return;
             }
 
-            isScrolling = true;
+            scrolling = true;
 
             core.DOMoveX(targetx, scrollSpeed)
                 .SetEase(Ease.InOutCubic)
-                .OnComplete(() => isScrolling = false);
+                .OnComplete(() => scrolling = false);
         }
     }
 }

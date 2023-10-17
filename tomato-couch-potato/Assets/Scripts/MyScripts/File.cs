@@ -1,9 +1,9 @@
 using System.IO;
 using System.Runtime.CompilerServices;
 
-namespace trrne.Teeth
+namespace trrne.Pancreas
 {
-    public static class File
+    public static class Files
     {
         public static string CallerPath([CallerFilePath] string path = "")
         {

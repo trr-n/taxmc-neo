@@ -1,5 +1,5 @@
 using System.Collections;
-using trrne.Teeth;
+using trrne.Pancreas;
 using UnityEngine;
 
 namespace trrne.Brain
@@ -11,7 +11,7 @@ namespace trrne.Brain
         CanvasGroup canvas;
 
         bool pausing;
-        public bool isPausing => pausing;
+        public bool IsPausing => pausing;
 
         (float speed, bool during) fade = (10f, false);
 
@@ -46,7 +46,7 @@ namespace trrne.Brain
         {
             if (Inputs.Down(Constant.Keys.Pause))
             {
-                if (isPausing)
+                if (IsPausing)
                 {
                     Inactive();
                 }

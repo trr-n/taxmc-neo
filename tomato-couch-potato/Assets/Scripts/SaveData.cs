@@ -1,4 +1,4 @@
-﻿namespace trrne.Body
+﻿namespace trrne.Heart
 {
     public struct SaveData
     {

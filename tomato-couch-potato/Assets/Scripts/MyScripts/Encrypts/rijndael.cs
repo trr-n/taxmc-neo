@@ -2,7 +2,7 @@ using System.Text;
 using System.Collections.Generic;
 using System.Security.Cryptography;
 
-namespace trrne.Teeth
+namespace trrne.Pancreas
 {
     public class Rijndael : IEncryption
     {

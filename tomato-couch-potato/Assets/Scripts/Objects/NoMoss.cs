@@ -1,8 +1,8 @@
 using System;
-using trrne.Teeth;
+using trrne.Pancreas;
 using UnityEngine;
 
-namespace trrne.Body
+namespace trrne.Heart
 {
     public class NoMoss : Object
     {
@@ -73,7 +73,7 @@ namespace trrne.Body
             if (rotatable)
             {
                 // 回転
-                transform.Rotate(Time.deltaTime * spinSpeed * (dir == Spin.Left ? Vector100.z : -Vector100.z), Space.World);
+                transform.Rotate(Time.deltaTime * spinSpeed * (dir == Spin.Left ? Vector100.Z : -Vector100.Z), Space.World);
             }
         }
     }

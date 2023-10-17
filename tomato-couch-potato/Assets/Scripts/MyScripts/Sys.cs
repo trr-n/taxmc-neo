@@ -1,7 +1,7 @@
 ﻿using System;
 using static UnityEngine.SystemInfo;
 
-namespace trrne.Teeth
+namespace trrne.Pancreas
 {
     public static class Sys
     {

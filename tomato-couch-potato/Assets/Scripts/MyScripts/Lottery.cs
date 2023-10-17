@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace trrne.Teeth
+namespace trrne.Pancreas
 {
     public static class Lottery
     {

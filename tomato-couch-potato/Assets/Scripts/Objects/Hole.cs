@@ -1,8 +1,8 @@
 using System;
-using trrne.Teeth;
+using trrne.Pancreas;
 using UnityEngine;
 
-namespace trrne.Body
+namespace trrne.Heart
 {
     public class Hole : MonoBehaviour
     {

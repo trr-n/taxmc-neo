@@ -1,4 +1,4 @@
-using trrne.Teeth;
+using trrne.Pancreas;
 using UnityEngine;
 
 namespace trrne
@@ -8,10 +8,11 @@ namespace trrne
         public readonly struct Scenes
         {
             public const string
+            Title = "Title",
+            Select = "Select",
             Prefix = "Game",
             Game0 = "Game0",
-            Game1 = "Game1",
-            Game2 = "Game2";
+            Game1 = "Game1";
         }
 
         public readonly struct Layers
@@ -63,7 +64,7 @@ namespace trrne
         public readonly struct SpawnPositions
         {
             public static Vector2
-            Stage1 = Vector100.zero;
+            Stage1 = Vector100.Zero;
         }
     }
 }

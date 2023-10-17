@@ -3,7 +3,7 @@ using System.IO;
 using System.Text.Json;
 using UnityEngine;
 
-namespace trrne.Teeth
+namespace trrne.Pancreas
 {
     public sealed class Save
     {

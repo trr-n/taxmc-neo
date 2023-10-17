@@ -4,7 +4,7 @@ using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace trrne.Teeth
+namespace trrne.Pancreas
 {
     public enum ActiveStatus { Self, Hierarchy }
 

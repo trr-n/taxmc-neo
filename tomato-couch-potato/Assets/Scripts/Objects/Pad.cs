@@ -1,7 +1,7 @@
 using UnityEngine;
-using trrne.Teeth;
+using trrne.Pancreas;
 
-namespace trrne.Body
+namespace trrne.Heart
 {
     public class Pad : Object
     {
@@ -20,7 +20,7 @@ namespace trrne.Body
             if (info.TryGet(out Rigidbody2D rb))
             {
                 // rb.velocity += rb.mass * core.power * Vector100.y2d * Time.fixedDeltaTime;
-                rb.velocity += rb.mass * core.power * transform.up.ToVec2() * Time.fixedDeltaTime;
+                rb.velocity += rb.mass * core.Power * transform.up.ToVec2() * Time.fixedDeltaTime;
             }
         }
     }

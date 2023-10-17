@@ -1,14 +1,11 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEditor.IMGUI.Controls;
 using UnityEngine;
-using trrne.Teeth;
+using trrne.Pancreas;
 
-namespace trrne.Body
+namespace trrne.Heart
 {
     public class Cam : MonoBehaviour
     {
-        public bool followable { get; set; }
+        public bool Followable { get; set; }
 
         GameObject player;
         float size, zoom;
@@ -16,7 +13,7 @@ namespace trrne.Body
 
         void Start()
         {
-            followable = true;
+            Followable = true;
             player = Gobject.GetWithTag(Constant.Tags.Player);
         }
 
@@ -28,7 +25,7 @@ namespace trrne.Body
 
         void Follow()
         {
-            if (followable)
+            if (Followable)
             {
                 transform.position = player.transform.position + offset;
             }

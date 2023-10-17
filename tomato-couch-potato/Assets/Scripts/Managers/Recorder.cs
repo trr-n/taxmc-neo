@@ -1,71 +1,48 @@
-using System;
-using trrne.Teeth;
-using UnityEngine;
+using System.IO;
+using trrne.Pancreas;
 
 namespace trrne.Brain
 {
     public class Recorder : Singleton<Recorder>
     {
-        protected override bool alive => true;
+        protected override bool Alive => true;
 
-        (int stay, int cleared) idx;
+        public (string Path, string Password) Secret => (Paths.Data + "/save.sav", "pomodoro");
+
+        (int stay, int done) idx = (0, 0);
 
         /// <summary>
         /// ステージ数
         /// </summary>
-        public int max => 2;
+        public int Max => 2;
 
-        public int current => int.Parse(Scenes.active.Delete(Constant.Scenes.Prefix));
+        /// <summary>
+        /// プレイ中のステージ
+        /// </summary>
+        public int Current => int.Parse(Scenes.Active().Delete(Constant.Scenes.Prefix));
 
-        public int stay => idx.stay;
+        public int Stay => idx.stay;
+        public int Done => idx.done;
 
         /// <summary>
         /// 進捗
         /// </summary>
-        public float progress => (float)idx.cleared / max;
+        public float Progress => (float)idx.done / Max;
 
-        /// <summary>
-        /// 次のステージに
-        /// </summary>
-        public void Next(string name)
-        {
-            try
-            {
-                if (int.TryParse(name.Delete(Constant.Scenes.Prefix), out int idx))
-                {
-                    this.idx.stay = idx;
-                    Scenes.Load(name);
-                }
-            }
-            catch (Exception e)
-            {
-                throw e;
-            }
-        }
-
-        /// <summary>
-        ///! シーン遷移前に実行すること
-        /// </summary>
         public void Clear()
         {
             // クリアしたと思われるシーンにPrefixと整数が含まれていたら+1
-            if (int.TryParse(Scenes.active.Delete(Constant.Scenes.Prefix), out _))
+            if (int.TryParse(Scenes.Active().Delete(Constant.Scenes.Prefix), out int idx))
             {
-                idx.cleared++;
+                this.idx.done++;
+                // Scenes.Load(Constant.Scenes.Prefix + idx);
+                Scenes.Load(Constant.Scenes.Select);
             }
         }
 
-        void Start()
+        public void Save()
         {
-            if (Scenes.active == Constant.Scenes.Game0)
-            {
-                Physics2D.gravity = Vector100.zero2d;
-            }
-        }
-
-        void Update()
-        {
-            print($"inProgress: {stay}\ncleared: {idx.cleared}\ncurrent: {current}");
+            Pancreas.Save.Write(idx.done, Secret.Password, Secret.Path, FileMode.Append);
         }
     }
 }

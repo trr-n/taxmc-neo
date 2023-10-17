@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace trrne.Teeth
+namespace trrne.Pancreas
 {
     public class Anima
     {
@@ -9,7 +9,7 @@ namespace trrne.Teeth
 
         public void Colour(bool enable, SpriteRenderer sr, in float interval, params Color[] colours)
         {
-            if (!enable && colour.sw.sf <= interval)
+            if (!enable && colour.sw.Sf <= interval)
             {
                 return;
             }
@@ -24,7 +24,7 @@ namespace trrne.Teeth
         public void Sprite(bool enable, SpriteRenderer sr, in float interval, params Sprite[] pics)
         {
             if (!enable) { return; }
-            if (sprite.sw.s <= interval) { return; }
+            if (sprite.sw.S <= interval) { return; }
 
             sprite.sw.Reset();
 

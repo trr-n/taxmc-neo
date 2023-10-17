@@ -1,16 +1,16 @@
 using System.Collections;
 using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
-using trrne.Teeth;
+using trrne.Pancreas;
 using UnityEngine;
 
-namespace trrne.Body
+namespace trrne.Heart
 {
     public class Gunny : Creature
     {
         (GameObject obj, LineRenderer line, float lineLength) gun;
 
-        Vector3 direction = Vector100.x;
+        Vector3 direction = Vector100.X;
         float speed = 10f;
 
         Rigidbody2D rb;

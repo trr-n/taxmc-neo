@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using static UnityEngine.SceneManagement.SceneManager;
 
-namespace trrne.Teeth
+namespace trrne.Pancreas
 {
     public class Scenes
     {
@@ -27,7 +27,7 @@ namespace trrne.Teeth
         /// </summary>
         public static void Load()
         {
-            LoadScene(active);
+            LoadScene(Active());
         }
 
         public static void LoadAdditive(string name)
@@ -38,35 +38,35 @@ namespace trrne.Teeth
         /// <summary>
         /// アクティブなシーンを取得
         /// </summary>
-        public static string active => GetActiveScene().name;
+        public static string Active() => GetActiveScene().name;
 
         /// <summary>
         /// 全てのシーンの名前
         /// </summary>
-        public static string[] names
+        public static string[] Names()
         {
-            get
+            var names = new string[sceneCount];
+            for (int i = 0; i < sceneCount; i++)
             {
-                var names = new string[sceneCount];
-                for (int i = 0; i < sceneCount; i++)
-                {
-                    names[i] = GetSceneAt(i).name;
-                }
-
-                return names.Length switch
-                {
-                    0 => throw new Karappoyanke("tabun settei sitenai"),
-                    _ => names
-                };
+                names[i] = GetSceneAt(i).name;
             }
+
+            return names.Length switch
+            {
+                0 => throw new Karappoyanke("tabun settei sitenai"),
+                _ => names
+            };
         }
 
-        public static int Total(ScenesCountingFormat which) => which switch
+        public static int Total(ScenesCountingFormat which)
         {
-            ScenesCountingFormat.Unbuilt => sceneCountInBuildSettings,
-            ScenesCountingFormat.Built => sceneCount,
-            _ => -1
-        };
+            return which switch
+            {
+                ScenesCountingFormat.Unbuilt => sceneCountInBuildSettings,
+                ScenesCountingFormat.Built => sceneCount,
+                _ => -1
+            };
+        }
 
         public static AsyncOperation LoadAsync(string name)
         {
