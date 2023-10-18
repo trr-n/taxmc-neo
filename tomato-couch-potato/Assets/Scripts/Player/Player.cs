@@ -23,7 +23,7 @@ namespace trrne.Heart
 
         public bool Controllable { get; set; }
         public bool Jumpable { get; set; }
-        public bool Walkable { get; set; }
+        public bool Movable { get; set; }
 
         /// <summary>
         /// テレポート中か
@@ -151,7 +151,8 @@ namespace trrne.Heart
 
         void Jump()
         {
-            if (!Controllable)
+            if (!(Controllable || Jumpable))
+            // if (!Controllable || !Jumpable)
             {
                 return;
             }
@@ -160,7 +161,7 @@ namespace trrne.Heart
             {
                 if (Inputs.Down(Constant.Keys.Jump))
                 {
-                    rb.velocity += jumpPower * (Vector2)Vector100.Y;
+                    rb.velocity += jumpPower * Vector100.Y2D;
                 }
                 animator.SetBool(Constant.Animations.Jump, false);
             }
@@ -175,7 +176,7 @@ namespace trrne.Heart
         /// </summary>
         void Move()
         {
-            if (!Controllable)
+            if (!(Controllable || Movable))
             {
                 return;
             }

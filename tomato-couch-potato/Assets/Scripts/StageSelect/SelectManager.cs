@@ -20,10 +20,9 @@ namespace trrne.Arm
         [SerializeField]
         RectTransform core;
 
-        const string Prefix = "stage";
-
-        const float Offset = 18.96f;
-        Vector2 init => Vector100.X * Offset;
+        readonly string prefix = "stage";
+        readonly float offset = 18.96f;
+        Vector2 init => Vector100.X * offset;
 
         bool scrolling = false;
         readonly float scrollSpeed = 0.5f;
@@ -44,7 +43,7 @@ namespace trrne.Arm
 
         void Transition()
         {
-            if (CenterButton != null && int.TryParse(Typing.Delete(CenterButton.name, Prefix), out int idx))
+            if (CenterButton != null && int.TryParse(Typing.Delete(CenterButton.name, prefix), out int idx))
             {
                 if (idx <= Recorder.Instance.Done && Inputs.Down(Constant.Keys.Button))
                 {
@@ -89,7 +88,7 @@ namespace trrne.Arm
                 case 1:
                     if (CenterButton != buttons[^1].gameObject)
                     {
-                        Scroller(core.position.x - Offset);
+                        Scroller(core.position.x - offset);
                     }
                     break;
 
@@ -97,7 +96,7 @@ namespace trrne.Arm
                 case -1:
                     if (CenterButton != buttons[0].gameObject)
                     {
-                        Scroller(core.position.x + Offset);
+                        Scroller(core.position.x + offset);
                     }
                     break;
             }

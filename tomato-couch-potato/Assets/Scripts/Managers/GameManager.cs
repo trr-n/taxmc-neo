@@ -31,8 +31,8 @@ namespace trrne.Brain
             player = Gobject.GetWithTag<Player>(Constant.Tags.Player);
             player.Controllable = true;
 
-            Gobject.Finds(Constant.Tags.Enemy)
-                .ForEach(enemy => enemy.GetComponent<Creature>().enable = true);
+            var enemies = Gobject.Finds(Constant.Tags.Enemy);
+            enemies.ForEach(enemy => enemy.GetComponent<Creature>().enable = true);
         }
 
         void Update()
