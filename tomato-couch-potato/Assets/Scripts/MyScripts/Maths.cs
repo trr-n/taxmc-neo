@@ -1,8 +1,7 @@
 ﻿using System;
-using Unity.Mathematics;
 using UnityEngine;
 
-namespace trrne.Pancreas
+namespace Chickenen.Pancreas
 {
     public static class Maths
     {
@@ -16,14 +15,24 @@ namespace trrne.Pancreas
             return Mathf.Clamp(n, min, max);
         }
 
-        public static float Round(float n, int digit = 0)
+        public static float Round(float n, int digit)
         {
             return MathF.Round(n, digit);
         }
 
-        public static int Round(int n, int digit = 0)
+        public static float Round(float n)
+        {
+            return Round(n, 0);
+        }
+
+        public static int Round(int n, int digit)
         {
             return (int)MathF.Round(n, digit);
+        }
+
+        public static int Round(int n)
+        {
+            return Round(n, 0);
         }
 
         public static int Cutail(this float n)
@@ -31,9 +40,14 @@ namespace trrne.Pancreas
             return int.Parse(n.ToString().Split(".")[0]);
         }
 
-        public static int Percent(float n, int digit = 0)
+        public static int Percent(float n, int digit)
         {
             return (int)MathF.Round(n * 100, digit);
+        }
+
+        public static int Percent(float n)
+        {
+            return Percent(n, 0);
         }
 
         public static int Percent(int whole, int per)

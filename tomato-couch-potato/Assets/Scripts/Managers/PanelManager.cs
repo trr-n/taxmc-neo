@@ -1,16 +1,17 @@
 ﻿using System.Collections;
-using trrne.Heart;
-using trrne.Pancreas;
+using Chickenen.Heart;
+using Chickenen.Pancreas;
 using UnityEngine;
 
-namespace trrne.Brain
+namespace Chickenen.Brain
 {
     public class PanelManager : MonoBehaviour
     {
         [SerializeField]
         CanvasGroup canvas;
 
-        readonly float showing = 3, fadingSpeed = 10;
+        readonly float showingTime = 3;
+        readonly float fadingSpeed = 10;
         readonly Stopwatch sw = new();
 
         Player player;
@@ -26,7 +27,7 @@ namespace trrne.Brain
 
         void Update()
         {
-            if (sw.Sf >= showing)
+            if (sw.SecondF() >= showingTime)
             {
                 sw.Reset();
                 StartCoroutine(FadeOut());
@@ -51,5 +52,3 @@ namespace trrne.Brain
         }
     }
 }
-
-// keychron k8 pro 青歯便利すぎて草

@@ -3,7 +3,7 @@
 using UnityEngine;
 // using Self.Utils;
 
-namespace trrne.test
+namespace Chickenen.test
 {
     public class bangai : MonoBehaviour
     {

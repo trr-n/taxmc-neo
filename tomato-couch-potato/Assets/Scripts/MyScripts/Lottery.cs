@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace trrne.Pancreas
+namespace Chickenen.Pancreas
 {
     public static class Lottery
     {
@@ -14,22 +14,22 @@ namespace trrne.Pancreas
                 throw new Karappoyanke("nanka kakankai");
             }
 
-            float[] cumulativeWeights = new float[weights.Length];
+            float[] totals = new float[weights.Length];
 
-            float totalWeight = 0f;
+            float total = 0f;
             for (int idx = 0; idx < weights.Length; idx++)
             {
-                totalWeight += weights[idx];
-                cumulativeWeights[idx] = totalWeight;
+                total += weights[idx];
+                totals[idx] = total;
             }
 
-            float random = Rand.Float(max: totalWeight);
+            float random = Randoms.Float(max: total);
 
-            int min = 0, max = cumulativeWeights.Length - 1;
+            int min = 0, max = totals.Length - 1;
             while (min < max)
             {
                 int center = (min + max) / 2;
-                float centerPoint = cumulativeWeights[center];
+                float centerPoint = totals[center];
 
                 if (random > centerPoint)
                 {
@@ -37,7 +37,7 @@ namespace trrne.Pancreas
                 }
                 else
                 {
-                    if (random >= (center > 0 ? cumulativeWeights[center - 1] : 0))
+                    if (random >= (center > 0 ? totals[center - 1] : 0))
                     {
                         return center;
                     }
@@ -73,32 +73,32 @@ namespace trrne.Pancreas
         {
             if (pairs.Length == 1)
             {
-                return pairs[0].key;
+                return pairs[0].Key;
             }
 
             float[] weights = new float[pairs.Length];
             for (int idx = 0; idx < pairs.Length; idx++)
             {
-                weights[idx] = pairs[idx].value;
+                weights[idx] = pairs[idx].Value;
             }
 
-            return pairs[Weighted(weights)].key;
+            return pairs[Weighted(weights)].Key;
         }
 
         public static void Weighted(params Pair<Action, float>[] pairs)
         {
             if (pairs.Length == 1)
             {
-                pairs[0].key();
+                pairs[0].Key();
             }
 
             float[] weights = new float[pairs.Length];
             for (int idx = 0; idx < pairs.Length; idx++)
             {
-                weights[idx] = pairs[idx].value;
+                weights[idx] = pairs[idx].Value;
             }
 
-            pairs[Weighted(weights)].key();
+            pairs[Weighted(weights)].Key();
         }
     }
 }

@@ -1,8 +1,8 @@
 using UnityEngine;
-using trrne.Brain;
-using trrne.Pancreas;
+using Chickenen.Brain;
+using Chickenen.Pancreas;
 
-namespace trrne.Heart
+namespace Chickenen.Heart
 {
     public class Clear : MonoBehaviour
     {

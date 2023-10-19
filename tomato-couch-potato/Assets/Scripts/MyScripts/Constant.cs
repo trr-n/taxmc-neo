@@ -1,9 +1,9 @@
-using trrne.Pancreas;
+using Chickenen.Pancreas;
 using UnityEngine;
 
-namespace trrne
+namespace Chickenen
 {
-    public static partial class Constant
+    public struct Constant
     {
         public readonly struct Scenes
         {

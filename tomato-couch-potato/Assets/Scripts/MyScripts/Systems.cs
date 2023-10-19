@@ -1,9 +1,8 @@
-﻿using System;
-using static UnityEngine.SystemInfo;
+﻿using static UnityEngine.SystemInfo;
 
-namespace trrne.Pancreas
+namespace Chickenen.Pancreas
 {
-    public static class Sys
+    public static class Systems
     {
         public static string OS => operatingSystem;
         public static int RAM => systemMemorySize / 1000;

@@ -1,11 +1,9 @@
-# aaa
+# infos
 
-## 使用アセット
+## used assets
 
-- UniTask
-- DOTween
-
-___
+- [UniTask][unitask]
+- [DOTween][dotween]
 
 ## TODO(s) list
 
@@ -47,15 +45,17 @@ ___
 - [x] ワープ
 - [x] ~~ボタン~~ -> レバー
 - [x] 落とし穴
-- [ ] ピストン
+- [x] 点滅する床
 - [x] 氷の床
 
 ## メインステージ構成
 
-- [ ] Game1
+- [ ] Game0
   - チュートリアル的な感じ
   - 基本操作を練習できるように
 
-- [ ] Game2
+- [ ] Game1
 
-- [ ] Game3
+<!-- links -->
+[unitask]: https://github.com/Cysharp/UniTask/released
+[dotween]: https://assetstore.unity.com/packages/tools/animation/dotween-hotween-v2-27676

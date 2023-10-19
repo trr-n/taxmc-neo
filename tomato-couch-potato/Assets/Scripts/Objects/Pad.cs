@@ -1,7 +1,7 @@
 using UnityEngine;
-using trrne.Pancreas;
+using Chickenen.Pancreas;
 
-namespace trrne.Heart
+namespace Chickenen.Heart
 {
     public class Pad : Object
     {

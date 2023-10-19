@@ -1,8 +1,8 @@
 using System.Linq;
 
-namespace trrne.Pancreas
+namespace Chickenen.Pancreas
 {
-    public static class Rand
+    public static class Randoms
     {
         public static float Float(float min = 0, float max = 0)
         {
@@ -24,8 +24,8 @@ namespace trrne.Pancreas
             return (short)UnityEngine.Random.Range(min, max);
         }
 
-        static readonly char[] alphabets = "0123456789".ToCharArray(),
-            numbers = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz".ToCharArray();
+        static char[] alphabets => "0123456789".ToCharArray();
+        static char[] numbers => "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz".ToCharArray();
 
         public static string String()
         {

@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-namespace trrne.Pancreas
+namespace Chickenen.Pancreas
 {
     public static class Typing
     {
@@ -13,6 +13,11 @@ namespace trrne.Pancreas
         public static Vector2 ToVec2(this Vector3 vector)
         {
             return (Vector2)vector;
+        }
+
+        public static Vector3 ToVec3(this Vector2 vector)
+        {
+            return (Vector3)vector;
         }
 
         /// <summary>
@@ -41,20 +46,20 @@ namespace trrne.Pancreas
         }
 
         /// <summary>
+        /// 文字列から指定の文字を削除する
+        /// </summary>
+        public static string Delete(this string target, string be)
+        {
+            return target.Replace(be, "");
+        }
+
+        /// <summary>
         /// basisからtargetsを削除
         /// </summary>
         public static string DeleteLump(this string basis, params string[] targets)
         {
             targets.ForEach(target => basis = basis.Delete(target));
             return basis;
-        }
-
-        /// <summary>
-        /// 文字列から指定の文字を削除する
-        /// </summary>
-        public static string Delete(this string target, string be)
-        {
-            return target.Replace(be, "");
         }
 
         public static bool Subclass(this object obj, Type t)

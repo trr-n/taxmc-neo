@@ -1,4 +1,4 @@
-﻿namespace trrne.Pancreas
+﻿namespace Chickenen.Pancreas
 {
     public interface IEncryption
     {

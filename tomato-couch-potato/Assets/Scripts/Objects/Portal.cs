@@ -1,10 +1,10 @@
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
-using trrne.Pancreas;
+using Chickenen.Pancreas;
 using UnityEngine;
 using System.Collections;
 
-namespace trrne.Heart
+namespace Chickenen.Heart
 {
     public class Portal : Object
     {
@@ -34,10 +34,10 @@ namespace trrne.Heart
             for (int i = 0; i < loop; i++)
             {
                 child.frames[i] = transform.GetChildObject(i);
-                child.speeds[i] = Rand.Float(-speed_range, speed_range);
+                child.speeds[i] = Randoms.Float(-speed_range, speed_range);
             }
 
-            myspeed = Rand.Float(-speed_range, speed_range);
+            myspeed = Randoms.Float(-speed_range, speed_range);
 
             foreach (var frame in child.frames)
             {

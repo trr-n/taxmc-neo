@@ -1,4 +1,4 @@
-﻿namespace trrne.Heart
+﻿namespace Chickenen.Heart
 {
     public struct SaveData
     {

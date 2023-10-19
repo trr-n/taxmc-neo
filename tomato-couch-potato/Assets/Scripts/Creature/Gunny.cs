@@ -1,10 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
-using trrne.Pancreas;
+using Chickenen.Pancreas;
 using UnityEngine;
 
-namespace trrne.Heart
+namespace Chickenen.Heart
 {
     public class Gunny : Creature
     {

@@ -1,8 +1,8 @@
 using UnityEngine;
-using trrne.Pancreas;
+using Chickenen.Pancreas;
 using Cysharp.Threading.Tasks;
 
-namespace trrne.Heart
+namespace Chickenen.Heart
 {
     public class Venomin : Object
     {

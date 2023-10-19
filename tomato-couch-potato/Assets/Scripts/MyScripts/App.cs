@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UniApp = UnityEngine.Application;
 
-namespace trrne.Pancreas
+namespace Chickenen.Pancreas
 {
     public static class Paths
     {
@@ -21,8 +21,8 @@ namespace trrne.Pancreas
             UniApp.targetFrameRate = (int)fps;
         }
 
-        public static float Fpsf => Mathf.Floor(1 / Time.deltaTime);
-        public static int Fpsint => Maths.Cutail(Fpsf);
+        public static float FPSf => Mathf.Floor(1 / Time.deltaTime);
+        public static int FPSint => Maths.Cutail(FPSf);
 
         public static void SetCursorStatus(CursorAppearance appear, CursorRangeOfMotion rangeOfMotion)
         {
@@ -41,10 +41,7 @@ namespace trrne.Pancreas
             Time.timeScale = scale;
         }
 
-        public static RuntimePlatform GetPlatform()
-        {
-            return UniApp.platform;
-        }
+        public static RuntimePlatform Platform => UniApp.platform;
 
         public static bool IsPlatform(RuntimePlatform platform, out RuntimePlatform truth)
         {
@@ -68,9 +65,6 @@ namespace trrne.Pancreas
             Camera.main.orthographicSize = size;
         }
 
-        public static float GetCameraSize()
-        {
-            return Camera.main.orthographicSize;
-        }
+        public static float CameraSize => Camera.main.orthographicSize;
     }
 }

@@ -1,9 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
-using trrne.Pancreas;
+using Chickenen.Pancreas;
 using UnityEngine;
 
-namespace trrne.Heart
+namespace Chickenen.Heart
 {
     public class Fan : Object
     {

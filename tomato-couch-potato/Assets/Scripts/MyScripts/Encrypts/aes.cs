@@ -1,6 +1,6 @@
 ﻿using System.Security.Cryptography;
 
-namespace trrne.Pancreas
+namespace Chickenen.Pancreas
 {
     public class AES : IEncryption
     {

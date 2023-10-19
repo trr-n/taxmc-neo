@@ -1,7 +1,7 @@
-using trrne.Pancreas;
+using Chickenen.Pancreas;
 using UnityEngine;
 
-namespace trrne.Brain
+namespace Chickenen.Brain
 {
     public class TimeManager : MonoBehaviour
     {

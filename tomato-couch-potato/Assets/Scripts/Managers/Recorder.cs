@@ -1,13 +1,14 @@
 using System.IO;
-using trrne.Pancreas;
+using Chickenen.Pancreas;
 
-namespace trrne.Brain
+namespace Chickenen.Brain
 {
     public class Recorder : Singleton<Recorder>
     {
         protected override bool Alive => true;
 
-        public (string Path, string Password) Secret => (Paths.Data + "/save.sav", "pomodoro");
+        public string Path => Paths.Data + "/save.sav";
+        public string Password => "pomodoro";
 
         (int stay, int done) idx = (0, 0);
 
@@ -21,28 +22,33 @@ namespace trrne.Brain
         /// </summary>
         public int Current => int.Parse(Scenes.Active().Delete(Constant.Scenes.Prefix));
 
+        /// <summary>
+        /// プレイ中のステージ
+        /// </summary>
         public int Stay => idx.stay;
+
+        /// <summary>
+        /// クリア済み
+        /// </summary>
         public int Done => idx.done;
 
         /// <summary>
         /// 進捗
         /// </summary>
-        public float Progress => (float)idx.done / Max;
+        public float Progress => Maths.Ratio(Max, idx.done);
 
         public void Clear()
         {
-            // クリアしたと思われるシーンにPrefixと整数が含まれていたら+1
-            if (int.TryParse(Scenes.Active().Delete(Constant.Scenes.Prefix), out int idx))
+            if (int.TryParse(Scenes.Active().Delete(Constant.Scenes.Prefix), out _))
             {
-                this.idx.done++;
-                // Scenes.Load(Constant.Scenes.Prefix + idx);
+                idx.done++;
                 Scenes.Load(Constant.Scenes.Select);
             }
         }
 
-        public void Save()
-        {
-            Pancreas.Save.Write(idx.done, Secret.Password, Secret.Path, FileMode.Append);
-        }
+        // public void Save()
+        // {
+        //     Pancreas.Save.Write(idx.done, Password, Path, FileMode.Append);
+        // }
     }
 }

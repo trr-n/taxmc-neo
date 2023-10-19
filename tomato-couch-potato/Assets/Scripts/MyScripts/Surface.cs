@@ -1,11 +1,21 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace trrne.Pancreas
+namespace Chickenen.Pancreas
 {
     public static class Surface
     {
-        public static bool Compare(this SpriteRenderer sr, Sprite sprite)
+        public static Vector2 GetSize(this Collider2D collider)
+        {
+            return collider.bounds.size;
+        }
+
+        public static Vector2 GetSize(this SpriteRenderer sr)
+        {
+            return sr.bounds.size;
+        }
+
+        public static bool CompareSprite(this SpriteRenderer sr, Sprite sprite)
         {
             return sr.sprite == sprite;
         }
@@ -84,20 +94,11 @@ namespace trrne.Pancreas
                 blue ?? color.b,
                 alpha ?? color.a
             );
-
-            // return new Color(
-            //     red is null ? color.r : (float)red,
-            //     green is null ? color.g : (float)green,
-            //     blue is null ? color.b : (float)blue,
-            //     alpha is null ? color.a : (float)alpha
-            // );
         }
 
         public static bool Twins(Color n1, Color n2)
         {
-            return Mathf.Approximately(n1.r, n2.r)
-                && Mathf.Approximately(n1.g, n2.g)
-                && Mathf.Approximately(n1.b, n2.b);
+            return Mathf.Approximately(n1.r, n2.r) && Mathf.Approximately(n1.g, n2.g) && Mathf.Approximately(n1.b, n2.b);
         }
     }
 }

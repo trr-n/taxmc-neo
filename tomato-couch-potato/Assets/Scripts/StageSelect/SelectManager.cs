@@ -1,10 +1,10 @@
 ﻿using DG.Tweening;
-using trrne.Brain;
-using trrne.Pancreas;
+using Chickenen.Brain;
+using Chickenen.Pancreas;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace trrne.Arm
+namespace Chickenen.Arm
 {
     public class SelectManager : MonoBehaviour
     {

@@ -1,7 +1,7 @@
 using System;
 using SystemStopwatch = System.Diagnostics.Stopwatch;
 
-namespace trrne.Pancreas
+namespace Chickenen.Pancreas
 {
     public sealed class Stopwatch
     {

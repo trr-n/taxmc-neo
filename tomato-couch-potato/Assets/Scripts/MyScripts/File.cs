@@ -1,7 +1,7 @@
 using System.IO;
 using System.Runtime.CompilerServices;
 
-namespace trrne.Pancreas
+namespace Chickenen.Pancreas
 {
     public static class Files
     {

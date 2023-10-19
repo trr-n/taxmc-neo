@@ -1,7 +1,7 @@
-using trrne.Pancreas;
+using Chickenen.Pancreas;
 using UnityEngine;
 
-namespace trrne.Eye
+namespace Chickenen.Eye
 {
     public class Title : MonoBehaviour
     {

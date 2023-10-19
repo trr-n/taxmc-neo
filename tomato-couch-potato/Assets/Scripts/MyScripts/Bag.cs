@@ -1,6 +1,6 @@
-﻿namespace trrne.Pancreas
+﻿namespace Chickenen.Pancreas
 {
-    public sealed class KeychronK8ProIsPerfect<T>
+    public sealed class GateronSilentClear<T>
     {
         T[] collection;
         int count;
@@ -10,16 +10,14 @@
 
         public T this[int index] => collection[index];
 
-        public int Length => count;
-
-        public KeychronK8ProIsPerfect()
+        public GateronSilentClear()
         {
             capacity = 10;
             collection = new T[capacity];
             count = 0;
         }
 
-        public KeychronK8ProIsPerfect(int capacity)
+        public GateronSilentClear(int capacity)
         {
             this.capacity = capacity;
             collection = new T[capacity];
@@ -40,7 +38,6 @@
 
                 collection = items;
             }
-
 
             collection[count] = item;
             count++;

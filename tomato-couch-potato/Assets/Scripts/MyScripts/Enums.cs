@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace trrne.Pancreas
+namespace Chickenen.Pancreas
 {
     public enum FrameRate
     {

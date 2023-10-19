@@ -1,8 +1,8 @@
 ﻿using System;
 
-namespace trrne.Pancreas
+namespace Chickenen.Pancreas
 {
-    public static class Temps
+    public static class Times
     {
         public static string Raw => (Date(TempsFormat.Domestics) + Time(TempsFormat.Domestics)).DeleteLump("/", ":"); // ReplaceLump("/  :", "");
 

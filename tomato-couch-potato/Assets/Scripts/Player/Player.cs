@@ -1,11 +1,11 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
-using trrne.Pancreas;
+using Chickenen.Pancreas;
 using Cysharp.Threading.Tasks;
 using System.Collections;
-using trrne.Brain;
+using Chickenen.Brain;
 
-namespace trrne.Heart
+namespace Chickenen.Heart
 {
     public enum CuzOfDeath
     {

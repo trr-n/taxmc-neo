@@ -1,8 +1,8 @@
 using Cysharp.Threading.Tasks;
-using trrne.Pancreas;
+using Chickenen.Pancreas;
 using UnityEngine;
 
-namespace trrne.Heart
+namespace Chickenen.Heart
 {
     public class Newbie : Creature
     {
@@ -27,7 +27,7 @@ namespace trrne.Heart
             {
                 StartFacing.Left => -speed.basis,
                 StartFacing.Right => speed.basis,
-                StartFacing.Random or _ => Rand.Int(max: 2) switch
+                StartFacing.Random or _ => Randoms.Int(max: 2) switch
                 {
                     1 => -speed.basis,
                     _ => speed.basis

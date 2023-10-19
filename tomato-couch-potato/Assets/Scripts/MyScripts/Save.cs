@@ -1,11 +1,13 @@
-﻿using System;
+﻿// 学校提供
+
+using System;
 using System.IO;
 using System.Text.Json;
 using UnityEngine;
 
-namespace trrne.Pancreas
+namespace Chickenen.Pancreas
 {
-    public sealed class Save
+    public static class Save
     {
         public static void Write(object data, string password, string path, FileMode mode = FileMode.Create)
         {
@@ -17,7 +19,7 @@ namespace trrne.Pancreas
             }
         }
 
-        public static void Read<T>(out T read, string password, string path)
+        public static bool Read<T>(out T read, string password, string path)
         {
             using (FileStream stream = new(path, FileMode.Open))
             {
@@ -26,11 +28,12 @@ namespace trrne.Pancreas
                 IEncryption decrypt = new Rijndael(password);
                 read = JsonUtility.FromJson<T>(decrypt.Decrypt2String(readArr));
             }
+            return read == null;
         }
 
         public static T Read<T>(string password, string path)
         {
-            Read(out T data, password, path);
+            _ = Read(out T data, password, path);
             return data;
         }
 
@@ -46,15 +49,23 @@ namespace trrne.Pancreas
         }
 
         [Obsolete]
-        public static T Read2<T>(string password, string path)
+        public static bool Read2<T>(out T read, string password, string path)
         {
             using (FileStream stream = new(path, FileMode.Open))
             {
                 byte[] arr = new byte[stream.Length];
                 stream.Read(arr, 0, (int)stream.Length);
                 Rijndael dec = new(password);
-                return JsonSerializer.Deserialize<T>(dec.Decrypt2String(arr));
+                read = JsonSerializer.Deserialize<T>(dec.Decrypt2String(arr));
             }
+            return read == null;
+        }
+
+        [Obsolete]
+        public static T Read2<T>(string password, string path)
+        {
+            _ = Read2(out T data, password, path);
+            return data;
         }
     }
 }

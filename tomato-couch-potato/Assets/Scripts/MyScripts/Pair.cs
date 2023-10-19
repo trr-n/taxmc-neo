@@ -1,12 +1,12 @@
-﻿using System;
-
-namespace trrne.Pancreas
+﻿namespace Chickenen.Pancreas
 {
     public class Pair<TKey, TValue>
-    // where TValue : struct, IComparable, IFormattable, IConvertible, IComparable<TValue>, IEquatable<TValue>
     {
-        public TKey key;
-        public TValue value;
+        TKey key;
+        public TKey Key => key;
+
+        TValue value;
+        public TValue Value => value;
 
         public Pair() { }
 

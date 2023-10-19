@@ -2,9 +2,9 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using static UnityEngine.SceneManagement.SceneManager;
 
-namespace trrne.Pancreas
+namespace Chickenen.Pancreas
 {
-    public class Scenes
+    public static class Scenes
     {
         /// <summary>
         /// nameで指定したシーンをロード

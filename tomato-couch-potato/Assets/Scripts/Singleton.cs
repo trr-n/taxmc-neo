@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-namespace trrne.Pancreas
+namespace Chickenen.Pancreas
 {
     // https://nobushiueshi.com/unitymonobehaviour%E3%82%92%E3%82%B7%E3%83%B3%E3%82%B0%E3%83%AB%E3%83%88%E3%83%B3singleton%E3%81%AB%E3%81%99%E3%82%8B%E6%96%B9%E6%B3%95/
     public class Singleton<T> : MonoBehaviour

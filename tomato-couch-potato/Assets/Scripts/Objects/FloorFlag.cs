@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace trrne.Heart
+namespace Chickenen.Heart
 {
     public class FloorFlag : MonoBehaviour
     {
