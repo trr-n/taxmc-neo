@@ -12,7 +12,10 @@ namespace Chickenen.Heart
         float pepperyLimit = 1;
 
         [SerializeField]
-        float detect = 13f;
+        float lineWidth = .5f;
+
+        [SerializeField]
+        float detectRange = 13f;
         float pepperyTimer = 0;
         readonly float punishDuration = 3f;
 
@@ -22,14 +25,19 @@ namespace Chickenen.Heart
 
         GameObject player;
         Vector3 offset;
+        Vector3 offseted;
+        float distance;
 
         GameObject[] eyes;
         Vector2[] inits;
+        float[] distances;
+        Vector2[] directions;
+        LineRenderer[] lines;
 
         /// <summary>
         /// 黒目の可動域
         /// </summary>
-        readonly float bump = 0.388f;
+        readonly float bump = 0.25f;
 
         /// <summary>
         /// 範囲内にいるか
@@ -47,30 +55,27 @@ namespace Chickenen.Heart
             offset = Vector100.Y * player.GetComponent<BoxCollider2D>().GetSize().y / 2;
             eyes = transform.GetChildren();
             inits = new Vector2[] { eyes[0].transform.position, eyes[1].transform.position };
+
+            lines = new LineRenderer[] { eyes[0].GetComponent<LineRenderer>(), eyes[1].GetComponent<LineRenderer>() };
+            lines.ForEach(line => line.startWidth = line.endWidth = lineWidth);
+
         }
 
         void Update()
         {
+            offseted = player.transform.position + offset;
+            distances = new float[] { Vector2.Distance(offseted, eyes[0].transform.position), Vector2.Distance(offseted, eyes[1].transform.position) };
+            directions = new Vector2[] { offseted - eyes[0].transform.position, offseted - eyes[1].transform.position };
+            distance = Maths.Average(distances);
+
+            Line();
             Look();
             Detect();
             Punish();
         }
 
-        float[] distances;
         void Look()
         {
-            // プレイヤーの方向を見続ける
-            var player = this.player.transform.position + offset;
-            distances = new float[] { Vector2.Distance(player, eyes[0].transform.position), Vector2.Distance(player, eyes[1].transform.position) };
-            var directions = new Vector2[] { player - eyes[0].transform.position, player - eyes[1].transform.position };
-            var lines = new Ray[] { new(eyes[0].transform.position, directions[0]), new(eyes[1].transform.position, directions[1]) };
-
-            foreach (var (distance, line) in distances.SelectMany(dis => lines.Select(line => (dis, line))))
-            {
-                // 目から怪光線
-                Debug.DrawRay(line.origin, line.direction * distance);
-            }
-
             if (isPlayerWithinDetectRange)
             {
                 for (int index = 0; index < eyes.Length; index++)
@@ -88,11 +93,8 @@ namespace Chickenen.Heart
         {
             pepperyTimer = Mathf.Clamp(pepperyTimer, 0, pepperyLimit);
 
-            // 左右の目の位置が若干違うから平均で
-            var distance = Maths.Average(distances);
-
             // 範囲内にいたら
-            if (distance <= detect && this.player.TryGet(out Player player))
+            if (distance <= detectRange && this.player.TryGet(out Player player))
             {
                 isPlayerWithinDetectRange = true;
                 // キーが入力されていないか、反転可能なら増やす
@@ -107,7 +109,7 @@ namespace Chickenen.Heart
                 }
             }
             // 範囲外にいたら
-            else if (distance > detect)
+            else if (distance > detectRange)
             {
                 // タイマーが0以上なら減らす
                 if (pepperyTimer >= 0)
@@ -115,6 +117,22 @@ namespace Chickenen.Heart
                     pepperyTimer -= Time.deltaTime;
                 }
                 isPlayerWithinDetectRange = false;
+            }
+        }
+
+        void Line()
+        {
+            if (distance <= detectRange)
+            {
+                lines[0].enabled = lines[1].enabled = true;
+                for (int i = 0; i < lines.Length; i++)
+                {
+                    lines[i].SetPositions(new Vector3[] { eyes[i].transform.position, offseted });
+                }
+            }
+            else
+            {
+                lines[0].enabled = lines[1].enabled = false;
             }
         }
 
@@ -133,11 +151,11 @@ namespace Chickenen.Heart
         IEnumerator Punishment()
         {
             isPunishing = true;
-            Stopwatch timer = new(true);
+            Stopwatch punishTimer = new(true);
             var player = Gobject.GetWithTag<Player>(Constant.Tags.Player);
 
             // お仕置き時間内なら
-            while (timer.Sf <= punishDuration)
+            while (punishTimer.Sf <= punishDuration)
             {
                 yield return null;
                 // 操作反転
@@ -151,7 +169,7 @@ namespace Chickenen.Heart
 #if DEBUG
         void OnDrawGizmos()
         {
-            Gizmos.DrawWireSphere(transform.position, detect);
+            Gizmos.DrawWireSphere(transform.position, detectRange);
         }
 #endif
     }

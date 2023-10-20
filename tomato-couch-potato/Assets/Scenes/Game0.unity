@@ -4745,6 +4745,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1883955434831392856, guid: 1bf9d8ed51cc17d49aaa40451e34f596, type: 3}
+      propertyPath: m_IsTrigger
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1988115509127263728, guid: 1bf9d8ed51cc17d49aaa40451e34f596, type: 3}
       propertyPath: m_Name
       value: mamaface
@@ -4788,6 +4792,14 @@ PrefabInstance:
     - target: {fileID: 2245716877750886528, guid: 1bf9d8ed51cc17d49aaa40451e34f596, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3182884158806823405, guid: 1bf9d8ed51cc17d49aaa40451e34f596, type: 3}
+      propertyPath: m_SortingOrder
+      value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 3377138040367056793, guid: 1bf9d8ed51cc17d49aaa40451e34f596, type: 3}
+      propertyPath: m_SortingOrder
+      value: 12
       objectReference: {fileID: 0}
     - target: {fileID: 3602828583637058683, guid: 1bf9d8ed51cc17d49aaa40451e34f596, type: 3}
       propertyPath: detect
