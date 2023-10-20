@@ -9,7 +9,7 @@ namespace Chickenen.Heart
 
         public void Fluc(int amount)
         {
-            balance -= amount;
+            balance += amount;
         }
     }
 }

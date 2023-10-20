@@ -25,6 +25,12 @@ namespace Chickenen.Heart
         public bool Jumpable { get; set; }
         public bool Movable { get; set; }
 
+        bool isKeyEntered = false;
+        /// <summary>
+        /// 移動キーが押されているか
+        /// </summary>
+        public bool IsKeyEntered => isKeyEntered;
+
         /// <summary>
         /// テレポート中か
         /// </summary>
@@ -35,7 +41,7 @@ namespace Chickenen.Heart
         /// </summary>
         public bool IsDieProcessing { get; set; }
 
-        readonly (float basis, float max, float freduction, float reduction) speed = (20, 10, 0.1f, 0.9f);
+        readonly (float basis, float max, float floatingReduction, float reduction) speed = (20, 10, 0.1f, 0.9f);
         readonly float jumpPower = 6f;
 
         bool isFloating;
@@ -83,6 +89,9 @@ namespace Chickenen.Heart
 
             cam = Gobject.GetWithTag<Cam>(Constant.Tags.MainCamera);
             cam.Followable = true;
+
+            Movable = true;
+            Jumpable = true;
         }
 
         void FixedUpdate()
@@ -92,6 +101,7 @@ namespace Chickenen.Heart
 
         void Update()
         {
+            DetectInput();
             Jump();
             Flip();
             Respawn();
@@ -107,6 +117,17 @@ namespace Chickenen.Heart
 #endif
         }
 
+        void DetectInput()
+        {
+            if (!Controllable)
+            {
+                isKeyEntered = false;
+                return;
+            }
+
+            isKeyEntered = Input.GetButton(Constant.Keys.Horizontal) || Input.GetButton(Constant.Keys.Jump);
+        }
+
         /// <summary>
         /// スペースでリスポーンする
         /// </summary>
@@ -119,7 +140,7 @@ namespace Chickenen.Heart
         }
 
         /// <summary>
-        /// テレポート中はRB無効化
+        /// 反重力
         /// </summary>
         void RBDisable()
         {
@@ -151,8 +172,8 @@ namespace Chickenen.Heart
 
         void Jump()
         {
-            if (!(Controllable || Jumpable))
-            // if (!Controllable || !Jumpable)
+            // if (!(Controllable || Jumpable))
+            if (!Controllable || !Jumpable)
             {
                 return;
             }
@@ -176,7 +197,8 @@ namespace Chickenen.Heart
         /// </summary>
         void Move()
         {
-            if (!(Controllable || Movable))
+            // if (!(Controllable || Movable))
+            if (!Controllable || !Movable)
             {
                 return;
             }
@@ -201,7 +223,7 @@ namespace Chickenen.Heart
             );
 
             // 浮いていたら移動速度低下
-            float velocity = isFloating ? speed.basis * speed.freduction : speed.basis;
+            float velocity = isFloating ? speed.basis * speed.floatingReduction : speed.basis;
             rb.velocity += Time.fixedDeltaTime * velocity * move;
         }
 
@@ -225,18 +247,16 @@ namespace Chickenen.Heart
             {
                 case CuzOfDeath.Venom:
                     rb.velocity = Vector2.zero;
-                    animator.Play("venom_die");
+                    animator.Play(Constant.Animations.Venomed);
                     break;
 
                 default: break;
             }
 
-            // 1秒待機
             await UniTask.Delay(1250);
 
             // 落とし穴修繕
-            var holes = FindObjectsByType<Hole>(FindObjectsSortMode.None);
-            foreach (var hole in holes)
+            foreach (var hole in FindObjectsByType<Hole>(FindObjectsSortMode.None))
             {
                 if (hole.isBreaking)
                 {

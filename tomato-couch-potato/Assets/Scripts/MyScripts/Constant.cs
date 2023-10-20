@@ -58,7 +58,8 @@ namespace Chickenen
             Idle = "Idle",
             Jump = "Jump",
             Walk = "Walk",
-            Venom = "Venom";
+            Venom = "Venom",
+            Venomed = "venom_die";
         }
 
         public readonly struct SpawnPositions

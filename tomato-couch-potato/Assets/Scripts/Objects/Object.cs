@@ -20,7 +20,7 @@ namespace Chickenen.Heart
         /// <summary>
         /// アニメーションさせるか
         /// </summary>
-        protected bool Animatable { get; set; }
+        protected bool Animatable { get; set; } = false;
         protected SpriteRenderer sr;
         protected Vector2 Size => sr.bounds.size;
 

@@ -1,8 +1,6 @@
-using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using Chickenen.Pancreas;
 using UnityEngine;
-using System.Collections;
 
 namespace Chickenen.Heart
 {
@@ -15,42 +13,40 @@ namespace Chickenen.Heart
         float teleportSpeed = 3f;
 
         [SerializeField]
-        float speed_range = 30;
+        float frameAlpha = .75f;
 
-        (GameObject[] frames, float[] speeds) child;
+        readonly float speed_range = 30;
+
+        GameObject[] frames;
+        float[] speeds;
         float myspeed;
         bool warping = false;
-        int loop;
+        int children;
 
         protected override void Start()
         {
             base.Start();
 
             // パーティクルを除くため-1
-            loop = transform.childCount - 1;
+            children = transform.childCount - 1;
 
-            child.frames = new GameObject[loop];
-            child.speeds = new float[loop];
-            for (int i = 0; i < loop; i++)
+            frames = new GameObject[children];
+            speeds = new float[children];
+            for (int i = 0; i < children; i++)
             {
-                child.frames[i] = transform.GetChildObject(i);
-                child.speeds[i] = Randoms.Float(-speed_range, speed_range);
+                frames[i] = transform.GetChildObject(i);
+                frames[i].GetComponent<SpriteRenderer>().SetAlpha(frameAlpha);
+                speeds[i] = Randoms.Float(-speed_range, speed_range);
             }
-
             myspeed = Randoms.Float(-speed_range, speed_range);
-
-            foreach (var frame in child.frames)
-            {
-                frame.GetComponent<SpriteRenderer>().SetAlpha(0.75f);
-            }
         }
 
         protected override void Behavior()
         {
-            for (int i = 0; i < loop; i++)
+            for (int idx = 0; idx < children; idx++)
             {
                 // フレームを回転させる
-                child.frames[i].transform.Rotate(Time.deltaTime * child.speeds[i] * Vector100.Z);
+                frames[idx].transform.Rotate(Time.deltaTime * speeds[idx] * Vector100.Z);
             }
 
             // ついでに中心も回転させる
@@ -61,8 +57,8 @@ namespace Chickenen.Heart
         {
             if (!warping && info.CompareBoth(Constant.Layers.Player, Constant.Tags.Player))
             {
-                var player = info.Get<Player>();
-                if (!player.IsDieProcessing)
+                // var player = info.Get<Player>();
+                if (info.TryGet(out Player player) && !player.IsDieProcessing)
                 {
                     warping = true;
                     effects.TryGenerate(transform.position);
@@ -71,19 +67,9 @@ namespace Chickenen.Heart
                         .SetEase(Ease.OutCubic)
                         .OnPlay(() => player.IsTeleporting = true)
                         .OnComplete(() => player.IsTeleporting = false);
-
                     warping = false;
-                    // StartCoroutine(AfterDelay(info));
                 }
             }
-        }
-
-        IEnumerator AfterDelay(Collider2D info)
-        {
-            yield return null;
-
-            info.transform.SetPosition(to);
-            warping = false;
         }
     }
 }
