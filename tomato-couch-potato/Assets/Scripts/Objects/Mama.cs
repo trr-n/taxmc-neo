@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Linq;
 using Chickenen.Pancreas;
 using UnityEngine;
@@ -13,6 +14,11 @@ namespace Chickenen.Heart
         [SerializeField]
         float detect = 13f;
         float pepperyTimer = 0;
+        readonly float punishDuration = 3f;
+
+        public float PepperyLimit => pepperyLimit;
+        public float PepperyTimer => pepperyTimer;
+        public float PepperyRatio => pepperyTimer / pepperyLimit;
 
         GameObject player;
         Vector3 offset;
@@ -25,7 +31,15 @@ namespace Chickenen.Heart
         /// </summary>
         readonly float bump = 0.388f;
 
-        bool isTherePlayerWithinDetectRange = false;
+        /// <summary>
+        /// 範囲内にいるか
+        /// </summary>
+        bool isPlayerWithinDetectRange = false;
+
+        /// <summary>
+        /// お仕置き中か
+        /// </summary>
+        bool isPunishing = false;
 
         void Start()
         {
@@ -57,7 +71,7 @@ namespace Chickenen.Heart
                 Debug.DrawRay(line.origin, line.direction * distance);
             }
 
-            if (isTherePlayerWithinDetectRange)
+            if (isPlayerWithinDetectRange)
             {
                 for (int index = 0; index < eyes.Length; index++)
                 {
@@ -72,22 +86,35 @@ namespace Chickenen.Heart
         /// </summary>
         void Detect()
         {
-            var distance = (distances[0] + distances[1]) / 2;
+            pepperyTimer = Mathf.Clamp(pepperyTimer, 0, pepperyLimit);
+
+            // 左右の目の位置が若干違うから平均で
+            var distance = Maths.Average(distances);
+
+            // 範囲内にいたら
             if (distance <= detect && this.player.TryGet(out Player player))
             {
-                isTherePlayerWithinDetectRange = true;
-                if (!player.IsKeyEntered)
+                isPlayerWithinDetectRange = true;
+                // キーが入力されていないか、反転可能なら増やす
+                if (!player.IsKeyEntered && player.Reversable)
                 {
                     pepperyTimer += Time.deltaTime;
                 }
-            }
-            else
-            {
-                if (pepperyTimer != 0)
+                // 反転不可 == キーが入力されている状態なら減らす
+                if (!player.Reversable)
                 {
-                    pepperyTimer = 0;
+                    pepperyTimer -= Time.deltaTime;
                 }
-                isTherePlayerWithinDetectRange = false;
+            }
+            // 範囲外にいたら
+            else if (distance > detect)
+            {
+                // タイマーが0以上なら減らす
+                if (pepperyTimer >= 0)
+                {
+                    pepperyTimer -= Time.deltaTime;
+                }
+                isPlayerWithinDetectRange = false;
             }
         }
 
@@ -96,10 +123,29 @@ namespace Chickenen.Heart
         /// </summary>
         void Punish()
         {
-            if (pepperyTimer >= pepperyLimit)
+            // お仕置き中じゃなくて、範囲内に一定時間以上いたらお仕置き執行
+            if (!isPunishing && pepperyTimer >= pepperyLimit)
             {
-                print("punsuka punsuka siteorimasu watakusi");
+                StartCoroutine(Punishment());
             }
+        }
+
+        IEnumerator Punishment()
+        {
+            isPunishing = true;
+            Stopwatch timer = new(true);
+            var player = Gobject.GetWithTag<Player>(Constant.Tags.Player);
+
+            // お仕置き時間内なら
+            while (timer.Sf <= punishDuration)
+            {
+                yield return null;
+                // 操作反転
+                player.Reverse = true;
+            }
+            // 反転解除
+            player.Reverse = false;
+            isPunishing = false;
         }
 
 #if DEBUG

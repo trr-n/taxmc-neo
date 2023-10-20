@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 3602828583637058683}
   m_Layer: 2
   m_Name: mamaface
-  m_TagString: Untagged
+  m_TagString: Mama
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -145,7 +145,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 21b6e3337d766504bb37bff171a79bd2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pepperyLevel: 1
+  pepperyLimit: 1
+  detect: 13
 --- !u!1 &2982049850037527437
 GameObject:
   m_ObjectHideFlags: 0

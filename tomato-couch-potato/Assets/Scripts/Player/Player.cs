@@ -25,6 +25,18 @@ namespace Chickenen.Heart
         public bool Jumpable { get; set; }
         public bool Movable { get; set; }
 
+        /// <summary>
+        /// 操作を反転するか
+        /// </summary>
+        public bool Reverse { get; set; }
+        readonly float reverseLimit = .33f;
+        bool reversable = false;
+        /// <summary>
+        /// 反転可能か
+        /// </summary>
+        public bool Reversable => reversable;
+        readonly Stopwatch reverseSW = new();
+
         bool isKeyEntered = false;
         /// <summary>
         /// 移動キーが押されているか
@@ -92,6 +104,7 @@ namespace Chickenen.Heart
 
             Movable = true;
             Jumpable = true;
+            Reverse = false;
         }
 
         void FixedUpdate()
@@ -124,8 +137,17 @@ namespace Chickenen.Heart
                 isKeyEntered = false;
                 return;
             }
-
             isKeyEntered = Input.GetButton(Constant.Keys.Horizontal) || Input.GetButton(Constant.Keys.Jump);
+
+            if (Inputs.Released(Constant.Keys.Horizontal) || Inputs.Released(Constant.Keys.ReversedHorizontal))
+            {
+                reversable = false;
+                reverseSW.Restart();
+            }
+            if (reverseSW.Sf >= reverseLimit)
+            {
+                reversable = true;
+            }
         }
 
         /// <summary>
@@ -154,17 +176,24 @@ namespace Chickenen.Heart
                 return;
             }
 
-            if (Input.GetButtonDown(Constant.Keys.Horizontal))
+            var horizontal = Reverse ? Constant.Keys.ReversedHorizontal : Constant.Keys.Horizontal;
+            if (Input.GetButtonDown(horizontal))
             {
                 var current = Mathf.Sign(transform.localScale.x);
-                switch (Mathf.Sign(Input.GetAxisRaw(Constant.Keys.Horizontal)))
+                switch (Mathf.Sign(Input.GetAxisRaw(horizontal)))
                 {
                     case 1:
-                        Shorthand.BoolAction(current != 1, () => transform.localScale *= new Vector2(-1, 1));
+                        if (current != 1)
+                        {
+                            transform.localScale *= new Vector2(-1, 1);
+                        }
                         break;
 
                     case -1:
-                        Shorthand.BoolAction(current != -1, () => transform.localScale *= new Vector2(-1, 1));
+                        if (current != -1)
+                        {
+                            transform.localScale *= new Vector2(-1, 1);
+                        }
                         break;
                 }
             }
@@ -172,7 +201,6 @@ namespace Chickenen.Heart
 
         void Jump()
         {
-            // if (!(Controllable || Jumpable))
             if (!Controllable || !Jumpable)
             {
                 return;
@@ -197,7 +225,6 @@ namespace Chickenen.Heart
         /// </summary>
         void Move()
         {
-            // if (!(Controllable || Movable))
             if (!Controllable || !Movable)
             {
                 return;
@@ -205,7 +232,8 @@ namespace Chickenen.Heart
 
             animator.SetBool(Constant.Animations.Walk, Input.GetButton(Constant.Keys.Horizontal) && flag.IsHit);
 
-            Vector2 move = Input.GetAxisRaw(Constant.Keys.Horizontal) * Vector100.X;
+            string horizontal = Reverse ? Constant.Keys.ReversedHorizontal : Constant.Keys.Horizontal;
+            Vector2 move = Input.GetAxisRaw(horizontal) * Vector100.X;
 
             // 入力がtolerance以下、氷に乗っていない、浮いていない
             if (move.magnitude <= inputTolerance && !flag.OnIce && !isFloating)

@@ -1,4 +1,3 @@
-using System.IO;
 using Chickenen.Pancreas;
 
 namespace Chickenen.Brain
@@ -45,10 +44,5 @@ namespace Chickenen.Brain
                 Scenes.Load(Constant.Scenes.Select);
             }
         }
-
-        // public void Save()
-        // {
-        //     Pancreas.Save.Write(idx.done, Password, Path, FileMode.Append);
-        // }
     }
 }

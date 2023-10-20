@@ -14,6 +14,7 @@ TagManager:
   - TutorialMessages
   - FxTemporaire
   - Hole
+  - Mama
   layers:
   - Default
   - TransparentFX

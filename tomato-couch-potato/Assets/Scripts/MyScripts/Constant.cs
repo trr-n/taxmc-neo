@@ -29,6 +29,7 @@ namespace Chickenen
         {
             public static string
             Horizontal = "Horizontal",
+            ReversedHorizontal = "ReversedHorizontal",
             Vertical = "Vertical",
             Wheel = "Mouse ScrollWheel",
             Jump = "Jump",
@@ -49,7 +50,8 @@ namespace Chickenen
             Enemy = "Enemy",
             Panel = "Panel",
             Ice = "Ice",
-            Hole = "Hole";
+            Hole = "Hole",
+            Mama = "Mama";
         }
 
         public readonly struct Animations

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using UnityEngine;
 
 namespace Chickenen.Pancreas
@@ -110,6 +111,11 @@ namespace Chickenen.Pancreas
         public static bool IsCaged(this float n, float min, float max)
         {
             return !(n > max || n < min);
+        }
+
+        public static float Average(params float[] ns)
+        {
+            return ns.Sum() / ns.Length;
         }
     }
 }

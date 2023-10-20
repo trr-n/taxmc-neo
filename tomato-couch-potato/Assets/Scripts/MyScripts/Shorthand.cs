@@ -14,10 +14,10 @@ namespace Chickenen.Pancreas
             }
         }
 
-        public static T BoolAction<T>(bool boo, Func<T> action)
-        {
-            return boo ? action() : default;
-        }
+        // public static T BoolAction<T>(bool boo, Func<T> action)
+        // {
+        //     return boo ? action() : default;
+        // }
 
         public static T Function<T>(Func<T> func)
         {
