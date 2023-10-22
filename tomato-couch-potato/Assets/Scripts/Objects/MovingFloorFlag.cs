@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace Chickenen.Heart
 {
-    public class FloorFlag : MonoBehaviour
+    public class MovingFloorFlag : MonoBehaviour
     {
         void OnTriggerEnter2D(Collider2D info)
         {

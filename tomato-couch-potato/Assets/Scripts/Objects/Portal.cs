@@ -43,10 +43,10 @@ namespace Chickenen.Heart
 
         protected override void Behavior()
         {
-            for (int idx = 0; idx < children; idx++)
+            for (int i = 0; i < children; i++)
             {
                 // フレームを回転させる
-                frames[idx].transform.Rotate(Time.deltaTime * speeds[idx] * Vector100.Z);
+                frames[i].transform.Rotate(Time.deltaTime * speeds[i] * Vector100.Z);
             }
 
             // ついでに中心も回転させる

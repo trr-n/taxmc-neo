@@ -6,7 +6,7 @@ namespace Chickenen.Heart
     public class Lever : Object
     {
         [SerializeField]
-        GameObject[] targetObjs;
+        GameObject[] gimmicks;
 
         [SerializeField]
         float duration = 2;
@@ -21,13 +21,15 @@ namespace Chickenen.Heart
 
         bool pressing = false;
 
+        readonly (int active, int inactive) status = (0, 1);
+
         protected override void Start()
         {
             base.Start();
             Animatable = false;
             enable = transform.GetFromChild<LeverFlag>(0);
 
-            speaker = GetComponent<AudioSource>();
+            speaker = Gobject.GetWithTag<AudioSource>(Constant.Tags.Manager);
 
 #if !DEBUG
             sr.color = Colour.transparent;
@@ -40,24 +42,40 @@ namespace Chickenen.Heart
             if (!pressing && enable.Hit && Inputs.Down(Constant.Keys.Button))
             {
                 pressing = true;
-                sr.sprite = sprites[0];
 
-                speaker.clip = sounds.Choice();
+                sr.sprite = sprites[status.active];
+                // speaker.clip = sounds.Choice();
+                speaker.TryPlay(sounds.Choice());
 
                 effectiveSW.Restart();
-                targetObjs.ForEach(obj => obj.SetActive(!obj.activeSelf));
+
+                foreach (var gimmick in gimmicks)
+                {
+                    if (gimmick.TryGetComponent(out IEnable enable))
+                    {
+                        enable.Active();
+                    }
+                }
             }
 
             // 動作中、効果時間がduration以上
             if (pressing && effectiveSW.Sf >= duration)
             {
                 effectiveSW.Reset();
-                targetObjs.ForEach(obj => obj.SetActive(!obj.activeSelf));
 
-                speaker.clip = sounds.Choice();
+                foreach (var gimmick in gimmicks)
+                {
+                    if (gimmick.TryGetComponent(out IEnable disable))
+                    {
+                        disable.Inactive();
+                    }
+                }
+
+                // speaker.clip = sounds.Choice();
+                speaker.TryPlay(sounds.Choice());
 
                 pressing = false;
-                sr.sprite = sprites[1];
+                sr.sprite = sprites[status.inactive];
             }
         }
     }

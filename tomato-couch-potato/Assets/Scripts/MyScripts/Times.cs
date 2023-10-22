@@ -4,7 +4,7 @@ namespace Chickenen.Pancreas
 {
     public static class Times
     {
-        public static string Raw => (Date(TempsFormat.Domestics) + Time(TempsFormat.Domestics)).DeleteLump("/", ":"); // ReplaceLump("/  :", "");
+        public static string Raw => (Date(TempsFormat.Domestics) + Time(TempsFormat.Domestics)).DeleteLump("/", ":");
 
         public static string Date(TempsFormat format)
         {

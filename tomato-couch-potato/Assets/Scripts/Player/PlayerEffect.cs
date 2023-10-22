@@ -7,7 +7,7 @@ namespace Chickenen.Heart
     public class PlayerEffect : MonoBehaviour
     {
         [SerializeField]
-        Image reverse;
+        Image mirror;
 
         Player player;
 
@@ -18,7 +18,7 @@ namespace Chickenen.Heart
 
         void Update()
         {
-            reverse.enabled = player.Reverse;
+            mirror.enabled = player.Mirror;
         }
     }
 }

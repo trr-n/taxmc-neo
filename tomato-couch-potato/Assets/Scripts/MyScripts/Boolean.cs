@@ -7,9 +7,9 @@
         /// </summary>
         public static bool IsNull(params object[] objs)
         {
-            foreach (var obj in objs)
+            foreach (var o in objs)
             {
-                if (obj == null)
+                if (o == null)
                 {
                     return true;
                 }

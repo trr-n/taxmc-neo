@@ -1,16 +1,16 @@
+// 学校提供
 using System.Text;
 using System.Collections.Generic;
 using System.Security.Cryptography;
 
 namespace Chickenen.Pancreas
 {
-    public class Rijndael : IEncryption
+    public sealed class Rijndael : IEncryption
     {
         readonly string password;
         readonly (int bufferKey, int block, int key) size;
 
-        public Rijndael(
-            string password, int bufferKey = 32, int blockSize = 256, int keySize = 256)
+        public Rijndael(string password, int bufferKey = 32, int blockSize = 256, int keySize = 256)
         {
             this.password = password;
             size.bufferKey = bufferKey;
@@ -20,7 +20,7 @@ namespace Chickenen.Pancreas
 
         public byte[] Encrypt(byte[] src)
         {
-            RijndaelManaged rijndaelManaged = new()
+            RijndaelManaged managed = new()
             {
                 BlockSize = size.block,
                 KeySize = size.key,
@@ -30,14 +30,14 @@ namespace Chickenen.Pancreas
 
             Rfc2898DeriveBytes deriveBytes = new(password, size.bufferKey);
             byte[] salt = deriveBytes.Salt;
-            rijndaelManaged.Key = deriveBytes.GetBytes(size.bufferKey);
-            rijndaelManaged.GenerateIV();
+            managed.Key = deriveBytes.GetBytes(size.bufferKey);
+            managed.GenerateIV();
 
-            using (ICryptoTransform encrypt = rijndaelManaged.CreateEncryptor(rijndaelManaged.Key, rijndaelManaged.IV))
+            using (ICryptoTransform encrypt = managed.CreateEncryptor(managed.Key, managed.IV))
             {
                 byte[] dest = encrypt.TransformFinalBlock(src, 0, src.Length);
                 List<byte> compile = new(salt);
-                compile.AddRange(rijndaelManaged.IV);
+                compile.AddRange(managed.IV);
                 compile.AddRange(dest);
                 return compile.ToArray();
             }
@@ -47,7 +47,7 @@ namespace Chickenen.Pancreas
 
         public byte[] Decrypt(byte[] src)
         {
-            RijndaelManaged rijndaelManaged = new()
+            RijndaelManaged managed = new()
             {
                 BlockSize = size.block,
                 KeySize = size.key,
@@ -57,14 +57,14 @@ namespace Chickenen.Pancreas
 
             List<byte> compile = new(src);
             List<byte> salt = compile.GetRange(0, size.bufferKey);
-            rijndaelManaged.IV = compile.GetRange(size.bufferKey, size.bufferKey).ToArray();
+            managed.IV = compile.GetRange(size.bufferKey, size.bufferKey).ToArray();
 
-            Rfc2898DeriveBytes deriveBytes = new(password, salt.ToArray());
-            rijndaelManaged.Key = deriveBytes.GetBytes(size.bufferKey);
+            Rfc2898DeriveBytes rfc = new(password, salt.ToArray());
+            managed.Key = rfc.GetBytes(size.bufferKey);
 
+            using ICryptoTransform decrypt = managed.CreateDecryptor(managed.Key, managed.IV);
             int index = size.bufferKey * 2, count = compile.Count - (size.bufferKey * 2);
             byte[] plain = compile.GetRange(index, count).ToArray();
-            using ICryptoTransform decrypt = rijndaelManaged.CreateDecryptor(rijndaelManaged.Key, rijndaelManaged.IV);
             return decrypt.TransformFinalBlock(plain, 0, plain.Length);
         }
 

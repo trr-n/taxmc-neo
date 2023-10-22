@@ -7,21 +7,9 @@ namespace Chickenen.Heart
     {
         async void OnTriggerEnter2D(Collider2D info)
         {
-            switch (info.GetLayer())
+            if (info.TryGet(out IMurderable murder))
             {
-                case Constant.Layers.Player:
-                    if (info.TryGet(out Player player))
-                    {
-                        await player.Die();
-                    }
-                    break;
-
-                case Constant.Layers.Creature:
-                    if (info.TryGet(out Creature enemy))
-                    {
-                        await enemy.Die();
-                    }
-                    break;
+                await murder.Die();
             }
         }
     }

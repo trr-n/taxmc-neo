@@ -31,9 +31,9 @@ namespace Chickenen.Pancreas
         {
             string[] pres = before.Split("  ");
 
-            for (int count = 0; count < pres.Length; count++)
+            for (int i = 0; i < pres.Length; i++)
             {
-                target = target.Replace(pres[count], after);
+                target = target.Replace(pres[i], after);
             }
 
             return target;

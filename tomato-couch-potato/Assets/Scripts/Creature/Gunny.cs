@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace Chickenen.Heart
 {
-    public class Gunny : Creature
+    public class Gunny : Creature, IMurderable
     {
         (GameObject obj, LineRenderer line, float lineLength) gun;
 
@@ -23,7 +23,7 @@ namespace Chickenen.Heart
             gun.line = gun.obj.GetComponent<LineRenderer>();
         }
 
-        protected override void Move()
+        protected override void Movement()
         {
             ;
         }

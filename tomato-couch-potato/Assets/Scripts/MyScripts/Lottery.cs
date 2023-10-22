@@ -17,10 +17,10 @@ namespace Chickenen.Pancreas
             float[] totals = new float[weights.Length];
 
             float total = 0f;
-            for (int idx = 0; idx < weights.Length; idx++)
+            for (int i = 0; i < weights.Length; i++)
             {
-                total += weights[idx];
-                totals[idx] = total;
+                total += weights[i];
+                totals[i] = total;
             }
 
             float random = Randoms.Float(max: total);
@@ -56,9 +56,9 @@ namespace Chickenen.Pancreas
             }
 
             float[] weights = new float[pairs.Length];
-            for (int idx = 0; idx < pairs.Length; idx++)
+            for (int i = 0; i < pairs.Length; i++)
             {
-                weights[idx] = pairs[idx].Value;
+                weights[i] = pairs[i].Value;
             }
 
             return pairs[Weighted(weights)].Key;
@@ -77,9 +77,9 @@ namespace Chickenen.Pancreas
             }
 
             float[] weights = new float[pairs.Length];
-            for (int idx = 0; idx < pairs.Length; idx++)
+            for (int i = 0; i < pairs.Length; i++)
             {
-                weights[idx] = pairs[idx].Value;
+                weights[i] = pairs[i].Value;
             }
 
             return pairs[Weighted(weights)].Key;
@@ -93,9 +93,9 @@ namespace Chickenen.Pancreas
             }
 
             float[] weights = new float[pairs.Length];
-            for (int idx = 0; idx < pairs.Length; idx++)
+            for (int i = 0; i < pairs.Length; i++)
             {
-                weights[idx] = pairs[idx].Value;
+                weights[i] = pairs[i].Value;
             }
 
             pairs[Weighted(weights)].Key();

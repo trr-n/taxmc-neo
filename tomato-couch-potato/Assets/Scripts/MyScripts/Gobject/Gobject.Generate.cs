@@ -65,7 +65,5 @@ namespace Chickenen.Pancreas
         {
             return gs.Length > 0 ? gs.Generate(p, r) : null;
         }
-
-
     }
 }

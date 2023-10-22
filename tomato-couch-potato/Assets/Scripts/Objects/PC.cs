@@ -5,7 +5,7 @@ namespace Chickenen.Heart
 {
     public class PC : Object
     {
-        Color[] colors = { Color.red, Color.green };
+        readonly Color[] colors = { Color.red, Color.green };
 
         SpriteRenderer display;
 
@@ -14,7 +14,6 @@ namespace Chickenen.Heart
         protected override void Start()
         {
             base.Start();
-            // sr.sprite = sprites[0];
 
             display = transform.GetChild(0).GetComponent<SpriteRenderer>();
             // TODO ディスプレイの色じゃなくてチェックマークみたいなんがでるアニメーションに差し替え、余裕があれば
@@ -32,7 +31,6 @@ namespace Chickenen.Heart
                 effects.TryGenerate(transform.position);
 
                 display.color = colors[1];
-                // sr.sprite = sprites[1];
                 player.SetCheckpoint(new(transform.position.x, Maths.Cutail(transform.position.y)));
             }
         }

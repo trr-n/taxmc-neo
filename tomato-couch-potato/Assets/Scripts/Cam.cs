@@ -8,8 +8,9 @@ namespace Chickenen.Heart
         public bool Followable { get; set; }
 
         GameObject player;
-        float size, zoom;
         readonly Vector3 offset = new(0, 1, -10);
+        float size;
+        float axis;
 
         void Start()
         {
@@ -33,11 +34,11 @@ namespace Chickenen.Heart
 
         void Zoom()
         {
-            zoom = Input.GetAxisRaw(Constant.Keys.Zoom);
+            axis = Input.GetAxisRaw(Constant.Keys.Zoom);
 
-            if (zoom != 0)
+            if (axis != 0)
             {
-                size = Mathf.Sign(zoom) / 4;
+                size = Mathf.Sign(axis) / 4;
                 Camera.main.orthographicSize += size;
                 Camera.main.orthographicSize = Mathf.Clamp(Camera.main.orthographicSize, 2.5f, 12);
             }

@@ -4,61 +4,54 @@ using UnityEngine;
 
 namespace Chickenen.Heart
 {
-    public class Hole : MonoBehaviour
+    public class Hole : Object
     {
         [SerializeField]
         [Tooltip("limit回踏んだらアウト")]
         int limitSteps = 2;
 
-        [SerializeField]
-        GameObject destroyEffect;
-
-        [SerializeField]
-        Sprite[] sprites;
-
         HoleFlag flag;
-
-        SpriteRenderer sr;
         new BoxCollider2D collider;
 
-        bool breaking = false;
+        bool isBreaking = false;
         /// <summary>
         /// 耐久値ぜろだったらtrue
         /// </summary>
-        public bool isBreaking => breaking;
+        public bool IsBreaking => isBreaking;
 
-        public float ratio => (float)flag.count / limitSteps;
+        public float Ratio => (float)flag.count / limitSteps;
 
-        void Start()
+        protected override void Start()
         {
+            base.Start();
+
             flag = transform.GetFromChild<HoleFlag>();
             flag.count = 0;
 
-            sr = GetComponent<SpriteRenderer>();
             sr.sprite = sprites[0];
 
             collider = GetComponent<BoxCollider2D>();
         }
 
-        void Update()
+        protected override void Behavior()
         {
-            if (!breaking && flag.count >= limitSteps)
+            if (!isBreaking && flag.count >= limitSteps)
             {
-                // ぽわっ
-                destroyEffect.TryGenerate(transform.position);
+                // ぽわっみたいなエフェクト
+                effects.TryGenerate(transform.position);
 
-                breaking = true;
+                isBreaking = true;
                 sr.enabled = false;
                 collider.enabled = false;
             }
 
-            sr.sprite = ratio < 0.5f ? sprites[0] : sprites[1];
+            sr.sprite = Ratio < 0.5f ? sprites[0] : sprites[1];
         }
 
         public void Mending()
         {
             print("now mending...");
-            breaking = false;
+            isBreaking = false;
             flag.count = 0;
 
             sr.enabled = true;

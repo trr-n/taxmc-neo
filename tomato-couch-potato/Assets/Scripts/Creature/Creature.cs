@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 
@@ -7,14 +5,17 @@ namespace Chickenen.Heart
 {
     public abstract class Creature : MonoBehaviour
     {
-        public GameObject diefx;
+        [SerializeField]
+        protected GameObject diefx;
 
-        public bool enable;
+        public bool Enable { get; set; }
+
+        protected SpriteRenderer sr;
 
         /// <summary>
         /// 移動
         /// </summary>
-        protected abstract void Move();
+        protected abstract void Movement();
 
         /// <summary>
         /// 振舞 / プレイヤー検知など
@@ -28,13 +29,17 @@ namespace Chickenen.Heart
 
         protected virtual void Start()
         {
+            sr = GetComponent<SpriteRenderer>();
         }
 
         void Update()
         {
-            if (!enable) { return; }
+            if (!Enable)
+            {
+                return;
+            }
 
-            Move();
+            Movement();
             Behavior();
         }
     }

@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace Chickenen.Heart
@@ -13,19 +11,23 @@ namespace Chickenen.Heart
         /// <summary>
         /// 最大、現在
         /// </summary>
-        public (int max, int left) lives => (max, left);
+        public int Max => max;
+        public int Left => left;
 
         /// <summary>
         /// 残機が0か
         /// </summary>
-        public bool isZero => left <= 0;
+        public bool IsZero => left <= 0;
 
         /// <summary>
         /// amount分残機数を変動させる
         /// </summary>
         public void Fluctuation(int amount)
         {
-            if (isZero) { return; }
+            if (IsZero)
+            {
+                return;
+            }
 
             left += amount;
             left = Mathf.Clamp(left, 0, max);

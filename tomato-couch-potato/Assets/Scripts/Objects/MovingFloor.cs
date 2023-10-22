@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Chickenen.Heart
 {
-    public class Floor : Object
+    public class MovingFloor : Object
     {
         [SerializeField]
         float speed, range;
@@ -21,32 +21,33 @@ namespace Chickenen.Heart
         /// <summary>
         /// 上下左右移動の中心座標
         /// </summary>
-        Vector3 center;
-
-        Rigidbody2D rb;
+        Vector3 origin;
 
         protected override void Start()
         {
             base.Start();
-
-            rb = GetComponent<Rigidbody2D>();
-            center = transform.position;
+            origin = transform.position;
         }
 
+        (float left, float right) horizon;
+        (float top, float bottom) vertical;
         protected override void Behavior()
         {
             // 移動
             switch (type)
             {
                 // 固定
-                case MovingType.Fixed: break;
+                case MovingType.Fixed:
+                default:
+                    break;
 
                 // 左右
                 case MovingType.Horizontal:
-                    var x = Vector100.X * range;
+                    horizon.left = (origin - Vector100.X * range).x;
+                    horizon.right = (origin + Vector100.X * range).x;
 
                     // 可動域を超えたら速度反転
-                    if (transform.position.x <= (center - x).x || transform.position.x >= (center + x).x)
+                    if (transform.position.x <= horizon.left || transform.position.x >= horizon.right)
                     {
                         speed *= -1;
                     }
@@ -55,9 +56,10 @@ namespace Chickenen.Heart
 
                 // 上下
                 case MovingType.Vertical:
-                    var y = Vector100.Y * range;
+                    vertical.top = (origin - Vector100.Y * range).y;
+                    vertical.bottom = (origin + Vector100.Y * range).y;
 
-                    if (transform.position.y <= (center - y).y || transform.position.y >= (center + y).y)
+                    if (transform.position.y <= vertical.top || transform.position.y >= vertical.bottom)
                     {
                         speed *= -1;
                     }

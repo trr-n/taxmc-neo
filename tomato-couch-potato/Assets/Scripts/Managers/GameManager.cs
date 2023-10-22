@@ -32,7 +32,7 @@ namespace Chickenen.Brain
             player.Controllable = true;
 
             var enemies = Gobject.Finds(Constant.Tags.Enemy);
-            enemies.ForEach(enemy => enemy.GetComponent<Creature>().enable = true);
+            enemies.ForEach(enemy => enemy.GetComponent<Creature>().Enable = true);
         }
 
         void Update()

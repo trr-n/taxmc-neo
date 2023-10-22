@@ -24,16 +24,12 @@ namespace Chickenen.Heart
         protected SpriteRenderer sr;
         protected Vector2 Size => sr.bounds.size;
 
-        /// <summary>
-        /// base.Start();<br/>
-        /// ↑を忘れずに
-        /// </summary>
         protected virtual void Start()
         {
             sr = GetComponent<SpriteRenderer>();
         }
 
-        void Update()
+        protected virtual void Update()
         {
             Behavior();
             Animation();
@@ -44,7 +40,8 @@ namespace Chickenen.Heart
         /// </summary>
         protected abstract void Behavior();
 
-        new readonly (Anima anima, Runner runner) animation = (new(), new());
+        readonly Anima anima = new();
+        readonly Runner runner = new();
         void Animation()
         {
             if (!Animatable || sprites.Length <= 0)
@@ -55,12 +52,12 @@ namespace Chickenen.Heart
             switch (sprites.Length)
             {
                 case 1:
-                    animation.runner.RunOnce(() => sr.sprite = sprites[0]);
+                    runner.RunOnce(() => sr.sprite = sprites[0]);
                     break;
 
                 case 2:
                 default:
-                    animation.anima.Sprite(Animatable, sr, interval, sprites);
+                    anima.Sprite(Animatable, sr, interval, sprites);
                     break;
             }
         }

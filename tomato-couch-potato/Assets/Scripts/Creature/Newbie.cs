@@ -4,14 +4,14 @@ using UnityEngine;
 
 namespace Chickenen.Heart
 {
-    public class Newbie : Creature
+    public class Newbie : Creature, IMurderable
     {
         public enum StartFacing { Left, Right, Random }
         [SerializeField]
         StartFacing facing = StartFacing.Right;
 
         (Ray ray, RaycastHit2D hit) horizon, top, bottom;
-        readonly (float distance, int detect) layer = (1.2f, Constant.Layers.Player | Constant.Layers.Ground);
+        readonly (float size, int detect) hitbox = (1.2f, Constant.Layers.Player | Constant.Layers.Ground);
 
         Player player;
 
@@ -37,8 +37,16 @@ namespace Chickenen.Heart
 
         protected override async void Behavior()
         {
-            horizon.ray = new(transform.position - (Vector100.X * layer.distance / 2), transform.right);
-            horizon.hit = Physics2D.Raycast(horizon.ray.origin, horizon.ray.direction, layer.distance, layer.detect);
+            Vector2 configure = transform.position + (hitbox.size * Vector100.Y / 2);
+            await Horizon();
+            await Top(configure);
+            await Bottom(configure);
+        }
+
+        async UniTask Horizon()
+        {
+            horizon.ray = new(transform.position - (Vector100.X * hitbox.size / 2), transform.right);
+            horizon.hit = Physics2D.Raycast(horizon.ray.origin, horizon.ray.direction, hitbox.size, hitbox.detect);
 
             if (horizon.hit)
             {
@@ -55,18 +63,23 @@ namespace Chickenen.Heart
                         break;
                 }
             }
+        }
 
-            Vector2 rayconf = transform.position + (layer.distance * Vector100.Y / 2);
-            top.ray = new(rayconf, transform.up);
-            top.hit = Physics2D.Raycast(top.ray.origin, top.ray.direction, layer.distance, layer.detect);
+        async UniTask Top(Vector2 conf)
+        {
+            top.ray = new(conf, transform.up);
+            top.hit = Physics2D.Raycast(top.ray.origin, top.ray.direction, hitbox.size, hitbox.detect);
 
             if (top.hit && top.hit.CompareTag(Constant.Tags.Player))
             {
                 await Die();
             }
+        }
 
-            bottom.ray = new(rayconf, -transform.up);
-            bottom.hit = Physics2D.Raycast(bottom.ray.origin, bottom.ray.direction, layer.distance, layer.detect);
+        async UniTask Bottom(Vector2 conf)
+        {
+            bottom.ray = new(conf, -transform.up);
+            bottom.hit = Physics2D.Raycast(bottom.ray.origin, bottom.ray.direction, hitbox.size, hitbox.detect);
 
             if (bottom.hit && bottom.hit.CompareTag(Constant.Tags.Player))
             {
@@ -76,11 +89,13 @@ namespace Chickenen.Heart
 
         public override async UniTask Die()
         {
-            if (dying) { return; }
+            if (dying)
+            {
+                return;
+            }
             dying = true;
 
-            // TODO エフェクト生成
-            // diefx.Generate(transform.position);
+            diefx.TryGenerate(transform.position);
 
             // すこーし待機
             await UniTask.WaitForSeconds(0.1f);
@@ -89,9 +104,9 @@ namespace Chickenen.Heart
             Destroy(gameObject);
         }
 
-        protected override void Move()
+        protected override void Movement()
         {
-            transform.Translate(Time.deltaTime * speed.real * Vector100.X);
+            transform.Translate(Time.deltaTime * speed.real * Vector100.X2D);
         }
     }
 }

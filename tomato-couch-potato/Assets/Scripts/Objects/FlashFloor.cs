@@ -6,8 +6,8 @@ namespace Chickenen.Heart
     public class FlashFloor : Object
     {
         [SerializeField]
-        [Tooltip("inactiveを0にすると両方にactiveの値が入る")]
-        float active = 0, inactive;
+        [Tooltip("yを0にすると両方にxの値が入る")]
+        Vector2 cooltimes = new(0, default);
 
         new BoxCollider2D collider;
 
@@ -19,7 +19,7 @@ namespace Chickenen.Heart
         }
 
         /// <summary>
-        /// active秒アクティブ、inactive秒非アクティブの繰り返し
+        /// cooltime.x秒アクティブ、cooltime.y秒非アクティブの繰り返し
         /// </summary>
         IEnumerator Flash()
         {
@@ -28,12 +28,12 @@ namespace Chickenen.Heart
                 sr.enabled = true;
                 collider.enabled = true;
 
-                yield return new WaitForSeconds(active != 0 ? active : inactive);
+                yield return new WaitForSeconds(cooltimes.x != 0 ? cooltimes.x : cooltimes.y);
 
                 sr.enabled = false;
                 collider.enabled = false;
 
-                yield return new WaitForSeconds(inactive);
+                yield return new WaitForSeconds(cooltimes.y);
             }
         }
 

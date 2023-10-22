@@ -6,33 +6,32 @@ namespace Chickenen.Heart
 {
     public class NoMoss : Object
     {
-        public enum Spin { Left, Right }
         [SerializeField]
-        Spin dir = Spin.Left;
+        [Range(-1, 1)]
+        int direction;
 
         /// <summary>
         /// 足
         /// </summary>
         GameObject[] feet;
 
-        /// <summary>
-        /// 回転速度
-        /// </summary>
-        readonly float spinSpeed = 15f;
+        float speed = 15f;
+        public float Speed => speed;
+        public void SetSpeed(float speed) => this.speed = speed;
 
-        public bool rotatable { get; set; }
+        public bool Rotatable { get; set; }
 
         protected override void Start()
         {
             base.Start();
 
             feet = new GameObject[transform.childCount];
-            for (int i = 0; i < transform.childCount; i++)
+            for (int i = 0; i < feet.Length; i++)
             {
                 feet[i] = transform.GetChildObject(i);
             }
 
-            rotatable = true;
+            Rotatable = true;
         }
 
         protected override void Behavior()
@@ -70,10 +69,11 @@ namespace Chickenen.Heart
 
         void Rotate()
         {
-            if (rotatable)
+            if (Rotatable || direction != 0)
             {
                 // 回転
-                transform.Rotate(Time.deltaTime * spinSpeed * (dir == Spin.Left ? Vector100.Z : -Vector100.Z), Space.World);
+                var rotate = direction * speed * -Vector100.Z;
+                transform.Rotate(rotate * Time.deltaTime, Space.World);
             }
         }
     }

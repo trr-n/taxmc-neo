@@ -13,7 +13,7 @@ namespace Chickenen.Heart
         None    // 何もしない
     }
 
-    public class Player : MonoBehaviour //, IPlayer
+    public class Player : MonoBehaviour, IMurderable
     {
         [SerializeField]
         Text velT;
@@ -28,7 +28,7 @@ namespace Chickenen.Heart
         /// <summary>
         /// 操作を反転するか
         /// </summary>
-        public bool Reverse { get; set; }
+        public bool Mirror { get; set; }
         readonly float reverseLimit = .33f;
         bool reversable = false;
         /// <summary>
@@ -104,7 +104,7 @@ namespace Chickenen.Heart
 
             Movable = true;
             Jumpable = true;
-            Reverse = false;
+            Mirror = false;
         }
 
         void FixedUpdate()
@@ -176,7 +176,7 @@ namespace Chickenen.Heart
                 return;
             }
 
-            var horizontal = Reverse ? Constant.Keys.ReversedHorizontal : Constant.Keys.Horizontal;
+            var horizontal = Mirror ? Constant.Keys.ReversedHorizontal : Constant.Keys.Horizontal;
             if (Input.GetButtonDown(horizontal))
             {
                 var current = Mathf.Sign(transform.localScale.x);
@@ -232,7 +232,7 @@ namespace Chickenen.Heart
 
             animator.SetBool(Constant.Animations.Walk, Input.GetButton(Constant.Keys.Horizontal) && flag.IsHit);
 
-            string horizontal = Reverse ? Constant.Keys.ReversedHorizontal : Constant.Keys.Horizontal;
+            string horizontal = Mirror ? Constant.Keys.ReversedHorizontal : Constant.Keys.Horizontal;
             Vector2 move = Input.GetAxisRaw(horizontal) * Vector100.X;
 
             // 入力がtolerance以下、氷に乗っていない、浮いていない
@@ -286,7 +286,7 @@ namespace Chickenen.Heart
             // 落とし穴修繕
             foreach (var hole in FindObjectsByType<Hole>(FindObjectsSortMode.None))
             {
-                if (hole.isBreaking)
+                if (hole.IsBreaking)
                 {
                     hole.Mending();
                 }

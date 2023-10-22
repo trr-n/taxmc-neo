@@ -78,9 +78,9 @@ namespace Chickenen.Heart
         {
             if (isPlayerWithinDetectRange)
             {
-                for (int index = 0; index < eyes.Length; index++)
+                for (int i = 0; i < eyes.Length; i++)
                 {
-                    eyes[index].transform.position = inits[index] + directions[index].normalized * bump;
+                    eyes[i].transform.position = inits[i] + directions[i].normalized * bump;
                 }
             }
         }
@@ -102,8 +102,8 @@ namespace Chickenen.Heart
                 {
                     pepperyTimer += Time.deltaTime;
                 }
-                // 反転不可 == キーが入力されている状態なら減らす
-                if (!player.Reversable)
+                // 反転不可なら減らす
+                else if (!player.Reversable)
                 {
                     pepperyTimer -= Time.deltaTime;
                 }
@@ -122,17 +122,23 @@ namespace Chickenen.Heart
 
         void Line()
         {
-            if (distance <= detectRange)
+            for (int i = 0; i < lines.Length; i++)
             {
-                lines[0].enabled = lines[1].enabled = true;
-                for (int i = 0; i < lines.Length; i++)
+                if (distance <= detectRange)
                 {
+                    if (!lines[i].enabled)
+                    {
+                        lines[i].enabled = true;
+                    }
                     lines[i].SetPositions(new Vector3[] { eyes[i].transform.position, offseted });
                 }
-            }
-            else
-            {
-                lines[0].enabled = lines[1].enabled = false;
+                else
+                {
+                    if (lines[i].enabled)
+                    {
+                        lines[i].enabled = false;
+                    }
+                }
             }
         }
 
@@ -159,10 +165,10 @@ namespace Chickenen.Heart
             {
                 yield return null;
                 // 操作反転
-                player.Reverse = true;
+                player.Mirror = true;
             }
             // 反転解除
-            player.Reverse = false;
+            player.Mirror = false;
             isPunishing = false;
         }
 
