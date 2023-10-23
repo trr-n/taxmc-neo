@@ -8,74 +8,42 @@ namespace Chickenen.Heart
         [SerializeField]
         GameObject[] gimmicks;
 
-        [SerializeField]
-        float duration = 2;
-
-        [SerializeField]
-        AudioClip[] sounds;
-
-        AudioSource speaker;
-
-        readonly Stopwatch effectiveSW = new();
-        LeverFlag enable;
-
-        bool pressing = false;
-
-        readonly (int active, int inactive) status = (0, 1);
+        bool isActive = false;
 
         protected override void Start()
         {
             base.Start();
-            Animate = false;
-            enable = transform.GetFromChild<LeverFlag>(0);
-
-            speaker = Gobject.GetWithTag<AudioSource>(Constant.Tags.Manager);
-
-#if !DEBUG
-            sr.color = Colour.transparent;
-#endif
+            sr.sprite = sprites[0];
         }
 
         protected override void Behavior()
         {
-            // レバーが動作中じゃない、プレイヤーが範囲内にいる、キーが押された
-            if (!pressing && enable.Hit && Inputs.Down(Constant.Keys.Button))
+            // active
+            if (isActive && Inputs.Down(Constant.Keys.Button))
             {
-                pressing = true;
-
-                sr.sprite = sprites[status.active];
-                // speaker.clip = sounds.Choice();
-                speaker.TryPlay(sounds.Choice());
-
-                effectiveSW.Restart();
-
+                sr.sprite = sprites[1];
                 foreach (var gimmick in gimmicks)
                 {
-                    if (gimmick.TryGetComponent(out IUsable enable))
+                    if (gimmick.TryGet(out IUsable usable))
                     {
-                        enable.Active();
+                        usable.Active();
                     }
                 }
+                isActive = false;
             }
 
-            // 動作中、効果時間がduration以上
-            if (pressing && effectiveSW.Sf >= duration)
+            // inactive
+            else if (!isActive && Inputs.Down(Constant.Keys.Button))
             {
-                effectiveSW.Reset();
-
+                sr.sprite = sprites[0];
                 foreach (var gimmick in gimmicks)
                 {
-                    if (gimmick.TryGetComponent(out IUsable disable))
+                    if (gimmick.TryGet(out IUsable usable))
                     {
-                        disable.Inactive();
+                        usable.Inactive();
                     }
                 }
-
-                // speaker.clip = sounds.Choice();
-                speaker.TryPlay(sounds.Choice());
-
-                pressing = false;
-                sr.sprite = sprites[status.inactive];
+                isActive = true;
             }
         }
     }

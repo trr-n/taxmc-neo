@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Chickenen.Heart
 {
-    public class LeverFlag : MonoBehaviour
+    public class ButtonFlag : MonoBehaviour
     {
         bool hit;
         public bool Hit => hit;
