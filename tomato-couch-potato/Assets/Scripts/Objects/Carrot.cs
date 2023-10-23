@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Chickenen.Heart
 {
-    public class Hole : Object
+    public class Carrot : Object
     {
         [SerializeField]
         [Tooltip("limit回踏んだらアウト")]

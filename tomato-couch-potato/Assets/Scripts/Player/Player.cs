@@ -167,6 +167,7 @@ namespace Chickenen.Heart
         void RBDisable()
         {
             rb.isKinematic = IsTeleporting;
+            print(rb.isKinematic);
         }
 
         void Flip()
@@ -284,7 +285,7 @@ namespace Chickenen.Heart
             await UniTask.Delay(1250);
 
             // 落とし穴修繕
-            foreach (var hole in FindObjectsByType<Hole>(FindObjectsSortMode.None))
+            foreach (var hole in FindObjectsByType<Carrot>(FindObjectsSortMode.None))
             {
                 if (hole.IsBreaking)
                 {

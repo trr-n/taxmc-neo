@@ -20,7 +20,7 @@ namespace Chickenen.Heart
         /// <summary>
         /// アニメーションさせるか
         /// </summary>
-        protected bool Animatable { get; set; } = false;
+        protected bool Animate { get; set; } = false;
         protected SpriteRenderer sr;
         protected Vector2 Size => sr.bounds.size;
 
@@ -44,7 +44,7 @@ namespace Chickenen.Heart
         readonly Runner runner = new();
         void Animation()
         {
-            if (!Animatable || sprites.Length <= 0)
+            if (!Animate || sprites.Length <= 0)
             {
                 return;
             }
@@ -57,7 +57,7 @@ namespace Chickenen.Heart
 
                 case 2:
                 default:
-                    anima.Sprite(Animatable, sr, interval, sprites);
+                    anima.Sprite(Animate, sr, interval, sprites);
                     break;
             }
         }

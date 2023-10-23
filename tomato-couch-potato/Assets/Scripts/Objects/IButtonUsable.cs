@@ -1,6 +1,6 @@
 ﻿namespace Chickenen.Heart
 {
-    public interface IEnable
+    public interface IUsable
     {
         void Active();
         void Inactive();

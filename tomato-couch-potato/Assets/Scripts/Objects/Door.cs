@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace Chickenen.Heart
 {
-    public class Door : Object, IEnable
+    public class Door : Object, IUsable
     {
         public enum Rotates
         {

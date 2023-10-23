@@ -26,7 +26,7 @@ namespace Chickenen.Heart
         protected override void Start()
         {
             base.Start();
-            Animatable = false;
+            Animate = false;
             enable = transform.GetFromChild<LeverFlag>(0);
 
             speaker = Gobject.GetWithTag<AudioSource>(Constant.Tags.Manager);
@@ -51,7 +51,7 @@ namespace Chickenen.Heart
 
                 foreach (var gimmick in gimmicks)
                 {
-                    if (gimmick.TryGetComponent(out IEnable enable))
+                    if (gimmick.TryGetComponent(out IUsable enable))
                     {
                         enable.Active();
                     }
@@ -65,7 +65,7 @@ namespace Chickenen.Heart
 
                 foreach (var gimmick in gimmicks)
                 {
-                    if (gimmick.TryGetComponent(out IEnable disable))
+                    if (gimmick.TryGetComponent(out IUsable disable))
                     {
                         disable.Inactive();
                     }
