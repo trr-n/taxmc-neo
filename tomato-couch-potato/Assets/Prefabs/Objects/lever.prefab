@@ -99,8 +99,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   effects: []
-  sprites: []
+  sprites:
+  - {fileID: 21300000, guid: bf695b1c8731d324db08b2f0dfc7a301, type: 3}
+  - {fileID: 21300000, guid: eef0b78c41292d145b1923bfe1cbe7c6, type: 3}
   gimmicks: []
+  sounds:
+  - {fileID: 8300000, guid: 3525a5e87313124479f37737968b14ad, type: 3}
 --- !u!1 &4542036367797609898
 GameObject:
   m_ObjectHideFlags: 0

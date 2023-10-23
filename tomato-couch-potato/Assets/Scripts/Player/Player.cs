@@ -28,7 +28,7 @@ namespace Chickenen.Heart
         /// <summary>
         /// 操作を反転するか
         /// </summary>
-        public bool Mirror { get; set; }
+        public bool Reverse { get; set; }
         readonly float reverseLimit = .33f;
         bool reversable = false;
         /// <summary>
@@ -104,7 +104,7 @@ namespace Chickenen.Heart
 
             Movable = true;
             Jumpable = true;
-            Mirror = false;
+            Reverse = false;
         }
 
         void FixedUpdate()
@@ -167,17 +167,18 @@ namespace Chickenen.Heart
         void RBDisable()
         {
             rb.isKinematic = IsTeleporting;
+            // Controllable = !IsTeleporting;
             print(rb.isKinematic);
         }
 
         void Flip()
         {
-            if (!Controllable || menu.IsPausing)
+            if (!Controllable || menu.IsPausing || IsTeleporting)
             {
                 return;
             }
 
-            var horizontal = Mirror ? Constant.Keys.ReversedHorizontal : Constant.Keys.Horizontal;
+            var horizontal = Reverse ? Constant.Keys.ReversedHorizontal : Constant.Keys.Horizontal;
             if (Input.GetButtonDown(horizontal))
             {
                 var current = Mathf.Sign(transform.localScale.x);
@@ -202,7 +203,7 @@ namespace Chickenen.Heart
 
         void Jump()
         {
-            if (!Controllable || !Jumpable)
+            if (!Controllable || !Jumpable || IsTeleporting)
             {
                 return;
             }
@@ -226,14 +227,14 @@ namespace Chickenen.Heart
         /// </summary>
         void Move()
         {
-            if (!Controllable || !Movable)
+            if (!Controllable || !Movable || IsTeleporting)
             {
                 return;
             }
 
             animator.SetBool(Constant.Animations.Walk, Input.GetButton(Constant.Keys.Horizontal) && flag.IsHit);
 
-            string horizontal = Mirror ? Constant.Keys.ReversedHorizontal : Constant.Keys.Horizontal;
+            string horizontal = Reverse ? Constant.Keys.ReversedHorizontal : Constant.Keys.Horizontal;
             Vector2 move = Input.GetAxisRaw(horizontal) * Vector100.X;
 
             // 入力がtolerance以下、氷に乗っていない、浮いていない

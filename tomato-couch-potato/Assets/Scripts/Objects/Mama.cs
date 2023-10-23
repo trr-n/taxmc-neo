@@ -165,10 +165,10 @@ namespace Chickenen.Heart
             {
                 yield return null;
                 // 操作反転
-                player.Mirror = true;
+                player.Reverse = true;
             }
             // 反転解除
-            player.Mirror = false;
+            player.Reverse = false;
             isPunishing = false;
         }
 

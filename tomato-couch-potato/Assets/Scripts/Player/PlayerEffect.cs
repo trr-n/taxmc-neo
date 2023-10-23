@@ -18,7 +18,7 @@ namespace Chickenen.Heart
 
         void Update()
         {
-            mirror.enabled = player.Mirror;
+            mirror.enabled = player.Reverse;
         }
     }
 }
