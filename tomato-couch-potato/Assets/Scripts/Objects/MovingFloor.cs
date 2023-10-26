@@ -1,7 +1,7 @@
-using Chickenen.Pancreas;
+using trrne.Pancreas;
 using UnityEngine;
 
-namespace Chickenen.Heart
+namespace trrne.Heart
 {
     public class MovingFloor : Object
     {
@@ -23,14 +23,14 @@ namespace Chickenen.Heart
         /// </summary>
         Vector3 origin;
 
+        readonly Stopwatch pingpong = new(true);
+
         protected override void Start()
         {
             base.Start();
             origin = transform.position;
         }
 
-        (float left, float right) horizon;
-        (float top, float bottom) vertical;
         protected override void Behavior()
         {
             // 移動
@@ -39,31 +39,16 @@ namespace Chickenen.Heart
                 // 固定
                 case MovingType.Fixed:
                 default:
-                    break;
+                    return;
 
                 // 左右
                 case MovingType.Horizontal:
-                    horizon.left = (origin - Vector100.X * range).x;
-                    horizon.right = (origin + Vector100.X * range).x;
-
-                    // 可動域を超えたら速度反転
-                    if (transform.position.x <= horizon.left || transform.position.x >= horizon.right)
-                    {
-                        speed *= -1;
-                    }
-                    transform.Translate(Time.deltaTime * speed * Vector100.X, Space.World);
+                    transform.SetPosition(x: origin.x - range / 2 + Mathf.PingPong(pingpong.Sf * speed, range));
                     break;
 
                 // 上下
                 case MovingType.Vertical:
-                    vertical.top = (origin - Vector100.Y * range).y;
-                    vertical.bottom = (origin + Vector100.Y * range).y;
-
-                    if (transform.position.y <= vertical.top || transform.position.y >= vertical.bottom)
-                    {
-                        speed *= -1;
-                    }
-                    transform.Translate(Time.deltaTime * speed * Vector100.Y, Space.World);
+                    transform.SetPosition(y: origin.y - range / 2 + Mathf.PingPong(pingpong.Sf * speed, range));
                     break;
             }
         }

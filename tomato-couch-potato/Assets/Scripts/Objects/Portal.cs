@@ -1,8 +1,8 @@
 using DG.Tweening;
-using Chickenen.Pancreas;
+using trrne.Pancreas;
 using UnityEngine;
 
-namespace Chickenen.Heart
+namespace trrne.Heart
 {
     public class Portal : Object
     {
@@ -61,12 +61,14 @@ namespace Chickenen.Heart
                 if (info.TryGet(out Player player) && !player.IsDieProcessing)
                 {
                     warping = true;
+
                     effects.TryGenerate(transform.position);
 
                     info.transform.DOMove(to, teleportSpeed)
                         .SetEase(Ease.OutCubic)
                         .OnPlay(() => player.IsTeleporting = true)
                         .OnComplete(() => player.IsTeleporting = false);
+
                     warping = false;
                 }
             }

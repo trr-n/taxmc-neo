@@ -1,7 +1,7 @@
 using UnityEngine;
-using Chickenen.Pancreas;
+using trrne.Pancreas;
 
-namespace Chickenen.Heart
+namespace trrne.Heart
 {
     public class Cam : MonoBehaviour
     {
@@ -15,7 +15,7 @@ namespace Chickenen.Heart
         void Start()
         {
             Followable = true;
-            player = Gobject.GetWithTag(Constant.Tags.Player);
+            player = Gobject.Find(Constant.Tags.Player);
         }
 
         void Update()

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Security.Cryptography;
 using System.Text;
 
-namespace Chickenen.Pancreas
+namespace trrne.Pancreas
 {
     [Obsolete]
     public class AES : IEncryption
@@ -34,14 +34,12 @@ namespace Chickenen.Pancreas
             managed.Key = rfc.GetBytes(size.bufferKey);
             managed.GenerateIV();
 
-            using (ICryptoTransform encrypt = managed.CreateEncryptor(managed.Key, managed.IV))
-            {
-                byte[] dest = encrypt.TransformFinalBlock(src, 0, src.Length);
-                List<byte> bytes = new(salt);
-                bytes.AddRange(managed.IV);
-                bytes.AddRange(dest);
-                return bytes.ToArray();
-            }
+            using var encrypt = managed.CreateEncryptor(managed.Key, managed.IV);
+            byte[] dest = encrypt.TransformFinalBlock(src, 0, src.Length);
+            List<byte> bytes = new(salt);
+            bytes.AddRange(managed.IV);
+            bytes.AddRange(dest);
+            return bytes.ToArray();
         }
 
         public byte[] Encrypt(string src) => Encrypt(Encoding.UTF8.GetBytes(src));
@@ -62,7 +60,7 @@ namespace Chickenen.Pancreas
             Rfc2898DeriveBytes rfc = new(password, salt.ToArray());
             managed.Key = rfc.GetBytes(size.bufferKey);
 
-            using ICryptoTransform decrypt = managed.CreateDecryptor(managed.Key, managed.IV);
+            using var decrypt = managed.CreateDecryptor(managed.Key, managed.IV);
             int index = size.bufferKey * 2, count = bytes.Count - (size.bufferKey * 2);
             byte[] plain = bytes.GetRange(index, count).ToArray();
             return decrypt.TransformFinalBlock(plain, 0, plain.Length);

@@ -1,7 +1,7 @@
-using Chickenen.Pancreas;
+using trrne.Pancreas;
 using UnityEngine;
 
-namespace Chickenen.Heart
+namespace trrne.Heart
 {
     public class Coin : MonoBehaviour
     {
@@ -12,7 +12,7 @@ namespace Chickenen.Heart
         {
             if (info.TryGet(out Bank bank))
             {
-                bank.Fluc(amount);
+                bank.Add(amount);
                 Destroy(gameObject);
             }
         }

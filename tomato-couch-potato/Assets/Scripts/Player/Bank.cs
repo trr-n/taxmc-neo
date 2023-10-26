@@ -1,13 +1,13 @@
 using UnityEngine;
 
-namespace Chickenen.Heart
+namespace trrne.Heart
 {
     public class Bank : MonoBehaviour
     {
         int balance = 0;
         public int Balance => balance;
 
-        public void Fluc(int amount)
+        public void Add(int amount)
         {
             balance += amount;
         }

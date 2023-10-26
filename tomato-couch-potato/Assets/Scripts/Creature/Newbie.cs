@@ -1,8 +1,8 @@
 using Cysharp.Threading.Tasks;
-using Chickenen.Pancreas;
+using trrne.Pancreas;
 using UnityEngine;
 
-namespace Chickenen.Heart
+namespace trrne.Heart
 {
     public class Newbie : Creature, IMurderable
     {

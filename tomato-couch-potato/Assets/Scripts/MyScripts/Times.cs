@@ -1,29 +1,23 @@
 ﻿using System;
 
-namespace Chickenen.Pancreas
+namespace trrne.Pancreas
 {
     public static class Times
     {
-        public static string Raw => (Date(TempsFormat.Domestics) + Time(TempsFormat.Domestics)).DeleteLump("/", ":");
+        public static string Raw => (Date(TimesFormat.Domestics) + Time(TimesFormat.Domestics)).DeleteLump("/", ":");
 
-        public static string Date(TempsFormat format)
+        public static string Date(TimesFormat format = TimesFormat.Domestics)
+        => format switch
         {
-            return format switch
-            {
-                TempsFormat.Domestics => $"{DateTime.Now.Year}/{DateTime.Now.Month}/{DateTime.Now.Day}",
-                TempsFormat.International => $"{DateTime.Now.Day}/{DateTime.Now.Month}/{DateTime.Now.Year}",
-                _ => throw null,
-            };
-        }
+            TimesFormat.International => $"{DateTime.Now.Day}/{DateTime.Now.Month}/{DateTime.Now.Year}",
+            TimesFormat.Domestics or _ => $"{DateTime.Now.Year}/{DateTime.Now.Month}/{DateTime.Now.Day}",
+        };
 
-        public static string Time(TempsFormat format)
+        public static string Time(TimesFormat format = TimesFormat.Domestics)
+        => format switch
         {
-            return format switch
-            {
-                TempsFormat.Domestics => $"{DateTime.Now.Hour}:{DateTime.Now.Minute}:{DateTime.Now.Second}",
-                TempsFormat.International => $"{DateTime.Now.Second}:{DateTime.Now.Minute}:{DateTime.Now.Hour}",
-                _ => throw null,
-            };
-        }
+            TimesFormat.International => $"{DateTime.Now.Second}:{DateTime.Now.Minute}:{DateTime.Now.Hour}",
+            TimesFormat.Domestics or _ => $"{DateTime.Now.Hour}:{DateTime.Now.Minute}:{DateTime.Now.Second}",
+        };
     }
 }

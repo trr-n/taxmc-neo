@@ -1,7 +1,7 @@
-using Chickenen.Pancreas;
+using trrne.Pancreas;
 using UnityEngine;
 
-namespace Chickenen.Heart
+namespace trrne.Heart
 {
     public class TomPay : MonoBehaviour
     {
@@ -23,7 +23,7 @@ namespace Chickenen.Heart
         {
             if (info.CompareTag(Constant.Tags.Player))
             {
-                bank.Fluc(12);
+                bank.Add(12);
                 isPaid = true;
             }
         }

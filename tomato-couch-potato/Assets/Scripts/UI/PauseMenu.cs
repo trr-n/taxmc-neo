@@ -1,8 +1,9 @@
 using System.Collections;
-using Chickenen.Pancreas;
+using Cysharp.Threading.Tasks.Triggers;
+using trrne.Pancreas;
 using UnityEngine;
 
-namespace Chickenen.Brain
+namespace trrne.Brain
 {
     public class PauseMenu : MonoBehaviour
     {
@@ -26,15 +27,8 @@ namespace Chickenen.Brain
             PanelControl();
         }
 
-        public void Active()
-        {
-            State(true);
-        }
-
-        public void Inactive()
-        {
-            State(false);
-        }
+        public void Active() => State(true);
+        public void Inactive() => State(false);
 
         void State(bool active)
         {
@@ -44,34 +38,34 @@ namespace Chickenen.Brain
 
         void PanelControl()
         {
-            if (Inputs.Down(Constant.Keys.Pause))
+            if (!Inputs.Down(Constant.Keys.Pause))
             {
-                if (IsPausing)
-                {
-                    Inactive();
-                }
-                else
-                {
-                    Active();
-                }
+                return;
+            }
+
+            if (IsPausing)
+            {
+                Inactive();
+            }
+            else
+            {
+                Active();
             }
         }
 
         void FadingHandle(bool fin)
         {
-            if (fade.during)
+            if (!fade.during)
             {
-                return;
+                StartCoroutine(Fader(fin));
             }
-
-            StartCoroutine(Fader(fin));
         }
 
         // フェード処理
         IEnumerator Fader(bool fin)
         {
             fade.during = true;
-            var alpha = fin ? 0f : 1;
+            float alpha = fin ? 0f : 1;
 
             while (alpha.IsCaged(0, 1))
             {

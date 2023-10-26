@@ -1,24 +1,22 @@
 using System.Collections;
 using System.Collections.Generic;
-using Chickenen.Pancreas;
+using trrne.Pancreas;
 using UnityEngine;
 
-namespace Chickenen.Heart
+namespace trrne.Heart
 {
     public class Fan : Object
     {
         public float power;
 
-        GameObject collision;
+        // GameObject collision;
 
         protected override void Start()
         {
             base.Start();
-            collision = transform.GetChildObject();
+            // collision = transform.GetChildObject();
         }
 
-        protected override void Behavior()
-        {
-        }
+        protected override void Behavior() { }
     }
 }

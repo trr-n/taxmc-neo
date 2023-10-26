@@ -1,7 +1,7 @@
-using Chickenen.Pancreas;
+using trrne.Pancreas;
 using UnityEngine;
 
-namespace Chickenen.Heart
+namespace trrne.Heart
 {
     public class Button : Object
     {
@@ -17,9 +17,9 @@ namespace Chickenen.Heart
         AudioSource speaker;
 
         readonly Stopwatch effectiveSW = new();
-        ButtonFlag enable;
+        ButtonFlag flag;
 
-        bool pressing = false;
+        bool isPressing = false;
 
         readonly (int active, int inactive) status = (0, 1);
 
@@ -27,7 +27,7 @@ namespace Chickenen.Heart
         {
             base.Start();
             Animate = false;
-            enable = transform.GetFromChild<ButtonFlag>(0);
+            flag = transform.GetFromChild<ButtonFlag>(0);
 
             speaker = Gobject.GetWithTag<AudioSource>(Constant.Tags.Manager);
 
@@ -39,42 +39,28 @@ namespace Chickenen.Heart
         protected override void Behavior()
         {
             // レバーが動作中じゃない、プレイヤーが範囲内にいる、キーが押された
-            if (!pressing && enable.Hit && Inputs.Down(Constant.Keys.Button))
+            if (!isPressing && flag.Hit && Inputs.Down(Constant.Keys.Button))
             {
-                pressing = true;
+                isPressing = true;
 
                 sr.sprite = sprites[status.active];
-                // speaker.clip = sounds.Choice();
                 speaker.TryPlay(sounds.Choice());
 
                 effectiveSW.Restart();
 
-                foreach (var gimmick in gimmicks)
-                {
-                    if (gimmick.TryGetComponent(out IUsable enable))
-                    {
-                        enable.Active();
-                    }
-                }
+                gimmicks.ForEach(g => g.GetComponent<IUsable>().Active());
             }
 
             // 動作中、効果時間がduration以上
-            if (pressing && effectiveSW.Sf >= duration)
+            if (isPressing && effectiveSW.Sf >= duration)
             {
                 effectiveSW.Reset();
 
-                foreach (var gimmick in gimmicks)
-                {
-                    if (gimmick.TryGetComponent(out IUsable disable))
-                    {
-                        disable.Inactive();
-                    }
-                }
+                gimmicks.ForEach(g => g.GetComponent<IUsable>().Inactive());
 
-                // speaker.clip = sounds.Choice();
                 speaker.TryPlay(sounds.Choice());
 
-                pressing = false;
+                isPressing = false;
                 sr.sprite = sprites[status.inactive];
             }
         }

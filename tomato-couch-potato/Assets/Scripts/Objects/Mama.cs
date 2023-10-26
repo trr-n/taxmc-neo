@@ -1,9 +1,9 @@
 using System.Collections;
 using System.Linq;
-using Chickenen.Pancreas;
+using trrne.Pancreas;
 using UnityEngine;
 
-namespace Chickenen.Heart
+namespace trrne.Heart
 {
     public class Mama : MonoBehaviour
     {
@@ -130,7 +130,7 @@ namespace Chickenen.Heart
                     {
                         lines[i].enabled = true;
                     }
-                    lines[i].SetPositions(new Vector3[] { eyes[i].transform.position, offseted });
+                    lines[i].SetPositions(new[] { eyes[i].transform.position, offseted });
                 }
                 else
                 {

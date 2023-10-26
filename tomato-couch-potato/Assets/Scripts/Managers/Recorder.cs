@@ -1,6 +1,6 @@
-using Chickenen.Pancreas;
+using trrne.Pancreas;
 
-namespace Chickenen.Brain
+namespace trrne.Brain
 {
     public class Recorder : Singleton<Recorder>
     {

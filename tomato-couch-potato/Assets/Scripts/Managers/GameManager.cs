@@ -1,9 +1,9 @@
-using Chickenen.Heart;
-using Chickenen.Pancreas;
+using trrne.Heart;
+using trrne.Pancreas;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Chickenen.Brain
+namespace trrne.Brain
 {
     public class GameManager : MonoBehaviour
     {

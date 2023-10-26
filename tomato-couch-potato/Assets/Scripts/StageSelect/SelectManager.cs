@@ -1,10 +1,10 @@
 ﻿using DG.Tweening;
-using Chickenen.Brain;
-using Chickenen.Pancreas;
+using trrne.Brain;
+using trrne.Pancreas;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Chickenen.Arm
+namespace trrne.Arm
 {
     public class SelectManager : MonoBehaviour
     {
@@ -36,14 +36,14 @@ namespace Chickenen.Arm
 
         void Update()
         {
-            centerT.text = CenterButton?.name ?? "null";
+            centerT.text = CenterButton() != null ? CenterButton().name : null ?? "null";
             Scroll();
             Transition();
         }
 
         void Transition()
         {
-            if (CenterButton != null && int.TryParse(Typing.Delete(CenterButton.name, prefix), out int idx))
+            if (CenterButton() != null && int.TryParse(Typing.Delete(CenterButton().name, prefix), out int idx))
             {
                 if (idx <= Recorder.Instance.Done && Inputs.Down(Constant.Keys.Button))
                 {
@@ -56,19 +56,16 @@ namespace Chickenen.Arm
         /// <summary>
         /// xが一番0に近いボタンを取得
         /// </summary>
-        GameObject CenterButton
+        GameObject CenterButton()
         {
-            get
+            foreach (var button in buttons)
             {
-                foreach (var button in buttons)
+                if (Maths.CutailedTwins(button.transform.position.x, 0))
                 {
-                    if (Maths.CutailedTwins(button.transform.position.x, 0))
-                    {
-                        return button.gameObject;
-                    }
+                    return button.gameObject;
                 }
-                return null;
             }
+            return null;
         }
 
         void Scroll()
@@ -86,7 +83,7 @@ namespace Chickenen.Arm
 
                 // D
                 case 1:
-                    if (CenterButton != buttons[^1].gameObject)
+                    if (CenterButton() != buttons[^1].gameObject)
                     {
                         Scroller(core.position.x - offset);
                     }
@@ -94,7 +91,7 @@ namespace Chickenen.Arm
 
                 // A
                 case -1:
-                    if (CenterButton != buttons[0].gameObject)
+                    if (CenterButton() != buttons[0].gameObject)
                     {
                         Scroller(core.position.x + offset);
                     }
@@ -102,7 +99,7 @@ namespace Chickenen.Arm
             }
         }
 
-        void Scroller(float targetx)
+        void Scroller(float targetX)
         {
             if (scrolling)
             {
@@ -111,7 +108,7 @@ namespace Chickenen.Arm
 
             scrolling = true;
 
-            core.DOMoveX(targetx, scrollSpeed)
+            core.DOMoveX(targetX, scrollSpeed)
                 .SetEase(Ease.InOutCubic)
                 .OnComplete(() => scrolling = false);
         }

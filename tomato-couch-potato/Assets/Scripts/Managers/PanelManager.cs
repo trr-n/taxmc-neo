@@ -1,9 +1,9 @@
 ﻿using System.Collections;
-using Chickenen.Heart;
-using Chickenen.Pancreas;
+using trrne.Heart;
+using trrne.Pancreas;
 using UnityEngine;
 
-namespace Chickenen.Brain
+namespace trrne.Brain
 {
     public class PanelManager : MonoBehaviour
     {

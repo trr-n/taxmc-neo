@@ -3,7 +3,7 @@ using System.Text;
 using System.Collections.Generic;
 using System.Security.Cryptography;
 
-namespace Chickenen.Pancreas
+namespace trrne.Pancreas
 {
     public sealed class Rijndael : IEncryption
     {

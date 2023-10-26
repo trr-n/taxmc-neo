@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Chickenen.Pancreas
+namespace trrne.Pancreas
 {
     public static class Speaker
     {

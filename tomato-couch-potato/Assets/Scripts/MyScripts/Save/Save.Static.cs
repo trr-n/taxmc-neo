@@ -5,18 +5,16 @@ using System.IO;
 using System.Text.Json;
 using UnityEngine;
 
-namespace Chickenen.Pancreas
+namespace trrne.Pancreas
 {
-    public static class Save
+    public sealed partial class Save
     {
         public static void Write(object data, string password, string path, FileMode mode = FileMode.Create)
         {
-            using (FileStream stream = new(path, mode))
-            {
-                IEncryption encrypt = new Rijndael(password);
-                byte[] dataArr = encrypt.Encrypt(JsonUtility.ToJson(data));
-                stream.Write(dataArr, 0, dataArr.Length);
-            }
+            using FileStream stream = new(path, mode);
+            IEncryption encrypt = new Rijndael(password);
+            byte[] dataArr = encrypt.Encrypt(JsonUtility.ToJson(data));
+            stream.Write(dataArr, 0, dataArr.Length);
         }
 
         public static bool Read<T>(out T read, string password, string path)
@@ -40,12 +38,10 @@ namespace Chickenen.Pancreas
         [Obsolete]
         public static void Write2(object data, string password, string path)
         {
-            using (FileStream stream = new(path, FileMode.Create))
-            {
-                Rijndael enc = new(password);
-                byte[] arr = enc.Encrypt(JsonSerializer.Serialize(data));
-                stream.Write(arr, 0, arr.Length);
-            }
+            using FileStream stream = new(path, FileMode.Create);
+            Rijndael enc = new(password);
+            byte[] arr = enc.Encrypt(JsonSerializer.Serialize(data));
+            stream.Write(arr, 0, arr.Length);
         }
 
         [Obsolete]

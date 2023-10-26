@@ -1,6 +1,6 @@
 ﻿using Cysharp.Threading.Tasks;
 
-namespace Chickenen.Heart
+namespace trrne.Heart
 {
     public interface IMurderable
     {

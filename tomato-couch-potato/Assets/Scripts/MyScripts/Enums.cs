@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Chickenen.Pancreas
+namespace trrne.Pancreas
 {
     public enum FrameRate
     {
@@ -31,7 +31,7 @@ namespace Chickenen.Pancreas
         Center
     }
 
-    public enum TempsFormat
+    public enum TimesFormat
     {
         Domestics,
         International

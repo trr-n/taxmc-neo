@@ -3,14 +3,14 @@ using UnityEngine;
 
 namespace trrne.Heart
 {
-    public class ButtonFlag : MonoBehaviour
+    public class LeverFlag : MonoBehaviour
     {
         bool hit;
         public bool Hit => hit;
 
         void OnTriggerEnter2D(Collider2D info)
         {
-            if (info.CompareLayer(Constant.Layers.Player))
+            if (info.TryGet(out Player _))
             {
                 hit = true;
             }
@@ -18,7 +18,7 @@ namespace trrne.Heart
 
         void OnTriggerExit2D(Collider2D info)
         {
-            if (info.CompareLayer(Constant.Layers.Player))
+            if (info.TryGet(out Player _))
             {
                 hit = false;
             }

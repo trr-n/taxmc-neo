@@ -1,4 +1,4 @@
-﻿namespace Chickenen.Pancreas
+﻿namespace trrne.Pancreas
 {
     public sealed class GateronSilentClear<T>
     {

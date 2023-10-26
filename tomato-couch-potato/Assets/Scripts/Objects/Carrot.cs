@@ -1,8 +1,8 @@
 using System;
-using Chickenen.Pancreas;
+using trrne.Pancreas;
 using UnityEngine;
 
-namespace Chickenen.Heart
+namespace trrne.Heart
 {
     public class Carrot : Object
     {
@@ -19,14 +19,14 @@ namespace Chickenen.Heart
         /// </summary>
         public bool IsBreaking => isBreaking;
 
-        public float Ratio => (float)flag.count / limitSteps;
+        public float Ratio => (float)flag.Count / limitSteps;
 
         protected override void Start()
         {
             base.Start();
 
             flag = transform.GetFromChild<HoleFlag>();
-            flag.count = 0;
+            flag.Count = 0;
 
             sr.sprite = sprites[0];
 
@@ -35,7 +35,7 @@ namespace Chickenen.Heart
 
         protected override void Behavior()
         {
-            if (!isBreaking && flag.count >= limitSteps)
+            if (!isBreaking && flag.Count >= limitSteps)
             {
                 // ぽわっみたいなエフェクト
                 effects.TryGenerate(transform.position);
@@ -45,14 +45,13 @@ namespace Chickenen.Heart
                 collider.enabled = false;
             }
 
-            sr.sprite = Ratio < 0.5f ? sprites[0] : sprites[1];
+            sr.sprite = sprites[Ratio < 0.5f ? 0 : 1];
         }
 
         public void Mending()
         {
-            print("now mending...");
             isBreaking = false;
-            flag.count = 0;
+            flag.Count = 0;
 
             sr.enabled = true;
             collider.enabled = true;

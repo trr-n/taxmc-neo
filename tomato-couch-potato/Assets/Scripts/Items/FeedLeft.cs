@@ -1,7 +1,7 @@
 using UnityEngine;
-using Chickenen.Pancreas;
+using trrne.Pancreas;
 
-namespace Chickenen.Heart
+namespace trrne.Heart
 {
     public class FeedLeft : Item
     {

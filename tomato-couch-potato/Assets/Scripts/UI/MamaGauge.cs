@@ -1,9 +1,9 @@
-using Chickenen.Heart;
+using trrne.Heart;
 using UnityEditor.Scripting;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Chickenen.Pancreas
+namespace trrne.Pancreas
 {
     public class MamaGauge : MonoBehaviour
     {

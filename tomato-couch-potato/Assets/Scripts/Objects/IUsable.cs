@@ -1,4 +1,4 @@
-﻿namespace Chickenen.Heart
+﻿namespace trrne.Heart
 {
     public interface IUsable
     {

@@ -1,6 +1,6 @@
 ﻿using static UnityEngine.SystemInfo;
 
-namespace Chickenen.Pancreas
+namespace trrne.Pancreas
 {
     public static class Systems
     {

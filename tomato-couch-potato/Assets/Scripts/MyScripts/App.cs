@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UniApp = UnityEngine.Application;
 
-namespace Chickenen.Pancreas
+namespace trrne.Pancreas
 {
     public static class Paths
     {
@@ -11,15 +11,8 @@ namespace Chickenen.Pancreas
 
     public class App
     {
-        public static void SetFPS(int fps = -1)
-        {
-            UniApp.targetFrameRate = fps;
-        }
-
-        public static void SetFPS(FrameRate fps)
-        {
-            UniApp.targetFrameRate = (int)fps;
-        }
+        public static void SetFPS(int fps = -1) => UniApp.targetFrameRate = fps;
+        public static void SetFPS(FrameRate fps) => UniApp.targetFrameRate = (int)fps;
 
         public static float FPSf => Mathf.Floor(1 / Time.deltaTime);
         public static int FPSint => Maths.Cutail(FPSf);
@@ -36,10 +29,7 @@ namespace Chickenen.Pancreas
             return Time.timeScale == scale;
         }
 
-        public static void SetTimeScale(float scale)
-        {
-            Time.timeScale = scale;
-        }
+        public static void SetTimeScale(float scale) => Time.timeScale = scale;
 
         public static RuntimePlatform Platform => UniApp.platform;
 
@@ -50,21 +40,15 @@ namespace Chickenen.Pancreas
         }
 
         public static Vector2 GetScreenInfo(KindaScreen kinda)
+        => kinda switch
         {
-            return kinda switch
-            {
-                KindaScreen.Resolution => new(Screen.currentResolution.width, Screen.currentResolution.height),
-                KindaScreen.Size => new(Screen.width, Screen.height),
-                KindaScreen.Center => GetScreenInfo(KindaScreen.Size) / 2,
-                _ => throw null
-            };
-        }
+            KindaScreen.Resolution => new(Screen.currentResolution.width, Screen.currentResolution.height),
+            KindaScreen.Size => new(Screen.width, Screen.height),
+            KindaScreen.Center => GetScreenInfo(KindaScreen.Size) / 2,
+            _ => throw null
+        };
 
-        public static void SetCameraSize(float size)
-        {
-            Camera.main.orthographicSize = size;
-        }
-
+        public static void SetCameraSize(float size) => Camera.main.orthographicSize = size;
         public static float CameraSize => Camera.main.orthographicSize;
     }
 }
