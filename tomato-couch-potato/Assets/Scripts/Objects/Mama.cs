@@ -16,22 +16,27 @@ namespace trrne.Heart
 
         [SerializeField]
         float detectRange = 13f;
-        float pepperyTimer = 0;
-        readonly float punishDuration = 3f;
 
-        public float PepperyLimit => pepperyLimit;
-        public float PepperyTimer => pepperyTimer;
-        public float PepperyRatio => pepperyTimer / pepperyLimit;
+        [SerializeField]
+        float punishDuration = 3f;
+
+        float pepperyTimer = 0;
+
+        public (float Limit, float Timer, float Ratio) Peppery
+        => (
+            Limit: pepperyLimit,
+            Timer: pepperyTimer,
+            Ratio: pepperyTimer / pepperyLimit
+        );
 
         GameObject player;
+        Vector3 _ofs;
         Vector3 offset;
-        Vector3 offseted;
         float distance;
 
         GameObject[] eyes;
-        Vector2[] inits;
-        float[] distances;
-        Vector2[] directions;
+        Vector3[] inits;
+        Vector3[] directions;
         LineRenderer[] lines;
 
         /// <summary>
@@ -52,21 +57,29 @@ namespace trrne.Heart
         void Start()
         {
             player = Gobject.Find(Constant.Tags.Player);
-            offset = Vector100.Y * player.GetComponent<BoxCollider2D>().GetSize().y / 2;
+            _ofs = new(0, player.GetComponent<BoxCollider2D>().GetSize().y / 2);
+
             eyes = transform.GetChildren();
-            inits = new Vector2[] { eyes[0].transform.position, eyes[1].transform.position };
-
-            lines = new LineRenderer[] { eyes[0].GetComponent<LineRenderer>(), eyes[1].GetComponent<LineRenderer>() };
+            inits = new Vector3[eyes.Length];
+            lines = new LineRenderer[eyes.Length];
+            for (int i = 0; i < eyes.Length; i++)
+            {
+                inits[i] = eyes[i].transform.position;
+                lines[i] = eyes[i].GetComponent<LineRenderer>();
+            }
+            // inits = new[] { eyes[0].transform.position, eyes[1].transform.position };
+            // lines = new[] { eyes[0].GetComponent<LineRenderer>(), eyes[1].GetComponent<LineRenderer>() };
             lines.ForEach(line => line.startWidth = line.endWidth = lineWidth);
-
         }
 
         void Update()
         {
-            offseted = player.transform.position + offset;
-            distances = new float[] { Vector2.Distance(offseted, eyes[0].transform.position), Vector2.Distance(offseted, eyes[1].transform.position) };
-            directions = new Vector2[] { offseted - eyes[0].transform.position, offseted - eyes[1].transform.position };
-            distance = Maths.Average(distances);
+            offset = player.transform.position + _ofs;
+            directions = new[] { offset - eyes[0].transform.position, offset - eyes[1].transform.position };
+            distance = Maths.Average(
+                Vector2.Distance(offset, eyes[0].transform.position),
+                Vector2.Distance(offset, eyes[1].transform.position)
+            );
 
             Line();
             Look();
@@ -124,20 +137,20 @@ namespace trrne.Heart
         {
             for (int i = 0; i < lines.Length; i++)
             {
+                // 範囲内にいたらビーム発射
                 if (distance <= detectRange)
                 {
                     if (!lines[i].enabled)
                     {
                         lines[i].enabled = true;
                     }
-                    lines[i].SetPositions(new[] { eyes[i].transform.position, offseted });
+                    lines[i].SetPositions(new[] { eyes[i].transform.position, offset });
+                    return;
                 }
-                else
+
+                if (lines[i].enabled)
                 {
-                    if (lines[i].enabled)
-                    {
-                        lines[i].enabled = false;
-                    }
+                    lines[i].enabled = false;
                 }
             }
         }
@@ -163,10 +176,12 @@ namespace trrne.Heart
             // お仕置き時間内なら
             while (punishTimer.Sf <= punishDuration)
             {
-                yield return null;
                 // 操作反転
                 player.Reverse = true;
+
+                yield return null;
             }
+
             // 反転解除
             player.Reverse = false;
             isPunishing = false;

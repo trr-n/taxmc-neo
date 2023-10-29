@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace trrne.Heart
 {
-    public class Newbie : Creature, IMurderable
+    public class Newbie : Creature, ICreature
     {
         public enum StartFacing { Left, Right, Random }
         [SerializeField]
@@ -89,24 +89,19 @@ namespace trrne.Heart
 
         public override async UniTask Die()
         {
-            if (dying)
+            if (!dying)
             {
-                return;
+                dying = true;
+
+                diefx.TryGenerate(transform.position);
+
+                await UniTask.WaitForSeconds(0.1f);
+
+                // オブジェクト破壊
+                Destroy(gameObject);
             }
-            dying = true;
-
-            diefx.TryGenerate(transform.position);
-
-            // すこーし待機
-            await UniTask.WaitForSeconds(0.1f);
-
-            // オブジェクト破壊
-            Destroy(gameObject);
         }
 
-        protected override void Movement()
-        {
-            transform.Translate(Time.deltaTime * speed.real * Vector100.X2D);
-        }
+        protected override void Movement() => transform.Translate(Time.deltaTime * speed.real * Vector100.X2D);
     }
 }

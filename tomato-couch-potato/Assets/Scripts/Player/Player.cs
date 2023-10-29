@@ -13,7 +13,7 @@ namespace trrne.Heart
         None    // 何もしない
     }
 
-    public class Player : MonoBehaviour, IMurderable
+    public class Player : MonoBehaviour, ICreature
     {
         [SerializeField]
         Text velT;
@@ -290,7 +290,7 @@ namespace trrne.Heart
             {
                 if (hole.IsBreaking)
                 {
-                    hole.Mending();
+                    hole.Mend();
                 }
             }
 

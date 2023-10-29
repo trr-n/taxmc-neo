@@ -7,9 +7,9 @@ namespace trrne.Heart
     {
         async void OnTriggerEnter2D(Collider2D info)
         {
-            if (info.TryGet(out IMurderable murder))
+            if (info.TryGet(out ICreature creature))
             {
-                await murder.Die();
+                await creature.Die();
             }
         }
     }

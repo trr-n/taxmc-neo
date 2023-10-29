@@ -1,5 +1,4 @@
 using trrne.Heart;
-using UnityEditor.Scripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -33,11 +32,11 @@ namespace trrne.Pancreas
             gauge.sprite = Maths.Twins(gauge.fillAmount, 1) ? mamaface : normal;
             foreach (var mama in mamas)
             {
-                if (Maths.Twins(mama.PepperyRatio, 0))
+                if (Maths.Twins(mama.Peppery.Ratio, 0))
                 {
                     return;
                 }
-                gauge.fillAmount = mama.PepperyRatio;
+                gauge.fillAmount = mama.Peppery.Ratio;
             }
         }
     }

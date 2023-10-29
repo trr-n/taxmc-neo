@@ -15,7 +15,7 @@ namespace trrne.Heart
         [SerializeField]
         float frameAlpha = .75f;
 
-        readonly float speed_range = 30;
+        const float SpeedRange = 30;
 
         GameObject[] frames;
         float[] speeds;
@@ -36,9 +36,9 @@ namespace trrne.Heart
             {
                 frames[i] = transform.GetChildObject(i);
                 frames[i].GetComponent<SpriteRenderer>().SetAlpha(frameAlpha);
-                speeds[i] = Randoms.Float(-speed_range, speed_range);
+                speeds[i] = Randoms.Float(-SpeedRange, SpeedRange);
             }
-            myspeed = Randoms.Float(-speed_range, speed_range);
+            myspeed = Randoms.Float(-SpeedRange, SpeedRange);
         }
 
         protected override void Behavior()
@@ -57,7 +57,6 @@ namespace trrne.Heart
         {
             if (!warping && info.CompareBoth(Constant.Layers.Player, Constant.Tags.Player))
             {
-                // var player = info.Get<Player>();
                 if (info.TryGet(out Player player) && !player.IsDieProcessing)
                 {
                     warping = true;

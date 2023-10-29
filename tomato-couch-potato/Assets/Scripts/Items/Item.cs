@@ -14,9 +14,9 @@ namespace trrne.Heart
         protected Sprite[] sprites;
 
         SpriteRenderer srenderer;
-        protected SpriteRenderer sr => srenderer;
+        protected SpriteRenderer SR => srenderer;
 
-        protected Vector2 size => sr.bounds.size;
+        protected Vector2 Size => SR.bounds.size;
 
         /// <summary>
         /// アニメーションのインターバル<br/>初期値: 0.02
@@ -41,7 +41,7 @@ namespace trrne.Heart
             Receive();
             Animation();
 
-            anima.Sprite(animatable, sr, Time.deltaTime, sprites);
+            anima.Sprite(animatable, SR, Time.deltaTime, sprites);
         }
 
         void Animation()
@@ -54,7 +54,7 @@ namespace trrne.Heart
             if (anim.sw.Sf >= interval)
             {
                 anim.index = anim.index >= sprites.Length - 1 ? 0 : anim.index += 1;
-                sr.sprite = sprites[anim.index];
+                SR.sprite = sprites[anim.index];
 
                 anim.sw.Restart();
             }

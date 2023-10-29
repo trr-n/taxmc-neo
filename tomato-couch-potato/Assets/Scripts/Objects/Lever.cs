@@ -40,9 +40,9 @@ namespace trrne.Heart
 
                 foreach (var gimmick in gimmicks)
                 {
-                    if (gimmick.TryGet(out IUsable usable))
+                    if (gimmick.TryGet(out IGimmick gim))
                     {
-                        usable.Active();
+                        gim.Active();
                     }
                 }
                 isActive = false;
@@ -56,9 +56,9 @@ namespace trrne.Heart
 
                 foreach (var gimmick in gimmicks)
                 {
-                    if (gimmick.TryGet(out IUsable usable))
+                    if (gimmick.TryGet(out IGimmick gim))
                     {
-                        usable.Inactive();
+                        gim.Inactive();
                     }
                 }
                 isActive = true;

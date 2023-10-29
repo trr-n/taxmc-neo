@@ -2,7 +2,7 @@
 
 namespace trrne.Heart
 {
-    public interface IMurderable
+    public interface ICreature
     {
         UniTask Die();
     }

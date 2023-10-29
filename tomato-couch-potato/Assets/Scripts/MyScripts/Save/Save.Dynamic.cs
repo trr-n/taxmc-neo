@@ -1,12 +1,32 @@
 ﻿using System;
+using System.IO;
 
 namespace trrne.Pancreas
 {
     public sealed partial class Save
     {
-        [Obsolete] public Save() { }
-        [Obsolete] public string Password { get; set; }
-        [Obsolete] public string Path { get; set; }
-        [Obsolete] public object Data { get; set; }
+        readonly string password, path;
+        readonly object data;
+
+        public Save(object data, string password, string path)
+        {
+            this.data = data;
+            this.password = password;
+            this.path = path;
+        }
+
+        public void Write() => Write(data, password, path);
+
+        public object Read()
+        {
+            Read(out object read, password, path);
+            return read;
+        }
+
+        public bool TryRead(out object read)
+        {
+            Read(out read, password, path);
+            return read == null;
+        }
     }
 }

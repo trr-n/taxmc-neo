@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace trrne.Heart
 {
-    public class Gunny : Creature, IMurderable
+    public class Gunny : Creature, ICreature
     {
         (GameObject obj, LineRenderer line, float lineLength) gun;
 
@@ -23,15 +23,9 @@ namespace trrne.Heart
             gun.line = gun.obj.GetComponent<LineRenderer>();
         }
 
-        protected override void Movement()
-        {
-            ;
-        }
+        protected override void Movement() { }
 
-        protected override void Behavior()
-        {
-            ;
-        }
+        protected override void Behavior() { }
 
         void ADS()
         {

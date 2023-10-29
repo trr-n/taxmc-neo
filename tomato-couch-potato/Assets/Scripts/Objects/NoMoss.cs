@@ -15,7 +15,9 @@ namespace trrne.Heart
         /// </summary>
         GameObject[] feet;
 
+        [SerializeField]
         float speed = 15f;
+
         public float Speed => speed;
         public void SetSpeed(float speed) => this.speed = speed;
 
@@ -36,7 +38,12 @@ namespace trrne.Heart
 
         protected override void Behavior()
         {
-            Rotate();
+            if (Rotatable || direction != 0)
+            {
+                // 回転
+                var rotate = direction * speed * -Vector100.Z;
+                transform.Rotate(rotate * Time.deltaTime, Space.World);
+            }
         }
 
         [Obsolete]
@@ -45,7 +52,10 @@ namespace trrne.Heart
             foreach (var foot in feet)
             {
                 if (Gobject.BoxCast2D(out var hit,
-                    foot.transform.position, foot.GetComponent<SpriteRenderer>().bounds.size, Constant.Layers.Player | Constant.Layers.Creature))
+                    foot.transform.position,
+                    foot.GetComponent<SpriteRenderer>().bounds.size,
+                    Constant.Layers.Player | Constant.Layers.Creature)
+                )
                 {
                     switch (hit.GetLayer())
                     {
@@ -64,16 +74,6 @@ namespace trrne.Heart
                             break;
                     }
                 }
-            }
-        }
-
-        void Rotate()
-        {
-            if (Rotatable || direction != 0)
-            {
-                // 回転
-                var rotate = direction * speed * -Vector100.Z;
-                transform.Rotate(rotate * Time.deltaTime, Space.World);
             }
         }
     }

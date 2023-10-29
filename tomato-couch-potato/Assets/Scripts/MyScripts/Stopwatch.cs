@@ -12,17 +12,18 @@ namespace trrne.Pancreas
         public Stopwatch(bool start)
         {
             syswatch = new();
-            if (start)
-            {
-                syswatch.Start();
-            }
+            Shorthand.BoolAction(start, () => syswatch.Start());
         }
 
         public void Start() => syswatch.Start();
         public static void Start(params Stopwatch[] sws) => sws.ForEach(sw => sw.Start());
+
         public void Stop() => syswatch.Stop();
+
         public void Restart() => syswatch.Restart();
+
         public void Reset() => syswatch.Reset();
+
         public bool IsRunning() => syswatch.IsRunning;
 
         public void Rubbish()

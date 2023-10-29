@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace trrne.Heart
 {
-    public class HoleFlag : MonoBehaviour
+    public class CarrotFlag : MonoBehaviour
     {
         public int Count { get; set; }
 

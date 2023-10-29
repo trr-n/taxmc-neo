@@ -16,42 +16,27 @@ namespace trrne.Brain
         /// <summary>
         /// 動いているか
         /// </summary>
-        public bool IsRunning()
-        {
-            return sw.IsRunning();
-        }
+        public bool IsRunning() => sw.IsRunning();
 
         /// <summary>
         /// タイマーをスタート
         /// </summary>
-        public void Start()
-        {
-            sw.Start();
-        }
+        public void Start() => sw.Start();
 
         /// <summary>
         /// タイマーをストップ
         /// </summary>
-        public void Stop()
-        {
-            sw.Stop();
-        }
+        public void Stop() => sw.Stop();
 
         /// <summary>
         /// タイマーをリスタート
         /// </summary>
-        public void Restart()
-        {
-            sw.Restart();
-        }
+        public void Restart() => sw.Restart();
 
         /// <summary>
         /// タイマーをリセット
         /// </summary>
-        public void Reset()
-        {
-            sw.Reset();
-        }
+        public void Reset() => sw.Reset();
 
         // /// <summary>
         // /// 記録を出力

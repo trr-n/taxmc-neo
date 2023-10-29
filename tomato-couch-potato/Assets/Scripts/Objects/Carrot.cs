@@ -1,4 +1,3 @@
-using System;
 using trrne.Pancreas;
 using UnityEngine;
 
@@ -10,7 +9,7 @@ namespace trrne.Heart
         [Tooltip("limit回踏んだらアウト")]
         int limitSteps = 2;
 
-        HoleFlag flag;
+        CarrotFlag flag;
         new BoxCollider2D collider;
 
         bool isBreaking = false;
@@ -25,7 +24,7 @@ namespace trrne.Heart
         {
             base.Start();
 
-            flag = transform.GetFromChild<HoleFlag>();
+            flag = transform.GetFromChild<CarrotFlag>();
             flag.Count = 0;
 
             sr.sprite = sprites[0];
@@ -37,7 +36,6 @@ namespace trrne.Heart
         {
             if (!isBreaking && flag.Count >= limitSteps)
             {
-                // ぽわっみたいなエフェクト
                 effects.TryGenerate(transform.position);
 
                 isBreaking = true;
@@ -45,10 +43,10 @@ namespace trrne.Heart
                 collider.enabled = false;
             }
 
-            sr.sprite = sprites[Ratio < 0.5f ? 0 : 1];
+            sr.sprite = sprites[Ratio < .5f ? 0 : 1];
         }
 
-        public void Mending()
+        public void Mend()
         {
             isBreaking = false;
             flag.Count = 0;

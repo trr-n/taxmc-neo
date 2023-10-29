@@ -1,6 +1,6 @@
 ﻿namespace trrne.Heart
 {
-    public interface IUsable
+    public interface IGimmick
     {
         void Active();
         void Inactive();

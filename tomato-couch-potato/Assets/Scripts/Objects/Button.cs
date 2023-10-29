@@ -48,7 +48,7 @@ namespace trrne.Heart
 
                 effectiveSW.Restart();
 
-                gimmicks.ForEach(g => g.GetComponent<IUsable>().Active());
+                gimmicks.ForEach(g => g.GetComponent<IGimmick>().Active());
             }
 
             // 動作中、効果時間がduration以上
@@ -56,7 +56,7 @@ namespace trrne.Heart
             {
                 effectiveSW.Reset();
 
-                gimmicks.ForEach(g => g.GetComponent<IUsable>().Inactive());
+                gimmicks.ForEach(g => g.GetComponent<IGimmick>().Inactive());
 
                 speaker.TryPlay(sounds.Choice());
 

@@ -22,7 +22,6 @@ namespace trrne.Arm
 
         readonly string prefix = "stage";
         readonly float offset = 18.96f;
-        Vector2 init => Vector100.X * offset;
 
         bool scrolling = false;
         readonly float scrollSpeed = 0.5f;
@@ -31,7 +30,7 @@ namespace trrne.Arm
 
         void Start()
         {
-            core.position = init;
+            core.position = Vector100.X * offset;
         }
 
         void Update()
@@ -43,7 +42,10 @@ namespace trrne.Arm
 
         void Transition()
         {
-            if (CenterButton() != null && int.TryParse(Typing.Delete(CenterButton().name, prefix), out int idx))
+            if (CenterButton() != null &&
+                int.TryParse(Typing.Delete(CenterButton().name, prefix),
+                out int idx)
+            )
             {
                 if (idx <= Recorder.Instance.Done && Inputs.Down(Constant.Keys.Button))
                 {
@@ -78,10 +80,7 @@ namespace trrne.Arm
 
             switch (horizon.Sign())
             {
-                case 0:
-                    return;
-
-                // D
+                // right
                 case 1:
                     if (CenterButton() != buttons[^1].gameObject)
                     {
@@ -89,7 +88,7 @@ namespace trrne.Arm
                     }
                     break;
 
-                // A
+                // left
                 case -1:
                     if (CenterButton() != buttons[0].gameObject)
                     {
