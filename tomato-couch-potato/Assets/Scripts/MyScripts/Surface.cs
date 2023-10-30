@@ -36,6 +36,7 @@ namespace trrne.Pancreas
         public static void SetAlpha(this SpriteRenderer sr, float alpha)
         => sr.color = new(sr.color.r, sr.color.g, sr.color.b, alpha);
         public static float GetAlpha(this Image image) => image.color.a;
+        public static float GetAlpha(this SpriteRenderer sr) => sr.color.a;
 
         public static void SetColor(this SpriteRenderer sr, Color color)
         => sr.color = color;

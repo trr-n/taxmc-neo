@@ -1,9 +1,11 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
-using trrne.Pancreas;
 using Cysharp.Threading.Tasks;
 using System.Collections;
+
+using trrne.Pancreas;
 using trrne.Brain;
+using System.ComponentModel;
 
 namespace trrne.Heart
 {
@@ -73,6 +75,9 @@ namespace trrne.Heart
         PlayerFlag flag;
         Cam cam;
         PauseMenu menu;
+        new BoxCollider2D collider;
+
+        public Vector2 Offset => new(0, collider.bounds.size.y / 2);
 
         readonly float inputTolerance = 0.33f;
 
@@ -91,10 +96,11 @@ namespace trrne.Heart
         void Start()
         {
             menu = Gobject.GetWithTag<PauseMenu>(Constant.Tags.Manager);
-
             flag = transform.GetFromChild<PlayerFlag>();
 
             animator = GetComponent<Animator>();
+
+            collider = GetComponent<BoxCollider2D>();
 
             rb = GetComponent<Rigidbody2D>();
             rb.mass = 60f;

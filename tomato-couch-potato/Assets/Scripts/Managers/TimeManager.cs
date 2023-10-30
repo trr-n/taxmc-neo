@@ -37,19 +37,5 @@ namespace trrne.Brain
         /// タイマーをリセット
         /// </summary>
         public void Reset() => sw.Reset();
-
-        // /// <summary>
-        // /// 記録を出力
-        // /// </summary>
-        // public void Record()
-        // {
-        //     Stop();
-
-        //     Save.Write(
-        //         data: new SaveData { time = (Current.minutes, Current.seconds) },
-        //         password: "rid456",
-        //         path: Application.dataPath + "/save" + Temps.Raw + ".sav"
-        //     );
-        // }
     }
 }

@@ -23,7 +23,7 @@ namespace trrne.Heart
         protected abstract void Behavior();
 
         /// <summary>
-        /// 死
+        /// 死<br/>asyncつける
         /// </summary>
         public abstract UniTask Die();
 
@@ -32,7 +32,7 @@ namespace trrne.Heart
             sr = GetComponent<SpriteRenderer>();
         }
 
-        void Update()
+        protected virtual void Update()
         {
             if (!Enable)
             {
