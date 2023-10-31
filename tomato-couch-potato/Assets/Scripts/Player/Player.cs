@@ -77,7 +77,7 @@ namespace trrne.Heart
         PauseMenu menu;
         new BoxCollider2D collider;
 
-        public Vector2 Offset => new(0, collider.bounds.size.y / 2);
+        public Vector3 Offset => new(0, collider.bounds.size.y / 2);
 
         readonly float inputTolerance = 0.33f;
 

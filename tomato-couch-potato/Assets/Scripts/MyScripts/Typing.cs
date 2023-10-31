@@ -8,6 +8,9 @@ namespace trrne.Pancreas
         // public static T Cast<T>(this object obj) => (T)obj;
         public static Vector2 ToVec2(this Vector3 vector) => (Vector2)vector;
         public static Vector3 ToVec3(this Vector2 vector) => (Vector3)vector;
+        public static Vector3 ToVec3(this Quaternion q) => q.eulerAngles;
+        public static Quaternion ToQ(this Vector3 vector) => Quaternion.Euler(vector);
+        public static Quaternion ToQ(this Vector2 vector) => Quaternion.Euler(vector);
 
         public static string ReplaceLump(this string target, in string[] befores, string after)
         {

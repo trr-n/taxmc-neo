@@ -11,7 +11,7 @@ namespace trrne.Heart
 
         // GameObject playerObj;
         Player player;
-        Stopwatch lifetimeSW = new(true);
+        readonly Stopwatch lifetimeSW = new(true);
         readonly float fadeSpeed = 10;
 
         readonly float speed = 0.5f;
@@ -21,13 +21,13 @@ namespace trrne.Heart
             Enable = true;
             base.Start();
 
-            // playerObj = Gobject.Find(Constant.Tags.Player);
+            // playerObj = Gobject.Find(   Constant.Tags.Player);
             player = Gobject.GetWithTag<Player>(Constant.Tags.Player);
         }
 
         protected override async void Behavior()
         {
-            if (lifetimeSW.Sf >= lifetime)
+            if (this != null && lifetimeSW.Sf >= lifetime * 100) //! DEBUG //////////////////////////////////////////////////////////////////
             {
                 await Die();
             }
@@ -35,8 +35,11 @@ namespace trrne.Heart
 
         protected override void Movement()
         {
-            var direction = player.transform.position - transform.position + player.Offset.ToVec3();
-            transform.Translate(direction.normalized * speed * Time.deltaTime);
+            var direction = player.transform.position + player.Offset - transform.position;
+            // var rotate = Quaternion.FromToRotation(Vector2.up, direction);
+
+            // transform.SetRotation(z: rotate.z, w: rotate.w);
+            transform.Translate(Time.deltaTime * speed * direction); // Vector2.up);
         }
 
         public override async UniTask Die()
