@@ -24,21 +24,18 @@ namespace trrne.Heart
             transform.Translate(Time.deltaTime * speed * Vector2.up);
         }
 
-        async UniTask Die(bool boo)
-        {
-            sr.SetAlpha(0);
-            effects.TryGenerate(transform.position);
-            await UniTask.WaitUntil(() => boo);
-            std.cout("finish!" + std.endl());
-            Destroy(gameObject);
-        }
-
         async void OnTriggerEnter2D(Collider2D info)
         {
-            if (info.TryGet(out Player player))
+            if (info.TryGet(out Player player) && !player.IsDieProcessing)
             {
                 await player.Die();
-                await Die(!player.IsDieProcessing);
+
+                sr.SetAlpha(0);
+                effects.TryGenerate(transform.position);
+
+                // プレイヤーの死亡処理が終わったら自分を破壊
+                await UniTask.WhenAll(player.Die());
+                Destroy(gameObject);
             }
         }
     }

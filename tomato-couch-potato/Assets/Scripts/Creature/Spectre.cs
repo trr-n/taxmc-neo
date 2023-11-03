@@ -35,7 +35,7 @@ namespace trrne.Heart
 
         protected override void Movement()
         {
-            var direction = player.transform.position + player.Offset - transform.position;
+            var direction = player.transform.position + player.CoreOffset - transform.position;
             // var rotate = Quaternion.FromToRotation(Vector2.up, direction);
 
             // transform.SetRotation(z: rotate.z, w: rotate.w);

@@ -6,12 +6,14 @@ namespace trrne.Pancreas
 {
     public static class Shorthand
     {
-        public static void BoolAction(bool boo, Action action)
+        public static void BoolAction(this bool boo, Action action)
         {
-            if (boo)
-            {
-                action();
-            }
+            if (boo) { action(); }
+        }
+
+        public static void BoolFunc<T>(this bool boo, Func<T> func)
+        {
+            if (boo) { func(); }
         }
 
         public static T Function<T>(Func<T> func) => func();
@@ -32,7 +34,7 @@ namespace trrne.Pancreas
         {
             foreach (var o in objs)
             {
-                if (o == null)
+                if (o is null)
                 {
                     return true;
                 }

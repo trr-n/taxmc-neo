@@ -31,5 +31,6 @@ namespace trrne.Pancreas
         public static string Join(this object[] objs, string sep) => string.Join(sep, objs);
 
         public static string Link(this char[] objs) => string.Join("", objs);
+        public static string Link(this byte[] b) => string.Join("", b);
     }
 }

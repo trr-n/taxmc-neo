@@ -5,24 +5,10 @@ namespace trrne.Pancreas
 {
     public static class Files
     {
-        public static string CallerPath([CallerFilePath] string path = "")
-        {
-            return path;
-        }
+        public static string CallerPath([CallerFilePath] string path = "") => path;
+        public static int CallerLineNumber([CallerLineNumber] int line = 0) => line;
 
-        public static int CallerLineNumber([CallerLineNumber] int line = 0)
-        {
-            return line;
-        }
-
-        public static string __Path__(string name)
-        {
-            return Path.GetDirectoryName(name);
-        }
-
-        public static string __Path__()
-        {
-            return __Path__(CallerPath());
-        }
+        public static string __Path__(string name) => Path.GetDirectoryName(name);
+        public static string __Path__() => __Path__(CallerPath());
     }
 }

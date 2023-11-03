@@ -72,30 +72,32 @@ namespace trrne.Arm
 
         void Scroll()
         {
-            horizon = Input.GetAxisRaw(Constant.Keys.Horizontal);
-            if (horizon.Twins(0))
+            if ((horizon = Input.GetAxisRaw(Constant.Keys.Horizontal)).Twins(0))
             {
                 return;
             }
 
-            switch (horizon.Sign())
+            if (horizon.Sign(1))
             {
-                // right
-                case 1:
-                    if (CenterButton() != buttons[^1].gameObject)
-                    {
-                        Scroller(core.position.x - offset);
-                    }
-                    break;
-
-                // left
-                case -1:
-                    if (CenterButton() != buttons[0].gameObject)
-                    {
-                        Scroller(core.position.x + offset);
-                    }
-                    break;
+                Shorthand.BoolAction(CenterButton() != buttons[^1].gameObject,
+                    () => Scroller(core.position.x - offset));
             }
+            else
+            {
+                Shorthand.BoolAction(CenterButton() != buttons[0].gameObject,
+                    () => Scroller(core.position.x + offset));
+            }
+
+            // if (horizon.Sign(1))
+            // {
+            //     Shorthand.BoolAction(CenterButton() != buttons[^1].gameObject,
+            //         () => Scroller(core.position.x - offset));
+            // }
+            // else
+            // {
+            //     Shorthand.BoolAction(CenterButton() != buttons[0].gameObject,
+            //         () => Scroller(core.position.x + offset));
+            // }
         }
 
         void Scroller(float targetX)

@@ -1,4 +1,5 @@
 ﻿#pragma warning disable UNT0014
+#pragma warning disable IDE0002
 
 using System;
 using System.Reflection;
@@ -10,6 +11,7 @@ namespace trrne.Pancreas
     {
         public static GameObject Find(string tag) => GameObject.FindGameObjectWithTag(tag);
         public static GameObject[] Finds(string tag) => GameObject.FindGameObjectsWithTag(tag);
+        public static T[] Finds<T>() where T : UnityEngine.Object => GameObject.FindObjectsByType<T>(FindObjectsSortMode.None);
 
         public static T GetWithTag<T>(string tag) => Find(tag).GetComponent<T>();
         public static T GetWithTag<T>(this GameObject gob) => gob.GetComponent<T>();
@@ -33,23 +35,6 @@ namespace trrne.Pancreas
         public static bool TryGet<T>(this GameObject gob, out T t) => gob.TryGetComponent(out t);
         public static bool TryGet<T>(this RaycastHit2D hit, out T t) => hit.collider.TryGetComponent(out t);
         public static void TryAction<T>(this Collider2D info, Action<T> action) => Shorthand.BoolAction(info.TryGetComponent(out T t), () => action(t));
-
-        [Obsolete] public static GameObject GetWithInstanceID(int id) => (GameObject)FindObjectFromInstanceID(id);
-
-        [Obsolete]
-        static UnityEngine.Object FindObjectFromInstanceID(int id)
-        {
-            try
-            {
-                var flags = BindingFlags.NonPublic | BindingFlags.Static | BindingFlags.InvokeMethod;
-                var ret = typeof(UnityEngine.Object).InvokeMember(nameof(FindObjectFromInstanceID), flags, null, null, new object[] { id });
-                return (UnityEngine.Object)ret;
-            }
-            catch (Exception e)
-            {
-                throw e;
-            }
-        }
 
         public static GameObject GetChildObject(this Transform t) => t.GetChild(0).gameObject;
         public static GameObject GetChildObject(this Transform t, int index) => t.GetChild(index).gameObject;

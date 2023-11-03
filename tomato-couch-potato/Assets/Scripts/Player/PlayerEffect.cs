@@ -18,7 +18,7 @@ namespace trrne.Heart
 
         void Update()
         {
-            mirror.enabled = player.Reverse;
+            mirror.enabled = player.IsMirroring;
         }
     }
 }

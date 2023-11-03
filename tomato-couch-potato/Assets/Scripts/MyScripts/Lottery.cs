@@ -14,24 +14,20 @@ namespace trrne.Pancreas
                 throw new Karappoyanke("nanka kakankai");
             }
 
-            float[] totals = new float[weights.Length];
-
-            float total = 0f;
+            var totals = new float[weights.Length];
+            var total = 0f;
             for (int i = 0; i < weights.Length; i++)
             {
                 total += weights[i];
                 totals[i] = total;
             }
 
-            float random = Randoms.Float(max: total);
-
+            var random = Randoms.Float(max: total);
             int min = 0, max = totals.Length - 1;
             while (min < max)
             {
                 int center = (min + max) / 2;
-                float centerPoint = totals[center];
-
-                if (random > centerPoint)
+                if (random > totals[center])
                 {
                     min = center + 1;
                 }
@@ -44,7 +40,6 @@ namespace trrne.Pancreas
                     max = center;
                 }
             }
-
             return max;
         }
 
@@ -55,7 +50,7 @@ namespace trrne.Pancreas
                 return pairs[0].Key;
             }
 
-            float[] weights = new float[pairs.Length];
+            var weights = new float[pairs.Length];
             for (int i = 0; i < pairs.Length; i++)
             {
                 weights[i] = pairs[i].Value;
@@ -64,10 +59,7 @@ namespace trrne.Pancreas
             return pairs[Weighted(weights)].Key;
         }
 
-        public static T Weighted<T>(params KeyValuePair<T, int>[] pairs)
-        {
-            return Weighted(pairs);
-        }
+        public static T Weighted<T>(params KeyValuePair<T, int>[] pairs) => Weighted(pairs);
 
         public static T Weighted<T>(params Pair<T, float>[] pairs)
         {
@@ -76,15 +68,15 @@ namespace trrne.Pancreas
                 return pairs[0].Key;
             }
 
-            float[] weights = new float[pairs.Length];
+            var weights = new float[pairs.Length];
             for (int i = 0; i < pairs.Length; i++)
             {
                 weights[i] = pairs[i].Value;
             }
-
             return pairs[Weighted(weights)].Key;
         }
 
+        [Obsolete]
         public static void Weighted(params Pair<Action, float>[] pairs)
         {
             if (pairs.Length == 1)
@@ -92,12 +84,11 @@ namespace trrne.Pancreas
                 pairs[0].Key();
             }
 
-            float[] weights = new float[pairs.Length];
+            var weights = new float[pairs.Length];
             for (int i = 0; i < pairs.Length; i++)
             {
                 weights[i] = pairs[i].Value;
             }
-
             pairs[Weighted(weights)].Key();
         }
     }

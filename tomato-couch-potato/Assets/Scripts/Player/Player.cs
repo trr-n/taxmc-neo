@@ -1,14 +1,20 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
 using UnityEngine.UI;
 using Cysharp.Threading.Tasks;
-using System.Collections;
-
 using trrne.Pancreas;
 using trrne.Brain;
-using System.ComponentModel;
+using System.Text;
+using System.Linq;
+using System;
+using UnityEditor;
+using System.Collections.Generic;
 
 namespace trrne.Heart
 {
+    /// <summary>
+    /// 死因
+    /// </summary>
     public enum CuzOfDeath
     {
         Venom,  // 毒死
@@ -30,20 +36,18 @@ namespace trrne.Heart
         /// <summary>
         /// 操作を反転するか
         /// </summary>
-        public bool Reverse { get; set; }
-        readonly float reverseLimit = .33f;
-        bool reversable = false;
+        public bool IsMirroring { get; set; }
+        (bool able, float Duration, Stopwatch durationSW) mirror = (false, .33f, new());
         /// <summary>
         /// 反転可能か
         /// </summary>
-        public bool Reversable => reversable;
-        readonly Stopwatch reverseSW = new();
+        public bool Mirrorable => mirror.able;
 
-        bool isKeyEntered = false;
+        bool isPressedMovementKeys = false;
         /// <summary>
         /// 移動キーが押されているか
         /// </summary>
-        public bool IsKeyEntered => isKeyEntered;
+        public bool IsPressedMovementKeys => isPressedMovementKeys;
 
         /// <summary>
         /// テレポート中か
@@ -55,8 +59,8 @@ namespace trrne.Heart
         /// </summary>
         public bool IsDieProcessing { get; set; }
 
-        readonly (float basis, float max, float floatingReduction, float reduction) speed = (20, 10, 0.1f, 0.9f);
-        readonly float jumpPower = 6f;
+        (float basis, float max, float floatingReduction, float reduction) speed => (20, 10, 0.1f, 0.9f);
+        const float JumpPower = 6f;
 
         bool isFloating;
         /// <summary>
@@ -77,21 +81,22 @@ namespace trrne.Heart
         PauseMenu menu;
         new BoxCollider2D collider;
 
-        public Vector3 Offset => new(0, collider.bounds.size.y / 2);
+        public Vector3 CoreOffset => new(0, collider.bounds.size.y / 2);
 
-        readonly float inputTolerance = 0.33f;
+        const float InputTolerance = 0.33f;
 
-        Vector2 cp = Vector2.zero;
-        public Vector2 Checkpoint => cp;
+        Vector2 checkpoint = Vector2.zero;
+        public Vector2 Checkpoint => checkpoint;
+
         /// <summary>
         /// チェックポイントを設定する
         /// </summary>
-        public void SetCheckpoint(Vector2 position) => cp = position;
+        public void SetCheckpoint(Vector2 position) => checkpoint = position;
 
         /// <summary>
         /// チェックポイントに戻す
         /// </summary>
-        public void Return2CP() => transform.SetPosition(cp);
+        public void ReturnToCheckpoint() => transform.SetPosition(checkpoint);
 
         void Start()
         {
@@ -110,8 +115,27 @@ namespace trrne.Heart
 
             Movable = true;
             Jumpable = true;
-            Reverse = false;
+            IsMirroring = false;
+
+            string kara = "からちゃん", pw = "かわいい";
+            // byte[] karab = Encoding.UTF8.GetBytes(kara), pwb = Encoding.UTF8.GetBytes(pw);
+            // print("base: " + karab.Link());
+            // var pwint = BitConverter.ToInt32(Encoding.UTF8.GetBytes(pw));
+            // print("base: " + kara);
+            // print("pw: " + pwint);
+            // var bytes = Encoding.UTF8.GetBytes(kara);
+            // print("hodokosi: " + string.Join("", bytes));
+            // print("modositayatu: " + Encoding.UTF8.GetString(bytes));
+
+            Savedata data = new Savedata { name = kara };
+            Secret.Zatsu z = new(pw);
+            print(JsonUtility.ToJson(data));
+            var json = JsonUtility.ToJson(data);
+            print(BitConverter.ToInt32(z.Encrypt(json)));
+            print(JsonUtility.FromJson<Savedata>(json));
+            print(z.DecryptToString(z.Encrypt(json)));
         }
+        class Savedata { public string name; }
 
         void FixedUpdate()
         {
@@ -140,19 +164,20 @@ namespace trrne.Heart
         {
             if (!Controllable)
             {
-                isKeyEntered = false;
+                isPressedMovementKeys = false;
                 return;
             }
-            isKeyEntered = Input.GetButton(Constant.Keys.Horizontal) || Input.GetButton(Constant.Keys.Jump);
+            isPressedMovementKeys = Input.GetButton(Constant.Keys.Horizontal) || Input.GetButton(Constant.Keys.Jump);
 
             if (Inputs.Released(Constant.Keys.Horizontal) || Inputs.Released(Constant.Keys.ReversedHorizontal))
             {
-                reversable = false;
-                reverseSW.Restart();
+                mirror.able = false;
+                mirror.durationSW.Restart();
             }
-            if (reverseSW.Sf >= reverseLimit)
+
+            if (mirror.durationSW.Sf >= mirror.Duration)
             {
-                reversable = true;
+                mirror.able = true;
             }
         }
 
@@ -163,7 +188,7 @@ namespace trrne.Heart
         {
             if (!IsDieProcessing && Inputs.Down(KeyCode.Space))
             {
-                Return2CP();
+                ReturnToCheckpoint();
             }
         }
 
@@ -173,8 +198,6 @@ namespace trrne.Heart
         void RBDisable()
         {
             rb.isKinematic = IsTeleporting;
-            // Controllable = !IsTeleporting;
-            print(rb.isKinematic);
         }
 
         void Flip()
@@ -184,7 +207,7 @@ namespace trrne.Heart
                 return;
             }
 
-            var horizontal = Reverse ? Constant.Keys.ReversedHorizontal : Constant.Keys.Horizontal;
+            var horizontal = IsMirroring ? Constant.Keys.ReversedHorizontal : Constant.Keys.Horizontal;
             if (Input.GetButtonDown(horizontal))
             {
                 var current = Mathf.Sign(transform.localScale.x);
@@ -218,7 +241,7 @@ namespace trrne.Heart
             {
                 if (Inputs.Down(Constant.Keys.Jump))
                 {
-                    rb.velocity += jumpPower * Vector100.Y2D;
+                    rb.velocity += JumpPower * Vector100.Y2D;
                 }
                 animator.SetBool(Constant.Animations.Jump, false);
             }
@@ -240,11 +263,11 @@ namespace trrne.Heart
 
             animator.SetBool(Constant.Animations.Walk, Input.GetButton(Constant.Keys.Horizontal) && flag.IsHit);
 
-            string horizontal = Reverse ? Constant.Keys.ReversedHorizontal : Constant.Keys.Horizontal;
+            string horizontal = IsMirroring ? Constant.Keys.ReversedHorizontal : Constant.Keys.Horizontal;
             Vector2 move = Input.GetAxisRaw(horizontal) * Vector100.X;
 
             // 入力がtolerance以下、氷に乗っていない、浮いていない
-            if (move.magnitude <= inputTolerance && !flag.OnIce && !isFloating)
+            if (move.magnitude <= InputTolerance && !flag.OnIce && !isFloating)
             {
                 // x軸の速度をspeed.reduction倍
                 rb.SetVelocityX(rb.velocity.x * speed.reduction);
@@ -292,28 +315,22 @@ namespace trrne.Heart
             await UniTask.Delay(1250);
 
             // 落とし穴修繕
-            foreach (var hole in FindObjectsByType<Carrot>(FindObjectsSortMode.None))
+            foreach (var carrot in Gobject.Finds<Carrot>())
             {
-                if (hole.IsBreaking)
-                {
-                    hole.Mend();
-                }
+                carrot.IsBreaking.BoolAction(carrot.Mend);
             }
 
             StartCoroutine(AfterDelay());
         }
 
-        public async UniTask Die()
-        {
-            await Die(CuzOfDeath.None);
-        }
+        public async UniTask Die() => await Die(CuzOfDeath.None);
 
         IEnumerator AfterDelay()
         {
             yield return null;
 
             // 座標リセット
-            Return2CP();
+            ReturnToCheckpoint();
 
             // 死亡アニメーション停止
             animator.StopPlayback();

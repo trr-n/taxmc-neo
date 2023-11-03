@@ -1,10 +1,10 @@
-﻿namespace trrne.Pancreas
+﻿namespace trrne.Secret
 {
     public interface IEncryption
     {
-        string Decrypt2String(byte[] src);
-        byte[] Decrypt(byte[] src);
-        byte[] Encrypt(string src);
         byte[] Encrypt(byte[] src);
+        byte[] Encrypt(string src);
+        byte[] Decrypt(byte[] src);
+        string DecryptToString(byte[] src);
     }
 }

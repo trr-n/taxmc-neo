@@ -1,7 +1,7 @@
 ﻿using System;
 using System.IO;
 
-namespace trrne.Pancreas
+namespace trrne.Secret
 {
     public sealed partial class Save
     {

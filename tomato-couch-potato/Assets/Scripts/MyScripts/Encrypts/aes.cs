@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Security.Cryptography;
 using System.Text;
 
-namespace trrne.Pancreas
+namespace trrne.Secret
 {
     [Obsolete]
     public class AES : IEncryption
@@ -66,6 +66,6 @@ namespace trrne.Pancreas
             return decrypt.TransformFinalBlock(plain, 0, plain.Length);
         }
 
-        public string Decrypt2String(byte[] src) => Encoding.UTF8.GetString(Decrypt(src));
+        public string DecryptToString(byte[] src) => Encoding.UTF8.GetString(Decrypt(src));
     }
 }

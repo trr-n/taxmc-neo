@@ -20,12 +20,13 @@ namespace trrne.Heart
         /// <summary>
         /// アニメーションさせるか
         /// </summary>
-        protected bool Animate { get; set; } = false;
+        protected bool Animate { get; set; }
         protected SpriteRenderer sr;
         protected Vector2 Size => sr.bounds.size;
 
         protected virtual void Start()
         {
+            Animate = false;
             sr = GetComponent<SpriteRenderer>();
         }
 
@@ -49,17 +50,12 @@ namespace trrne.Heart
                 return;
             }
 
-            switch (sprites.Length)
+            if (sprites.Length == 1)
             {
-                case 1:
-                    runner.RunOnce(() => sr.sprite = sprites[0]);
-                    break;
-
-                case 2:
-                default:
-                    anima.Sprite(Animate, sr, interval, sprites);
-                    break;
+                runner.RunOnce(() => sr.sprite = sprites[0]);
+                return;
             }
+            anima.Sprite(Animate, sr, interval, sprites);
         }
     }
 }

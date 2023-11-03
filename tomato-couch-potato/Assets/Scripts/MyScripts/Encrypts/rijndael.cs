@@ -1,19 +1,20 @@
 // 学校提供
+
 using System.Text;
 using System.Collections.Generic;
 using System.Security.Cryptography;
 
-namespace trrne.Pancreas
+namespace trrne.Secret
 {
     public sealed class Rijndael : IEncryption
     {
         readonly string password;
-        readonly (int bufferKey, int block, int key) size;
+        readonly (int buffer, int block, int key) size;
 
-        public Rijndael(string password, int bufferKey = 32, int blockSize = 256, int keySize = 256)
+        public Rijndael(string password, int buffer = 32, int blockSize = 256, int keySize = 256)
         {
             this.password = password;
-            size.bufferKey = bufferKey;
+            size.buffer = buffer;
             size.block = blockSize;
             size.key = keySize;
         }
@@ -28,19 +29,17 @@ namespace trrne.Pancreas
                 Padding = PaddingMode.PKCS7
             };
 
-            Rfc2898DeriveBytes deriveBytes = new(password, size.bufferKey);
-            byte[] salt = deriveBytes.Salt;
-            managed.Key = deriveBytes.GetBytes(size.bufferKey);
+            Rfc2898DeriveBytes deriveBytes = new(password, size.buffer);
+            var salt = deriveBytes.Salt;
+            managed.Key = deriveBytes.GetBytes(size.buffer);
             managed.GenerateIV();
 
-            using (ICryptoTransform encrypt = managed.CreateEncryptor(managed.Key, managed.IV))
-            {
-                byte[] dest = encrypt.TransformFinalBlock(src, 0, src.Length);
-                List<byte> compile = new(salt);
-                compile.AddRange(managed.IV);
-                compile.AddRange(dest);
-                return compile.ToArray();
-            }
+            using var encrypt = managed.CreateEncryptor(managed.Key, managed.IV);
+            byte[] dest = encrypt.TransformFinalBlock(src, 0, src.Length);
+            List<byte> compile = new(salt);
+            compile.AddRange(managed.IV);
+            compile.AddRange(dest);
+            return compile.ToArray();
         }
 
         public byte[] Encrypt(string src) => Encrypt(Encoding.UTF8.GetBytes(src));
@@ -56,19 +55,18 @@ namespace trrne.Pancreas
             };
 
             List<byte> compile = new(src);
-            List<byte> salt = compile.GetRange(0, size.bufferKey);
-            managed.IV = compile.GetRange(size.bufferKey, size.bufferKey).ToArray();
+            List<byte> salt = compile.GetRange(0, size.buffer);
+            managed.IV = compile.GetRange(size.buffer, size.buffer).ToArray();
+            managed.Key = new Rfc2898DeriveBytes(password, salt.ToArray()).GetBytes(size.buffer);
 
-            Rfc2898DeriveBytes rfc = new(password, salt.ToArray());
-            managed.Key = rfc.GetBytes(size.bufferKey);
-
-            using ICryptoTransform decrypt = managed.CreateDecryptor(managed.Key, managed.IV);
-            int index = size.bufferKey * 2, count = compile.Count - (size.bufferKey * 2);
+            using var decrypt = managed.CreateDecryptor(managed.Key, managed.IV);
+            int index = size.buffer * 2;
+            int count = compile.Count - (size.buffer * 2);
             byte[] plain = compile.GetRange(index, count).ToArray();
             return decrypt.TransformFinalBlock(plain, 0, plain.Length);
         }
 
-        public string Decrypt2String(byte[] src) => Encoding.UTF8.GetString(Decrypt(src));
+        public string DecryptToString(byte[] src) => Encoding.UTF8.GetString(Decrypt(src));
     }
 }
 

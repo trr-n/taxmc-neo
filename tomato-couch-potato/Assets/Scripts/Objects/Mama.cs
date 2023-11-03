@@ -111,12 +111,12 @@ namespace trrne.Heart
             {
                 isPlayerWithinDetectRange = true;
                 // キーが入力されていないか、反転可能なら増やす
-                if (!player.IsKeyEntered && player.Reversable)
+                if (!player.IsPressedMovementKeys && player.Mirrorable)
                 {
                     pepperyTimer += Time.deltaTime;
                 }
                 // 反転不可なら減らす
-                else if (!player.Reversable)
+                else if (!player.Mirrorable)
                 {
                     pepperyTimer -= Time.deltaTime;
                 }
@@ -177,13 +177,13 @@ namespace trrne.Heart
             while (punishTimer.Sf <= punishDuration)
             {
                 // 操作反転
-                player.Reverse = true;
+                player.IsMirroring = true;
 
                 yield return null;
             }
 
             // 反転解除
-            player.Reverse = false;
+            player.IsMirroring = false;
             isPunishing = false;
         }
 

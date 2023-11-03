@@ -6,9 +6,6 @@ namespace trrne.Pancreas
 {
     public static class Maths
     {
-        public static float Clamp(this float n, float min, float max) => Mathf.Clamp(n, min, max);
-        public static int Clamp(this int n, int min, int max) => Mathf.Clamp(n, min, max);
-
         public static float Round(float n, int digit) => MathF.Round(n, digit);
         public static float Round(float n) => Round(n, 0);
         public static int Round(int n, int digit) => (int)MathF.Round(n, digit);
@@ -26,15 +23,14 @@ namespace trrne.Pancreas
         public static float Ratio(float whole, float t) => (float)whole / t;
 
         public static int Sign(this float n) => Cutail((n >= 0f) ? 1f : (-1f));
+        public static bool Sign(this float n, int ni) => n.Sign() == ni;
 
         public static bool IsPrimeNumber(int n)
         {
-            if (n < 2 || (n % 2 == 0 && n != 2))
-            {
-                return false;
-            }
+            if (n == 2) { return true; }
+            if (n < 2 || (n % 2 == 0 && n != 2)) { return false; }
 
-            for (int i = 2; i < Mathf.Sqrt(n); i++)
+            for (int i = 3; i < Mathf.Sqrt(n); i++)
             {
                 if (n % i == 0)
                 {
@@ -51,6 +47,6 @@ namespace trrne.Pancreas
 
         public static float Average(params float[] ns) => ns.Sum() / ns.Length;
 
-        public static int JunTashi(int n) => n * (n + 1) / 2;
+        public static int tasuyatu(int n) => n * (n + 1) / 2;
     }
 }
