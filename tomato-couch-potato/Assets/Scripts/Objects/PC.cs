@@ -16,7 +16,6 @@ namespace trrne.Core
             base.Start();
 
             display = transform.GetChild(0).GetComponent<SpriteRenderer>();
-            // TODO ディスプレイの色じゃなくてチェックマークみたいなんがでるアニメーションに差し替え、余裕があれば
             display.color = colors[0];
         }
 

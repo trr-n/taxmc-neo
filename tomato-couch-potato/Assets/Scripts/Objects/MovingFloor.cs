@@ -40,12 +40,10 @@ namespace trrne.Core
                 case MovingType.Fixed:
                 default:
                     return;
-
                 // 左右
                 case MovingType.Horizontal:
                     transform.SetPosition(x: origin.x - range / 2 + Mathf.PingPong(pingpong.Sf * speed, range));
                     break;
-
                 // 上下
                 case MovingType.Vertical:
                     transform.SetPosition(y: origin.y - range / 2 + Mathf.PingPong(pingpong.Sf * speed, range));

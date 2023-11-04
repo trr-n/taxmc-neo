@@ -38,13 +38,14 @@ namespace trrne.Core
                 source.TryPlay(sounds.Choice());
                 sr.sprite = sprites[1];
 
-                foreach (var gimmick in gimmicks)
-                {
-                    if (gimmick.TryGet(out IGimmick gim))
-                    {
-                        gim.Active();
-                    }
-                }
+                // foreach (var gimmick in gimmicks)
+                // {
+                //     if (gimmick.TryGet(out IGimmick gim))
+                //     {
+                //         gim.Active();
+                //     }
+                // }
+                gimmicks.ForEach(gim => gim.TryGet(out IGimmick g).BoolAction(g.Active));
                 isActive = false;
             }
 
@@ -54,13 +55,14 @@ namespace trrne.Core
                 source.TryPlay(sounds.Choice());
                 sr.sprite = sprites[0];
 
-                foreach (var gimmick in gimmicks)
-                {
-                    if (gimmick.TryGet(out IGimmick gim))
-                    {
-                        gim.Inactive();
-                    }
-                }
+                // foreach (var gimmick in gimmicks)
+                // {
+                //     if (gimmick.TryGet(out IGimmick gim))
+                //     {
+                //         gim.Inactive();
+                //     }
+                // }
+                gimmicks.ForEach(gim => gim.TryGet(out IGimmick g).BoolAction(g.Inactive));
                 isActive = true;
             }
         }

@@ -42,12 +42,10 @@ namespace trrne.Core
             if (!isPressing && flag.Hit && Inputs.Down(Constant.Keys.Button))
             {
                 isPressing = true;
-
                 sr.sprite = sprites[status.active];
+
                 speaker.TryPlay(sounds.Choice());
-
                 effectiveSW.Restart();
-
                 gimmicks.ForEach(g => g.GetComponent<IGimmick>().Active());
             }
 
@@ -55,9 +53,7 @@ namespace trrne.Core
             if (isPressing && effectiveSW.Sf >= duration)
             {
                 effectiveSW.Reset();
-
                 gimmicks.ForEach(g => g.GetComponent<IGimmick>().Inactive());
-
                 speaker.TryPlay(sounds.Choice());
 
                 isPressing = false;

@@ -117,6 +117,11 @@ namespace trrne.Core
             Jumpable = true;
             IsMirroring = false;
 
+            LotteryPair<string, float> pairs = new(("karachan", 1), ("woko", 5), ("kuri", 44), ("goma", 50));
+            for (int i = 0; i < 100; i++)
+            {
+                print(pairs.Weighted());
+            }
         }
 
         void FixedUpdate()
@@ -149,9 +154,10 @@ namespace trrne.Core
                 isPressedMovementKeys = false;
                 return;
             }
-            isPressedMovementKeys = Input.GetButton(Constant.Keys.Horizontal) || Input.GetButton(Constant.Keys.Jump);
+            isPressedMovementKeys = Inputs.PressedOR(Constant.Keys.Horizontal, Constant.Keys.Jump);
 
-            if (Inputs.Released(Constant.Keys.Horizontal) || Inputs.Released(Constant.Keys.ReversedHorizontal))
+            // if (Inputs.Released(Constant.Keys.Horizontal) || Inputs.Released(Constant.Keys.ReversedHorizontal))
+            if (Inputs.ReleasedOR(Constant.Keys.Horizontal, Constant.Keys.ReversedHorizontal))
             {
                 mirror.able = false;
                 mirror.durationSW.Restart();
@@ -196,17 +202,10 @@ namespace trrne.Core
                 switch (Mathf.Sign(Input.GetAxisRaw(horizontal)))
                 {
                     case 1:
-                        if (current != 1)
-                        {
-                            transform.localScale *= new Vector2(-1, 1);
-                        }
+                        if (current != 1) { transform.localScale *= new Vector2(-1, 1); }
                         break;
-
                     case -1:
-                        if (current != -1)
-                        {
-                            transform.localScale *= new Vector2(-1, 1);
-                        }
+                        if (current != -1) { transform.localScale *= new Vector2(-1, 1); }
                         break;
                 }
             }
@@ -264,7 +263,7 @@ namespace trrne.Core
             );
 
             // 浮いていたら移動速度低下
-            float velocity = isFloating ? speed.basis * speed.floatingReduction : speed.basis;
+            var velocity = isFloating ? speed.basis * speed.floatingReduction : speed.basis;
             rb.velocity += Time.fixedDeltaTime * velocity * move;
         }
 
@@ -297,30 +296,16 @@ namespace trrne.Core
             await UniTask.Delay(1250);
 
             // 落とし穴修繕
-            foreach (var carrot in Gobject.Finds<Carrot>())
-            {
-                carrot.IsBreaking.BoolAction(carrot.Mend);
-            }
+            Gobject.Finds<Carrot>().ForEach(c => c.IsBreaking.BoolAction(c.Mend));
 
-            StartCoroutine(AfterDelay());
-        }
-
-        public async UniTask Die() => await Die(CuzOfDeath.None);
-
-        IEnumerator AfterDelay()
-        {
-            yield return null;
-
-            // 座標リセット
             ReturnToCheckpoint();
-
-            // 死亡アニメーション停止
             animator.StopPlayback();
 
-            // うごいていいよ
             cam.Followable = true;
             Controllable = true;
             IsDieProcessing = false;
         }
+
+        public async UniTask Die() => await Die(CuzOfDeath.None);
     }
 }

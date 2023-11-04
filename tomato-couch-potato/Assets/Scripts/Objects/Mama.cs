@@ -8,6 +8,9 @@ namespace trrne.Core
     public class Mama : MonoBehaviour
     {
         [SerializeField]
+        GameObject fire;
+
+        [SerializeField]
         [Tooltip("気の短さ(秒)")]
         float pepperyLimit = 1;
 
@@ -22,15 +25,14 @@ namespace trrne.Core
 
         float pepperyTimer = 0;
 
-        public (float Limit, float Timer, float Ratio) Peppery
-        => (
+        public (float Limit, float Timer, float Ratio) Peppery => (
             Limit: pepperyLimit,
             Timer: pepperyTimer,
             Ratio: pepperyTimer / pepperyLimit
         );
 
         GameObject player;
-        Vector3 _ofs;
+        Vector3 ofs;
         Vector3 offset;
         float distance;
 
@@ -57,29 +59,21 @@ namespace trrne.Core
         void Start()
         {
             player = Gobject.Find(Constant.Tags.Player);
-            _ofs = new(0, player.GetComponent<BoxCollider2D>().GetSize().y / 2);
+            var c = player.GetComponent<BoxCollider2D>();
+            ofs = new(0, c.Size().y / 2);
 
             eyes = transform.GetChildren();
-            inits = new Vector3[eyes.Length];
-            lines = new LineRenderer[eyes.Length];
-            for (int i = 0; i < eyes.Length; i++)
-            {
-                inits[i] = eyes[i].transform.position;
-                lines[i] = eyes[i].GetComponent<LineRenderer>();
-            }
-            // inits = new[] { eyes[0].transform.position, eyes[1].transform.position };
-            // lines = new[] { eyes[0].GetComponent<LineRenderer>(), eyes[1].GetComponent<LineRenderer>() };
-            lines.ForEach(line => line.startWidth = line.endWidth = lineWidth);
+            inits = new[] { eyes[0].transform.position, eyes[1].transform.position };
+            lines = new[] { eyes[0].GetComponent<LineRenderer>(), eyes[1].GetComponent<LineRenderer>() };
+            lines.ForEach(line => line.Width(lineWidth));
         }
 
         void Update()
         {
-            offset = player.transform.position + _ofs;
+            offset = player.transform.position + ofs;
             directions = new[] { offset - eyes[0].transform.position, offset - eyes[1].transform.position };
-            distance = Maths.Average(
-                Vector2.Distance(offset, eyes[0].transform.position),
-                Vector2.Distance(offset, eyes[1].transform.position)
-            );
+            distance = Maths.Average(Vector2.Distance(offset, eyes[0].transform.position),
+                Vector2.Distance(offset, eyes[1].transform.position));
 
             Line();
             Look();
@@ -178,7 +172,6 @@ namespace trrne.Core
             {
                 // 操作反転
                 player.IsMirroring = true;
-
                 yield return null;
             }
 

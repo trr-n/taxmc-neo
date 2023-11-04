@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace trrne.Box
+﻿namespace trrne.Box
 {
     public static class Lottery
     {
@@ -11,7 +8,7 @@ namespace trrne.Box
         {
             if (weights.Length <= 0)
             {
-                throw new Karappoyanke("nanka kakankai");
+                return -1;
             }
 
             var totals = new float[weights.Length];
@@ -43,53 +40,12 @@ namespace trrne.Box
             return max;
         }
 
-        public static T Weighted<T>(params KeyValuePair<T, float>[] pairs)
+        public static T Weighted<T>(this LotteryPair<T, float> pairs)
+        => pairs.Count switch
         {
-            if (pairs.Length == 1)
-            {
-                return pairs[0].Key;
-            }
-
-            var weights = new float[pairs.Length];
-            for (int i = 0; i < pairs.Length; i++)
-            {
-                weights[i] = pairs[i].Value;
-            }
-
-            return pairs[Weighted(weights)].Key;
-        }
-
-        public static T Weighted<T>(params KeyValuePair<T, int>[] pairs) => Weighted(pairs);
-
-        public static T Weighted<T>(params Pair<T, float>[] pairs)
-        {
-            if (pairs.Length == 1)
-            {
-                return pairs[0].Key;
-            }
-
-            var weights = new float[pairs.Length];
-            for (int i = 0; i < pairs.Length; i++)
-            {
-                weights[i] = pairs[i].Value;
-            }
-            return pairs[Weighted(weights)].Key;
-        }
-
-        [Obsolete]
-        public static void Weighted(params Pair<Action, float>[] pairs)
-        {
-            if (pairs.Length == 1)
-            {
-                pairs[0].Key();
-            }
-
-            var weights = new float[pairs.Length];
-            for (int i = 0; i < pairs.Length; i++)
-            {
-                weights[i] = pairs[i].Value;
-            }
-            pairs[Weighted(weights)].Key();
-        }
+            0 => default,
+            1 => pairs.Subject(0),
+            _ => pairs.Subject(Weighted(pairs.Weights()))
+        };
     }
 }

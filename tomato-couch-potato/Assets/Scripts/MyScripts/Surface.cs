@@ -5,15 +5,15 @@ namespace trrne.Box
 {
     public static class Surface
     {
-        public static Vector2 GetSize(this Collider2D collider) => collider.bounds.size;
-        public static Vector2 GetSize(this SpriteRenderer sr) => sr.bounds.size;
+        public static Vector2 Size(this Collider2D collider) => collider.bounds.size;
+        public static Vector2 Size(this SpriteRenderer sr) => sr.bounds.size;
 
         public static bool CompareSprite(this SpriteRenderer sr, Sprite sprite) => sr.sprite == sprite;
 
         public static void SetSprite(this SpriteRenderer sr, Sprite sprite) => sr.sprite = sprite;
         public static void SetSprite(this SpriteRenderer sr, Sprite[] sprites) => sr.sprite = sprites.Choice();
 
-        public static Vector2 GetSpriteSize(this SpriteRenderer sr) => sr.bounds.size;
+        public static Vector2 SpriteSize(this SpriteRenderer sr) => sr.bounds.size;
 
         public static void SetColor(this Image image, Color color) => image.color = color;
 
@@ -35,8 +35,8 @@ namespace trrne.Box
         => image.color = new(image.color.r, image.color.g, image.color.b, alpha);
         public static void SetAlpha(this SpriteRenderer sr, float alpha)
         => sr.color = new(sr.color.r, sr.color.g, sr.color.b, alpha);
-        public static float GetAlpha(this Image image) => image.color.a;
-        public static float GetAlpha(this SpriteRenderer sr) => sr.color.a;
+        public static float Alpha(this Image image) => image.color.a;
+        public static float Alpha(this SpriteRenderer sr) => sr.color.a;
 
         public static void SetColor(this SpriteRenderer sr, Color color)
         => sr.color = color;

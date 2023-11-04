@@ -55,7 +55,7 @@ namespace trrne.Core
 
         void OnTriggerEnter2D(Collider2D info)
         {
-            if (!warping && info.CompareBoth(Constant.Layers.Player, Constant.Tags.Player))
+            if (!warping && info.CompareTag(Constant.Tags.Player))
             {
                 if (info.TryGet(out Player player) && !player.IsDieProcessing)
                 {
@@ -63,8 +63,7 @@ namespace trrne.Core
 
                     effects.TryGenerate(transform.position);
 
-                    info.transform.DOMove(to, teleportSpeed)
-                        .SetEase(Ease.OutCubic)
+                    info.transform.DOMove(to, teleportSpeed).SetEase(Ease.OutCubic)
                         .OnPlay(() => player.IsTeleporting = true)
                         .OnComplete(() => player.IsTeleporting = false);
 

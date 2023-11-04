@@ -25,7 +25,7 @@ namespace trrne.Box
         public static void ForEach<T>(this T[] array, Action<T> action) => Array.ForEach(array, action);
 
         // https://qiita.com/t_takahari/items/6dc72f48b1ebdfed93b7
-        public static bool IsNull(params object[] objs)
+        public static bool None(params object[] objs)
         {
             // nullだけつまみだす
             var nones = (from o in objs where o is null select o).ToArray();

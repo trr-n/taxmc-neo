@@ -27,8 +27,15 @@ namespace trrne.Box
 
         public static bool IsPrimeNumber(int n)
         {
-            if (n == 2) { return true; }
-            if (n < 2 || (n % 2 == 0 && n != 2)) { return false; }
+            if (n == 2)
+            {
+                return true;
+            }
+
+            if (n < 2 || (n % 2 == 0 && n != 2))
+            {
+                return false;
+            }
 
             for (int i = 3; i < Mathf.Sqrt(n); i++)
             {
@@ -40,13 +47,13 @@ namespace trrne.Box
             return true;
         }
 
-        public static int GetEnumLength<T>(this T t) => Enum.GetNames(t.GetType()).Length;
+        public static int Length<T>(this T t) => Enum.GetNames(t.GetType()).Length;
 
         public static bool IsCaged(this float n, float min, float max) => !(n > max || n < min);
         public static bool IsNotCaged(this float n, float min, float max) => !n.IsCaged(min, max); // n > max || n < min;
 
         public static float Average(params float[] ns) => ns.Sum() / ns.Length;
 
-        public static int tasuyatu(int n) => n * (n + 1) / 2;
+        public static int SSuumm(int n) => n * (n + 1) / 2;
     }
 }
