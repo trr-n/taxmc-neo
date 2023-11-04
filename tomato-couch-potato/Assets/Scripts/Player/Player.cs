@@ -2,7 +2,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using Cysharp.Threading.Tasks;
-using trrne.Pancreas;
+using trrne.Box;
 using trrne.Brain;
 using System.Text;
 using System.Linq;
@@ -10,7 +10,7 @@ using System;
 using UnityEditor;
 using System.Collections.Generic;
 
-namespace trrne.Heart
+namespace trrne.Core
 {
     /// <summary>
     /// 死因
@@ -117,25 +117,7 @@ namespace trrne.Heart
             Jumpable = true;
             IsMirroring = false;
 
-            string kara = "からちゃん", pw = "かわいい";
-            // byte[] karab = Encoding.UTF8.GetBytes(kara), pwb = Encoding.UTF8.GetBytes(pw);
-            // print("base: " + karab.Link());
-            // var pwint = BitConverter.ToInt32(Encoding.UTF8.GetBytes(pw));
-            // print("base: " + kara);
-            // print("pw: " + pwint);
-            // var bytes = Encoding.UTF8.GetBytes(kara);
-            // print("hodokosi: " + string.Join("", bytes));
-            // print("modositayatu: " + Encoding.UTF8.GetString(bytes));
-
-            Savedata data = new Savedata { name = kara };
-            Secret.Zatsu z = new(pw);
-            print(JsonUtility.ToJson(data));
-            var json = JsonUtility.ToJson(data);
-            print(BitConverter.ToInt32(z.Encrypt(json)));
-            print(JsonUtility.FromJson<Savedata>(json));
-            print(z.DecryptToString(z.Encrypt(json)));
         }
-        class Savedata { public string name; }
 
         void FixedUpdate()
         {

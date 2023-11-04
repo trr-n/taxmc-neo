@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace trrne.Pancreas
+namespace trrne.Box
 {
     public sealed class Runner
     {

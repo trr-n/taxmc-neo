@@ -1,8 +1,8 @@
 using UnityEngine;
-using trrne.Pancreas;
+using trrne.Box;
 using Cysharp.Threading.Tasks;
 
-namespace trrne.Heart
+namespace trrne.Core
 {
     public class ChiliPepper : Object
     {

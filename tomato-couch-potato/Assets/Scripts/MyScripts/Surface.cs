@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace trrne.Pancreas
+namespace trrne.Box
 {
     public static class Surface
     {

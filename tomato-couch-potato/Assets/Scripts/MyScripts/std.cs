@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace trrne.Pancreas
+namespace trrne.Box
 {
     public static class std
     {

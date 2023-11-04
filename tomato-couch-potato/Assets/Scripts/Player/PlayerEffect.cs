@@ -1,8 +1,8 @@
-using trrne.Pancreas;
+using trrne.Box;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace trrne.Heart
+namespace trrne.Core
 {
     public class PlayerEffect : MonoBehaviour
     {

@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UniApp = UnityEngine.Application;
 
-namespace trrne.Pancreas
+namespace trrne.Box
 {
     public static class Paths
     {

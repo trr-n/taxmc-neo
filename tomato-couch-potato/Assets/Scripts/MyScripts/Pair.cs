@@ -1,4 +1,4 @@
-﻿namespace trrne.Pancreas
+﻿namespace trrne.Box
 {
     public class Pair<TKey, TValue>
     {

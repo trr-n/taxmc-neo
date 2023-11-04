@@ -1,4 +1,4 @@
-using trrne.Pancreas;
+using trrne.Box;
 using UnityEngine;
 
 namespace trrne.Brain

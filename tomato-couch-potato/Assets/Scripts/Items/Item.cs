@@ -1,9 +1,9 @@
 ﻿using System.Globalization;
 using System;
-using trrne.Pancreas;
+using trrne.Box;
 using UnityEngine;
 
-namespace trrne.Heart
+namespace trrne.Core
 {
     public abstract class Item : MonoBehaviour
     {

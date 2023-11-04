@@ -1,4 +1,4 @@
-﻿namespace trrne.Heart
+﻿namespace trrne.Core
 {
     public interface IGimmick
     {

@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using static UnityEngine.SceneManagement.SceneManager;
 
-namespace trrne.Pancreas
+namespace trrne.Box
 {
     public static class Scenes
     {

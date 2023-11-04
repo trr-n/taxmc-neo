@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace trrne.Pancreas
+namespace trrne.Box
 {
     public sealed class Asyncio
     {

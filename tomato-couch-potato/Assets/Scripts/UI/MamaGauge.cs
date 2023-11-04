@@ -1,8 +1,8 @@
-using trrne.Heart;
+using trrne.Core;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace trrne.Pancreas
+namespace trrne.Box
 {
     public class MamaGauge : MonoBehaviour
     {

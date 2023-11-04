@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace trrne.Heart
+namespace trrne.Core
 {
     public class Health : MonoBehaviour
     {

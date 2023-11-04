@@ -1,6 +1,6 @@
 ﻿using System.Collections;
-using trrne.Heart;
-using trrne.Pancreas;
+using trrne.Core;
+using trrne.Box;
 using UnityEngine;
 
 namespace trrne.Brain

@@ -1,8 +1,8 @@
 using DG.Tweening;
-using trrne.Pancreas;
+using trrne.Box;
 using UnityEngine;
 
-namespace trrne.Heart
+namespace trrne.Core
 {
     public class Portal : Object
     {

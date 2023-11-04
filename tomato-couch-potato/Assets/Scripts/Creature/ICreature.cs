@@ -1,6 +1,6 @@
 ﻿using Cysharp.Threading.Tasks;
 
-namespace trrne.Heart
+namespace trrne.Core
 {
     public interface ICreature
     {

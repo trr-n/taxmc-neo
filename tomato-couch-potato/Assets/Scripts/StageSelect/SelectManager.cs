@@ -1,6 +1,6 @@
 ﻿using DG.Tweening;
 using trrne.Brain;
-using trrne.Pancreas;
+using trrne.Box;
 using UnityEngine;
 using UnityEngine.UI;
 

@@ -1,11 +1,14 @@
 using System;
 using UnityEngine;
 
-namespace trrne.Pancreas
+namespace trrne.Box
 {
     public abstract class Singleton<T> : MonoBehaviour where T : MonoBehaviour
     {
-        protected virtual bool Alive { get; set; }
+        /// <summary>
+        /// ロード時に破壊するか / 初期値はtrue
+        /// </summary>
+        protected virtual bool Alive { get; set; } = true;
 
         static T instance;
         public static T Instance
@@ -32,10 +35,8 @@ namespace trrne.Pancreas
             if (this != Instance)
             {
                 Destroy(this);
-                return;
             }
-
-            if (Alive)
+            else
             {
                 DontDestroyOnLoad(gameObject);
             }

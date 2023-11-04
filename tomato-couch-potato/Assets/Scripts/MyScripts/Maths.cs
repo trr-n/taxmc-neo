@@ -2,7 +2,7 @@
 using System.Linq;
 using UnityEngine;
 
-namespace trrne.Pancreas
+namespace trrne.Box
 {
     public static class Maths
     {

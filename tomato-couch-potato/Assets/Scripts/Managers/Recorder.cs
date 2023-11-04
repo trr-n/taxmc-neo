@@ -1,4 +1,4 @@
-using trrne.Pancreas;
+using trrne.Box;
 
 namespace trrne.Brain
 {

@@ -1,8 +1,8 @@
-using trrne.Pancreas;
+using trrne.Box;
 using DG.Tweening;
 using UnityEngine;
 
-namespace trrne.Heart
+namespace trrne.Core
 {
     public class TrapDoor : Object, IGimmick
     {

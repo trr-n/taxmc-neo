@@ -1,6 +1,6 @@
 using System.Collections;
 using Cysharp.Threading.Tasks.Triggers;
-using trrne.Pancreas;
+using trrne.Box;
 using UnityEngine;
 
 namespace trrne.Brain

@@ -1,5 +1,5 @@
-using trrne.Heart;
-using trrne.Pancreas;
+using trrne.Core;
+using trrne.Box;
 using UnityEngine;
 using UnityEngine.UI;
 

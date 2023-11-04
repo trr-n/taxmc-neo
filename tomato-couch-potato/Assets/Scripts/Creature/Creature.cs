@@ -1,7 +1,7 @@
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 
-namespace trrne.Heart
+namespace trrne.Core
 {
     public abstract class Creature : MonoBehaviour
     {

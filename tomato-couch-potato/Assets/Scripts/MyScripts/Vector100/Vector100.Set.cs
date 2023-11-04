@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace trrne.Pancreas
+namespace trrne.Box
 {
     public static partial class Vector100
     {
@@ -24,10 +24,10 @@ namespace trrne.Pancreas
 
         public static void SetEuler(this Transform t, float? x = null, float? y = null, float? z = null)
         => t.rotation = Quaternion.Euler(x ?? t.localScale.x, y ?? t.localScale.y, z ?? t.lossyScale.z);
-        public static void SetEuler(this Transform t, Vector3? p)        => t.rotation = Quaternion.Euler(p ?? t.eulerAngles);
+        public static void SetEuler(this Transform t, Vector3? p) => t.rotation = Quaternion.Euler(p ?? t.eulerAngles);
         public static void SetRotation(this Transform t, Quaternion rotation) => t.rotation = rotation;
-        public static void SetRotation(this Transform t, float? x = null, float? y = null, float? z = null, float? w = null) 
-        => t.rotation = new(x ?? t.rotation.x, y ?? t.rotation.y,z ?? t.rotation.z,w ?? t.rotation.w);
+        public static void SetRotation(this Transform t, float? x = null, float? y = null, float? z = null, float? w = null)
+        => t.rotation = new(x ?? t.rotation.x, y ?? t.rotation.y, z ?? t.rotation.z, w ?? t.rotation.w);
 
         public static void SetScale(this Transform t, float? x = null, float? y = null, float? z = null)
         => t.rotation = Quaternion.Euler(x ?? t.localScale.x, y ?? t.localScale.y, z ?? t.lossyScale.z);

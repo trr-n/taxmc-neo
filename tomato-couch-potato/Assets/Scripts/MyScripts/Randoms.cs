@@ -1,6 +1,6 @@
 using System.Linq;
 
-namespace trrne.Pancreas
+namespace trrne.Box
 {
     public static class Randoms
     {

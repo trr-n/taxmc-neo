@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-namespace trrne.Pancreas
+namespace trrne.Box
 {
     public static class Typing
     {

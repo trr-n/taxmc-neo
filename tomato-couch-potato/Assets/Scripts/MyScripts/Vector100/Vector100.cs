@@ -2,7 +2,7 @@ using System;
 using Unity.Mathematics;
 using UnityEngine;
 
-namespace trrne.Pancreas
+namespace trrne.Box
 {
     public static partial class Vector100
     {

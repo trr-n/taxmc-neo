@@ -2,10 +2,9 @@
 #pragma warning disable IDE0002
 
 using System;
-using System.Reflection;
 using UnityEngine;
 
-namespace trrne.Pancreas
+namespace trrne.Box
 {
     public static partial class Gobject
     {
@@ -17,8 +16,7 @@ namespace trrne.Pancreas
         public static T GetWithTag<T>(this GameObject gob) => gob.GetComponent<T>();
         public static bool TryGetWithTag<T>(out T t, string tag) => Find(tag).TryGetComponent(out t);
         [Obsolete] public static T GetWithName<T>(string name) => GameObject.Find(name).GetComponent<T>();
-        public static T GetFromChild<T>(this Transform transform) => transform.GetChild(0).GetComponent<T>();
-        public static T GetFromChild<T>(this Transform transform, int index) => transform.GetChild(index).GetComponent<T>();
+        public static T GetFromChild<T>(this Transform transform, int index = 0) => transform.GetChild(index).GetComponent<T>();
         public static T GetFromParent<T>(this Transform transform) => transform.parent.GetComponent<T>();
         public static T GetFromRoot<T>(this Transform transform) => transform.root.GetComponent<T>();
 

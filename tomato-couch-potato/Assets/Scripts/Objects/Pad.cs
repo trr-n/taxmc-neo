@@ -1,7 +1,7 @@
 using UnityEngine;
-using trrne.Pancreas;
+using trrne.Box;
 
-namespace trrne.Heart
+namespace trrne.Core
 {
     public class Pad : Object
     {

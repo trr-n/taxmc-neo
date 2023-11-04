@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace trrne.Heart
+namespace trrne.Core
 {
     public class Pit : MonoBehaviour
     {

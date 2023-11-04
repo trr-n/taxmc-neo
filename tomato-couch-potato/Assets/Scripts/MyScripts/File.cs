@@ -1,7 +1,7 @@
 using System.IO;
 using System.Runtime.CompilerServices;
 
-namespace trrne.Pancreas
+namespace trrne.Box
 {
     public static class Files
     {
