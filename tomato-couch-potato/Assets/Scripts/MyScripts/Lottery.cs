@@ -8,7 +8,7 @@
         {
             if (weights.Length <= 0)
             {
-                return -1;
+                throw new Karappoyanke("nanka kakankai");
             }
 
             var totals = new float[weights.Length];

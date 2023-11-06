@@ -21,11 +21,11 @@ namespace trrne.Box
         public static void SetTextSize(this Text text, int size) => text.fontSize = size;
 
         public static void TextSettings(this Text text,
-            TextAnchor anchor, VerticalWrapMode vWrap, HorizontalWrapMode hWrap)
+            TextAnchor anchor, VerticalWrapMode verticalWrap, HorizontalWrapMode horizontalWrap)
         {
             text.alignment = anchor;
-            text.verticalOverflow = vWrap;
-            text.horizontalOverflow = hWrap;
+            text.verticalOverflow = verticalWrap;
+            text.horizontalOverflow = horizontalWrap;
         }
 
         public static Color Transparent => Vector4.zero;
@@ -38,8 +38,7 @@ namespace trrne.Box
         public static float Alpha(this Image image) => image.color.a;
         public static float Alpha(this SpriteRenderer sr) => sr.color.a;
 
-        public static void SetColor(this SpriteRenderer sr, Color color)
-        => sr.color = color;
+        public static void SetColor(this SpriteRenderer sr, Color color) => sr.color = color;
 
         public static Color SetColor(this Color color,
             float? red = null, float? green = null, float? blue = null, float? alpha = null)

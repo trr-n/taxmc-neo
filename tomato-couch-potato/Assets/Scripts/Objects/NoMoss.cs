@@ -21,19 +21,14 @@ namespace trrne.Core
         public float Speed => speed;
         public void SetSpeed(float speed) => this.speed = speed;
 
-        public bool Rotatable { get; set; }
+        public bool Rotatable { get; set; } = true;
 
         protected override void Start()
         {
             base.Start();
 
             feet = new GameObject[transform.childCount];
-            for (int i = 0; i < feet.Length; i++)
-            {
-                feet[i] = transform.GetChildObject(i);
-            }
-
-            Rotatable = true;
+            feet = transform.GetChildren();
         }
 
         protected override void Behavior()
@@ -43,37 +38,6 @@ namespace trrne.Core
                 // 回転
                 var rotate = direction * speed * -Vector100.Z;
                 transform.Rotate(rotate * Time.deltaTime, Space.World);
-            }
-        }
-
-        [Obsolete]
-        async void Detect()
-        {
-            foreach (var foot in feet)
-            {
-                if (Gobject.BoxCast2D(out var hit,
-                    foot.transform.position,
-                    foot.GetComponent<SpriteRenderer>().bounds.size,
-                    Constant.Layers.Player | Constant.Layers.Creature)
-                )
-                {
-                    switch (hit.GetLayer())
-                    {
-                        case Constant.Layers.Player:
-                            if (hit.TryGet(out Player player))
-                            {
-                                await player.Die();
-                            }
-                            break;
-
-                        case Constant.Layers.Creature:
-                            if (hit.TryGet(out Creature enemy))
-                            {
-                                await enemy.Die();
-                            }
-                            break;
-                    }
-                }
             }
         }
     }

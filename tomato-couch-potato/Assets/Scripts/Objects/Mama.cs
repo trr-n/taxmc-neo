@@ -1,5 +1,5 @@
 using System.Collections;
-using System.Linq;
+using System.Diagnostics.Contracts;
 using trrne.Box;
 using UnityEngine;
 
@@ -8,7 +8,7 @@ namespace trrne.Core
     public class Mama : MonoBehaviour
     {
         [SerializeField]
-        GameObject fire;
+        GameObject[] fires;
 
         [SerializeField]
         [Tooltip("気の短さ(秒)")]
@@ -18,7 +18,7 @@ namespace trrne.Core
         float lineWidth = .5f;
 
         [SerializeField]
-        float detectRange = 13f;
+        float playerDetectRange = 13f;
 
         [SerializeField]
         float punishDuration = 3f;
@@ -32,8 +32,7 @@ namespace trrne.Core
         );
 
         GameObject player;
-        Vector3 ofs;
-        Vector3 offset;
+        Vector3 ofs, offset;
         float distance;
 
         GameObject[] eyes;
@@ -49,7 +48,8 @@ namespace trrne.Core
         /// <summary>
         /// 範囲内にいるか
         /// </summary>
-        bool isPlayerWithinDetectRange = false;
+        bool isPlayerOnDetectRange = false;
+        [Pure] public bool IsPlayerOnDetectRange => isPlayerOnDetectRange;
 
         /// <summary>
         /// お仕置き中か
@@ -75,15 +75,15 @@ namespace trrne.Core
             distance = Maths.Average(Vector2.Distance(offset, eyes[0].transform.position),
                 Vector2.Distance(offset, eyes[1].transform.position));
 
-            Line();
-            Look();
-            Detect();
-            Punish();
+            LookAtPlayer();
+            DetectPlayer();
+            // Beam();
+            // Punish();
         }
 
-        void Look()
+        void LookAtPlayer()
         {
-            if (isPlayerWithinDetectRange)
+            if (isPlayerOnDetectRange)
             {
                 for (int i = 0; i < eyes.Length; i++)
                 {
@@ -94,97 +94,18 @@ namespace trrne.Core
 
         /// <summary>
         /// プレイヤーを検知<br/>
-        /// 範囲内にいたらタイマー増加
         /// </summary>
-        void Detect()
+        void DetectPlayer()
         {
-            pepperyTimer = Mathf.Clamp(pepperyTimer, 0, pepperyLimit);
-
-            // 範囲内にいたら
-            if (distance <= detectRange && this.player.TryGet(out Player player))
+            // プレイヤーが検知範囲内にいたら
+            if (isPlayerOnDetectRange)
             {
-                isPlayerWithinDetectRange = true;
-                // キーが入力されていないか、反転可能なら増やす
-                if (!player.IsPressedMovementKeys && player.Mirrorable)
+                var fire = fires[0].TryGenerate(transform.position);
+                if (fire.TryGetComponent(out MamaFireBase @base))
                 {
-                    pepperyTimer += Time.deltaTime;
-                }
-                // 反転不可なら減らす
-                else if (!player.Mirrorable)
-                {
-                    pepperyTimer -= Time.deltaTime;
-                }
-            }
-            // 範囲外にいたら
-            else if (distance > detectRange)
-            {
-                // タイマーが0以上なら減らす
-                if (pepperyTimer >= 0)
-                {
-                    pepperyTimer -= Time.deltaTime;
-                }
-                isPlayerWithinDetectRange = false;
-            }
-        }
-
-        void Line()
-        {
-            for (int i = 0; i < lines.Length; i++)
-            {
-                // 範囲内にいたらビーム発射
-                if (distance <= detectRange)
-                {
-                    if (!lines[i].enabled)
-                    {
-                        lines[i].enabled = true;
-                    }
-                    lines[i].SetPositions(new[] { eyes[i].transform.position, offset });
-                    return;
-                }
-
-                if (lines[i].enabled)
-                {
-                    lines[i].enabled = false;
+                    @base.SetMama(this);
                 }
             }
         }
-
-        /// <summary>
-        /// 一定時間以上範囲内にいたら制裁
-        /// </summary>
-        void Punish()
-        {
-            // お仕置き中じゃなくて、範囲内に一定時間以上いたらお仕置き執行
-            if (!isPunishing && pepperyTimer >= pepperyLimit)
-            {
-                StartCoroutine(Punishment());
-            }
-        }
-
-        IEnumerator Punishment()
-        {
-            isPunishing = true;
-            Stopwatch punishTimer = new(true);
-            var player = Gobject.GetWithTag<Player>(Constant.Tags.Player);
-
-            // お仕置き時間内なら
-            while (punishTimer.Sf <= punishDuration)
-            {
-                // 操作反転
-                player.IsMirroring = true;
-                yield return null;
-            }
-
-            // 反転解除
-            player.IsMirroring = false;
-            isPunishing = false;
-        }
-
-#if DEBUG
-        void OnDrawGizmos()
-        {
-            Gizmos.DrawWireSphere(transform.position, detectRange);
-        }
-#endif
     }
 }

@@ -1,14 +1,9 @@
-﻿using System.Collections;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 using Cysharp.Threading.Tasks;
 using trrne.Box;
 using trrne.Brain;
-using System.Text;
-using System.Linq;
-using System;
-using UnityEditor;
-using System.Collections.Generic;
+using UnityEngine.InputSystem;
 
 namespace trrne.Core
 {
@@ -220,7 +215,8 @@ namespace trrne.Core
 
             if (flag.IsHit)
             {
-                if (Inputs.Down(Constant.Keys.Jump))
+                // if (Inputs.Down(Constant.Keys.Jump))
+                if (Inputs.Down(Key.W))
                 {
                     rb.velocity += JumpPower * Vector100.Y2D;
                 }

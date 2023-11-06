@@ -15,8 +15,6 @@ namespace trrne.Brain
         TimeManager time;
         PauseMenu menu;
 
-        string str = "default";
-
         void Start()
         {
             time = GetComponent<TimeManager>();
