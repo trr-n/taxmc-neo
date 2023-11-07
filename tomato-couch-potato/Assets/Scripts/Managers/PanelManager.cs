@@ -10,8 +10,8 @@ namespace trrne.Brain
         [SerializeField]
         CanvasGroup canvas;
 
-        readonly float showingTime = 3;
-        readonly float fadingSpeed = 10;
+        const float showingTime = 3;
+        const float fadingSpeed = 10;
         readonly Stopwatch sw = new();
 
         Player player;

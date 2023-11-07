@@ -5,7 +5,7 @@ namespace trrne.Core
 {
     public class PC : Object
     {
-        readonly Color[] colors = { Color.red, Color.green };
+        Color[] colors => new Color[] { Color.red, Color.green };
 
         SpriteRenderer display;
 

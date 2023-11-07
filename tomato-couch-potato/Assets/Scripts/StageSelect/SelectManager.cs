@@ -20,8 +20,8 @@ namespace trrne.Arm
         [SerializeField]
         RectTransform core;
 
-        readonly string prefix = "stage";
-        readonly float offset = 18.96f;
+        const string prefix = "stage";
+        const float offset = 18.96f;
 
         bool scrolling = false;
         readonly float scrollSpeed = 0.5f;

@@ -9,8 +9,7 @@ namespace trrne.Core
         [Tooltip("決済時の音")]
         AudioClip sound;
 
-        bool isPaid = false;
-        public bool IsPaid => isPaid;
+        public bool IsPaid { get; private set; }
 
         Bank bank;
 
@@ -24,7 +23,7 @@ namespace trrne.Core
             if (info.CompareTag(Constant.Tags.Player))
             {
                 bank.Add(12);
-                isPaid = true;
+                IsPaid = true;
             }
         }
     }

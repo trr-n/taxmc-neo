@@ -13,8 +13,7 @@ namespace trrne.Core
         [SerializeField, Tooltip("アニメーション用の画像")]
         protected Sprite[] sprites;
 
-        SpriteRenderer srenderer;
-        protected SpriteRenderer SR => srenderer;
+        protected SpriteRenderer SR { get; private set; }
 
         protected Vector2 Size => SR.bounds.size;
 
@@ -33,7 +32,7 @@ namespace trrne.Core
 
         protected virtual void Start()
         {
-            srenderer = GetComponent<SpriteRenderer>();
+            SR = GetComponent<SpriteRenderer>();
         }
 
         void Update()
@@ -68,6 +67,6 @@ namespace trrne.Core
         /// <summary>
         /// 画像を設定
         /// </summary>
-        protected void SetSprite(Sprite sprite) => srenderer.sprite = sprite;
+        protected void SetSprite(Sprite sprite) => SR.sprite = sprite;
     }
 }

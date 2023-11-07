@@ -36,7 +36,8 @@ namespace trrne
             Down = "Down",
             Zoom = "Zoom",
             Button = "Button",
-            Pause = "Pause";
+            Pause = "Pause",
+            Respawn = "Respawn";
         }
 
         public readonly struct Tags

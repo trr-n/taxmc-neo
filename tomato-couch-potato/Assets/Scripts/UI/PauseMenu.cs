@@ -1,5 +1,4 @@
 using System.Collections;
-using Cysharp.Threading.Tasks.Triggers;
 using trrne.Box;
 using UnityEngine;
 
@@ -9,10 +8,10 @@ namespace trrne.Brain
     {
         [SerializeField]
         GameObject panel;
+
         CanvasGroup canvas;
 
-        bool pausing;
-        public bool IsPausing => pausing;
+        public bool IsPausing { get; private set; }
 
         (float speed, bool during) fade = (10f, false);
 
@@ -23,7 +22,7 @@ namespace trrne.Brain
 
         void Update()
         {
-            pausing = canvas.alpha >= .5f;
+            IsPausing = canvas.alpha >= .5f;
             PanelControl();
         }
 
@@ -38,18 +37,16 @@ namespace trrne.Brain
 
         void PanelControl()
         {
-            if (!Inputs.Down(Constant.Keys.Pause))
+            if (Inputs.Down(Constant.Keys.Pause))
             {
-                return;
-            }
-
-            if (IsPausing)
-            {
-                Inactive();
-            }
-            else
-            {
-                Active();
+                if (IsPausing)
+                {
+                    Inactive();
+                }
+                else
+                {
+                    Active();
+                }
             }
         }
 

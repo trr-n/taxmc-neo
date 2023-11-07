@@ -17,7 +17,6 @@ namespace trrne.Core
 
         [SerializeField]
         float speed = 15f;
-
         public float Speed => speed;
         public void SetSpeed(float speed) => this.speed = speed;
 

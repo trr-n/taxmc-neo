@@ -17,19 +17,17 @@ namespace trrne.Core
 
         (Vector3 rotation, Vector2 position) initial;
 
-        bool isOpen = false;
         /// <summary>
         /// 開いているか
         /// </summary>
-        public bool IsOpen => isOpen;
+        public bool IsOpen { get; private set; }
 
         readonly float rotationSpeed = 0.5f;
 
-        bool isRotating = false;
         /// <summary>
         /// 回転してるか
         /// </summary>
-        public bool IsRotating => isRotating;
+        public bool IsRotating { get; private set; }
 
         protected override void Start()
         {
@@ -43,7 +41,7 @@ namespace trrne.Core
 
         public void Active()
         {
-            isOpen = true;
+            IsOpen = true;
             Vector3 rotinfo = new();
             switch (direct)
             {
@@ -56,20 +54,20 @@ namespace trrne.Core
             }
 
             transform.DORotate(rotinfo, rotationSpeed)
-                .OnPlay(() => isRotating = true)
-                .OnComplete(() => isRotating = false);
+                .OnPlay(() => IsRotating = true)
+                .OnComplete(() => IsRotating = false);
         }
 
         public void Inactive()
         {
-            isOpen = false;
+            IsOpen = false;
             // switch (direct)
             // {
             //     case RotateDirection.Left:
             //     case RotateDirection.Right:
             transform.DORotate(initial.rotation, rotationSpeed)
-                .OnPlay(() => isRotating = true)
-                .OnComplete(() => isRotating = false);
+                .OnPlay(() => IsRotating = true)
+                .OnComplete(() => IsRotating = false);
             //         break;
             // }
         }

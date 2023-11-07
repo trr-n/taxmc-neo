@@ -8,7 +8,6 @@ namespace trrne.Box
         SystemStopwatch syswatch;
 
         public Stopwatch() => syswatch = new();
-
         public Stopwatch(bool start)
         {
             syswatch = new();
@@ -17,15 +16,10 @@ namespace trrne.Box
 
         public void Start() => syswatch.Start();
         public static void Start(params Stopwatch[] sws) => sws.ForEach(sw => sw.Start());
-
         public void Stop() => syswatch.Stop();
-
         public void Restart() => syswatch.Restart();
-
         public void Reset() => syswatch.Reset();
-
         public bool IsRunning() => syswatch.IsRunning;
-
         public void Rubbish()
         {
             syswatch.Stop();
@@ -51,8 +45,8 @@ namespace trrne.Box
 
         public int MS => syswatch.Elapsed.Milliseconds;
         public float MSf => Maths.Round((float)syswatch.Elapsed.TotalMilliseconds, 6);
-        public int MSecond() => syswatch.Elapsed.Milliseconds;
-        public float MSecondF(int digit = 6) => Maths.Round((float)syswatch.Elapsed.TotalMilliseconds, digit);
+        public int Milliseconds() => syswatch.Elapsed.Milliseconds;
+        public float MillisecondF(int digit = 6) => Maths.Round((float)syswatch.Elapsed.TotalMilliseconds, digit);
 
         public TimeSpan Spent() => syswatch.Elapsed;
 
@@ -70,7 +64,7 @@ namespace trrne.Box
             StopwatchFormat.H or StopwatchFormat.h or StopwatchFormat.Hour or StopwatchFormat.hour => Hour(),
             StopwatchFormat.M or StopwatchFormat.m or StopwatchFormat.Minute or StopwatchFormat.minute => Minute(),
             StopwatchFormat.S or StopwatchFormat.s or StopwatchFormat.Second or StopwatchFormat.second => Second(),
-            StopwatchFormat.MS or StopwatchFormat.ms or StopwatchFormat.MilliSecond or StopwatchFormat.millisecond => MSecond(),
+            StopwatchFormat.MS or StopwatchFormat.ms or StopwatchFormat.MilliSecond or StopwatchFormat.millisecond => Milliseconds(),
             _ => -1,
         };
 
@@ -80,7 +74,7 @@ namespace trrne.Box
             StopwatchFormat.H or StopwatchFormat.h or StopwatchFormat.Hour or StopwatchFormat.hour => HourF(),
             StopwatchFormat.M or StopwatchFormat.m or StopwatchFormat.Minute or StopwatchFormat.minute => MinuteF(),
             StopwatchFormat.S or StopwatchFormat.s or StopwatchFormat.Second or StopwatchFormat.second => SecondF(),
-            StopwatchFormat.MS or StopwatchFormat.ms or StopwatchFormat.MilliSecond or StopwatchFormat.millisecond => MSecondF(),
+            StopwatchFormat.MS or StopwatchFormat.ms or StopwatchFormat.MilliSecond or StopwatchFormat.millisecond => MillisecondF(),
             _ => -1f,
         };
     }

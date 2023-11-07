@@ -4,12 +4,12 @@ namespace trrne.Brain
 {
     public class Recorder : Singleton<Recorder>
     {
-        protected override bool Alive => true;
+        protected override bool LiveOnLoad => true;
 
         public string Path => Paths.Data + "/save.sav";
         public string Password => "pomodoro";
 
-        (int stay, int done) idx = (0, 0);
+        // (int stay, int done) idx = (0, 0);
 
         /// <summary>
         /// ステージ数
@@ -24,23 +24,23 @@ namespace trrne.Brain
         /// <summary>
         /// プレイ中のステージ
         /// </summary>
-        public int Stay => idx.stay;
+        public int Stay { get; private set; }
 
         /// <summary>
         /// クリア済み
         /// </summary>
-        public int Done => idx.done;
+        public int Done { get; private set; }
 
         /// <summary>
         /// 進捗
         /// </summary>
-        public float Progress => Maths.Ratio(Max, idx.done);
+        public float Progress => Maths.Ratio(Max, Done);
 
         public void Clear()
         {
             if (int.TryParse(Scenes.Active().Delete(Constant.Scenes.Prefix), out _))
             {
-                idx.done++;
+                Done++;
                 Scenes.Load(Constant.Scenes.Select);
             }
         }

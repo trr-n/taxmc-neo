@@ -32,11 +32,11 @@ namespace trrne.Core
         /// 操作を反転するか
         /// </summary>
         public bool IsMirroring { get; set; }
-        (bool able, float Duration, Stopwatch durationSW) mirror = (false, .33f, new());
+        (float Duration, Stopwatch durationSW) mirror = (.33f, new());
         /// <summary>
         /// 反転可能か
         /// </summary>
-        public bool Mirrorable => mirror.able;
+        public bool Mirrorable { get; private set; }
 
         bool isPressedMovementKeys = false;
         /// <summary>
@@ -54,20 +54,23 @@ namespace trrne.Core
         /// </summary>
         public bool IsDieProcessing { get; set; }
 
-        (float basis, float max, float floatingReduction, float reduction) speed => (20, 10, 0.1f, 0.9f);
+        (float basis, float max, float floatingReduction, float reduction) speed => (
+            basis: 20,
+            max: 10,
+            floatingReduction: 0.95f, //! 要調整 ///////////////////////////////////////
+            reduction: 0.9f
+        );
         const float JumpPower = 6f;
 
-        bool isFloating;
         /// <summary>
         /// 地に足がついていなかったらtrue
         /// </summary>
-        public bool IsFloating => isFloating;
+        public bool IsFloating { get; private set; }
 
-        Vector2 velocity;
         /// <summary>
         /// 移動速度
         /// </summary>
-        public Vector2 Velocity => velocity;
+        public Vector2 Velocity { get; private set; }
 
         Rigidbody2D rb;
         Animator animator;
@@ -80,18 +83,17 @@ namespace trrne.Core
 
         const float InputTolerance = 0.33f;
 
-        Vector2 checkpoint = Vector2.zero;
-        public Vector2 Checkpoint => checkpoint;
+        public Vector2 Checkpoint { get; private set; } = Vector2.zero;
 
         /// <summary>
         /// チェックポイントを設定する
         /// </summary>
-        public void SetCheckpoint(Vector2 position) => checkpoint = position;
+        public void SetCheckpoint(Vector2 position) => Checkpoint = position;
 
         /// <summary>
         /// チェックポイントに戻す
         /// </summary>
-        public void ReturnToCheckpoint() => transform.SetPosition(checkpoint);
+        public void ReturnToCheckpoint() => transform.position = Checkpoint;
 
         void Start()
         {
@@ -111,12 +113,6 @@ namespace trrne.Core
             Movable = true;
             Jumpable = true;
             IsMirroring = false;
-
-            LotteryPair<string, float> pairs = new(("karachan", 1), ("woko", 5), ("kuri", 44), ("goma", 50));
-            for (int i = 0; i < 100; i++)
-            {
-                print(pairs.Weighted());
-            }
         }
 
         void FixedUpdate()
@@ -126,6 +122,7 @@ namespace trrne.Core
 
         void Update()
         {
+            IsFloating = !flag.OnGround;
             DetectInput();
             Jump();
             Flip();
@@ -136,9 +133,9 @@ namespace trrne.Core
         void LateUpdate()
         {
 #if DEBUG
-            velocity = rb.velocity;
+            Velocity = rb.velocity;
             // 速度表示
-            velT.SetText(velocity);
+            velT.SetText(Velocity);
 #endif
         }
 
@@ -154,13 +151,13 @@ namespace trrne.Core
             // if (Inputs.Released(Constant.Keys.Horizontal) || Inputs.Released(Constant.Keys.ReversedHorizontal))
             if (Inputs.ReleasedOR(Constant.Keys.Horizontal, Constant.Keys.ReversedHorizontal))
             {
-                mirror.able = false;
+                Mirrorable = false;
                 mirror.durationSW.Restart();
             }
 
             if (mirror.durationSW.Sf >= mirror.Duration)
             {
-                mirror.able = true;
+                Mirrorable = true;
             }
         }
 
@@ -169,7 +166,7 @@ namespace trrne.Core
         /// </summary>
         void Respawn()
         {
-            if (!IsDieProcessing && Inputs.Down(KeyCode.Space))
+            if (!IsDieProcessing && Inputs.Down(Constant.Keys.Respawn))
             {
                 ReturnToCheckpoint();
             }
@@ -197,10 +194,16 @@ namespace trrne.Core
                 switch (Mathf.Sign(Input.GetAxisRaw(horizontal)))
                 {
                     case 1:
-                        if (current != 1) { transform.localScale *= new Vector2(-1, 1); }
+                        if (current != 1)
+                        {
+                            transform.localScale *= new Vector2(-1, 1);
+                        }
                         break;
                     case -1:
-                        if (current != -1) { transform.localScale *= new Vector2(-1, 1); }
+                        if (current != -1)
+                        {
+                            transform.localScale *= new Vector2(-1, 1);
+                        }
                         break;
                 }
             }
@@ -213,10 +216,10 @@ namespace trrne.Core
                 return;
             }
 
-            if (flag.IsHit)
+            if (flag.OnGround)
             {
-                // if (Inputs.Down(Constant.Keys.Jump))
-                if (Inputs.Down(Key.W))
+                if (Inputs.Down(Constant.Keys.Jump))
+                // if (Inputs.Down(Key.W))
                 {
                     rb.velocity += JumpPower * Vector100.Y2D;
                 }
@@ -238,13 +241,14 @@ namespace trrne.Core
                 return;
             }
 
-            animator.SetBool(Constant.Animations.Walk, Input.GetButton(Constant.Keys.Horizontal) && flag.IsHit);
+            animator.SetBool(Constant.Animations.Walk, Input.GetButton(Constant.Keys.Horizontal) && flag.OnGround);
 
             string horizontal = IsMirroring ? Constant.Keys.ReversedHorizontal : Constant.Keys.Horizontal;
             Vector2 move = Input.GetAxisRaw(horizontal) * Vector100.X;
+            print("move: " + move);
 
             // 入力がtolerance以下、氷に乗っていない、浮いていない
-            if (move.magnitude <= InputTolerance && !flag.OnIce && !isFloating)
+            if (move.magnitude <= InputTolerance && !flag.OnIce) // && !IsFloating)
             {
                 // x軸の速度をspeed.reduction倍
                 rb.SetVelocityX(rb.velocity.x * speed.reduction);
@@ -259,7 +263,7 @@ namespace trrne.Core
             );
 
             // 浮いていたら移動速度低下
-            var velocity = isFloating ? speed.basis * speed.floatingReduction : speed.basis;
+            var velocity = IsFloating ? speed.basis * speed.floatingReduction : speed.basis;
             rb.velocity += Time.fixedDeltaTime * velocity * move;
         }
 
@@ -292,7 +296,7 @@ namespace trrne.Core
             await UniTask.Delay(1250);
 
             // 落とし穴修繕
-            Gobject.Finds<Carrot>().ForEach(c => c.IsBreaking.BoolAction(c.Mend));
+            Gobject.Finds<Carrot>().ForEach(c => Shorthand.BoolAction(c.Mendable, c.Mend));
 
             ReturnToCheckpoint();
             animator.StopPlayback();

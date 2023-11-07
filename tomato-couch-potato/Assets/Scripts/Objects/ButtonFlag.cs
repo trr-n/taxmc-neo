@@ -5,14 +5,13 @@ namespace trrne.Core
 {
     public class ButtonFlag : MonoBehaviour
     {
-        bool hit;
-        public bool Hit => hit;
+        public bool Hit { get; private set; }
 
         void OnTriggerEnter2D(Collider2D info)
         {
             if (info.CompareLayer(Constant.Layers.Player))
             {
-                hit = true;
+                Hit = true;
             }
         }
 
@@ -20,7 +19,7 @@ namespace trrne.Core
         {
             if (info.CompareLayer(Constant.Layers.Player))
             {
-                hit = false;
+                Hit = false;
             }
         }
     }

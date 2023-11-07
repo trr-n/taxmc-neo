@@ -22,20 +22,17 @@ namespace trrne.Box
                         chars[idx] = alphabets.Concat(numbers).ToArray().Choice();
                     }
                     return chars.Link();
-
                 case RandomStringOutput.Alphabet:
                     return Mixer(count, alphabets, 0, alphabets.Length).Link();
-
                 case RandomStringOutput.Upper:
                     return Mixer(count, alphabets, alphabets.Length / 2, alphabets.Length).Link();
-
                 case RandomStringOutput.Lower:
                     return Mixer(count, alphabets, 0, alphabets.Length).Link();
-
                 case RandomStringOutput.Number:
                     return Mixer(count, numbers, 0, numbers.Length).Link();
+                default:
+                    throw null;
             }
-            throw null;
         }
 
         public static string String() => String(Int(2, 10), RandomStringOutput.Auto);

@@ -12,11 +12,10 @@ namespace trrne.Core
         CarrotFlag flag;
         new BoxCollider2D collider;
 
-        bool isBreaking = false;
         /// <summary>
         /// 耐久値ぜろだったらtrue
         /// </summary>
-        public bool IsBreaking => isBreaking;
+        public bool Mendable { get; private set; }
 
         public float Ratio => (float)flag.Count / limitSteps;
 
@@ -34,11 +33,11 @@ namespace trrne.Core
 
         protected override void Behavior()
         {
-            if (!isBreaking && flag.Count >= limitSteps)
+            if (!Mendable && flag.Count >= limitSteps)
             {
                 effects.TryGenerate(transform.position);
 
-                isBreaking = true;
+                Mendable = true;
                 sr.enabled = false;
                 collider.enabled = false;
             }
@@ -48,9 +47,8 @@ namespace trrne.Core
 
         public void Mend()
         {
-            isBreaking = false;
+            Mendable = false;
             flag.Count = 0;
-
             sr.enabled = true;
             collider.enabled = true;
         }

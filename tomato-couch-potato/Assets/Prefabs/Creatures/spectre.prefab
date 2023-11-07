@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6482770497881807971}
   - component: {fileID: 1756635782776236042}
-  - component: {fileID: 1900693142211484412}
+  - component: {fileID: 5739949305947387741}
   - component: {fileID: 3377719134446367238}
   m_Layer: 9
   m_Name: spectre
@@ -86,8 +86,8 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!61 &1900693142211484412
-BoxCollider2D:
+--- !u!70 &5739949305947387741
+CapsuleCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -115,22 +115,12 @@ BoxCollider2D:
   m_CallbackLayers:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 5.12, y: 5.12}
-    newSize: {x: 1, y: 1}
-    adaptiveTilingThreshold: 0.5
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
-  serializedVersion: 2
-  m_Size: {x: 1, y: 1}
-  m_EdgeRadius: 0
+  m_Offset: {x: -0.3607254, y: 0.37338257}
+  m_Size: {x: 1.4114876, y: 2.3481102}
+  m_Direction: 0
 --- !u!114 &3377719134446367238
 MonoBehaviour:
   m_ObjectHideFlags: 0

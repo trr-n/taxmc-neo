@@ -5,14 +5,13 @@ namespace trrne.Core
 {
     public class LeverFlag : MonoBehaviour
     {
-        bool hit;
-        public bool Hit => hit;
+        public bool Hit { get; private set; }
 
         void OnTriggerEnter2D(Collider2D info)
         {
             if (info.TryGet(out Player _))
             {
-                hit = true;
+                Hit = true;
             }
         }
 
@@ -20,7 +19,7 @@ namespace trrne.Core
         {
             if (info.TryGet(out Player _))
             {
-                hit = false;
+                Hit = false;
             }
         }
     }

@@ -1,15 +1,11 @@
-using trrne.Box;
 using UnityEngine;
 
 namespace trrne.Core
 {
     public class PlayerFlag : MonoBehaviour
     {
-        bool isHit;
-        public bool IsHit => isHit;
-
-        bool onIce;
-        public bool OnIce => onIce;
+        public bool OnGround { get; private set; }
+        public bool OnIce { get; private set; }
 
         void OnTriggerExit2D(Collider2D info)
         {
@@ -23,11 +19,10 @@ namespace trrne.Core
 
         void Boolean(Collider2D info, bool boo)
         {
-            isHit = boo;
-
-            if (info.CompareLayer(Constant.Layers.Ground) && info.CompareTag(Constant.Tags.Ice))
+            OnGround = boo;
+            if (info.CompareTag(Constant.Tags.Ice))
             {
-                onIce = boo;
+                OnIce = boo;
             }
         }
     }

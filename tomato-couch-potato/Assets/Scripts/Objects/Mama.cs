@@ -25,7 +25,8 @@ namespace trrne.Core
 
         float pepperyTimer = 0;
 
-        public (float Limit, float Timer, float Ratio) Peppery => (
+        public (float Limit, float Timer, float Ratio) Peppery
+        => (
             Limit: pepperyLimit,
             Timer: pepperyTimer,
             Ratio: pepperyTimer / pepperyLimit
@@ -48,8 +49,7 @@ namespace trrne.Core
         /// <summary>
         /// 範囲内にいるか
         /// </summary>
-        bool isPlayerOnDetectRange = false;
-        [Pure] public bool IsPlayerOnDetectRange => isPlayerOnDetectRange;
+        [Pure] public bool IsPlayerOnDetectRange { get; private set; }
 
         /// <summary>
         /// お仕置き中か
@@ -83,7 +83,7 @@ namespace trrne.Core
 
         void LookAtPlayer()
         {
-            if (isPlayerOnDetectRange)
+            if (IsPlayerOnDetectRange)
             {
                 for (int i = 0; i < eyes.Length; i++)
                 {
@@ -98,7 +98,7 @@ namespace trrne.Core
         void DetectPlayer()
         {
             // プレイヤーが検知範囲内にいたら
-            if (isPlayerOnDetectRange)
+            if (IsPlayerOnDetectRange)
             {
                 var fire = fires[0].TryGenerate(transform.position);
                 if (fire.TryGetComponent(out MamaFireBase @base))

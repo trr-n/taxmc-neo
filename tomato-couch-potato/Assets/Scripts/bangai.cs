@@ -1,8 +1,4 @@
-// using System.Collections;
-// using System.Collections.Generic;
-using trrne.Box;
 using UnityEngine;
-// using Self.Utils;
 
 namespace trrne.test
 {

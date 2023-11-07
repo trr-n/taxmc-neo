@@ -5,10 +5,7 @@ namespace trrne.Box
 {
     public abstract class Singleton<T> : MonoBehaviour where T : MonoBehaviour
     {
-        /// <summary>
-        /// ロード時に破壊するか / 初期値はtrue
-        /// </summary>
-        protected virtual bool Alive { get; set; } = true;
+        protected virtual bool LiveOnLoad { get; set; } = true;
 
         static T instance;
         public static T Instance
@@ -36,10 +33,8 @@ namespace trrne.Box
             {
                 Destroy(this);
             }
-            else
-            {
-                DontDestroyOnLoad(gameObject);
-            }
+
+            LiveOnLoad.BoolAction(() => DontDestroyOnLoad(gameObject));
         }
     }
 }
