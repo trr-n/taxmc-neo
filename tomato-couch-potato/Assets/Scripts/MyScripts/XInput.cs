@@ -4,16 +4,16 @@ using UnityEngine.InputSystem.Controls;
 
 namespace trrne.Box
 {
-    public enum XInputDevice
-    {
-        Both,
-        Keyboard,
-        Pad
-    }
-
     public class XInput
     {
-        readonly XInputDevice device;
+        public enum Device
+        {
+            Both,
+            Keyboard,
+            Pad
+        }
+
+        readonly Device device;
         Gamepad pad;
         Keyboard kb;
 
@@ -28,9 +28,9 @@ namespace trrne.Box
         (KeyControl up, KeyControl down, KeyControl left, KeyControl right) arrow;
         // -------------------
 
-        public XInput() : this(XInputDevice.Both) { }
+        public XInput() : this(Device.Both) { }
 
-        public XInput(XInputDevice device)
+        public XInput(Device device)
         {
             this.device = device;
             stick = (new(), new(), new(), new());
@@ -42,9 +42,9 @@ namespace trrne.Box
 
         public bool Connected => device switch
         {
-            XInputDevice.Both => pad != null && kb != null,
-            XInputDevice.Keyboard => kb != null,
-            XInputDevice.Pad => pad != null,
+            Device.Both => pad != null && kb != null,
+            Device.Keyboard => kb != null,
+            Device.Pad => pad != null,
             _ => throw null
         };
 
@@ -52,15 +52,15 @@ namespace trrne.Box
         {
             switch (device)
             {
-                case XInputDevice.Both:
+                case Device.Both:
                     PadLoad();
-                    KBLoad();
+                    KeyboardLoad();
                     break;
-                case XInputDevice.Pad:
+                case Device.Pad:
                     PadLoad();
                     break;
-                case XInputDevice.Keyboard:
-                    KBLoad();
+                case Device.Keyboard:
+                    KeyboardLoad();
                     break;
                 default:
                     throw null;
@@ -74,7 +74,7 @@ namespace trrne.Box
             stick = (pad.leftStick.ReadValue(), pad.leftStickButton, pad.rightStick.ReadValue(), pad.rightStickButton);
         }
 
-        void KBLoad()
+        void KeyboardLoad()
         {
             kb = Keyboard.current;
             wasd = (kb.wKey, kb.aKey, kb.sKey, kb.dKey);

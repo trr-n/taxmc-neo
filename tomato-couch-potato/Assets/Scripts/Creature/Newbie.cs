@@ -6,12 +6,18 @@ namespace trrne.Core
 {
     public class Newbie : Creature, ICreature
     {
-        public enum StartFacing { Left, Right, Random }
+        public enum StartFacing
+        {
+            Left,
+            Right,
+            Random
+        }
+
         [SerializeField]
         StartFacing facing = StartFacing.Right;
 
         (Ray ray, RaycastHit2D hit) horizon, top, bottom;
-        readonly (float size, int detect) hitbox = (1.2f, Constant.Layers.Player | Constant.Layers.Ground);
+        (float size, int detect) hitbox => (1.2f, Constant.Layers.Player | Constant.Layers.Ground);
 
         Player player;
 
@@ -37,7 +43,7 @@ namespace trrne.Core
 
         protected override async void Behavior()
         {
-            Vector2 configure = transform.position + (hitbox.size * Vector100.Y / 2);
+            var configure = transform.position + (hitbox.size * Vector100.Y / 2);
             await Horizon();
             await Top(configure);
             await Bottom(configure);
@@ -92,9 +98,7 @@ namespace trrne.Core
             if (!dying)
             {
                 dying = true;
-
                 diefx.TryGenerate(transform.position);
-
                 await UniTask.WaitForSeconds(0.1f);
 
                 // オブジェクト破壊

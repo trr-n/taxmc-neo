@@ -12,6 +12,20 @@ namespace trrne.Core
 
         protected SpriteRenderer sr;
 
+        protected virtual void Start()
+        {
+            sr = GetComponent<SpriteRenderer>();
+        }
+
+        protected virtual void Update()
+        {
+            if (Enable)
+            {
+                Movement();
+                Behavior();
+            }
+        }
+
         /// <summary>
         /// 移動
         /// </summary>
@@ -26,21 +40,5 @@ namespace trrne.Core
         /// 死<br/>asyncつける
         /// </summary>
         public abstract UniTask Die();
-
-        protected virtual void Start()
-        {
-            sr = GetComponent<SpriteRenderer>();
-        }
-
-        protected virtual void Update()
-        {
-            if (!Enable)
-            {
-                return;
-            }
-
-            Movement();
-            Behavior();
-        }
     }
 }

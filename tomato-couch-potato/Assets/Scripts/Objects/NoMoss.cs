@@ -35,7 +35,7 @@ namespace trrne.Core
             if (Rotatable || direction != 0)
             {
                 // 回転
-                var rotate = direction * speed * -Vector100.Z;
+                var rotate = -direction * speed * -Vector100.Z;
                 transform.Rotate(rotate * Time.deltaTime, Space.World);
             }
         }

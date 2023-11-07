@@ -42,20 +42,20 @@ namespace trrne.Core
         protected abstract void Behavior();
 
         readonly Anima anima = new();
-        readonly Runner runner = new();
+        readonly Runner set = new();
         void Animation()
         {
-            if (!Animate || sprites.Length <= 0)
+            if (Animate)
             {
-                return;
+                if (sprites.Length == 1)
+                {
+                    set.RunOnce(() => sr.sprite = sprites[0]);
+                }
+                else if (sprites.Length >= 2)
+                {
+                    anima.Sprite(Animate, sr, interval, sprites);
+                }
             }
-
-            if (sprites.Length == 1)
-            {
-                runner.RunOnce(() => sr.sprite = sprites[0]);
-                return;
-            }
-            anima.Sprite(Animate, sr, interval, sprites);
         }
     }
 }

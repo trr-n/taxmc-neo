@@ -36,17 +36,18 @@ namespace trrne.Core
             // 移動
             switch (type)
             {
-                // 固定
                 case MovingType.Fixed:
                 default:
                     return;
-                // 左右
+
                 case MovingType.Horizontal:
-                    transform.SetPosition(x: origin.x - range / 2 + Mathf.PingPong(pingpong.Sf * speed, range));
+                    var x = origin.x - range / 2 + Mathf.PingPong(pingpong.Sf * speed, range);
+                    transform.SetPosition(x: x);
                     break;
-                // 上下
+
                 case MovingType.Vertical:
-                    transform.SetPosition(y: origin.y - range / 2 + Mathf.PingPong(pingpong.Sf * speed, range));
+                    var y = origin.y - range / 2 + Mathf.PingPong(pingpong.Sf * speed, range);
+                    transform.SetPosition(y: y);
                     break;
             }
         }

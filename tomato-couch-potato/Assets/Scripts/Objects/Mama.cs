@@ -11,6 +11,10 @@ namespace trrne.Core
         GameObject[] fires;
 
         [SerializeField]
+        float fireRapidRate = 2f;
+        float fireRapidTimer = 0;
+
+        [SerializeField]
         [Tooltip("気の短さ(秒)")]
         float pepperyLimit = 1;
 
@@ -51,11 +55,6 @@ namespace trrne.Core
         /// </summary>
         [Pure] public bool IsPlayerOnDetectRange { get; private set; }
 
-        /// <summary>
-        /// お仕置き中か
-        /// </summary>
-        bool isPunishing = false;
-
         void Start()
         {
             player = Gobject.Find(Constant.Tags.Player);
@@ -75,36 +74,30 @@ namespace trrne.Core
             distance = Maths.Average(Vector2.Distance(offset, eyes[0].transform.position),
                 Vector2.Distance(offset, eyes[1].transform.position));
 
-            LookAtPlayer();
-            DetectPlayer();
-            // Beam();
-            // Punish();
+            if (IsPlayerOnDetectRange = playerDetectRange >= distance)
+            {
+                LookAtPlayer();
+                FireShot();
+            }
         }
 
         void LookAtPlayer()
         {
-            if (IsPlayerOnDetectRange)
+            for (int i = 0; i < eyes.Length; i++)
             {
-                for (int i = 0; i < eyes.Length; i++)
-                {
-                    eyes[i].transform.position = inits[i] + directions[i].normalized * bump;
-                }
+                eyes[i].transform.position = inits[i] + directions[i].normalized * bump;
             }
         }
 
-        /// <summary>
-        /// プレイヤーを検知<br/>
-        /// </summary>
-        void DetectPlayer()
+        void FireShot()
         {
-            // プレイヤーが検知範囲内にいたら
-            if (IsPlayerOnDetectRange)
+            fireRapidTimer += Time.deltaTime;
+
+            if (fireRapidTimer >= fireRapidRate)
             {
-                var fire = fires[0].TryGenerate(transform.position);
-                if (fire.TryGetComponent(out MamaFireBase @base))
-                {
-                    @base.SetMama(this);
-                }
+                print("mama fire!");
+                fires.TryGenerate(transform.position);
+                fireRapidTimer = 0;
             }
         }
     }

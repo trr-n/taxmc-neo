@@ -3,7 +3,7 @@ using UnityEngine.UI;
 using Cysharp.Threading.Tasks;
 using trrne.Box;
 using trrne.Brain;
-using UnityEngine.InputSystem;
+using System.Collections;
 
 namespace trrne.Core
 {
@@ -14,6 +14,12 @@ namespace trrne.Core
     {
         Venom,  // 毒死
         None    // 何もしない
+    }
+
+    public enum PunishType
+    {
+        Mirror,
+        Random
     }
 
     public class Player : MonoBehaviour, ICreature
@@ -180,6 +186,38 @@ namespace trrne.Core
             rb.isKinematic = IsTeleporting;
         }
 
+        public float MaxDuration { get; private set; }
+        public float DurationTimer => durationSW.Sf;
+        public float DurationProgress
+        {
+            get
+            {
+                if (DurationTimer <= 0)
+                {
+                    return 0f;
+                }
+                return DurationTimer / MaxDuration;
+            }
+        }
+        readonly Stopwatch durationSW = new();
+        public IEnumerator Punishment(PunishType type, float duration)
+        {
+            MaxDuration += duration;
+            durationSW.Restart();
+            switch (type)
+            {
+                case PunishType.Mirror:
+                    IsMirroring = true;
+                    yield return new WaitForSeconds(MaxDuration);
+                    IsMirroring = false;
+                    break;
+                case PunishType.Random:
+                default:
+                    break;
+            }
+            durationSW.Reset();
+        }
+
         void Flip()
         {
             if (!Controllable || menu.IsPausing || IsTeleporting)
@@ -219,7 +257,6 @@ namespace trrne.Core
             if (flag.OnGround)
             {
                 if (Inputs.Down(Constant.Keys.Jump))
-                // if (Inputs.Down(Key.W))
                 {
                     rb.velocity += JumpPower * Vector100.Y2D;
                 }
@@ -244,8 +281,7 @@ namespace trrne.Core
             animator.SetBool(Constant.Animations.Walk, Input.GetButton(Constant.Keys.Horizontal) && flag.OnGround);
 
             string horizontal = IsMirroring ? Constant.Keys.ReversedHorizontal : Constant.Keys.Horizontal;
-            Vector2 move = Input.GetAxisRaw(horizontal) * Vector100.X;
-            print("move: " + move);
+            var move = Input.GetAxisRaw(horizontal) * Vector100.X2D;
 
             // 入力がtolerance以下、氷に乗っていない、浮いていない
             if (move.magnitude <= InputTolerance && !flag.OnIce) // && !IsFloating)

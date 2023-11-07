@@ -5,7 +5,7 @@ namespace trrne.Box
 {
     public abstract class Singleton<T> : MonoBehaviour where T : MonoBehaviour
     {
-        protected virtual bool LiveOnLoad { get; set; } = true;
+        protected virtual bool LiveOnLoad { get; } = true;
 
         static T instance;
         public static T Instance

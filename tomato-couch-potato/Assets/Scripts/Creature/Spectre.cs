@@ -16,7 +16,7 @@ namespace trrne.Core
 
         readonly float speed = 0.5f;
         float Left = 1;
-        Vector2 Mirror => new(-1, 1);
+        Vector2 Mirrored => new(-1, 1);
 
         protected override void Start()
         {
@@ -29,28 +29,22 @@ namespace trrne.Core
 
         protected override async void Behavior()
         {
-            // flip the sprite
-            // sr.flipX = transform.position.x < player.transform.position.x;
-            var currentScaleX = transform.localScale.x;
-            if (transform.position.x > player.transform.position.x)
-            {
-                if (Left != currentScaleX)
-                {
-                    transform.localScale *= Mirror;
-                }
-            }
-            else
-            {
-                if (Left == currentScaleX)
-                {
-                    transform.localScale *= Mirror;
-                }
-            }
+            Flip();
 
             // death
             if (this != null && lifetimeSW.Sf >= lifetime)
             {
                 await Die();
+            }
+        }
+
+        void Flip()
+        {
+            // flip the sprite
+            if ((transform.position.x > player.transform.position.x && Left != transform.localScale.x)
+                || (transform.position.x < player.transform.position.x && Left == transform.localScale.x))
+            {
+                transform.localScale *= Mirrored;
             }
         }
 
