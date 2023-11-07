@@ -22,14 +22,14 @@ namespace trrne.Core
 
         void Update()
         {
-            mirrorT.SetText(player.DurationTimer);
-            // mirror.enabled = player.IsMirroring;
-            if (player.DurationTimer <= 0)
-            {
-                return;
-            }
-            var raw = 1 - player.DurationProgress;
-            mirrorI.fillAmount = raw; // player.DurationProgress; // 1 / player.DurationTimer;
+            // mirrorT.SetText(player.DurationTimer);
+            // // mirror.enabled = player.IsMirroring;
+            // if (player.DurationTimer <= 0)
+            // {
+            //     return;
+            // }
+            // var raw = 1 - player.DurationProgress;
+            // mirrorI.fillAmount = raw; // player.DurationProgress; // 1 / player.DurationTimer;
         }
     }
 }

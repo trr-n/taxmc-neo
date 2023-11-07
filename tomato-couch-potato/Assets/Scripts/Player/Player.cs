@@ -44,11 +44,10 @@ namespace trrne.Core
         /// </summary>
         public bool Mirrorable { get; private set; }
 
-        bool isPressedMovementKeys = false;
         /// <summary>
         /// 移動キーが押されているか
         /// </summary>
-        public bool IsPressedMovementKeys => isPressedMovementKeys;
+        public bool IsPressedMovementKeys { get; private set; }
 
         /// <summary>
         /// テレポート中か
@@ -134,6 +133,7 @@ namespace trrne.Core
             Flip();
             Respawn();
             RBDisable();
+            Punish();
         }
 
         void LateUpdate()
@@ -149,10 +149,10 @@ namespace trrne.Core
         {
             if (!Controllable)
             {
-                isPressedMovementKeys = false;
+                IsPressedMovementKeys = false;
                 return;
             }
-            isPressedMovementKeys = Inputs.PressedOR(Constant.Keys.Horizontal, Constant.Keys.Jump);
+            IsPressedMovementKeys = Inputs.PressedOR(Constant.Keys.Horizontal, Constant.Keys.Jump);
 
             // if (Inputs.Released(Constant.Keys.Horizontal) || Inputs.Released(Constant.Keys.ReversedHorizontal))
             if (Inputs.ReleasedOR(Constant.Keys.Horizontal, Constant.Keys.ReversedHorizontal))
@@ -186,36 +186,25 @@ namespace trrne.Core
             rb.isKinematic = IsTeleporting;
         }
 
-        public float MaxDuration { get; private set; }
-        public float DurationTimer => durationSW.Sf;
-        public float DurationProgress
+        float currentMaxDuration = 0f;
+        bool isPunishing = true;
+        readonly Stopwatch punishSW = new();
+        public async UniTask Punishment(float duration)
         {
-            get
-            {
-                if (DurationTimer <= 0)
-                {
-                    return 0f;
-                }
-                return DurationTimer / MaxDuration;
-            }
+            await UniTask.Yield();
+            isPunishing = true;
+            punishSW.Restart();
+            currentMaxDuration = duration;
         }
-        readonly Stopwatch durationSW = new();
-        public IEnumerator Punishment(PunishType type, float duration)
+
+        void Punish()
         {
-            MaxDuration += duration;
-            durationSW.Restart();
-            switch (type)
+            // パニッシュ中、パニッシュタイマーが最大パニッシュ時間/2より大きい
+            if (isPunishing && punishSW.Sf >= currentMaxDuration / 2)
             {
-                case PunishType.Mirror:
-                    IsMirroring = true;
-                    yield return new WaitForSeconds(MaxDuration);
-                    IsMirroring = false;
-                    break;
-                case PunishType.Random:
-                default:
-                    break;
+                isPunishing = false;
+                punishSW.Reset();
             }
-            durationSW.Reset();
         }
 
         void Flip()
