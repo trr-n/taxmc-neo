@@ -13,7 +13,9 @@ namespace trrne.Brain
 
         public bool IsPausing { get; private set; }
 
-        (float speed, bool during) fade = (10f, false);
+        // (float speed, bool during) fade = (10f, false);
+        float fadeSpeed = 10f;
+        bool isFading = false;
 
         void Start()
         {
@@ -52,7 +54,7 @@ namespace trrne.Brain
 
         void FadingHandle(bool fin)
         {
-            if (!fade.during)
+            if (!isFading)
             {
                 StartCoroutine(Fader(fin));
             }
@@ -61,22 +63,20 @@ namespace trrne.Brain
         // フェード処理
         IEnumerator Fader(bool fin)
         {
-            fade.during = true;
+            isFading = true;
             float alpha = fin ? 0f : 1;
-
             while (alpha.IsCaged(0, 1))
             {
                 yield return null;
 
                 alpha = fin ?
-                    alpha += Time.unscaledDeltaTime * fade.speed :
-                    alpha -= Time.unscaledDeltaTime * fade.speed;
+                    alpha += Time.unscaledDeltaTime * fadeSpeed :
+                    alpha -= Time.unscaledDeltaTime * fadeSpeed;
 
                 canvas.alpha = alpha;
             }
-
             // フェード処理終了
-            fade.during = false;
+            isFading = false;
         }
     }
 }

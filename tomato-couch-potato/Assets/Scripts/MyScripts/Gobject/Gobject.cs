@@ -13,7 +13,7 @@ namespace trrne.Box
         public static void Destroy(this Collision info, float lifetime = 0) => Destroy(info.gameObject, lifetime);
         public static void Destroy(this Collision2D info, float lifetime = 0) => Destroy(info.gameObject, lifetime);
         public static void Destroy(this RaycastHit2D info, float lifetime = 0) => Destroy(info.collider.gameObject, lifetime);
-        public static void DontDestroyOnLoad(this GameObject gob) => GameObject.DontDestroyOnLoad(gob);
+        public static void LiveOnLoad(this GameObject gob) => GameObject.DontDestroyOnLoad(gob);
 
         public static bool IsActive(this Text text) => text.IsActive();
 

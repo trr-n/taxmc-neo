@@ -17,23 +17,24 @@ namespace trrne.Core
 
         protected abstract bool UpdateDirection { get; }
 
-        public bool Enable { get; set; } = true;
+        public bool Enable { get; set; }
 
+        protected BoxCollider2D hitbox;
         protected SpriteRenderer sr;
-
-        // protected Mama mama;
-        // public void SetMama(Mama mama) => this.mama = mama;
-
         protected Vector2 direction;
+        protected float life = 30f;
 
         GameObject player;
 
         protected virtual void Start()
         {
+            Enable = true;
             sr = GetComponent<SpriteRenderer>();
-
+            hitbox = GetComponent<BoxCollider2D>();
             player = Gobject.Find(Constant.Tags.Player);
             direction = player.transform.position - transform.position;
+
+            Destroy(gameObject, life);
         }
 
         protected virtual void Update()

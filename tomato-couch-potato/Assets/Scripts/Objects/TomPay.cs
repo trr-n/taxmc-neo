@@ -6,7 +6,6 @@ namespace trrne.Core
     public class TomPay : MonoBehaviour
     {
         [SerializeField]
-        [Tooltip("決済時の音")]
         AudioClip sound;
 
         public bool IsPaid { get; private set; }

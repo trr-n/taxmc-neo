@@ -23,13 +23,11 @@ namespace trrne.Core
         /// </summary>
         public void Fluctuation(int amount)
         {
-            if (IsZero)
+            if (!IsZero)
             {
-                return;
+                Left += amount;
+                Left = Mathf.Clamp(Left, 0, max);
             }
-
-            Left += amount;
-            Left = Mathf.Clamp(Left, 0, max);
         }
 
         /// <summary>

@@ -27,6 +27,7 @@ namespace trrne.Core
         {
             base.Start();
             Animate = false;
+
             flag = transform.GetFromChild<ButtonFlag>(0);
 
             speaker = Gobject.GetWithTag<AudioSource>(Constant.Tags.Manager);

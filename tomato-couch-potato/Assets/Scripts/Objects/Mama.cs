@@ -76,28 +76,16 @@ namespace trrne.Core
 
             if (IsPlayerOnDetectRange = playerDetectRange >= distance)
             {
-                LookAtPlayer();
-                FireShot();
-            }
-        }
+                for (int i = 0; i < eyes.Length; i++)
+                {
+                    eyes[i].transform.position = inits[i] + directions[i].normalized * bump;
+                }
 
-        void LookAtPlayer()
-        {
-            for (int i = 0; i < eyes.Length; i++)
-            {
-                eyes[i].transform.position = inits[i] + directions[i].normalized * bump;
-            }
-        }
-
-        void FireShot()
-        {
-            fireRapidTimer += Time.deltaTime;
-
-            if (fireRapidTimer >= fireRapidRate)
-            {
-                print("mama fire!");
-                fires.TryGenerate(transform.position);
-                fireRapidTimer = 0;
+                if ((fireRapidTimer += Time.deltaTime) >= fireRapidRate)
+                {
+                    fires.TryGenerate(transform.position);
+                    fireRapidTimer = 0;
+                }
             }
         }
     }

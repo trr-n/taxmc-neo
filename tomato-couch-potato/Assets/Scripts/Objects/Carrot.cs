@@ -26,9 +26,9 @@ namespace trrne.Core
             flag = transform.GetFromChild<CarrotFlag>();
             flag.Count = 0;
 
-            sr.sprite = sprites[0];
-
             collider = GetComponent<BoxCollider2D>();
+
+            sr.sprite = sprites[0];
         }
 
         protected override void Behavior()

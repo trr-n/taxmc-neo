@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
@@ -31,19 +32,19 @@ namespace trrne.Box
         public static int Sign(this float a) => Cutail((a >= 0f) ? 1f : (-1f));
         public static bool Sign(this float a, int b) => a.Sign() == b;
 
-        public static bool IsPrimeNumber(int a)
+        public static bool IsPrime(int a)
         {
-            if (a == 2)
+            if (a == 2 || a == 3)
             {
                 return true;
             }
 
-            if (a < 2 || (a % 2 == 0 && a != 2))
+            if (a < 2 || a % 2 == 0)
             {
                 return false;
             }
 
-            for (int i = 3; i < Mathf.Sqrt(a); i++)
+            for (int i = 4; i < Mathf.Sqrt(a); i++)
             {
                 if (a % i == 0)
                 {
@@ -56,10 +57,18 @@ namespace trrne.Box
         public static int EnumLength<T>(this T t) => Enum.GetNames(t.GetType()).Length;
 
         public static bool IsCaged(this float n, float min, float max) => !(n > max || n < min);
-        public static bool IsNotCaged(this float n, float min, float max) => !n.IsCaged(min, max); // n > max || n < min;
+
+        // public static float Sum(float[] arr)
+        // {
+        //     float dist = 0f;
+        //     arr.ForEach(a => dist += a);
+        //     return dist;
+        // }
+        // public static float Sum(List<float> arr) => Sum(arr.ToArray());
+        // public static float Sum(IEnumerable<float> arr) => Sum(arr.ToArray());
 
         public static float Average(params float[] ns) => ns.Sum() / ns.Length;
 
-        public static int SSuumm(int n) => n * (n + 1) / 2;
+        public static int JUNTASHI(int n) => n * (n + 1) / 2;
     }
 }

@@ -14,14 +14,7 @@ namespace trrne.Box
             {
                 if (!instance)
                 {
-                    try
-                    {
-                        instance = (T)FindObjectOfType(typeof(T));
-                    }
-                    catch (Exception e)
-                    {
-                        print(e.Message + "on Singleton.cs");
-                    }
+                    instance = (T)FindObjectOfType(typeof(T));
                 }
                 return instance;
             }
@@ -33,8 +26,7 @@ namespace trrne.Box
             {
                 Destroy(this);
             }
-
-            LiveOnLoad.BoolAction(() => DontDestroyOnLoad(gameObject));
+            LiveOnLoad.If(gameObject.LiveOnLoad);
         }
     }
 }

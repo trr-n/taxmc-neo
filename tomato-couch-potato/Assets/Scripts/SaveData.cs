@@ -2,7 +2,7 @@
 {
     public struct SaveData
     {
-        public float minutes;
-        public float seconds;
+        // public float minutes;
+        // public float seconds;
     }
 }

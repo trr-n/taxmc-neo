@@ -32,7 +32,6 @@ namespace trrne.Core
         protected override void Start()
         {
             base.Start();
-
             initial.position = transform.position;
             initial.rotation = transform.eulerAngles;
         }
@@ -61,15 +60,9 @@ namespace trrne.Core
         public void Inactive()
         {
             IsOpen = false;
-            // switch (direct)
-            // {
-            //     case RotateDirection.Left:
-            //     case RotateDirection.Right:
             transform.DORotate(initial.rotation, rotationSpeed)
                 .OnPlay(() => IsRotating = true)
                 .OnComplete(() => IsRotating = false);
-            //         break;
-            // }
         }
     }
 }

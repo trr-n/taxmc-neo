@@ -10,7 +10,7 @@ namespace trrne.Box
         /// </summary>
         public void RunOnce(params Action[] actions)
         {
-            Shorthand.BoolAction(!runonce_flag, () =>
+            Shorthand.If(!runonce_flag, () =>
             {
                 actions.ForEach(action => action());
                 runonce_flag = true;

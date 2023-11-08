@@ -35,7 +35,9 @@ namespace trrne.Arm
 
         void Update()
         {
+#if DEBUG
             centerT.text = CenterButton() != null ? CenterButton().name : null ?? "null";
+#endif
             Scroll();
             Transition();
         }
@@ -72,46 +74,38 @@ namespace trrne.Arm
 
         void Scroll()
         {
-            if ((horizon = Input.GetAxisRaw(Constant.Keys.Horizontal)).Twins(0))
+            horizon = Input.GetAxisRaw(Constant.Keys.Horizontal);
+            if (horizon.Twins(0))
             {
                 return;
             }
 
             if (horizon.Sign(1))
             {
-                Shorthand.BoolAction(CenterButton() != buttons[^1].gameObject,
-                    () => Scroller(core.position.x - offset));
+                if (CenterButton() != buttons[^1].gameObject)
+                {
+                    Scroller(core.position.x - offset);
+                }
             }
             else
             {
-                Shorthand.BoolAction(CenterButton() != buttons[0].gameObject,
-                    () => Scroller(core.position.x + offset));
+                if (CenterButton() != buttons[0].gameObject)
+                {
+                    Scroller(core.position.x + offset);
+                }
             }
-
-            // if (horizon.Sign(1))
-            // {
-            //     Shorthand.BoolAction(CenterButton() != buttons[^1].gameObject,
-            //         () => Scroller(core.position.x - offset));
-            // }
-            // else
-            // {
-            //     Shorthand.BoolAction(CenterButton() != buttons[0].gameObject,
-            //         () => Scroller(core.position.x + offset));
-            // }
         }
 
         void Scroller(float targetX)
         {
-            if (scrolling)
+            if (!scrolling)
             {
-                return;
+                scrolling = true;
+
+                core.DOMoveX(targetX, scrollSpeed)
+                    .SetEase(Ease.InOutCubic)
+                    .OnComplete(() => scrolling = false);
             }
-
-            scrolling = true;
-
-            core.DOMoveX(targetX, scrollSpeed)
-                .SetEase(Ease.InOutCubic)
-                .OnComplete(() => scrolling = false);
         }
     }
 }

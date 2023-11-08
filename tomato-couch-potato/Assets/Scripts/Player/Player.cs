@@ -1,9 +1,8 @@
-﻿using UnityEngine;
-using UnityEngine.UI;
+﻿using System.Collections;
+using UnityEngine;
 using Cysharp.Threading.Tasks;
 using trrne.Box;
 using trrne.Brain;
-using System.Collections;
 
 namespace trrne.Core
 {
@@ -12,21 +11,18 @@ namespace trrne.Core
     /// </summary>
     public enum CuzOfDeath
     {
-        Venom,  // 毒死
-        None    // 何もしない
+        Venom,
+        None
     }
 
     public enum PunishType
     {
-        Mirror,
-        Random
+        Random = 0,
+        Mirror = 1,
     }
 
     public class Player : MonoBehaviour, ICreature
     {
-        [SerializeField]
-        Text velT;
-
         [SerializeField]
         GameObject diefx;
 
@@ -34,37 +30,18 @@ namespace trrne.Core
         public bool Jumpable { get; set; }
         public bool Movable { get; set; }
 
-        /// <summary>
-        /// 操作を反転するか
-        /// </summary>
-        public bool IsMirroring { get; set; }
-        (float Duration, Stopwatch durationSW) mirror = (.33f, new());
-        /// <summary>
-        /// 反転可能か
-        /// </summary>
-        public bool Mirrorable { get; private set; }
-
-        /// <summary>
-        /// 移動キーが押されているか
-        /// </summary>
-        public bool IsPressedMovementKeys { get; private set; }
-
-        /// <summary>
-        /// テレポート中か
-        /// </summary>
+        public bool IsMoveKeyDetecting { get; private set; }
         public bool IsTeleporting { get; set; }
-
-        /// <summary>
-        /// 死亡処理中はtrue
-        /// </summary>
         public bool IsDieProcessing { get; set; }
 
-        (float basis, float max, float floatingReduction, float reduction) speed => (
-            basis: 20,
-            max: 10,
-            floatingReduction: 0.95f, //! 要調整 ///////////////////////////////////////
-            reduction: 0.9f
-        );
+        int punishIdx = -1;
+        public bool[] Punishables { get; private set; }
+        public bool[] PunishFlags { get; set; }
+
+        const float BaseSpeed = 20;
+        const float MaxSpeed = 10;
+        const float FloatingReductionRatio = 0.95f;
+        const float MoveReductionRatio = 0.9f;
         const float JumpPower = 6f;
 
         /// <summary>
@@ -82,42 +59,41 @@ namespace trrne.Core
         PlayerFlag flag;
         Cam cam;
         PauseMenu menu;
-        new BoxCollider2D collider;
+        BoxCollider2D hitbox;
 
-        public Vector3 CoreOffset => new(0, collider.bounds.size.y / 2);
+        public Vector3 CoreOffset => new(0, hitbox.bounds.size.y / 2);
 
         const float InputTolerance = 0.33f;
 
-        public Vector2 Checkpoint { get; private set; } = Vector2.zero;
-
-        /// <summary>
-        /// チェックポイントを設定する
-        /// </summary>
+        public Vector2 Checkpoint { get; private set; }
         public void SetCheckpoint(Vector2 position) => Checkpoint = position;
-
-        /// <summary>
-        /// チェックポイントに戻す
-        /// </summary>
         public void ReturnToCheckpoint() => transform.position = Checkpoint;
 
         void Start()
         {
+            Checkpoint = Vector2.zero;
+
             menu = Gobject.GetWithTag<PauseMenu>(Constant.Tags.Manager);
             flag = transform.GetFromChild<PlayerFlag>();
-
-            animator = GetComponent<Animator>();
-
-            collider = GetComponent<BoxCollider2D>();
-
-            rb = GetComponent<Rigidbody2D>();
-            rb.mass = 60f;
-
             cam = Gobject.GetWithTag<Cam>(Constant.Tags.MainCamera);
             cam.Followable = true;
 
+            animator = GetComponent<Animator>();
+            hitbox = GetComponent<BoxCollider2D>();
+            rb = GetComponent<Rigidbody2D>();
+            rb.mass = 60f;
+
             Movable = true;
             Jumpable = true;
-            IsMirroring = false;
+
+            int length = new PunishType().EnumLength();
+            PunishFlags = new bool[length];
+            Punishables = new bool[length];
+            for (int i = 0; i < PunishFlags.Length; i++)
+            {
+                PunishFlags[i] = false;
+                Punishables[i] = true;
+            }
         }
 
         void FixedUpdate()
@@ -128,43 +104,11 @@ namespace trrne.Core
         void Update()
         {
             IsFloating = !flag.OnGround;
-            DetectInput();
             Jump();
             Flip();
             Respawn();
             RBDisable();
             Punish();
-        }
-
-        void LateUpdate()
-        {
-#if DEBUG
-            Velocity = rb.velocity;
-            // 速度表示
-            velT.SetText(Velocity);
-#endif
-        }
-
-        void DetectInput()
-        {
-            if (!Controllable)
-            {
-                IsPressedMovementKeys = false;
-                return;
-            }
-            IsPressedMovementKeys = Inputs.PressedOR(Constant.Keys.Horizontal, Constant.Keys.Jump);
-
-            // if (Inputs.Released(Constant.Keys.Horizontal) || Inputs.Released(Constant.Keys.ReversedHorizontal))
-            if (Inputs.ReleasedOR(Constant.Keys.Horizontal, Constant.Keys.ReversedHorizontal))
-            {
-                Mirrorable = false;
-                mirror.durationSW.Restart();
-            }
-
-            if (mirror.durationSW.Sf >= mirror.Duration)
-            {
-                Mirrorable = true;
-            }
         }
 
         /// <summary>
@@ -186,24 +130,23 @@ namespace trrne.Core
             rb.isKinematic = IsTeleporting;
         }
 
-        float currentMaxDuration = 0f;
-        bool isPunishing = true;
-        readonly Stopwatch punishSW = new();
-        public async UniTask Punishment(float duration)
+        public IEnumerator Punishment(float duration, PunishType type)
         {
-            await UniTask.Yield();
-            isPunishing = true;
-            punishSW.Restart();
-            currentMaxDuration = duration;
+            if (Punishables[punishIdx = (int)type])
+            {
+                PunishFlags[punishIdx] = true;
+                yield return new WaitForSeconds(duration);
+                PunishFlags[punishIdx] = false;
+                punishIdx = -1;
+            }
         }
 
         void Punish()
         {
-            // パニッシュ中、パニッシュタイマーが最大パニッシュ時間/2より大きい
-            if (isPunishing && punishSW.Sf >= currentMaxDuration / 2)
+            print("punish type: " + punishIdx);
+            for (int i = 0; i < PunishFlags.Length; i++)
             {
-                isPunishing = false;
-                punishSW.Reset();
+                Punishables[i] = !PunishFlags[i];
             }
         }
 
@@ -214,7 +157,7 @@ namespace trrne.Core
                 return;
             }
 
-            var horizontal = IsMirroring ? Constant.Keys.ReversedHorizontal : Constant.Keys.Horizontal;
+            var horizontal = PunishFlags[(int)PunishType.Mirror] ? Constant.Keys.ReversedHorizontal : Constant.Keys.Horizontal;
             if (Input.GetButtonDown(horizontal))
             {
                 var current = Mathf.Sign(transform.localScale.x);
@@ -269,33 +212,34 @@ namespace trrne.Core
 
             animator.SetBool(Constant.Animations.Walk, Input.GetButton(Constant.Keys.Horizontal) && flag.OnGround);
 
-            string horizontal = IsMirroring ? Constant.Keys.ReversedHorizontal : Constant.Keys.Horizontal;
+            // string horizontal = IsMirroring ? Constant.Keys.ReversedHorizontal : Constant.Keys.Horizontal;
+            string horizontal = PunishFlags[(int)PunishType.Mirror] ? Constant.Keys.ReversedHorizontal : Constant.Keys.Horizontal;
             var move = Input.GetAxisRaw(horizontal) * Vector100.X2D;
 
             // 入力がtolerance以下、氷に乗っていない、浮いていない
             if (move.magnitude <= InputTolerance && !flag.OnIce) // && !IsFloating)
             {
                 // x軸の速度をspeed.reduction倍
-                rb.SetVelocityX(rb.velocity.x * speed.reduction);
+                rb.SetVelocityX(rb.velocity.x * MoveReductionRatio);
             }
 
             // 速度を制限
             rb.velocity = new(flag.OnIce ?
                 // 氷の上になら制限を緩和
-                Mathf.Clamp(rb.velocity.x, -speed.max * 2, speed.max * 2) :
-                Mathf.Clamp(rb.velocity.x, -speed.max, speed.max),
+                Mathf.Clamp(rb.velocity.x, -MaxSpeed * 2, MaxSpeed * 2) :
+                Mathf.Clamp(rb.velocity.x, -MaxSpeed, MaxSpeed),
                 rb.velocity.y
             );
 
             // 浮いていたら移動速度低下
-            var velocity = IsFloating ? speed.basis * speed.floatingReduction : speed.basis;
+            var velocity = IsFloating ? BaseSpeed * FloatingReductionRatio : BaseSpeed;
             rb.velocity += Time.fixedDeltaTime * velocity * move;
         }
 
         /// <summary>
         /// 成仏
         /// </summary>
-        public async UniTask Die(CuzOfDeath cause)
+        public async UniTask Die(CuzOfDeath cause = CuzOfDeath.None)
         {
             if (IsDieProcessing)
             {
@@ -321,7 +265,7 @@ namespace trrne.Core
             await UniTask.Delay(1250);
 
             // 落とし穴修繕
-            Gobject.Finds<Carrot>().ForEach(c => Shorthand.BoolAction(c.Mendable, c.Mend));
+            Gobject.Finds<Carrot>().ForEach(c => Shorthand.If(c.Mendable, c.Mend));
 
             ReturnToCheckpoint();
             animator.StopPlayback();

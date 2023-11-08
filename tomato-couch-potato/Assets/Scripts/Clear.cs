@@ -8,9 +8,8 @@ namespace trrne.Core
     {
         void OnTriggerEnter2D(Collider2D info)
         {
-            if (info.CompareTag(Constant.Tags.Player) && info.TryGet<Player>(out _))
+            if (info.CompareTag(Constant.Tags.Player) && info.TryGet(out Player _))
             {
-                // Recorder.Instance.Save();
                 Recorder.Instance.Clear();
             }
         }

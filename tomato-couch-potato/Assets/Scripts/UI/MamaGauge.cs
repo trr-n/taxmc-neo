@@ -32,11 +32,10 @@ namespace trrne.Box
             gauge.sprite = Maths.Twins(gauge.fillAmount, 1) ? mamaface : normal;
             foreach (var mama in mamas)
             {
-                if (Maths.Twins(mama.Peppery.Ratio, 0))
+                if (!Maths.Twins(mama.Peppery.Ratio, 0))
                 {
-                    return;
+                    gauge.fillAmount = mama.Peppery.Ratio;
                 }
-                gauge.fillAmount = mama.Peppery.Ratio;
             }
         }
     }

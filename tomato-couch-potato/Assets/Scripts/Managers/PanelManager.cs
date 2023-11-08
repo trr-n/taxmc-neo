@@ -37,14 +37,12 @@ namespace trrne.Brain
         IEnumerator FadeOut()
         {
             float alpha = 1f;
-
             while (alpha >= 0)
             {
                 yield return null;
                 alpha -= Time.unscaledDeltaTime * fadingSpeed;
                 canvas.alpha = alpha;
             }
-
             canvas.alpha = 0;
 
             yield return new WaitForSeconds(.5f);

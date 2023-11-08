@@ -19,7 +19,6 @@ namespace trrne.Core
         {
             if (info.TryGet(out Rigidbody2D rb))
             {
-                // rb.velocity += rb.mass * core.power * Vector100.y2d * Time.fixedDeltaTime;
                 rb.velocity += core.Power * rb.mass * Time.fixedDeltaTime * transform.up.ToVec2();
             }
         }

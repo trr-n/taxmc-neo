@@ -11,7 +11,7 @@ namespace trrne.Box
         public Stopwatch(bool start)
         {
             syswatch = new();
-            Shorthand.BoolAction(start, () => syswatch.Start());
+            Shorthand.If(start, () => syswatch.Start());
         }
 
         public void Start() => syswatch.Start();
@@ -25,7 +25,6 @@ namespace trrne.Box
             syswatch.Stop();
             syswatch = null;
         }
-
         public static void Rubbish(params Stopwatch[] sws) => sws.ForEach(sw => sw.Rubbish());
 
         public int H => syswatch.Elapsed.Hours;

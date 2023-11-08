@@ -19,9 +19,9 @@ namespace trrne.Core
         protected override void Start()
         {
             base.Start();
-
             flag = transform.GetFromChild<LeverFlag>();
             source = Gobject.GetWithTag<AudioSource>(Constant.Tags.Manager);
+
             sr.sprite = sprites[isActive ? 0 : 1];
         }
 
@@ -37,7 +37,7 @@ namespace trrne.Core
             {
                 source.TryPlay(sounds.Choice());
                 sr.sprite = sprites[1];
-                gimmicks.ForEach(gim => gim.TryGet(out IGimmick g).BoolAction(g.Active));
+                gimmicks.ForEach(gim => gim.TryGet(out IGimmick g).If(g.Active));
                 isActive = false;
             }
 
@@ -46,7 +46,7 @@ namespace trrne.Core
             {
                 source.TryPlay(sounds.Choice());
                 sr.sprite = sprites[0];
-                gimmicks.ForEach(gim => gim.TryGet(out IGimmick g).BoolAction(g.Inactive));
+                gimmicks.ForEach(gim => gim.TryGet(out IGimmick g).If(g.Inactive));
                 isActive = true;
             }
         }

@@ -10,7 +10,7 @@ namespace trrne.Core
 
         protected override void Movement() => transform.Translate(Time.deltaTime * speed * direction.normalized);
 
-        protected override async UniTask Punishment(Player player) => await player.Punishment(effectDuration);
+        protected override async UniTask Punishment(Player player) => await player.Punishment(effectDuration, PunishType.Mirror);
 
         protected override async void OnTriggerEnter2D(Collider2D info)
         {
@@ -18,8 +18,8 @@ namespace trrne.Core
             {
                 sr.SetAlpha(0);
                 effects.TryGenerate(transform.position);
-
                 await UniTask.WhenAll(Punishment(player));
+
                 Destroy(gameObject);
             }
         }
