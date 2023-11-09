@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Diagnostics.Contracts;
 using trrne.Box;
 using UnityEngine;
@@ -27,14 +26,10 @@ namespace trrne.Core
         [SerializeField]
         float punishDuration = 3f;
 
-        float pepperyTimer = 0;
+        // float pepperyTimer = 0;
 
-        public (float Limit, float Timer, float Ratio) Peppery
-        => (
-            Limit: pepperyLimit,
-            Timer: pepperyTimer,
-            Ratio: pepperyTimer / pepperyLimit
-        );
+        // public (float Limit, float Timer, float Ratio) Peppery
+        // => (pepperyLimit, pepperyTimer, pepperyTimer / pepperyLimit);
 
         GameObject player;
         Vector3 ofs, offset;
@@ -48,7 +43,7 @@ namespace trrne.Core
         /// <summary>
         /// 黒目の可動域
         /// </summary>
-        readonly float bump = 0.25f;
+        const float EyeBump = 0.25f;
 
         /// <summary>
         /// 範囲内にいるか
@@ -78,7 +73,7 @@ namespace trrne.Core
             {
                 for (int i = 0; i < eyes.Length; i++)
                 {
-                    eyes[i].transform.position = inits[i] + directions[i].normalized * bump;
+                    eyes[i].transform.position = inits[i] + directions[i].normalized * EyeBump;
                 }
 
                 if ((fireRapidTimer += Time.deltaTime) >= fireRapidRate)

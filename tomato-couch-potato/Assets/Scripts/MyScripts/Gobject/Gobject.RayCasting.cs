@@ -22,18 +22,7 @@ namespace trrne.Box
         public static bool RayCast2D(out RaycastHit2D hit, Vector2 origin, Vector2 direction, int layer = 1 << 0, float distance = 1)
         => hit = Physics2D.Raycast(origin, direction, distance, layer);
 
-        public static bool RayCastAll2D(out RaycastHit2D[] hit, Vector2 origin, Vector2 direction)
-        => (hit = Physics2D.RaycastAll(origin, direction)).Length > 0;
-        // {
-        //     hit = Physics2D.RaycastAll(origin, direction);
-        //     return hit.Length > 0;
-        // }
-
         public static bool RayCastAll2D(out RaycastHit2D[] hit, Vector2 origin, Vector2 direction, float distance)
         => (hit = Physics2D.RaycastAll(origin, direction, distance)).Length > 0;
-        // {
-        //     hit = Physics2D.RaycastAll(origin, direction, distance);
-        //     return hit.Length > 0;
-        // }
     }
 }

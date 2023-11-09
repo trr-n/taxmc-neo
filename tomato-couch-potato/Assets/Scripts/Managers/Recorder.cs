@@ -6,10 +6,8 @@ namespace trrne.Brain
     {
         protected override bool LiveOnLoad => true;
 
-        public string Path => Paths.Data + "/save.sav";
+        public string Path => Paths.DataPath("save.sav");
         public string Password => "pomodoro";
-
-        // (int stay, int done) idx = (0, 0);
 
         /// <summary>
         /// ステージ数
@@ -38,6 +36,7 @@ namespace trrne.Brain
 
         public void Clear()
         {
+            // クリアしたシーンの名前に数字が含まれているか
             if (int.TryParse(Scenes.Active().Delete(Constant.Scenes.Prefix), out _))
             {
                 Done++;

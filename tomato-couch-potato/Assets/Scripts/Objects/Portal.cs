@@ -55,20 +55,22 @@ namespace trrne.Core
 
         void OnTriggerEnter2D(Collider2D info)
         {
-            if (!warping && info.CompareTag(Constant.Tags.Player))
+            if (warping && !info.CompareTag(Constant.Tags.Player))
             {
-                if (info.TryGet(out Player player) && !player.IsDieProcessing)
-                {
-                    warping = true;
+                return;
+            }
 
-                    effects.TryGenerate(transform.position);
+            if (info.TryGet(out Player player) && !player.IsDieProcessing)
+            {
+                warping = true;
 
-                    info.transform.DOMove(to, teleportSpeed).SetEase(Ease.OutCubic)
-                        .OnPlay(() => player.IsTeleporting = true)
-                        .OnComplete(() => player.IsTeleporting = false);
+                effects.TryGenerate(transform.position);
 
-                    warping = false;
-                }
+                info.transform.DOMove(to, teleportSpeed).SetEase(Ease.OutCubic)
+                    .OnPlay(() => player.IsTeleporting = true)
+                    .OnComplete(() => player.IsTeleporting = false);
+
+                warping = false;
             }
         }
     }

@@ -17,8 +17,8 @@ namespace trrne.Core
 
     public enum PunishType
     {
-        Random = 0,
-        Mirror = 1,
+        Mirror,
+        Jumpless
     }
 
     public class Player : MonoBehaviour, ICreature
@@ -143,7 +143,6 @@ namespace trrne.Core
 
         void Punish()
         {
-            print("punish type: " + punishIdx);
             for (int i = 0; i < PunishFlags.Length; i++)
             {
                 Punishables[i] = !PunishFlags[i];
@@ -212,8 +211,7 @@ namespace trrne.Core
 
             animator.SetBool(Constant.Animations.Walk, Input.GetButton(Constant.Keys.Horizontal) && flag.OnGround);
 
-            // string horizontal = IsMirroring ? Constant.Keys.ReversedHorizontal : Constant.Keys.Horizontal;
-            string horizontal = PunishFlags[(int)PunishType.Mirror] ? Constant.Keys.ReversedHorizontal : Constant.Keys.Horizontal;
+            var horizontal = PunishFlags[(int)PunishType.Mirror] ? Constant.Keys.ReversedHorizontal : Constant.Keys.Horizontal;
             var move = Input.GetAxisRaw(horizontal) * Vector100.X2D;
 
             // 入力がtolerance以下、氷に乗っていない、浮いていない
@@ -264,8 +262,8 @@ namespace trrne.Core
 
             await UniTask.Delay(1250);
 
-            // 落とし穴修繕
-            Gobject.Finds<Carrot>().ForEach(c => Shorthand.If(c.Mendable, c.Mend));
+            // 落とし穴直す
+            Gobject.Finds<Carrot>().ForEach(c => Simple.If(c.Mendable, c.Mend));
 
             ReturnToCheckpoint();
             animator.StopPlayback();

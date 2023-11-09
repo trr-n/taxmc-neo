@@ -8,7 +8,7 @@ namespace trrne.Box
 
         public static void Width(this LineRenderer line, float? start = null, float? end = null)
         {
-            if (!Shorthand.None(start, end))
+            if (!Simple.None(start, end))
             {
                 line.startWidth = start ?? line.startWidth;
                 line.endWidth = end ?? line.endWidth;
@@ -19,8 +19,7 @@ namespace trrne.Box
 
         public static void Color(this LineRenderer line, Color? start = null, Color? end = null)
         {
-            // if (start is not null && end is not null)
-            if (!Shorthand.None(start, end))
+            if (!Simple.None(start, end))
             {
                 line.startColor = start ?? line.startColor;
                 line.endColor = end ?? line.endColor;

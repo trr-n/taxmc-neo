@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace trrne.Box
 {
-    public static class Shorthand
+    public static class Simple
     {
         public static void If(this bool boo, Action action) { if (boo) { action(); } }
         public static void If<T>(this bool boo, Func<T> func) { if (boo) { func(); } }

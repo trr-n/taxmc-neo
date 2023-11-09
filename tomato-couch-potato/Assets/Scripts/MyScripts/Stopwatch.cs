@@ -11,7 +11,7 @@ namespace trrne.Box
         public Stopwatch(bool start)
         {
             syswatch = new();
-            Shorthand.If(start, () => syswatch.Start());
+            Simple.If(start, () => syswatch.Start());
         }
 
         public void Start() => syswatch.Start();

@@ -9,17 +9,18 @@ namespace trrne.Core
         protected override bool UpdateDirection => false;
 
         protected override void Movement() => transform.Translate(Time.deltaTime * speed * direction.normalized);
-
         protected override async UniTask Punishment(Player player) => await player.Punishment(effectDuration, PunishType.Mirror);
 
         protected override async void OnTriggerEnter2D(Collider2D info)
         {
-            if (info.TryGet(out Player player) && !player.IsDieProcessing)
+            if (info.TryGetComponent(out Player player))
             {
-                sr.SetAlpha(0);
-                effects.TryGenerate(transform.position);
-                await UniTask.WhenAll(Punishment(player));
-
+                if (!player.IsDieProcessing)
+                {
+                    sr.SetAlpha(0);
+                    effects.TryGenerate(transform.position);
+                    await UniTask.WhenAll(Punishment(player));
+                }
                 Destroy(gameObject);
             }
         }

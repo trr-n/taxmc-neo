@@ -26,22 +26,22 @@ namespace trrne.Core
 
         void Follow()
         {
-            if (Followable)
+            if (!Followable)
             {
-                transform.position = player.transform.position + offset;
+                return;
             }
+            transform.position = player.transform.position + offset;
         }
 
         void Zoom()
         {
-            axis = Input.GetAxisRaw(Constant.Keys.Zoom);
-
-            if (axis != 0)
+            if ((axis = Input.GetAxisRaw(Constant.Keys.Zoom)) == 0)
             {
-                size = Mathf.Sign(axis) / 4;
-                Camera.main.orthographicSize += size;
-                Camera.main.orthographicSize = Mathf.Clamp(Camera.main.orthographicSize, 2.5f, 12);
+                return;
             }
+            size = Mathf.Sign(axis) / 4;
+            Camera.main.orthographicSize += size;
+            Camera.main.orthographicSize = Mathf.Clamp(Camera.main.orthographicSize, 2.5f, 12);
         }
     }
 }

@@ -2,63 +2,54 @@
 {
     public sealed class GateronSilentClear<T>
     {
-        T[] collection;
-        int count;
-        public int Count => count;
-        int capacity;
-        public int Capacity => capacity;
+        T[] items;
+        public int Count { get; private set; }
+        public int Capacity { get; private set; }
 
-        public T this[int index] => collection[index];
+        public T this[int index] => items[index];
 
         public GateronSilentClear()
         {
-            capacity = 10;
-            collection = new T[capacity];
-            count = 0;
+            Capacity = 10;
+            items = new T[Capacity];
+            Count = 0;
         }
 
         public GateronSilentClear(int capacity)
         {
-            this.capacity = capacity;
-            collection = new T[capacity];
-            count = 0;
+            Capacity = capacity;
+            items = new T[capacity];
+            Count = 0;
         }
 
         public void Add(T item)
         {
-            if (count == capacity)
+            if (Count == Capacity)
             {
-                capacity += 2;
-                var items = new T[capacity];
-
-                for (int i = 0; i < count; i++)
+                Capacity += 2;
+                var items = new T[Capacity];
+                for (int i = 0; i < Count; i++)
                 {
-                    items[i] = collection[i];
+                    items[i] = this.items[i];
                 }
-
-                collection = items;
+                this.items = items;
             }
-
-            collection[count] = item;
-            count++;
+            items[Count] = item;
+            Count++;
         }
 
         public void Remove(int index)
         {
-            if (count <= 0)
-            {
-                return;
-            }
+            if (Count <= 0) { return; }
 
-            for (int i = 0; i < count; i++)
+            for (int i = 0; i < Count; i++)
             {
                 if (i != index)
                 {
                     continue;
                 }
             }
-
-            count--;
+            Count--;
         }
     }
 }

@@ -45,16 +45,18 @@ namespace trrne.Core
         readonly Runner set = new();
         void Animation()
         {
-            if (Animate)
+            if (!Animate)
             {
-                if (sprites.Length == 1)
-                {
-                    set.RunOnce(() => sr.sprite = sprites[0]);
-                }
-                else if (sprites.Length >= 2)
-                {
-                    anima.Sprite(Animate, sr, interval, sprites);
-                }
+                return;
+            }
+
+            if (sprites.Length == 1)
+            {
+                set.RunOnce(() => sr.sprite = sprites[0]);
+            }
+            else if (sprites.Length >= 2)
+            {
+                anima.Sprite(Animate, sr, interval, sprites);
             }
         }
     }

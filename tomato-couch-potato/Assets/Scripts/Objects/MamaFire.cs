@@ -24,28 +24,34 @@ namespace trrne.Core
         protected Vector2 direction;
         protected float life = 30f;
 
-        GameObject player;
+        protected GameObject player { get; private set; }
 
         protected virtual void Start()
         {
             Enable = true;
+
             sr = GetComponent<SpriteRenderer>();
             hitbox = GetComponent<BoxCollider2D>();
+
             player = Gobject.Find(Constant.Tags.Player);
+
             direction = player.transform.position - transform.position;
 
+            // life秒後に破壊
             Destroy(gameObject, life);
         }
 
         protected virtual void Update()
         {
-            if (Enable)
+            if (!Enable)
             {
-                Movement();
-                if (UpdateDirection)
-                {
-                    direction = player.transform.position - transform.position;
-                }
+                return;
+            }
+
+            Movement();
+            if (UpdateDirection)
+            {
+                direction = player.transform.position - transform.position;
             }
         }
 
@@ -53,6 +59,6 @@ namespace trrne.Core
 
         protected abstract UniTask Punishment(Player player);
 
-        protected abstract void OnTriggerEnter2D(Collider2D other);
+        protected abstract void OnTriggerEnter2D(Collider2D info);
     }
 }

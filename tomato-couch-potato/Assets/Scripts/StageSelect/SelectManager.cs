@@ -44,9 +44,8 @@ namespace trrne.Arm
 
         void Transition()
         {
-            if (CenterButton() != null &&
-                int.TryParse(Typing.Delete(CenterButton().name, prefix),
-                out int idx)
+            if (CenterButton() != null
+                && int.TryParse(Typing.Delete(CenterButton().name, prefix), out int idx)
             )
             {
                 if (idx <= Recorder.Instance.Done && Inputs.Down(Constant.Keys.Button))
@@ -74,8 +73,7 @@ namespace trrne.Arm
 
         void Scroll()
         {
-            horizon = Input.GetAxisRaw(Constant.Keys.Horizontal);
-            if (horizon.Twins(0))
+            if ((horizon = Input.GetAxisRaw(Constant.Keys.Horizontal)).Twins(0))
             {
                 return;
             }
@@ -98,14 +96,16 @@ namespace trrne.Arm
 
         void Scroller(float targetX)
         {
-            if (!scrolling)
+            if (scrolling)
             {
-                scrolling = true;
-
-                core.DOMoveX(targetX, scrollSpeed)
-                    .SetEase(Ease.InOutCubic)
-                    .OnComplete(() => scrolling = false);
+                return;
             }
+
+            scrolling = true;
+
+            core.DOMoveX(targetX, scrollSpeed)
+                .SetEase(Ease.InOutCubic)
+                .OnComplete(() => scrolling = false);
         }
     }
 }

@@ -33,12 +33,18 @@ namespace trrne.Core
 
         protected override void Behavior()
         {
+            if (App.TimeScale(0))
+            {
+                return;
+            }
+
             // 移動
             switch (type)
             {
                 case MovingType.Fixed:
                 default:
                     return;
+
                 case MovingType.Horizontal:
                     var x = origin.x - range / 2 + Mathf.PingPong(pingpong.Sf * speed, range);
                     transform.SetPosition(x: x);

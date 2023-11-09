@@ -1,27 +1,35 @@
-using trrne.Box;
 using UnityEngine;
-using UnityEngine.UI;
+using trrne.Box;
 
 namespace trrne.Core
 {
     public class PlayerEffect : MonoBehaviour
     {
         [SerializeField]
-        Image mirrorI;
+        float Offset = 128f, Y = 64;
 
-        [SerializeField]
-        Text mirrorT;
+        GameObject[] icons;
+        RectTransform[] iconRTs;
 
         Player player;
 
         void Start()
         {
             player = Gobject.GetWithTag<Player>(Constant.Tags.Player);
+            icons = transform.GetChildren();
+            iconRTs = GetComponentsInChildren<RectTransform>();
         }
 
         void Update()
         {
-            mirrorI.enabled = player.PunishFlags[(int)PunishType.Mirror];
+            for (int i = 0, j = 0; i < icons.Length; i++)
+            {
+                if (icons[i].activeInHierarchy) // && player.PunishFlags[i])
+                {
+                    iconRTs[i].position = new(j * Offset, Y);
+                    j++;
+                }
+            }
         }
     }
 }
