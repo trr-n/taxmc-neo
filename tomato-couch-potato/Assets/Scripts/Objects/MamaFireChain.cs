@@ -1,15 +1,16 @@
+using System.Collections;
 using Cysharp.Threading.Tasks;
 using trrne.Box;
 using UnityEngine;
 
 namespace trrne.Core
 {
-    public class MamaFireMirror : MamaFire
+    public class MamaFireChain : MamaFire
     {
         protected override bool Tracking => false;
 
         protected override void Movement() => transform.Translate(Time.deltaTime * speed * direction.normalized);
-        protected override async UniTask Punishment(Player player) => await player.Punishment(effectDuration, EffectType.Mirror);
+        protected override async UniTask Punishment(Player player) => await player.Punishment(effectDuration, EffectType.Chain);
 
         protected override async void OnTriggerEnter2D(Collider2D info)
         {

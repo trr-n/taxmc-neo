@@ -33,7 +33,7 @@ namespace trrne.Brain
 
         void State(bool active)
         {
-            FadingHandle(active);
+            FaderHandle(active);
             App.SetTimeScale(active ? 0 : 1);
         }
 
@@ -54,7 +54,7 @@ namespace trrne.Brain
             }
         }
 
-        void FadingHandle(bool fin)
+        void FaderHandle(bool fin)
         {
             if (isFading)
             {
@@ -64,7 +64,9 @@ namespace trrne.Brain
             StartCoroutine(Fader(fin));
         }
 
-        // フェード処理
+        /// <summary>
+        /// フェード処理
+        /// </summary>
         IEnumerator Fader(bool fin)
         {
             isFading = true;
@@ -73,13 +75,11 @@ namespace trrne.Brain
             {
                 yield return null;
 
-                alpha = fin ?
-                    alpha += Time.unscaledDeltaTime * fadeSpeed :
-                    alpha -= Time.unscaledDeltaTime * fadeSpeed;
-
-                canvas.alpha = alpha;
+                canvas.alpha = (fin ?
+                    alpha += Time.unscaledDeltaTime :
+                    alpha -= Time.unscaledDeltaTime
+                ) * fadeSpeed;
             }
-            // フェード処理終了
             isFading = false;
         }
     }

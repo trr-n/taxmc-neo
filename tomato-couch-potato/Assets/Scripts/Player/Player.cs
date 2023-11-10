@@ -15,10 +15,11 @@ namespace trrne.Core
         None
     }
 
-    public enum PunishType
+    public enum EffectType
     {
         Mirror,
-        Jumpless
+        Chain,
+        Fetters
     }
 
     public class Player : MonoBehaviour, ICreature
@@ -27,7 +28,7 @@ namespace trrne.Core
         GameObject diefx;
 
         public bool Controllable { get; set; }
-        public bool Jumpable { get; set; }
+        // public bool Jumpable { get; set; }
         public bool Movable { get; set; }
 
         public bool IsMoveKeyDetecting { get; private set; }
@@ -35,8 +36,8 @@ namespace trrne.Core
         public bool IsDieProcessing { get; set; }
 
         int punishIdx = -1;
-        public bool[] Punishables { get; private set; }
-        public bool[] PunishFlags { get; set; }
+        public bool[] Effectables { get; private set; }
+        public bool[] EffectFlags { get; set; }
 
         const float BaseSpeed = 20;
         const float MaxSpeed = 10;
@@ -76,7 +77,6 @@ namespace trrne.Core
             menu = Gobject.GetWithTag<PauseMenu>(Constant.Tags.Manager);
             flag = transform.GetFromChild<PlayerFlag>();
             cam = Gobject.GetWithTag<Cam>(Constant.Tags.MainCamera);
-            cam.Followable = true;
 
             animator = GetComponent<Animator>();
             hitbox = GetComponent<BoxCollider2D>();
@@ -84,15 +84,15 @@ namespace trrne.Core
             rb.mass = 60f;
 
             Movable = true;
-            Jumpable = true;
+            // Jumpable = true;
 
-            int length = new PunishType().EnumLength();
-            PunishFlags = new bool[length];
-            Punishables = new bool[length];
-            for (int i = 0; i < PunishFlags.Length; i++)
+            int length = new EffectType().EnumLength();
+            EffectFlags = new bool[length];
+            Effectables = new bool[length];
+            for (int i = 0; i < EffectFlags.Length; i++)
             {
-                PunishFlags[i] = false;
-                Punishables[i] = true;
+                EffectFlags[i] = false;
+                Effectables[i] = true;
             }
         }
 
@@ -103,11 +103,10 @@ namespace trrne.Core
 
         void Update()
         {
-            IsFloating = !flag.OnGround;
+            Flagger();
             Jump();
             Flip();
             Respawn();
-            RBDisable();
             Punish();
         }
 
@@ -125,27 +124,28 @@ namespace trrne.Core
         /// <summary>
         /// 反重力
         /// </summary>
-        void RBDisable()
+        void Flagger()
         {
+            IsFloating = !flag.OnGround;
             rb.isKinematic = IsTeleporting;
         }
 
-        public IEnumerator Punishment(float duration, PunishType type)
+        public IEnumerator Punishment(float duration, EffectType type)
         {
-            if (Punishables[punishIdx = (int)type])
+            if (punishIdx != -1 && Effectables[punishIdx = (int)type])
             {
-                PunishFlags[punishIdx] = true;
+                EffectFlags[punishIdx] = true;
                 yield return new WaitForSeconds(duration);
-                PunishFlags[punishIdx] = false;
+                EffectFlags[punishIdx] = false;
                 punishIdx = -1;
             }
         }
 
         void Punish()
         {
-            for (int i = 0; i < PunishFlags.Length; i++)
+            for (int i = 0; i < EffectFlags.Length; i++)
             {
-                Punishables[i] = !PunishFlags[i];
+                Effectables[i] = !EffectFlags[i];
             }
         }
 
@@ -156,7 +156,7 @@ namespace trrne.Core
                 return;
             }
 
-            var horizontal = PunishFlags[(int)PunishType.Mirror] ? Constant.Keys.ReversedHorizontal : Constant.Keys.Horizontal;
+            var horizontal = EffectFlags[(int)EffectType.Mirror] ? Constant.Keys.ReversedHorizontal : Constant.Keys.Horizontal;
             if (Input.GetButtonDown(horizontal))
             {
                 var current = Mathf.Sign(transform.localScale.x);
@@ -180,23 +180,22 @@ namespace trrne.Core
 
         void Jump()
         {
-            if (!Controllable || !Jumpable || IsTeleporting)
+            if (!Controllable || EffectFlags[(int)EffectType.Chain] || IsTeleporting)
             {
                 return;
             }
 
-            if (flag.OnGround)
-            {
-                if (Inputs.Down(Constant.Keys.Jump))
-                {
-                    rb.velocity += JumpPower * Vector100.Y2D;
-                }
-                animator.SetBool(Constant.Animations.Jump, false);
-            }
-            else
+            if (!flag.OnGround)
             {
                 animator.SetBool(Constant.Animations.Jump, true);
+                return;
             }
+
+            if (Inputs.Down(Constant.Keys.Jump))
+            {
+                rb.velocity += JumpPower * Vector100.Y2D;
+            }
+            animator.SetBool(Constant.Animations.Jump, false);
         }
 
         /// <summary>
@@ -211,7 +210,7 @@ namespace trrne.Core
 
             animator.SetBool(Constant.Animations.Walk, Input.GetButton(Constant.Keys.Horizontal) && flag.OnGround);
 
-            var horizontal = PunishFlags[(int)PunishType.Mirror] ? Constant.Keys.ReversedHorizontal : Constant.Keys.Horizontal;
+            var horizontal = EffectFlags[(int)EffectType.Mirror] ? Constant.Keys.ReversedHorizontal : Constant.Keys.Horizontal;
             var move = Input.GetAxisRaw(horizontal) * Vector100.X2D;
 
             // 入力がtolerance以下、氷に乗っていない、浮いていない
@@ -221,13 +220,17 @@ namespace trrne.Core
                 rb.SetVelocityX(rb.velocity.x * MoveReductionRatio);
             }
 
-            // 速度を制限
-            rb.velocity = new(flag.OnIce ?
-                // 氷の上になら制限を緩和
-                Mathf.Clamp(rb.velocity.x, -MaxSpeed * 2, MaxSpeed * 2) :
-                Mathf.Clamp(rb.velocity.x, -MaxSpeed, MaxSpeed),
-                rb.velocity.y
-            );
+            var limit = MaxSpeed;
+            if (EffectFlags[(int)EffectType.Fetters])
+            {
+                limit = MaxSpeed / 2;
+            }
+            else if (flag.OnIce)
+            {
+                limit = MaxSpeed * 2;
+            }
+            var v = rb.velocity;
+            rb.velocity = new(Mathf.Clamp(v.x, -limit, limit), Mathf.Clamp(v.y, -limit, limit));
 
             // 浮いていたら移動速度低下
             var velocity = IsFloating ? BaseSpeed * FloatingReductionRatio : BaseSpeed;

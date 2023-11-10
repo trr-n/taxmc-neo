@@ -19,7 +19,7 @@
                 totals[i] = total;
             }
 
-            var random = Randoms.Float(max: total);
+            var random = Randoms._(max: total);
             int min = 0, max = totals.Length - 1;
             while (min < max)
             {

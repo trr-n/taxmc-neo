@@ -36,9 +36,9 @@ namespace trrne.Core
             {
                 frames[i] = transform.GetChildObject(i);
                 frames[i].GetComponent<SpriteRenderer>().SetAlpha(frameAlpha);
-                speeds[i] = Randoms.Float(-SpeedRange, SpeedRange);
+                speeds[i] = Randoms._(-SpeedRange, SpeedRange);
             }
-            myspeed = Randoms.Float(-SpeedRange, SpeedRange);
+            myspeed = Randoms._(-SpeedRange, SpeedRange);
         }
 
         protected override void Behavior()

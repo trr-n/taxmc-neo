@@ -12,7 +12,7 @@ namespace trrne.Core
         bool isChase = true;
         Vector2 dir;
 
-        protected override bool UpdateDirection => true;
+        protected override bool Tracking => true;
 
         protected override void Movement()
         {

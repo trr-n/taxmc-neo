@@ -12,6 +12,8 @@ namespace trrne.Box
         public static Quaternion ToQ(this Vector3 vector) => Quaternion.Euler(vector);
         public static Quaternion ToQ(this Vector2 vector) => Quaternion.Euler(vector);
 
+        public static string ToString(this bool boo) => boo ? "true" : "false";
+
         public static string ReplaceLump(this string target, in string[] befores, string after)
         {
             befores.ForEach(before => target = target.Replace(before, after));

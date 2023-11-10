@@ -15,7 +15,7 @@ namespace trrne.Core
         [SerializeField]
         protected float effectDuration = 3;
 
-        protected abstract bool UpdateDirection { get; }
+        protected abstract bool Tracking { get; }
 
         public bool Enable { get; set; }
 
@@ -32,6 +32,7 @@ namespace trrne.Core
 
             sr = GetComponent<SpriteRenderer>();
             hitbox = GetComponent<BoxCollider2D>();
+            hitbox.isTrigger = true;
 
             player = Gobject.Find(Constant.Tags.Player);
 
@@ -49,16 +50,14 @@ namespace trrne.Core
             }
 
             Movement();
-            if (UpdateDirection)
+            if (Tracking)
             {
                 direction = player.transform.position - transform.position;
             }
         }
 
         protected abstract void Movement();
-
-        protected abstract UniTask Punishment(Player player);
-
         protected abstract void OnTriggerEnter2D(Collider2D info);
+        protected abstract UniTask Punishment(Player player);
     }
 }

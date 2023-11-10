@@ -14,10 +14,6 @@ namespace trrne.Core
         float fireRapidTimer = 0;
 
         [SerializeField]
-        [Tooltip("気の短さ(秒)")]
-        float pepperyLimit = 1;
-
-        [SerializeField]
         float lineWidth = .5f;
 
         [SerializeField]

@@ -7,11 +7,13 @@ namespace trrne.Box
 {
     public static class Maths
     {
-        public const float Epsilon = 1E-45F;
+        public const float Epsilon = 1e-45f; // 0.000000000000000000000000000000000000000000001
 
         public static float Min(float a, float b) => (a < b) ? a : b;
         public static float Max(float a, float b) => (a > b) ? a : b;
         public static float Abs(float a) => a >= 0 ? a : -a;
+        public static float Average(params float[] ns) => ns.Sum() / ns.Length;
+        public static int JuntaC(int n) => n * (n + 1) / 2;
 
         public static float Round(float n, int digit) => MathF.Round(n, digit);
         public static float Round(float n) => Round(n, 0);
@@ -20,7 +22,7 @@ namespace trrne.Box
 
         public static int Cutail(this float a) => int.Parse(a.ToString().Split(".")[0]);
         public static bool CutailedTwins(this float a_cutail, float b) => Twins(Cutail(a_cutail), b);
-        public static bool Twins(this float a, float b) => Abs(b - a) < Max(1E-06f * Max(Abs(a), Abs(b)), Epsilon * 8f);
+        public static bool Twins(this float a, float b) => Abs(b - a) < Max(1e-6f * Max(Abs(a), Abs(b)), Epsilon * 8f);
         public static bool Twins(this float a, float b, float tolerance) => (a - b) < tolerance;
 
         public static int Percent(float a, int digit) => (int)MathF.Round(a * 100, digit);
@@ -66,9 +68,5 @@ namespace trrne.Box
         // }
         // public static float Sum(List<float> arr) => Sum(arr.ToArray());
         // public static float Sum(IEnumerable<float> arr) => Sum(arr.ToArray());
-
-        public static float Average(params float[] ns) => ns.Sum() / ns.Length;
-
-        public static int JUNTASHI(int n) => n * (n + 1) / 2;
     }
 }

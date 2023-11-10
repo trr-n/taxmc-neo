@@ -9,8 +9,7 @@ namespace trrne.Core
 
         GameObject player;
         readonly Vector3 offset = new(0, 1, -10);
-        float size;
-        float axis;
+        float size, axis;
 
         void Start()
         {

@@ -4,6 +4,9 @@ namespace trrne.Box
 {
     public static class Randoms
     {
+        public static float _(float min = 0, float max = 0) => UnityEngine.Random.Range(min, max);
+        public static int _(int min = 0, int max = 0) => UnityEngine.Random.Range(min, max);
+
         public static float Float(float min = 0, float max = 0) => UnityEngine.Random.Range(min, max);
         public static int Int(int min = 0, int max = 0) => UnityEngine.Random.Range(min, max);
         public static uint Uint(uint min = 0, uint max = 0) => (uint)UnityEngine.Random.Range(min, max);
@@ -35,7 +38,7 @@ namespace trrne.Box
             }
         }
 
-        public static string String() => String(Int(2, 10), RandomStringOutput.Auto);
+        public static string String() => String(_(2, 10), RandomStringOutput.Auto);
         public static string String(int count) => String(count, RandomStringOutput.Auto);
 
         static char[] Mixer(int count, char[] array, int start, int end)
@@ -43,12 +46,12 @@ namespace trrne.Box
             var chars = new char[count];
             for (int i = 0; i < count; i++)
             {
-                chars[i] = array[Int(start, end)];
+                chars[i] = array[_(start, end)];
             }
             return chars;
         }
 
-        public static int Choice(this object[] arr) => Int(max: arr.Length - 1);
-        public static T Choice<T>(this T[] arr) => arr[Int(max: arr.Length - 1)];
+        public static int Choice(this object[] arr) => _(max: arr.Length - 1);
+        public static T Choice<T>(this T[] arr) => arr[_(max: arr.Length - 1)];
     }
 }

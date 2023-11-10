@@ -33,7 +33,7 @@ namespace trrne.Core
             {
                 StartFacing.Left => -speed.basis,
                 StartFacing.Right => speed.basis,
-                StartFacing.Random or _ => Randoms.Int(max: 2) switch
+                StartFacing.Random or _ => Randoms._(max: 2) switch
                 {
                     1 => -speed.basis,
                     _ => speed.basis
