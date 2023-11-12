@@ -4,6 +4,8 @@ using UnityEngine;
 
 namespace trrne.Core
 {
+    [RequireComponent(typeof(BoxCollider2D))]
+    [RequireComponent(typeof(SpriteRenderer))]
     public abstract class MamaFire : MonoBehaviour
     {
         [SerializeField]
@@ -15,16 +17,18 @@ namespace trrne.Core
         [SerializeField]
         protected float effectDuration = 3;
 
-        protected abstract bool Tracking { get; }
+        [SerializeField]
+        protected float life = 30f;
+
+        protected bool isTracking = true;
 
         public bool Enable { get; set; }
 
         protected BoxCollider2D hitbox;
         protected SpriteRenderer sr;
         protected Vector2 direction;
-        protected float life = 30f;
 
-        protected GameObject player { get; private set; }
+        protected Player player { get; private set; }
 
         protected virtual void Start()
         {
@@ -34,9 +38,10 @@ namespace trrne.Core
             hitbox = GetComponent<BoxCollider2D>();
             hitbox.isTrigger = true;
 
-            player = Gobject.Find(Constant.Tags.Player);
-
-            direction = player.transform.position - transform.position;
+            // playerObj = Gobject.Find(Constant.Tags.Player);
+            // player = playerObj.GetComponent<Player>();
+            player = Gobject.GetWithTag<Player>(Constant.Tags.Player);
+            direction = (player.CoreOffset - transform.position).normalized;
 
             // life秒後に破壊
             Destroy(gameObject, life);
@@ -50,9 +55,9 @@ namespace trrne.Core
             }
 
             Movement();
-            if (Tracking)
+            if (isTracking)
             {
-                direction = player.transform.position - transform.position;
+                direction = (player.transform.position - transform.position).normalized;
             }
         }
 

@@ -4,18 +4,14 @@ using System.Collections.Generic;
 
 namespace trrne.Box
 {
-    public static class Simple
+    public static class Shorthand
     {
         public static void If(this bool boo, Action action) { if (boo) { action(); } }
         public static void If<T>(this bool boo, Func<T> func) { if (boo) { func(); } }
 
-        [Obsolete]
-        public static T Function<T>(Func<T> func) => func();
-
         /// <summary>
-        /// ｵｫｰﾝ…ｫｫｵｵｫｫｫﾝﾝ‼‼‼(ｶﾞﾁｬｺﾝ)
+        /// t1とt2をがっちゃんこする
         /// </summary>
-        // https://baba-s.hatenablog.com/entry/2020/01/10/090000
         public static IEnumerable<(T1, T2)> Zip<T1, T2>(T1[] t1, T2[] t2)
         => t1.SelectMany(t11 => t2.Select(t22 => (t11, t22)));
 
@@ -24,13 +20,14 @@ namespace trrne.Box
         public static void ForEach<T>(this T[] array, Action<T> action) => Array.ForEach(array, action);
         public static void ForEach<T>(this IEnumerable<T> array, Action<T> action) => Array.ForEach(array.ToArray(), action);
 
-        // https://qiita.com/t_takahari/items/6dc72f48b1ebdfed93b7
-        public static bool None(params object[] objs)
-        {
-            // nullだけつまみだす
-            var nones = (from o in objs where o is null select o).ToArray();
-            // 要素数が1以上か
-            return nones.Length >= 1;
-        }
+        public static bool None(params object[] objs) => (from o in objs where o is null select o).ToArray().Length >= 1;
+
+        /// <summary>
+        /// obj != nullだったらactionを実行する
+        /// </summary>
+        public static void NotVacant(this object obj, Action action) => If(obj != null, action);
     }
 }
+
+// https://baba-s.hatenablog.com/entry/2020/01/10/090000
+// https://qiita.com/t_takahari/items/6dc72f48b1ebdfed93b7

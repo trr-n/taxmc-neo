@@ -6,6 +6,7 @@ namespace trrne.Core
     public class PC : Object
     {
         Color[] colors => new Color[] { Color.red, Color.green };
+        const int Unused = 0, Used = 1;
 
         SpriteRenderer display;
 
@@ -15,21 +16,23 @@ namespace trrne.Core
         {
             base.Start();
             display = transform.GetChild(0).GetComponent<SpriteRenderer>();
-            display.color = colors[0];
+            display.color = colors[Unused];
         }
 
         protected override void Behavior() { }
 
         void OnTriggerEnter2D(Collider2D info)
         {
-            if (!isLoading && info.TryGet(out Player player))
+            if (!isLoading && info.TryGet(out Player player) && !player.IsDieProcessing)
             {
                 isLoading = true;
 
                 effects.TryGenerate(transform.position);
 
-                display.color = colors[1];
-                player.SetCheckpoint(new(transform.position.x, Maths.Cutail(transform.position.y)));
+                display.color = colors[Used];
+
+                var self = transform.position;
+                player.SetCheckpoint(new(self.x, Maths.Cutail(self.y)));
             }
         }
     }

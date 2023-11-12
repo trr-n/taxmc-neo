@@ -22,18 +22,11 @@ namespace trrne.Core
         [SerializeField]
         float punishDuration = 3f;
 
-        // float pepperyTimer = 0;
-
-        // public (float Limit, float Timer, float Ratio) Peppery
-        // => (pepperyLimit, pepperyTimer, pepperyTimer / pepperyLimit);
-
         GameObject player;
-        Vector3 ofs, offset;
-        float distance;
+        Vector3 ofs;
 
         GameObject[] eyes;
         Vector3[] inits;
-        Vector3[] directions;
         LineRenderer[] lines;
 
         /// <summary>
@@ -55,15 +48,16 @@ namespace trrne.Core
             eyes = transform.GetChildren();
             inits = new[] { eyes[0].transform.position, eyes[1].transform.position };
             lines = new[] { eyes[0].GetComponent<LineRenderer>(), eyes[1].GetComponent<LineRenderer>() };
-            lines.ForEach(line => line.Width(lineWidth));
+            lines.ForEach(l => l.Width(lineWidth));
         }
 
         void Update()
         {
-            offset = player.transform.position + ofs;
-            directions = new[] { offset - eyes[0].transform.position, offset - eyes[1].transform.position };
-            distance = Maths.Average(Vector2.Distance(offset, eyes[0].transform.position),
-                Vector2.Distance(offset, eyes[1].transform.position));
+            var ofs = player.transform.position + this.ofs;
+            var directions = new[] { ofs - eyes[0].transform.position, ofs - eyes[1].transform.position };
+            var distance = Maths.Average(
+                Vector2.Distance(ofs, eyes[0].transform.position),
+                Vector2.Distance(ofs, eyes[1].transform.position));
 
             if (IsPlayerOnDetectRange = playerDetectRange >= distance)
             {

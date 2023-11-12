@@ -34,4 +34,9 @@ namespace trrne.Box
             }
         }
     }
+
+    public static class Anima2
+    {
+        public static float Length(this Animator animator) => animator.GetNextAnimatorStateInfo(0).length;
+    }
 }

@@ -15,7 +15,7 @@ namespace trrne.Core
         readonly float fadeSpeed = 2;
 
         readonly float speed = 0.5f;
-        float Left = 1;
+        float left;
         Vector2 Mirrored => new(-1, 1);
 
         protected override void Start()
@@ -24,7 +24,7 @@ namespace trrne.Core
             base.Start();
 
             player = Gobject.GetWithTag<Player>(Constant.Tags.Player);
-            Left = transform.localScale.x;
+            left = transform.localScale.x;
         }
 
         protected override async void Behavior()
@@ -41,8 +41,10 @@ namespace trrne.Core
         void Flip()
         {
             // flip the sprite
-            if ((transform.position.x > player.transform.position.x && Left != transform.localScale.x)
-                || (transform.position.x < player.transform.position.x && Left == transform.localScale.x))
+            var selfx = transform.position.x;
+            var playerx = player.transform.position.x;
+            var scalex = transform.localScale.x;
+            if ((selfx > playerx && left != scalex) || (selfx < playerx && left == scalex))
             {
                 transform.localScale *= Mirrored;
             }

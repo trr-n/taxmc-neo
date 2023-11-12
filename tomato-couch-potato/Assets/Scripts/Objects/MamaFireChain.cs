@@ -7,9 +7,13 @@ namespace trrne.Core
 {
     public class MamaFireChain : MamaFire
     {
-        protected override bool Tracking => false;
+        protected override void Start()
+        {
+            base.Start();
+            isTracking = false;
+        }
 
-        protected override void Movement() => transform.Translate(Time.deltaTime * speed * direction.normalized);
+        protected override void Movement() => transform.Translate(Time.deltaTime * speed * direction);
         protected override async UniTask Punishment(Player player) => await player.Punishment(effectDuration, EffectType.Chain);
 
         protected override async void OnTriggerEnter2D(Collider2D info)

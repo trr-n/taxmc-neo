@@ -12,14 +12,17 @@ namespace trrne.Core
     public enum CuzOfDeath
     {
         Venom,
-        None
+        None,
     }
 
+    /// <summary>
+    /// エフェクト
+    /// </summary>
     public enum EffectType
     {
-        Mirror,
-        Chain,
-        Fetters
+        Mirror, // 操作左右反転
+        Chain,  // ジャンプ不可
+        Fetters, // 移動速度低下
     }
 
     public class Player : MonoBehaviour, ICreature
@@ -29,20 +32,40 @@ namespace trrne.Core
 
         public bool Controllable { get; set; }
         // public bool Jumpable { get; set; }
-        public bool Movable { get; set; }
+        // public bool Movable { get; set; }
 
         public bool IsMoveKeyDetecting { get; private set; }
         public bool IsTeleporting { get; set; }
         public bool IsDieProcessing { get; set; }
 
-        int punishIdx = -1;
+        int effectIdex = -1;
         public bool[] Effectables { get; private set; }
         public bool[] EffectFlags { get; set; }
+        const float FettersRed = 0.5f;
 
+        /// <summary>
+        /// 基礎移動速度
+        /// </summary>
         const float BaseSpeed = 20;
+
+        /// <summary>
+        /// 上限移動速度
+        /// </summary>        
         const float MaxSpeed = 10;
-        const float FloatingReductionRatio = 0.95f;
+
+        /// <summary>
+        /// 空中での減速比
+        /// </summary>
+        const float FloatingRed = 0.95f;
+
+        /// <summary>
+        /// 減速比
+        /// </summary>
         const float MoveReductionRatio = 0.9f;
+
+        /// <summary>
+        /// ジャンプ力
+        /// </summary>
         const float JumpPower = 6f;
 
         /// <summary>
@@ -62,7 +85,10 @@ namespace trrne.Core
         PauseMenu menu;
         BoxCollider2D hitbox;
 
-        public Vector3 CoreOffset => new(0, hitbox.bounds.size.y / 2);
+        /// <summary>
+        /// プレイヤーのへそあたりの座標
+        /// </summary>
+        public Vector3 CoreOffset { get; private set; }
 
         const float InputTolerance = 0.33f;
 
@@ -74,6 +100,9 @@ namespace trrne.Core
         {
             Checkpoint = Vector2.zero;
 
+            // Movable = true;
+            // Jumpable = true;
+
             menu = Gobject.GetWithTag<PauseMenu>(Constant.Tags.Manager);
             flag = transform.GetFromChild<PlayerFlag>();
             cam = Gobject.GetWithTag<Cam>(Constant.Tags.MainCamera);
@@ -82,9 +111,6 @@ namespace trrne.Core
             hitbox = GetComponent<BoxCollider2D>();
             rb = GetComponent<Rigidbody2D>();
             rb.mass = 60f;
-
-            Movable = true;
-            // Jumpable = true;
 
             int length = new EffectType().EnumLength();
             EffectFlags = new bool[length];
@@ -103,11 +129,18 @@ namespace trrne.Core
 
         void Update()
         {
-            Flagger();
+            Def();
             Jump();
             Flip();
             Respawn();
             Punish();
+        }
+
+        void Def()
+        {
+            CoreOffset = transform.position + new Vector3(0, hitbox.bounds.size.y / 2);
+            IsFloating = !flag.OnGround;
+            rb.isKinematic = IsTeleporting;
         }
 
         /// <summary>
@@ -121,23 +154,14 @@ namespace trrne.Core
             }
         }
 
-        /// <summary>
-        /// 反重力
-        /// </summary>
-        void Flagger()
-        {
-            IsFloating = !flag.OnGround;
-            rb.isKinematic = IsTeleporting;
-        }
-
         public IEnumerator Punishment(float duration, EffectType type)
         {
-            if (punishIdx != -1 && Effectables[punishIdx = (int)type])
+            if (effectIdex != -1 && Effectables[effectIdex = (int)type])
             {
-                EffectFlags[punishIdx] = true;
+                EffectFlags[effectIdex] = true;
                 yield return new WaitForSeconds(duration);
-                EffectFlags[punishIdx] = false;
-                punishIdx = -1;
+                EffectFlags[effectIdex] = false;
+                effectIdex = -1;
             }
         }
 
@@ -203,7 +227,7 @@ namespace trrne.Core
         /// </summary>
         void Move()
         {
-            if (!Controllable || !Movable || IsTeleporting)
+            if (!Controllable || IsTeleporting) // || !Movable)
             {
                 return;
             }
@@ -223,17 +247,18 @@ namespace trrne.Core
             var limit = MaxSpeed;
             if (EffectFlags[(int)EffectType.Fetters])
             {
-                limit = MaxSpeed / 2;
+                limit = MaxSpeed * FettersRed;
             }
             else if (flag.OnIce)
             {
                 limit = MaxSpeed * 2;
             }
             var v = rb.velocity;
-            rb.velocity = new(Mathf.Clamp(v.x, -limit, limit), Mathf.Clamp(v.y, -limit, limit));
+            rb.velocity = new(
+                Mathf.Clamp(v.x, -limit, limit), Mathf.Clamp(v.y, -limit, limit));
 
             // 浮いていたら移動速度低下
-            var velocity = IsFloating ? BaseSpeed * FloatingReductionRatio : BaseSpeed;
+            var velocity = IsFloating ? BaseSpeed * FloatingRed : BaseSpeed;
             rb.velocity += Time.fixedDeltaTime * velocity * move;
         }
 
@@ -259,14 +284,13 @@ namespace trrne.Core
                     rb.velocity = Vector2.zero;
                     animator.Play(Constant.Animations.Venomed);
                     break;
-
                 default: break;
             }
 
             await UniTask.Delay(1250);
 
             // 落とし穴直す
-            Gobject.Finds<Carrot>().ForEach(c => Simple.If(c.Mendable, c.Mend));
+            Gobject.Finds<Carrot>().ForEach(c => Shorthand.If(c.Mendable, c.Mend));
 
             ReturnToCheckpoint();
             animator.StopPlayback();

@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 4496108296848817623}
   - component: {fileID: 7999513736490922087}
   m_Layer: 0
-  m_Name: mama_fire_chain
+  m_Name: MamaFireChain
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -146,3 +146,4 @@ MonoBehaviour:
   effects: []
   speed: 5
   effectDuration: 3
+  life: 30

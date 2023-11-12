@@ -584,7 +584,7 @@ GameObject:
   - component: {fileID: 3566729566392747447}
   - component: {fileID: 6409688896827163223}
   m_Layer: 8
-  m_Name: nomoss
+  m_Name: NoMoss
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

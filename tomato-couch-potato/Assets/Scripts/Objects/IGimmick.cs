@@ -2,7 +2,7 @@
 {
     public interface IGimmick
     {
-        void Active();
-        void Inactive();
+        void On();
+        void Off();
     }
 }

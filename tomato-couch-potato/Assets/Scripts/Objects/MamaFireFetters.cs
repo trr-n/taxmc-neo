@@ -1,47 +1,41 @@
-using System;
 using Cysharp.Threading.Tasks;
 using trrne.Box;
 using UnityEngine;
 
 namespace trrne.Core
 {
-    public class MamaFireDeath : MamaFire
+    public class MamaFireFetters : MamaFire
     {
         [SerializeField]
-        float chaseRange;
+        float detectRange = 10;
 
-        bool isClose = false;
+        protected override void Start()
+        {
+            base.Start();
+            isTracking = false;
+        }
 
         protected override void Movement()
         {
-            // プレイヤーとの距離がchaseRange以下になるまで追随、以下になったらそのまま直進
+            // プレイヤーとの距離がdetectRange以下なら追随する
             var distance = Vector2.Distance(transform.position, player.CoreOffset);
-            if (!isClose && distance <= chaseRange)
-            {
-                isClose = true;
-                isTracking = false;
-            }
+            isTracking = distance < detectRange;
             transform.Translate(Time.deltaTime * speed * direction);
         }
 
-        protected override async UniTask Punishment(Player player) => await player.Die();
+        protected override async UniTask Punishment(Player player) => await player.Punishment(effectDuration, EffectType.Fetters);
 
         protected override async void OnTriggerEnter2D(Collider2D info)
         {
             if (info.TryGetComponent(out Player player))
             {
                 effects.TryGenerate(transform.position);
-                sr.SetAlpha(0);
+                sr.SetAlpha();
                 if (!player.IsDieProcessing)
                 {
                     await UniTask.WhenAll(Punishment(player));
                 }
-
-                try
-                {
-                    Destroy(gameObject);
-                }
-                catch (MissingReferenceException e) { print(e.Message); }
+                Destroy(gameObject);
             }
         }
     }

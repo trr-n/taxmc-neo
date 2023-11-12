@@ -1,7 +1,6 @@
 using UnityEngine;
 using trrne.Box;
 using UnityEngine.UI;
-using System.Linq;
 
 namespace trrne.Core
 {
@@ -10,9 +9,7 @@ namespace trrne.Core
         [SerializeField]
         Text debugT;
 
-        [SerializeField]
-        float Offset = 100f, Y = 0;
-        const float OffsetX = 64;
+        const float Offset = 100f, Y = 0, OffsetX = 64;
 
         GameObject[] icons;
         RectTransform[] iconRTs;
@@ -51,15 +48,10 @@ namespace trrne.Core
 
         void Draw()
         {
-            foreach (var (icon, flag) in icons.SelectMany(i => player.EffectFlags.Select(f => (i, f))))
+            for (int i = 0; i < icons.Length; i++)
             {
-                icon.SetActive(flag);
+                icons[i].SetActive(player.EffectFlags[i]);
             }
-
-            // for (int i = 0; i < icons.Length; i++)
-            // {
-            //     icons[i].SetActive(player.EffectFlags[i]);
-            // }
         }
     }
 }

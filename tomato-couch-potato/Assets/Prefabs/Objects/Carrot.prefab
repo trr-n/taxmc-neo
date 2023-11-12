@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 3324897851814254722}
   - component: {fileID: 5535242264945206006}
   m_Layer: 8
-  m_Name: fall_floor
+  m_Name: Carrot
   m_TagString: Hole
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

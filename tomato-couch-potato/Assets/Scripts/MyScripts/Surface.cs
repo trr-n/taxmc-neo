@@ -30,8 +30,8 @@ namespace trrne.Box
         public static Color Transparent => Vector4.zero;
         public static Color Gaming => Color.HSVToRGB(Time.unscaledTime % 1, 1, 1);
 
-        public static void SetAlpha(this Image image, float alpha) => image.color = new(image.color.r, image.color.g, image.color.b, alpha);
-        public static void SetAlpha(this SpriteRenderer sr, float alpha) => sr.color = new(sr.color.r, sr.color.g, sr.color.b, alpha);
+        public static void SetAlpha(this Image image, float alpha = 0) => image.color = new(image.color.r, image.color.g, image.color.b, alpha);
+        public static void SetAlpha(this SpriteRenderer sr, float alpha = 0) => sr.color = new(sr.color.r, sr.color.g, sr.color.b, alpha);
         public static float Alpha(this Image image) => image.color.a;
         public static float Alpha(this SpriteRenderer sr) => sr.color.a;
 

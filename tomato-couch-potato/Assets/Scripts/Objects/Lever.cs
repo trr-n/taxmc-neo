@@ -37,7 +37,7 @@ namespace trrne.Core
             {
                 source.TryPlay(sounds.Choice());
                 sr.sprite = sprites[1];
-                gimmicks.ForEach(gim => gim.TryGet(out IGimmick g).If(g.Active));
+                gimmicks.ForEach(gim => gim.TryGet(out IGimmick g).If(g.On));
                 isActive = false;
             }
 
@@ -46,7 +46,7 @@ namespace trrne.Core
             {
                 source.TryPlay(sounds.Choice());
                 sr.sprite = sprites[0];
-                gimmicks.ForEach(gim => gim.TryGet(out IGimmick g).If(g.Inactive));
+                gimmicks.ForEach(gim => gim.TryGet(out IGimmick g).If(g.Off));
                 isActive = true;
             }
         }

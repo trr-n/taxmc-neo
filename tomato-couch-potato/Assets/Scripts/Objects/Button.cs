@@ -47,14 +47,14 @@ namespace trrne.Core
 
                 speaker.TryPlay(sounds.Choice());
                 effectiveSW.Restart();
-                gimmicks.ForEach(g => g.GetComponent<IGimmick>().Active());
+                gimmicks.ForEach(g => g.GetComponent<IGimmick>().On());
             }
 
             // 動作中、効果時間がduration以上
             if (isPressing && effectiveSW.Sf >= duration)
             {
                 effectiveSW.Reset();
-                gimmicks.ForEach(g => g.GetComponent<IGimmick>().Inactive());
+                gimmicks.ForEach(g => g.GetComponent<IGimmick>().Off());
                 speaker.TryPlay(sounds.Choice());
 
                 isPressing = false;

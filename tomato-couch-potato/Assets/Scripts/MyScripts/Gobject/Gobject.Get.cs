@@ -32,7 +32,7 @@ namespace trrne.Box
         public static bool TryGet<T>(this Collider info, out T t) => info.gameObject.TryGetComponent(out t);
         public static bool TryGet<T>(this GameObject gob, out T t) => gob.TryGetComponent(out t);
         public static bool TryGet<T>(this RaycastHit2D hit, out T t) => hit.collider.TryGetComponent(out t);
-        public static void TryAction<T>(this Collider2D info, Action<T> action) => Simple.If(info.TryGetComponent(out T t), () => action(t));
+        public static void TryAction<T>(this Collider2D info, Action<T> action) => Shorthand.If(info.TryGetComponent(out T t), () => action(t));
 
         public static GameObject GetChildObject(this Transform t) => t.GetChild(0).gameObject;
         public static GameObject GetChildObject(this Transform t, int index) => t.GetChild(index).gameObject;
@@ -43,6 +43,16 @@ namespace trrne.Box
             for (int i = 0; i < children.Length; i++)
             {
                 children[i] = t.GetChild(i).gameObject;
+            }
+            return children;
+        }
+
+        public static T[] GetChildren<T>(this Transform t) where T : UnityEngine.Object
+        {
+            var children = new T[t.childCount];
+            for (int i = 0; i < children.Length; i++)
+            {
+                children[i] = t.GetChild(i).GetComponent<T>();
             }
             return children;
         }

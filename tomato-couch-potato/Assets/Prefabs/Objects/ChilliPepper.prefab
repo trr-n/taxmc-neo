@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 8518776664643100737}
   - component: {fileID: 8531744231519822274}
   m_Layer: 0
-  m_Name: chilipepper
+  m_Name: ChilliPepper
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

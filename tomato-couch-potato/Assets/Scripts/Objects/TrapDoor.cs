@@ -15,7 +15,9 @@ namespace trrne.Core
         [SerializeField]
         RotateDirection direct;
 
-        (Vector3 rotation, Vector2 position) initial;
+        // (Vector3 rotation, Vector2 position) initial;
+        Vector3 rotation;
+        Vector2 position;
 
         /// <summary>
         /// 開いているか
@@ -32,35 +34,30 @@ namespace trrne.Core
         protected override void Start()
         {
             base.Start();
-            initial.position = transform.position;
-            initial.rotation = transform.eulerAngles;
+            position = transform.position;
+            rotation = transform.eulerAngles;
         }
 
         protected override void Behavior() { }
 
-        public void Active()
+        public void On()
         {
             IsOpen = true;
-            Vector3 rotinfo = new();
-            switch (direct)
+            var rotation = direct switch
             {
-                case RotateDirection.Left:
-                    rotinfo = initial.rotation + Vector100.Z * 90;
-                    break;
-                case RotateDirection.Right:
-                    rotinfo = initial.rotation - Vector100.Z * 90;
-                    break;
-            }
-
-            transform.DORotate(rotinfo, rotationSpeed)
+                RotateDirection.Left => this.rotation + Vector100.Z * 90,
+                RotateDirection.Right => this.rotation - Vector100.Z * 90,
+                _ => throw null
+            };
+            transform.DORotate(rotation, rotationSpeed)
                 .OnPlay(() => IsRotating = true)
                 .OnComplete(() => IsRotating = false);
         }
 
-        public void Inactive()
+        public void Off()
         {
             IsOpen = false;
-            transform.DORotate(initial.rotation, rotationSpeed)
+            transform.DORotate(rotation, rotationSpeed)
                 .OnPlay(() => IsRotating = true)
                 .OnComplete(() => IsRotating = false);
         }

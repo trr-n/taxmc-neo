@@ -4,6 +4,9 @@ using UnityEngine;
 
 namespace trrne.Core
 {
+    /// <summary>
+    /// A rolling stone gathers no moss
+    /// </summary>
     public class NoMoss : Object
     {
         [SerializeField]
