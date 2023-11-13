@@ -40,7 +40,7 @@ namespace trrne.Core
 
             // playerObj = Gobject.Find(Constant.Tags.Player);
             // player = playerObj.GetComponent<Player>();
-            player = Gobject.GetWithTag<Player>(Constant.Tags.Player);
+            player = Gobject.GetComponentWithTag<Player>(Constant.Tags.Player);
             direction = (player.CoreOffset - transform.position).normalized;
 
             // life秒後に破壊

@@ -10,7 +10,7 @@ namespace trrne.Core
 
         void OnTriggerEnter2D(Collider2D info)
         {
-            if (info.TryGet(out Bank bank))
+            if (Gobject.TryGetComponent(info, out Bank bank))
             {
                 bank.Add(amount);
                 Destroy(gameObject);

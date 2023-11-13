@@ -22,10 +22,10 @@ namespace trrne.Core
             selfRT = GetComponent<RectTransform>();
             selfRT.transform.position = new(50, 50);
 
-            icons = transform.GetChildren();
+            icons = transform.GetChildrenGameObject();
             iconRTs = GetComponentsInChildren<RectTransform>();
 
-            player = Gobject.GetWithTag<Player>(Constant.Tags.Player);
+            player = Gobject.GetComponentWithTag<Player>(Constant.Tags.Player);
         }
 
         void Update()

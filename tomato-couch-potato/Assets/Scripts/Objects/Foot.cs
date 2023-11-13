@@ -7,7 +7,7 @@ namespace trrne.Core
     {
         async void OnTriggerEnter2D(Collider2D info)
         {
-            if (info.TryGet(out ICreature creature))
+            if (Gobject.TryGetComponent(info, out ICreature creature))
             {
                 await creature.Die();
             }

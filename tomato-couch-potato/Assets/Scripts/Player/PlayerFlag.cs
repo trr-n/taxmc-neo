@@ -12,7 +12,7 @@ namespace trrne.Core
 
         void Start()
         {
-            player = Gobject.GetWithTag<Player>(Constant.Tags.Player);
+            player = Gobject.GetComponentWithTag<Player>(Constant.Tags.Player);
         }
 
         void OnTriggerExit2D(Collider2D info) => Boolean(info, false);

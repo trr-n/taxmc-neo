@@ -2131,7 +2131,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3870410721169875286, guid: 9a2a43a62209a514fad1ccf7610012e1, type: 3}
       propertyPath: m_IsTrigger
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3870410721169875286, guid: 9a2a43a62209a514fad1ccf7610012e1, type: 3}
       propertyPath: m_SpriteTilingProperty.oldSize.x
@@ -2868,7 +2868,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6409688896827163223, guid: bc903f7e28d610646bc2d5e89fb825b7, type: 3}
       propertyPath: direction
-      value: -1
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

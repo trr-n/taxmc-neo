@@ -34,7 +34,7 @@ namespace trrne.Core
             speeds = new float[children];
             for (int i = 0; i < children; i++)
             {
-                frames[i] = transform.GetChildObject(i);
+                frames[i] = transform.GetChildGameObject(i);
                 frames[i].GetComponent<SpriteRenderer>().SetAlpha(frameAlpha);
                 speeds[i] = Randoms._(-SpeedRange, SpeedRange);
             }
@@ -60,11 +60,11 @@ namespace trrne.Core
                 return;
             }
 
-            if (info.TryGet(out Player player) && !player.IsDieProcessing)
+            if (Gobject.TryGetComponent(info, out Player player) && !player.IsDieProcessing)
             {
                 warping = true;
 
-                effects.TryGenerate(transform.position);
+                effects.TryInstantiate(transform.position);
 
                 info.transform.DOMove(to, teleportSpeed).SetEase(Ease.OutCubic)
                     .OnPlay(() => player.IsTeleporting = true)

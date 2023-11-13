@@ -21,7 +21,7 @@ namespace trrne.Brain
             canvas.alpha = 1;
             sw.Start();
 
-            player = Gobject.GetWithTag<Player>(Constant.Tags.Player);
+            player = Gobject.GetComponentWithTag<Player>(Constant.Tags.Player);
             player.Controllable = false;
         }
 

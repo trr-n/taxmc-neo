@@ -45,7 +45,7 @@ namespace trrne.Core
             var c = player.GetComponent<BoxCollider2D>();
             ofs = new(0, c.Size().y / 2);
 
-            eyes = transform.GetChildren();
+            eyes = transform.GetChildrenGameObject();
             inits = new[] { eyes[0].transform.position, eyes[1].transform.position };
             lines = new[] { eyes[0].GetComponent<LineRenderer>(), eyes[1].GetComponent<LineRenderer>() };
             lines.ForEach(l => l.Width(lineWidth));
@@ -68,7 +68,7 @@ namespace trrne.Core
 
                 if ((fireRapidTimer += Time.deltaTime) >= fireRapidRate)
                 {
-                    fires.TryGenerate(transform.position);
+                    fires.TryInstantiate(transform.position);
                     fireRapidTimer = 0;
                 }
             }

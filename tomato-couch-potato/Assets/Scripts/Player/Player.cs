@@ -103,9 +103,9 @@ namespace trrne.Core
             // Movable = true;
             // Jumpable = true;
 
-            menu = Gobject.GetWithTag<PauseMenu>(Constant.Tags.Manager);
-            flag = transform.GetFromChild<PlayerFlag>();
-            cam = Gobject.GetWithTag<Cam>(Constant.Tags.MainCamera);
+            menu = Gobject.GetComponentWithTag<PauseMenu>(Constant.Tags.Manager);
+            flag = transform.GetComponentFromChild<PlayerFlag>();
+            cam = Gobject.GetComponentWithTag<Cam>(Constant.Tags.MainCamera);
 
             animator = GetComponent<Animator>();
             hitbox = GetComponent<BoxCollider2D>();
@@ -276,7 +276,7 @@ namespace trrne.Core
             Controllable = false;
             cam.Followable = false;
 
-            diefx.TryGenerate(transform.position);
+            diefx.TryInstantiate(transform.position);
 
             switch (cause)
             {

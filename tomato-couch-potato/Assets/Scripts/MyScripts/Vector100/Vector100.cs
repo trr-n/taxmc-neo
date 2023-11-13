@@ -21,26 +21,32 @@ namespace trrne.Box
         public static Quaternion ZQ => new(0, 0, 1, 0);
         public static Quaternion WQ => new(0, 0, 0, 1);
 
+        /// <summary>
+        /// [xX]<br/>[yY]<br/>[zZ]<br/>[wW]<br/>[zZ]ero<br/>[oO]ne
+        /// </summary>
+        public static Quaternion Q(string xyzw0) => xyzw0 switch
+        {
+            "x" or "X" => new Quaternion(1, 0, 0, 0),
+            "y" or "Y" => new Quaternion(0, 1, 0, 0),
+            "z" or "Z" => new Quaternion(0, 0, 1, 0),
+            "w" or "W" => new Quaternion(0, 0, 0, 1),
+            "zero" or "Zero" or "0" => new Quaternion(0, 0, 0, 0),
+            "one" or "One" or "1" => new Quaternion(1, 1, 1, 1),
+            _ => throw null
+        };
+
+        /// <summary>
+        /// 重力加速度
+        /// </summary>
         public static float GravitationalAcceleration => 9.80665f;
+
+        /// <summary>
+        /// 重力加速度
+        /// </summary>
         public static Vector3 Gravity => -Y * GravitationalAcceleration;
 
         public static bool Twins(Vector3 n1, Vector3 n2) => Maths.Twins(n1.x, n2.x) && Maths.Twins(n1.y, n2.y) && Maths.Twins(n1.z, n2.z);
 
-        static readonly Runner setter = new();
-        static Vector3 latest;
-        [Obsolete]
-        public static float Speed(this GameObject gob)
-        {
-            setter.RunOnce(() => latest = gob.transform.position);
-            var direction = gob.transform.position - latest;
-            var speed = direction / Time.deltaTime;
-            latest = gob.transform.position;
-            return speed.magnitude;
-        }
-
-        [Obsolete]
-        public static float Speed(this Transform transform) => transform.gameObject.Speed();
-
-        public static Vector2 Direction(Vector2 target, Vector2 origin) => target - origin;
+        [Obsolete] public static Vector2 Direction(Vector2 target, Vector2 origin) => target - origin;
     }
 }

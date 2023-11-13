@@ -30,7 +30,7 @@ namespace trrne.Core
         {
             if (info.TryGetComponent(out Player player))
             {
-                effects.TryGenerate(transform.position);
+                effects.TryInstantiate(transform.position);
                 sr.SetAlpha(0);
                 if (!player.IsDieProcessing)
                 {

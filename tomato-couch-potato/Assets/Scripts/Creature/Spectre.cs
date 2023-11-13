@@ -23,7 +23,7 @@ namespace trrne.Core
             Enable = true;
             base.Start();
 
-            player = Gobject.GetWithTag<Player>(Constant.Tags.Player);
+            player = Gobject.GetComponentWithTag<Player>(Constant.Tags.Player);
             left = transform.localScale.x;
         }
 
@@ -83,7 +83,7 @@ namespace trrne.Core
 
         async void OnTriggerEnter2D(Collider2D info)
         {
-            if (info.TryGet(out Player player))
+            if (Gobject.TryGetComponent(info, out Player player))
             {
                 lifetimeSW.Reset();
                 await Die(player.Die());

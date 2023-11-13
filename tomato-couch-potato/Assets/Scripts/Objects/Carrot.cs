@@ -23,7 +23,7 @@ namespace trrne.Core
         {
             base.Start();
 
-            flag = transform.GetFromChild<CarrotFlag>();
+            flag = transform.GetComponentFromChild<CarrotFlag>();
             flag.Count = 0;
 
             collider = GetComponent<BoxCollider2D>();
@@ -35,7 +35,7 @@ namespace trrne.Core
         {
             if (!Mendable && flag.Count >= limitSteps)
             {
-                effects.TryGenerate(transform.position);
+                effects.TryInstantiate(transform.position);
 
                 Mendable = true;
                 sr.enabled = false;

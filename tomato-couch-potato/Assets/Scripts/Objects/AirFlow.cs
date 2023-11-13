@@ -9,7 +9,7 @@ namespace trrne.Core
 
         void Start()
         {
-            fan = transform.GetFromParent<Fan>();
+            fan = transform.GetComponentFromParent<Fan>();
         }
 
         void OnTriggerStay2D(Collider2D info)

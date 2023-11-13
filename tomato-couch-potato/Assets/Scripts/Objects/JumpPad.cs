@@ -1,4 +1,3 @@
-using trrne.Box;
 using UnityEngine;
 
 namespace trrne.Core
@@ -14,8 +13,12 @@ namespace trrne.Core
             {
                 rb.velocity = Vector2.zero;
 
-                // TODO jumpPowerの値を上げても一定以上飛べない
-                rb.velocity += Time.unscaledDeltaTime * jumpPower * rb.mass * transform.up.ToVec2();
+                // ! /////////////////////////////////////////////////////////////////////////////////////
+                // FIXME jumpPowerの値を大きくしても一定以上高く跳ばない, 一回目のジャンプは高いこともある
+                // ! /////////////////////////////////////////////////////////////////////////////////////
+                var jumpPower = this.jumpPower * rb.mass;
+                print(jumpPower);
+                rb.velocity += jumpPower * Vector2.up;
             }
         }
     }

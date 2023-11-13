@@ -23,7 +23,7 @@ namespace trrne.Core
                 if (!player.IsDieProcessing)
                 {
                     sr.SetAlpha(0);
-                    effects.TryGenerate(transform.position);
+                    effects.TryInstantiate(transform.position);
                     await UniTask.WhenAll(Punishment(player));
                 }
                 Destroy(gameObject);

@@ -1,6 +1,7 @@
 using UnityEngine;
 using trrne.Brain;
 using trrne.Box;
+using System;
 
 namespace trrne.Core
 {
@@ -20,10 +21,14 @@ namespace trrne.Core
 
         void OnTriggerEnter2D(Collider2D info)
         {
-            if (info.CompareTag(Constant.Tags.Player) && info.TryGet(out Player _))
+            if (info.CompareTag(Constant.Tags.Player) && info.TryGetComponent(out Player _))
             {
                 sr.sprite = sprites[1];
-                Recorder.Instance.Clear();
+                try
+                {
+                    Recorder.Instance.Clear();
+                }
+                catch (Exception e) { print(e.Message); }
             }
         }
     }

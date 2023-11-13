@@ -23,11 +23,11 @@ namespace trrne.Core
 
         void OnTriggerEnter2D(Collider2D info)
         {
-            if (!isLoading && info.TryGet(out Player player) && !player.IsDieProcessing)
+            if (!isLoading && Gobject.TryGetComponent(info, out Player player) && !player.IsDieProcessing)
             {
                 isLoading = true;
 
-                effects.TryGenerate(transform.position);
+                effects.TryInstantiate(transform.position);
 
                 display.color = colors[Used];
 

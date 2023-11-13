@@ -12,7 +12,7 @@ namespace trrne.Core
         {
             if (info.TryGetComponent(out Player player) && !player.IsDieProcessing)
             {
-                effects.TryGenerate(transform.position);
+                effects.TryInstantiate(transform.position);
                 await player.Die(CuzOfDeath.Venom);
             }
         }

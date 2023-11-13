@@ -14,7 +14,7 @@ namespace trrne.Core
 
         void Start()
         {
-            bank = Gobject.GetWithTag<Bank>(Constant.Tags.Player);
+            bank = Gobject.GetComponentWithTag<Bank>(Constant.Tags.Player);
         }
 
         void OnTriggerEnter2D(Collider2D info)
