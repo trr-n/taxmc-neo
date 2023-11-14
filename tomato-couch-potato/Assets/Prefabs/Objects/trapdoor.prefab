@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 4449264950519758458}
   - component: {fileID: 2145415446830898050}
   - component: {fileID: 1067429336412263676}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: truth_door
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -142,7 +142,7 @@ GameObject:
   - component: {fileID: 8919356002552885381}
   - component: {fileID: 7601295376080075075}
   m_Layer: 7
-  m_Name: TrapDoor
+  m_Name: trapdoor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -230,3 +230,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   effects: []
   sprites: []
+  direct: 0

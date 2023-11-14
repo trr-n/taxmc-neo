@@ -20,12 +20,10 @@ namespace trrne.Core
 
         void Boolean(Collider2D info, bool boo)
         {
-            if (!info.CompareLayer(Constant.Layers.Ground))
+            if (info.CompareLayer(Constant.Layers.Jumpable))
             {
-                return;
+                OnGround = boo;
             }
-
-            OnGround = boo;
             if (info.CompareTag(Constant.Tags.Ice))
             {
                 OnIce = boo;

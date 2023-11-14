@@ -191,7 +191,6 @@ namespace trrne.Core
         /// </summary>
         void Respawn()
         {
-            print(EffectIdx);
             if (!IsDieProcessing && Inputs.Down(Constant.Keys.Respawn))
             {
                 ReturnToCheckpoint();
@@ -299,8 +298,8 @@ namespace trrne.Core
             });
 
             var v = rb.velocity;
-            // rb.velocity = new(Mathf.Clamp(v.x, -limit, limit), v.y);
-            rb.ClampVelocity(x: (-limit, limit));
+            rb.velocity = new(Mathf.Clamp(v.x, -limit, limit), v.y);
+            // rb.ClampVelocity(x: (-limit, limit));
 
             // 浮いていたら移動速度低下
             float velocity = IsFloating ? BaseSpeed * FloatingRed : BaseSpeed;

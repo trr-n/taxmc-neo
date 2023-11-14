@@ -14,7 +14,7 @@ namespace trrne.Core
         void Start()
         {
             Followable = true;
-            player = Gobject.Find(Constant.Tags.Player);
+            player = Gobject.GetWithTag(Constant.Tags.Player);
         }
 
         void Update()
@@ -29,6 +29,7 @@ namespace trrne.Core
             {
                 return;
             }
+
             transform.position = player.transform.position + offset;
         }
 
@@ -38,6 +39,7 @@ namespace trrne.Core
             {
                 return;
             }
+
             size = Mathf.Sign(axis) / 4;
             Camera.main.orthographicSize += size;
             Camera.main.orthographicSize = Mathf.Clamp(Camera.main.orthographicSize, 2.5f, 12);

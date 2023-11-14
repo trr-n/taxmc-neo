@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace trrne.Brain
 {
-    public class PanelManager : MonoBehaviour
+    public class BeginPanelManager : MonoBehaviour
     {
         [SerializeField]
         CanvasGroup canvas;

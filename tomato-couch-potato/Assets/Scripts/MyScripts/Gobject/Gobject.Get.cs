@@ -8,13 +8,13 @@ namespace trrne.Box
 {
     public static partial class Gobject
     {
-        public static GameObject Find(string tag) => GameObject.FindGameObjectWithTag(tag);
+        public static GameObject GetWithTag(this string tag) => GameObject.FindGameObjectWithTag(tag);
         public static GameObject[] Finds(string tag) => GameObject.FindGameObjectsWithTag(tag);
         public static T[] Finds<T>() where T : UnityEngine.Object => GameObject.FindObjectsByType<T>(FindObjectsSortMode.None);
 
-        public static T GetComponentWithTag<T>(string tag) => Find(tag).GetComponent<T>();
+        public static T GetComponentWithTag<T>(string tag) => GetWithTag(tag).GetComponent<T>();
         public static T GetComponentWithTag<T>(this GameObject gob) => gob.GetComponent<T>();
-        public static bool TryGetComponentWithTag<T>(out T t, string tag) => Find(tag).TryGetComponent(out t);
+        public static bool TryGetComponentWithTag<T>(out T t, string tag) => GetWithTag(tag).TryGetComponent(out t);
         [Obsolete] public static T GetComponentWithName<T>(string name) => GameObject.Find(name).GetComponent<T>();
         public static T GetComponentFromChild<T>(this Transform transform, int index = 0) => transform.GetChild(index).GetComponent<T>();
         public static T GetComponentFromParent<T>(this Transform transform) => transform.parent.GetComponent<T>();

@@ -29,7 +29,7 @@ namespace trrne.Brain
             cam.Followable = true;
 
             player = Gobject.GetComponentWithTag<Player>(Constant.Tags.Player);
-            player.Controllable = true;
+            // player.Controllable = true;
 
             var enemies = Gobject.Finds(Constant.Tags.Enemy);
             enemies.ForEach(enemy => enemy.GetComponent<Creature>().Enable = true);
@@ -38,6 +38,17 @@ namespace trrne.Brain
         void Update()
         {
             timeT.SetText(time.CurrentSTR);
+
+#if DEBUG
+            if (Inputs.Down(KeyCode.K))
+            {
+                player.Controllable = false;
+            }
+            if (Inputs.Up(KeyCode.K))
+            {
+                player.Controllable = true;
+            }
+#endif
         }
     }
 }

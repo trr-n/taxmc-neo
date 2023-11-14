@@ -24,7 +24,7 @@ namespace trrne.Core
 
         public bool Enable { get; set; }
 
-        protected BoxCollider2D hitbox;
+        protected CircleCollider2D hitbox;
         protected SpriteRenderer sr;
         protected Vector2 direction;
 
@@ -35,7 +35,7 @@ namespace trrne.Core
             Enable = true;
 
             sr = GetComponent<SpriteRenderer>();
-            hitbox = GetComponent<BoxCollider2D>();
+            hitbox = GetComponent<CircleCollider2D>();
             hitbox.isTrigger = true;
 
             // playerObj = Gobject.Find(Constant.Tags.Player);

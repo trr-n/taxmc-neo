@@ -38,7 +38,7 @@ namespace trrne.Core
 
         void Start()
         {
-            player = Gobject.Find(Constant.Tags.Player);
+            player = Gobject.GetWithTag(Constant.Tags.Player);
             var c = player.GetComponent<BoxCollider2D>();
             ofs = new(0, c.Size().y / 2);
 

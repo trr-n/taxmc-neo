@@ -18,7 +18,7 @@ namespace trrne
         {
             public const int None = 1 << 0;
             public const int Player = 1 << 6;
-            public const int Ground = 1 << 7;
+            public const int Jumpable = 1 << 7;
             public const int Object = 1 << 8;
             public const int Creature = 1 << 9;
         }
@@ -40,7 +40,7 @@ namespace trrne
         public readonly struct Tags
         {
             public const string Manager = "Manager";
-            public const string Ground = "Ground";
+            public const string Jumpable = "Jumpable";
             public const string Player = "Player";
             public const string Ladder = "Ladder";
             public const string Pad = "Pad";

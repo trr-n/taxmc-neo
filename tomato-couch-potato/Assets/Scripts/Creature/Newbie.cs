@@ -17,7 +17,7 @@ namespace trrne.Core
         StartFacing facing = StartFacing.Right;
 
         (Ray ray, RaycastHit2D hit) horizon, top, bottom;
-        (float size, int detect) hitbox => (1.2f, Constant.Layers.Player | Constant.Layers.Ground);
+        (float size, int detect) hitbox => (1.2f, Constant.Layers.Player | Constant.Layers.Jumpable);
 
         Player player;
 
