@@ -9,7 +9,7 @@ namespace trrne.Core
 
         void OnTriggerEnter2D(Collider2D info)
         {
-            if (Gobject.TryGetComponent(info, out Player _))
+            if (info.TryGetComponent(out Player _))
             {
                 Hit = true;
             }
@@ -17,7 +17,7 @@ namespace trrne.Core
 
         void OnTriggerExit2D(Collider2D info)
         {
-            if (Gobject.TryGetComponent(info, out Player _))
+            if (info.TryGetComponent(out Player _))
             {
                 Hit = false;
             }

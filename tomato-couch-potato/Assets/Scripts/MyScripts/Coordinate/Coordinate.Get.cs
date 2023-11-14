@@ -2,7 +2,7 @@
 
 namespace trrne.Box
 {
-    public static partial class Vector100
+    public static partial class Coordinate
     {
         public static Vector2 Position2(this GameObject gob) => gob.transform.position;
         public static Vector2 Position2(this Collider2D info) => info.gameObject.transform.position;

@@ -30,8 +30,19 @@ namespace trrne.Core
 
         void Update()
         {
-            SetPosition();
-            Draw();
+            // SetPosition();
+            // Draw();
+
+            Test();
+        }
+
+        void Test()
+        {
+            // アクティブなエフェクトのアイコンだけ表示
+            for (int i = 0; i < icons.Length; i++)
+            {
+                icons[i].SetActive(player.EffectFlags[i]);
+            }
         }
 
         void SetPosition()

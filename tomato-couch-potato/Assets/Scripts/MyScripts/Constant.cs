@@ -40,6 +40,7 @@ namespace trrne
         public readonly struct Tags
         {
             public const string Manager = "Manager";
+            public const string Ground = "Ground";
             public const string Player = "Player";
             public const string Ladder = "Ladder";
             public const string Pad = "Pad";
@@ -62,7 +63,7 @@ namespace trrne
 
         public readonly struct SpawnPositions
         {
-            public static Vector2 Stage1 => Vector100.Zero;
+            public static Vector2 Stage1 => Coordinate.V30;
         }
     }
 }

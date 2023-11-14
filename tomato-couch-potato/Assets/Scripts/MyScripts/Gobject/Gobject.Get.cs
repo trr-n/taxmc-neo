@@ -31,7 +31,7 @@ namespace trrne.Box
         public static bool TryGetComponent<T>(this Collision info, out T t) => info.gameObject.TryGetComponent(out t);
         public static bool TryGetComponent<T>(this Collider info, out T t) => info.gameObject.TryGetComponent(out t);
         public static bool TryGetComponent<T>(this RaycastHit2D hit, out T t) => hit.collider.TryGetComponent(out t);
-        [Obsolete] public static void TryAction<T>(this Collider2D info, Action<T> action) => Shorthand.If(info.TryGetComponent(out T t), () => action(t));
+        public static void TryAction<T>(this Collider2D info, Action<T> action) => Shorthand.If(info.TryGetComponent(out T t), () => action(t));
 
         public static GameObject GetChildGameObject(this Transform t) => t.GetChild(0).gameObject;
         public static GameObject GetChildGameObject(this Transform t, int index) => t.GetChild(index).gameObject;

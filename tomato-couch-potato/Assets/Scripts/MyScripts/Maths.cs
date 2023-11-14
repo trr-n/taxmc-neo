@@ -34,21 +34,21 @@ namespace trrne.Box
         public static int Sign(this float a) => Cutail((a >= 0f) ? 1f : (-1f));
         public static bool Sign(this float a, int b) => a.Sign() == b;
 
-        public static bool IsPrime(int a)
+        public static bool IsPrime(int n)
         {
-            if (a == 2 || a == 3)
+            if (n == 2 || n == 3)
             {
                 return true;
             }
 
-            if (a < 2 || a % 2 == 0)
+            if (n <= 1 || n % 2 == 0)
             {
                 return false;
             }
 
-            for (int i = 4; i < Mathf.Sqrt(a); i++)
+            for (int i = 4; i < Mathf.Sqrt(n); i++)
             {
-                if (a % i == 0)
+                if (n % i == 0)
                 {
                     return false;
                 }
@@ -56,17 +56,8 @@ namespace trrne.Box
             return true;
         }
 
-        public static int EnumLength<T>(this T t) => Enum.GetNames(t.GetType()).Length;
+        public static int EnumLength<T>(this T t) where T : Enum => Enum.GetNames(t.GetType()).Length;
 
         public static bool IsCaged(this float n, float min, float max) => !(n > max || n < min);
-
-        // public static float Sum(float[] arr)
-        // {
-        //     float dist = 0f;
-        //     arr.ForEach(a => dist += a);
-        //     return dist;
-        // }
-        // public static float Sum(List<float> arr) => Sum(arr.ToArray());
-        // public static float Sum(IEnumerable<float> arr) => Sum(arr.ToArray());
     }
 }

@@ -18,7 +18,7 @@ namespace trrne.Core
                 && info.TryGetComponent(out Rigidbody2D rb))
             {
                 float distance = Vector2.Distance(transform.position, info.Position2());
-                rb.velocity += distance * fan.power * Time.fixedDeltaTime * Vector100.Y2D;
+                rb.velocity += distance * fan.power * Time.fixedDeltaTime * Coordinate.V2Y;
             }
         }
     }

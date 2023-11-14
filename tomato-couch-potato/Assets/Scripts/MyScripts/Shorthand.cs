@@ -6,15 +6,16 @@ namespace trrne.Box
 {
     public static class Shorthand
     {
-        public static void If(this bool boo, Action action) { if (boo) { action(); } }
-        public static void If<T>(this bool boo, Func<T> func) { if (boo) { func(); } }
+        public static void If(this bool boolean, Action action) { if (boolean) { action(); } }
+        public static void If<T>(this bool boolean, Func<T> func) { if (boolean) { func(); } }
+
+        /// <summary>1 line</summary>
+        public static T L1ne<T>(Func<T> func) => func();
 
         /// <summary>
         /// t1とt2をがっちゃんこする
         /// </summary>
-        public static IEnumerable<(T1, T2)> Zip<T1, T2>(T1[] t1, T2[] t2)
-        => t1.SelectMany(t11 => t2.Select(t22 => (t11, t22)));
-
+        public static IEnumerable<(T1, T2)> Zip<T1, T2>(T1[] t1, T2[] t2) => t1.SelectMany(t11 => t2.Select(t22 => (t11, t22)));
         public static IEnumerable<(T1, T2)> Zip<T1, T2>(List<T1> t1, List<T2> t2) => Zip(t1.ToArray(), t2.ToArray());
 
         public static void ForEach<T>(this T[] array, Action<T> action) => Array.ForEach(array, action);

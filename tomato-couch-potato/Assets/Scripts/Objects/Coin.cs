@@ -1,4 +1,3 @@
-using trrne.Box;
 using UnityEngine;
 
 namespace trrne.Core
@@ -10,7 +9,7 @@ namespace trrne.Core
 
         void OnTriggerEnter2D(Collider2D info)
         {
-            if (Gobject.TryGetComponent(info, out Bank bank))
+            if (info.TryGetComponent(out Bank bank))
             {
                 bank.Add(amount);
                 Destroy(gameObject);

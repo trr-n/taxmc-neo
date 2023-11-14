@@ -35,7 +35,7 @@ namespace trrne.Core
             // active
             if (isActive && Inputs.Down(Constant.Keys.Button))
             {
-                source.TryPlay(sounds.Choice());
+                source.TryPlayOneShot(sounds.Choice());
                 sr.sprite = sprites[1];
                 gimmicks.ForEach(gim => gim.TryGetComponent(out IGimmick g).If(g.On));
                 isActive = false;
@@ -44,7 +44,7 @@ namespace trrne.Core
             // inactive
             else if (!isActive && Inputs.Down(Constant.Keys.Button))
             {
-                source.TryPlay(sounds.Choice());
+                source.TryPlayOneShot(sounds.Choice());
                 sr.sprite = sprites[0];
                 gimmicks.ForEach(gim => gim.TryGetComponent(out IGimmick g).If(g.Off));
                 isActive = true;

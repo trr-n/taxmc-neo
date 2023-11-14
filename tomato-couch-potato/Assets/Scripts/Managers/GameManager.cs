@@ -23,7 +23,7 @@ namespace trrne.Brain
             menu = GetComponent<PauseMenu>();
             menu.Inactive();
 
-            Physics2D.gravity = Vector100.Gravity;
+            Physics2D.gravity = Coordinate.Gravity;
 
             cam = Gobject.GetComponentWithTag<Cam>(Constant.Tags.MainCamera);
             cam.Followable = true;

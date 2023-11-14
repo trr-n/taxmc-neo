@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace trrne.Core
 {
-    [RequireComponent(typeof(BoxCollider2D))]
+    [RequireComponent(typeof(CircleCollider2D))]
     [RequireComponent(typeof(SpriteRenderer))]
     public abstract class MamaFire : MonoBehaviour
     {

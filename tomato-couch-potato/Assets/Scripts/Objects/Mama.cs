@@ -19,9 +19,6 @@ namespace trrne.Core
         [SerializeField]
         float playerDetectRange = 13f;
 
-        [SerializeField]
-        float punishDuration = 3f;
-
         GameObject player;
         Vector3 ofs;
 

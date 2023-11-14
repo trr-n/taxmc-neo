@@ -25,7 +25,8 @@ namespace trrne.Core
                 {
                     await UniTask.WhenAll(Punishment(player));
                 }
-                Destroy(gameObject);
+                try { Destroy(gameObject); }
+                catch { }
             }
         }
     }

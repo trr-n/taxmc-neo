@@ -30,17 +30,44 @@ namespace trrne.Core
         [SerializeField]
         GameObject diefx;
 
+        /// <summary>
+        /// 操作可能か
+        /// </summary>
         public bool Controllable { get; set; }
-        // public bool Jumpable { get; set; }
-        // public bool Movable { get; set; }
 
+        /// <summary>
+        /// キーが入力されているか
+        /// </summary>
         public bool IsMoveKeyDetecting { get; private set; }
+
+        /// <summary>
+        /// テレポート処理中か
+        /// </summary>
         public bool IsTeleporting { get; set; }
+
+        /// <summary>
+        /// 死亡処理中か
+        /// </summary>
         public bool IsDieProcessing { get; set; }
 
-        int effectIdex = -1;
+        /// <summary>
+        /// 与えるエフェクト
+        /// </summary>
+        public int EffectIdx { get; private set; } = -1;
+
+        /// <summary>
+        /// エフェクトを与えられるか
+        /// </summary>
         public bool[] Effectables { get; private set; }
+
+        /// <summary>
+        /// 与えられてるエフェクト
+        /// </summary>
         public bool[] EffectFlags { get; set; }
+
+        /// <summary>
+        /// 足かせが付いているときの減速比
+        /// </summary>
         const float FettersRed = 0.5f;
 
         /// <summary>
@@ -90,11 +117,27 @@ namespace trrne.Core
         /// </summary>
         public Vector3 CoreOffset { get; private set; }
 
+        /// <summary>
+        /// 入力の許容値
+        /// </summary>
         const float InputTolerance = 0.33f;
 
+        /// <summary>
+        /// 現在のチェックポイントを取得(public)/更新(private)
+        /// </summary>
         public Vector2 Checkpoint { get; private set; }
+
+        /// <summary>
+        /// チェックポイントを設定する
+        /// </summary>
         public void SetCheckpoint(Vector2 position) => Checkpoint = position;
+
+        /// <summary>
+        /// チェックポイントに戻る
+        /// </summary>
         public void ReturnToCheckpoint() => transform.position = Checkpoint;
+
+        Vector2 Reverse => new(-1, 1);
 
         void Start()
         {
@@ -148,6 +191,7 @@ namespace trrne.Core
         /// </summary>
         void Respawn()
         {
+            print(EffectIdx);
             if (!IsDieProcessing && Inputs.Down(Constant.Keys.Respawn))
             {
                 ReturnToCheckpoint();
@@ -156,12 +200,12 @@ namespace trrne.Core
 
         public IEnumerator Punishment(float duration, EffectType type)
         {
-            if (effectIdex != -1 && Effectables[effectIdex = (int)type])
+            if (EffectIdx == -1 && Effectables[EffectIdx = (int)type])
             {
-                EffectFlags[effectIdex] = true;
+                EffectFlags[EffectIdx] = true;
                 yield return new WaitForSeconds(duration);
-                EffectFlags[effectIdex] = false;
-                effectIdex = -1;
+                EffectFlags[EffectIdx] = false;
+                EffectIdx = -1;
             }
         }
 
@@ -186,17 +230,13 @@ namespace trrne.Core
                 var current = Mathf.Sign(transform.localScale.x);
                 switch (Mathf.Sign(Input.GetAxisRaw(horizontal)))
                 {
+                    case 0:
+                        return;
                     case 1:
-                        if (current != 1)
-                        {
-                            transform.localScale *= new Vector2(-1, 1);
-                        }
+                        Shorthand.If(current != 1, () => transform.localScale *= Reverse);
                         break;
                     case -1:
-                        if (current != -1)
-                        {
-                            transform.localScale *= new Vector2(-1, 1);
-                        }
+                        Shorthand.If(current != -1, () => transform.localScale *= Reverse);
                         break;
                 }
             }
@@ -204,7 +244,7 @@ namespace trrne.Core
 
         void Jump()
         {
-            if (!Controllable || EffectFlags[(int)EffectType.Chain] || IsTeleporting)
+            if (!Controllable || EffectFlags[(int)EffectType.Chain] || IsTeleporting) // || Jumpable)
             {
                 return;
             }
@@ -217,7 +257,7 @@ namespace trrne.Core
 
             if (Inputs.Down(Constant.Keys.Jump))
             {
-                rb.velocity += JumpPower * Vector100.Y2D;
+                rb.velocity += JumpPower * Coordinate.V2Y;
             }
             animator.SetBool(Constant.Animations.Jump, false);
         }
@@ -234,31 +274,36 @@ namespace trrne.Core
 
             animator.SetBool(Constant.Animations.Walk, Input.GetButton(Constant.Keys.Horizontal) && flag.OnGround);
 
-            var horizontal = EffectFlags[(int)EffectType.Mirror] ? Constant.Keys.ReversedHorizontal : Constant.Keys.Horizontal;
-            var move = Input.GetAxisRaw(horizontal) * Vector100.X2D;
+            string horizontal = EffectFlags[(int)EffectType.Mirror] ? Constant.Keys.ReversedHorizontal : Constant.Keys.Horizontal;
+            var move = Input.GetAxisRaw(horizontal) * Coordinate.V2X;
 
             // 入力がtolerance以下、氷に乗っていない、浮いていない
             if (move.magnitude <= InputTolerance && !flag.OnIce) // && !IsFloating)
             {
                 // x軸の速度をspeed.reduction倍
-                rb.SetVelocityX(rb.velocity.x * MoveReductionRatio);
+                // rb.SetVelocityX(rb.velocity.x * MoveReductionRatio);
+                rb.SetVelocity(x: rb.velocity.x * MoveReductionRatio);
             }
 
-            var limit = MaxSpeed;
-            if (EffectFlags[(int)EffectType.Fetters])
+            float limit = Shorthand.L1ne(() =>
             {
-                limit = MaxSpeed * FettersRed;
-            }
-            else if (flag.OnIce)
-            {
-                limit = MaxSpeed * 2;
-            }
+                if (EffectFlags[(int)EffectType.Fetters])
+                {
+                    return MaxSpeed * FettersRed;
+                }
+                else if (flag.OnIce)
+                {
+                    return MaxSpeed * 2;
+                }
+                return MaxSpeed;
+            });
+
             var v = rb.velocity;
-            rb.velocity = new(
-                Mathf.Clamp(v.x, -limit, limit), Mathf.Clamp(v.y, -limit, limit));
+            // rb.velocity = new(Mathf.Clamp(v.x, -limit, limit), v.y);
+            rb.ClampVelocity(x: (-limit, limit));
 
             // 浮いていたら移動速度低下
-            var velocity = IsFloating ? BaseSpeed * FloatingRed : BaseSpeed;
+            float velocity = IsFloating ? BaseSpeed * FloatingRed : BaseSpeed;
             rb.velocity += Time.fixedDeltaTime * velocity * move;
         }
 

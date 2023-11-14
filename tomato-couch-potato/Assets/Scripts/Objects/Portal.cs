@@ -46,11 +46,11 @@ namespace trrne.Core
             for (int i = 0; i < children; i++)
             {
                 // フレームを回転させる
-                frames[i].transform.Rotate(Time.deltaTime * speeds[i] * Vector100.Z);
+                frames[i].transform.Rotate(Time.deltaTime * speeds[i] * Coordinate.V3Z);
             }
 
             // ついでに中心も回転させる
-            transform.Rotate(Time.deltaTime * myspeed * Vector100.Z);
+            transform.Rotate(Time.deltaTime * myspeed * Coordinate.V3Z);
         }
 
         void OnTriggerEnter2D(Collider2D info)
@@ -60,13 +60,14 @@ namespace trrne.Core
                 return;
             }
 
-            if (Gobject.TryGetComponent(info, out Player player) && !player.IsDieProcessing)
+            if (info.TryGetComponent(out Player player) && !player.IsDieProcessing)
             {
                 warping = true;
 
                 effects.TryInstantiate(transform.position);
 
-                info.transform.DOMove(to, teleportSpeed).SetEase(Ease.OutCubic)
+                info.transform.DOMove(to, teleportSpeed)
+                    .SetEase(Ease.OutCubic)
                     .OnPlay(() => player.IsTeleporting = true)
                     .OnComplete(() => player.IsTeleporting = false);
 

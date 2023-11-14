@@ -30,7 +30,7 @@ namespace trrne.Arm
 
         void Start()
         {
-            core.position = Vector100.X * offset;
+            core.position = Coordinate.V3X * offset;
         }
 
         void Update()

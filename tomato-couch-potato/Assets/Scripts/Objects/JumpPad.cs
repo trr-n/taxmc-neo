@@ -7,18 +7,14 @@ namespace trrne.Core
         [SerializeField]
         float jumpPower = 10f;
 
+        const float DivRatio = 0.1f;
+
         void OnTriggerEnter2D(Collider2D info)
         {
             if (info.TryGetComponent(out Rigidbody2D rb))
             {
-                rb.velocity = Vector2.zero;
-
-                // ! /////////////////////////////////////////////////////////////////////////////////////
-                // FIXME jumpPowerの値を大きくしても一定以上高く跳ばない, 一回目のジャンプは高いこともある
-                // ! /////////////////////////////////////////////////////////////////////////////////////
-                var jumpPower = this.jumpPower * rb.mass;
-                print(jumpPower);
-                rb.velocity += jumpPower * Vector2.up;
+                // rb.velocity = Vector2.zero;
+                rb.velocity += jumpPower * rb.mass * DivRatio * Vector2.up;
             }
         }
     }

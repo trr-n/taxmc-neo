@@ -43,7 +43,7 @@ namespace trrne.Core
 
         protected override async void Behavior()
         {
-            var configure = transform.position + (hitbox.size * Vector100.Y / 2);
+            var configure = transform.position + (hitbox.size * Coordinate.V3Y / 2);
             await Horizon();
             await Top(configure);
             await Bottom(configure);
@@ -51,7 +51,7 @@ namespace trrne.Core
 
         async UniTask Horizon()
         {
-            horizon.ray = new(transform.position - (Vector100.X * hitbox.size / 2), transform.right);
+            horizon.ray = new(transform.position - (Coordinate.V3X * hitbox.size / 2), transform.right);
             horizon.hit = Physics2D.Raycast(horizon.ray.origin, horizon.ray.direction, hitbox.size, hitbox.detect);
 
             if (horizon.hit)
@@ -106,6 +106,6 @@ namespace trrne.Core
             }
         }
 
-        protected override void Movement() => transform.Translate(Time.deltaTime * speed.real * Vector100.X2D);
+        protected override void Movement() => transform.Translate(Time.deltaTime * speed.real * Coordinate.V2X);
     }
 }

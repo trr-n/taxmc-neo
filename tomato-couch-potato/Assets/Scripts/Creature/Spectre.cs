@@ -83,7 +83,7 @@ namespace trrne.Core
 
         async void OnTriggerEnter2D(Collider2D info)
         {
-            if (Gobject.TryGetComponent(info, out Player player))
+            if (info.TryGetComponent(out Player player))
             {
                 lifetimeSW.Reset();
                 await Die(player.Die());

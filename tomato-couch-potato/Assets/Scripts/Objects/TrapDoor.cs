@@ -45,8 +45,8 @@ namespace trrne.Core
             IsOpen = true;
             var rotation = direct switch
             {
-                RotateDirection.Left => this.rotation + Vector100.Z * 90,
-                RotateDirection.Right => this.rotation - Vector100.Z * 90,
+                RotateDirection.Left => this.rotation + Coordinate.V3Z * 90,
+                RotateDirection.Right => this.rotation - Coordinate.V3Z * 90,
                 _ => throw null
             };
             transform.DORotate(rotation, rotationSpeed)

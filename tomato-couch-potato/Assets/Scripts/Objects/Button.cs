@@ -26,7 +26,7 @@ namespace trrne.Core
         protected override void Start()
         {
             base.Start();
-            Animate = false;
+            isAnimate = false;
 
             flag = transform.GetComponentFromChild<ButtonFlag>(0);
 
@@ -45,7 +45,7 @@ namespace trrne.Core
                 isPressing = true;
                 sr.sprite = sprites[status.active];
 
-                speaker.TryPlay(sounds.Choice());
+                speaker.TryPlayOneShot(sounds.Choice());
                 effectiveSW.Restart();
                 gimmicks.ForEach(g => g.GetComponent<IGimmick>().On());
             }
@@ -55,7 +55,7 @@ namespace trrne.Core
             {
                 effectiveSW.Reset();
                 gimmicks.ForEach(g => g.GetComponent<IGimmick>().Off());
-                speaker.TryPlay(sounds.Choice());
+                speaker.TryPlayOneShot(sounds.Choice());
 
                 isPressing = false;
                 sr.sprite = sprites[status.inactive];
