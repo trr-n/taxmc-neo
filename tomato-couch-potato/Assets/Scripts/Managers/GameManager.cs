@@ -29,7 +29,7 @@ namespace trrne.Brain
             cam.Followable = true;
 
             player = Gobject.GetComponentWithTag<Player>(Constant.Tags.Player);
-            // player.Controllable = true;
+            player.Controllable = true;
 
             var enemies = Gobject.Finds(Constant.Tags.Enemy);
             enemies.ForEach(enemy => enemy.GetComponent<Creature>().Enable = true);
