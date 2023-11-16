@@ -1,4 +1,7 @@
-﻿using static UnityEngine.SystemInfo;
+﻿using System;
+using System.Net;
+
+using static UnityEngine.SystemInfo;
 
 namespace trrne.Box
 {
@@ -9,6 +12,11 @@ namespace trrne.Box
         public static string CPU => processorType;
         public static string GPU => graphicsDeviceName;
         public static int VRAM => graphicsMemorySize / 1000;
+
+        public static string Name => Dns.GetHostName();
+        public static IPAddress[] Addresses => Dns.GetHostAddresses(Dns.GetHostName());
+        public static string OSVersion => Environment.OSVersion.VersionString;
+        public static int CPUs => Environment.ProcessorCount;
     }
 }
 

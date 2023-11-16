@@ -7,7 +7,7 @@ namespace trrne.Core
     public class Portal : Object
     {
         [SerializeField]
-        Vector2 to;
+        PortalGoal portalGoal;
 
         [SerializeField]
         float teleportSpeed = 3f;
@@ -17,6 +17,7 @@ namespace trrne.Core
 
         const float SpeedRange = 30;
 
+        [SerializeField]
         GameObject[] frames;
         float[] speeds;
         float myspeed;
@@ -28,13 +29,11 @@ namespace trrne.Core
             base.Start();
 
             // パーティクルを除くため-1
-            children = transform.childCount - 1;
+            children = frames.Length;
 
-            frames = new GameObject[children];
             speeds = new float[children];
             for (int i = 0; i < children; i++)
             {
-                frames[i] = transform.GetChildGameObject(i);
                 frames[i].GetComponent<SpriteRenderer>().SetAlpha(frameAlpha);
                 speeds[i] = Randoms._(-SpeedRange, SpeedRange);
             }
@@ -43,6 +42,10 @@ namespace trrne.Core
 
         protected override void Behavior()
         {
+#if DEBUG
+            Debug.DrawLine(transform.position, portalGoal.Goal); // 目的地まで線を引く
+#endif
+
             for (int i = 0; i < children; i++)
             {
                 // フレームを回転させる
@@ -62,16 +65,19 @@ namespace trrne.Core
 
             if (info.TryGetComponent(out Player player) && !player.IsDieProcessing)
             {
-                warping = true;
-
-                effects.TryInstantiate(transform.position);
-
-                info.transform.DOMove(to, teleportSpeed)
+                info.transform.DOMove(portalGoal.Goal, teleportSpeed)
                     .SetEase(Ease.OutCubic)
-                    .OnPlay(() => player.IsTeleporting = true)
-                    .OnComplete(() => player.IsTeleporting = false);
-
-                warping = false;
+                    .OnPlay(() =>
+                    {
+                        warping = true;
+                        player.IsTeleporting = true;
+                        effects.TryInstantiate(transform.position);
+                    })
+                    .OnComplete(() =>
+                    {
+                        player.IsTeleporting = false;
+                        warping = false;
+                    });
             }
         }
     }

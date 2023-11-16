@@ -271,16 +271,17 @@ namespace trrne.Core
                 return;
             }
 
-            animator.SetBool(Constant.Animations.Walk, Input.GetButton(Constant.Keys.Horizontal) && flag.OnGround);
+            bool flag = Input.GetButton(Constant.Keys.Horizontal) && this.flag.OnGround;
+            animator.SetBool(Constant.Animations.Walk, flag);
 
-            string horizontal = EffectFlags[(int)EffectType.Mirror] ? Constant.Keys.ReversedHorizontal : Constant.Keys.Horizontal;
+            string horizontal = EffectFlags[(int)EffectType.Mirror] ?
+                Constant.Keys.ReversedHorizontal : Constant.Keys.Horizontal;
             var move = Input.GetAxisRaw(horizontal) * Coordinate.V2X;
 
             // 入力がtolerance以下、氷に乗っていない、浮いていない
-            if (move.magnitude <= InputTolerance && !flag.OnIce) // && !IsFloating)
+            if (move.magnitude <= InputTolerance && !this.flag.OnIce) // && !IsFloating)
             {
                 // x軸の速度をspeed.reduction倍
-                // rb.SetVelocityX(rb.velocity.x * MoveReductionRatio);
                 rb.SetVelocity(x: rb.velocity.x * MoveReductionRatio);
             }
 
@@ -290,7 +291,7 @@ namespace trrne.Core
                 {
                     return MaxSpeed * FettersRed;
                 }
-                else if (flag.OnIce)
+                else if (this.flag.OnIce)
                 {
                     return MaxSpeed * 2;
                 }

@@ -8,6 +8,7 @@ namespace trrne.Box
     {
         public static void If(this bool boolean, Action action) { if (boolean) { action(); } }
         public static void If<T>(this bool boolean, Func<T> func) { if (boolean) { func(); } }
+        public static void If2<T>(this bool boolean, Func<T> btrue, Func<T> bfalse) { if (boolean) { btrue(); } else { bfalse(); } }
 
         /// <summary>1 line</summary>
         public static T L1ne<T>(Func<T> func) => func();
