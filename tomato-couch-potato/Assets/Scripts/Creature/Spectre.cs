@@ -31,7 +31,6 @@ namespace trrne.Core
         {
             Flip();
 
-            // death
             if (this != null && lifetimeSW.Sf >= lifetime)
             {
                 await Die();
@@ -41,9 +40,9 @@ namespace trrne.Core
         void Flip()
         {
             // flip the sprite
-            var selfx = transform.position.x;
-            var playerx = player.transform.position.x;
-            var scalex = transform.localScale.x;
+            float selfx = transform.position.x,
+                playerx = player.transform.position.x,
+                scalex = transform.localScale.x;
             if ((selfx > playerx && left != scalex) || (selfx < playerx && left == scalex))
             {
                 transform.localScale *= Mirrored;

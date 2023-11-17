@@ -9,13 +9,16 @@ namespace trrne.Core
         bool IsUpdate = false;
         public Vector2 Goal { get; private set; }
 
+        SpriteRenderer sr;
+
         void Start()
         {
             Goal = transform.position;
+            sr = GetComponent<SpriteRenderer>();
 #if DEBUG
-            GetComponent<SpriteRenderer>().SetAlpha(1);
+            sr.SetAlpha(1);
 #else
-            GetComponent<SpriteRenderer>().SetAlpha(0);
+            sr.SetAlpha(0);
 #endif
         }
 

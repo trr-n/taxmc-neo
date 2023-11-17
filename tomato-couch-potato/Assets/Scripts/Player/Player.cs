@@ -12,6 +12,7 @@ namespace trrne.Core
     public enum CuzOfDeath
     {
         Venom,
+        Fallen,
         None,
     }
 
@@ -328,6 +329,9 @@ namespace trrne.Core
                 case CuzOfDeath.Venom:
                     rb.velocity = Vector2.zero;
                     animator.Play(Constant.Animations.Venomed);
+                    break;
+                case CuzOfDeath.Fallen:
+                    animator.Play(Constant.Animations.Die);
                     break;
                 default: break;
             }

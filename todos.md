@@ -47,6 +47,7 @@
 - [x] 落とし穴
 - [x] 点滅する床
 - [x] 氷の床
+- [x] なすママ
 
 ## メインステージ構成
 
@@ -57,6 +58,18 @@
 - [ ] Game1
   - とにかく高難度
 
-<!-- links -->
+### チュートリアル構成メモ
+
+1. おばけとチェックポイント
+2. 動く床
+3. トウガラシ
+4. なすママ
+5. ジャンプパッド
+6. ワープ
+7. 回転するやつ
+8. にんじん
+9. ゴール
+
+<!--? links -->
 [unitask]: https://github.com/Cysharp/UniTask/released
 [dotween]: https://assetstore.unity.com/packages/tools/animation/dotween-hotween-v2-27676

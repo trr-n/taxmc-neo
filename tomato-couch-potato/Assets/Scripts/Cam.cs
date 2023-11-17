@@ -14,11 +14,11 @@ namespace trrne.Core
 
         float z, vx, vy;
 
-        [SerializeField] float spdx = 0.1f, spdy = 1e-12f;
+        [SerializeField]
+        Vector2 spd = new(0.01f, 1e-12f);
 
         void Start()
         {
-            Followable = true;
             player = Gobject.GetComponentWithTag<Player>(Constant.Tags.Player);
             z = transform.position.z;
         }
@@ -26,12 +26,13 @@ namespace trrne.Core
         void Update()
         {
             Zoom();
-            // Follow();
+            Follow();
         }
 
         void LateUpdate()
         {
-            Follow();
+            // Zoom();
+            // Follow();
         }
 
         void Follow()
@@ -41,10 +42,10 @@ namespace trrne.Core
                 return;
             }
 
-            // FIXME 追随するときにプレイヤーがプルプル震えてみる
+            // FIXME 追随するときにプレイヤーがプルプル震えてみえる
             Vector2 self = transform.position, player = this.player.transform.position;
-            float dx = Mathf.SmoothDamp(self.x, player.x, ref vx, spdx),
-                dy = Mathf.SmoothDamp(self.y, player.y, ref vy, spdy) + offsetY;
+            float dx = Mathf.SmoothDamp(self.x, player.x, ref vx, spd.x),
+                dy = Mathf.SmoothDamp(self.y, player.y, ref vy, spd.y) + offsetY;
             transform.position = new(dx, dy, z);
         }
 

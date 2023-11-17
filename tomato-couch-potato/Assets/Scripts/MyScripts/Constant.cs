@@ -50,6 +50,8 @@ namespace trrne
             public const string Ice = "Ice";
             public const string Hole = "Hole";
             public const string Mama = "Mama";
+            public const string Info = "Info";
+            public const string Spectre = "Spectre";
         }
 
         public readonly struct Animations
@@ -59,6 +61,7 @@ namespace trrne
             public const string Walk = "Walk";
             public const string Venom = "Venom";
             public const string Venomed = "venom_die";
+            public const string Die = "Die";
         }
 
         public readonly struct SpawnPositions
