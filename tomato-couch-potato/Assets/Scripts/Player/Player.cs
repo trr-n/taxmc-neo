@@ -192,10 +192,11 @@ namespace trrne.Core
         /// </summary>
         void Respawn()
         {
-            if (!IsDieProcessing && Inputs.Down(Constant.Keys.Respawn))
+            if (IsDieProcessing && !Inputs.Down(Constant.Keys.Respawn))
             {
-                ReturnToCheckpoint();
+                return;
             }
+            ReturnToCheckpoint();
         }
 
         public IEnumerator Punishment(float duration, EffectType type)
@@ -224,10 +225,10 @@ namespace trrne.Core
                 return;
             }
 
-            var horizontal = EffectFlags[(int)EffectType.Mirror] ? Constant.Keys.ReversedHorizontal : Constant.Keys.Horizontal;
+            string horizontal = EffectFlags[(int)EffectType.Mirror] ? Constant.Keys.ReversedHorizontal : Constant.Keys.Horizontal;
             if (Input.GetButtonDown(horizontal))
             {
-                var current = Mathf.Sign(transform.localScale.x);
+                int current = Maths.Sign(transform.localScale.x);
                 switch (Mathf.Sign(Input.GetAxisRaw(horizontal)))
                 {
                     case 0:
@@ -277,7 +278,7 @@ namespace trrne.Core
 
             string horizontal = EffectFlags[(int)EffectType.Mirror] ?
                 Constant.Keys.ReversedHorizontal : Constant.Keys.Horizontal;
-            var move = Input.GetAxisRaw(horizontal) * Coordinate.V2X;
+            Vector2 move = Input.GetAxisRaw(horizontal) * Coordinate.V2X;
 
             // 入力がtolerance以下、氷に乗っていない、浮いていない
             if (move.magnitude <= InputTolerance && !this.flag.OnIce) // && !IsFloating)
@@ -299,7 +300,7 @@ namespace trrne.Core
                 return MaxSpeed;
             });
 
-            var v = rb.velocity;
+            Vector2 v = rb.velocity;
             rb.velocity = new(Mathf.Clamp(v.x, -limit, limit), v.y);
             // rb.ClampVelocity(x: (-limit, limit));
 

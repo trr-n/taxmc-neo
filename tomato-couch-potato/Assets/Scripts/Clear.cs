@@ -1,6 +1,5 @@
 using UnityEngine;
 using trrne.Brain;
-using trrne.Box;
 using System;
 
 namespace trrne.Core
@@ -28,7 +27,10 @@ namespace trrne.Core
                 {
                     Recorder.Instance.Clear();
                 }
-                catch (Exception e) { print(e.Message); }
+                catch (Exception)
+                {
+                    print("Cannot read data of singleton.");
+                }
             }
         }
     }

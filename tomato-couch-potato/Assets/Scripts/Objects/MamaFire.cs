@@ -62,7 +62,20 @@ namespace trrne.Core
         }
 
         protected abstract void Movement();
-        protected abstract void OnTriggerEnter2D(Collider2D info);
         protected abstract UniTask Punishment(Player player);
+
+        protected virtual async void OnTriggerEnter2D(Collider2D info)
+        {
+            if (info.TryGetComponent(out Player player))
+            {
+                sr.SetAlpha(0);
+                effects.TryInstantiate(transform.position);
+                if (!player.IsDieProcessing)
+                {
+                    await UniTask.WhenAll(Punishment(player));
+                }
+                Destroy(gameObject);
+            }
+        }
     }
 }

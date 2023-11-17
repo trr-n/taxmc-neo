@@ -1,6 +1,6 @@
 ﻿namespace trrne.Box
 {
-    public sealed class GateronSilentClear<T>
+    public sealed class SilentClear<T>
     {
         T[] items;
         public int Count { get; private set; }
@@ -8,14 +8,14 @@
 
         public T this[int index] => items[index];
 
-        public GateronSilentClear()
+        public SilentClear()
         {
             Capacity = 10;
             items = new T[Capacity];
             Count = 0;
         }
 
-        public GateronSilentClear(int capacity)
+        public SilentClear(int capacity)
         {
             Capacity = capacity;
             items = new T[capacity];
@@ -24,10 +24,10 @@
 
         public void Add(T item)
         {
-            if (Count == Capacity)
+            if (Count >= Capacity)
             {
                 Capacity += 2;
-                var items = new T[Capacity];
+                T[] items = new T[Capacity];
                 for (int i = 0; i < Count; i++)
                 {
                     items[i] = this.items[i];
@@ -40,7 +40,10 @@
 
         public void Remove(int index)
         {
-            if (Count <= 0) { return; }
+            if (Count <= 0)
+            {
+                return;
+            }
 
             for (int i = 0; i < Count; i++)
             {

@@ -25,7 +25,7 @@ namespace trrne.Core
 
         protected override async UniTask Punishment(Player player) => await player.Die();
 
-        protected override async void OnTriggerEnter2D(Collider2D info)
+        /* protected override async void OnTriggerEnter2D(Collider2D info)
         {
             if (info.TryGetComponent(out Player player))
             {
@@ -35,13 +35,8 @@ namespace trrne.Core
                 {
                     await UniTask.WhenAll(Punishment(player));
                 }
-
-                try
-                {
-                    Destroy(gameObject);
-                }
-                catch (MissingReferenceException e) { print(e.Message); }
+                Destroy(gameObject);
             }
-        }
+        } */
     }
 }

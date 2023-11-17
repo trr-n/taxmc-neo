@@ -145,9 +145,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 21b6e3337d766504bb37bff171a79bd2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pepperyLimit: 1
+  fires:
+  - {fileID: 5835071163513517268, guid: d308dca745d0bdb48af15431a3304d17, type: 3}
+  - {fileID: 7740138858981365461, guid: 4112432352b5fd149a01c74a635af342, type: 3}
+  - {fileID: 7455944906080798636, guid: 6b046ff14d55925439dd812a0a67346e, type: 3}
+  - {fileID: 3770449380030150206, guid: 5fc62aceea125be43aba3d6f12fe6bf1, type: 3}
+  fireRapidRate: 2
   lineWidth: 0.5
-  detectRange: 13
+  playerDetectRange: 13
 --- !u!1 &2982049850037527437
 GameObject:
   m_ObjectHideFlags: 0

@@ -12,10 +12,12 @@ namespace trrne.Core
         [SerializeField]
         float offsetY = 1;
 
-        float z, vx, vy;
+        float z, refvx, refvy;
 
         [SerializeField]
         Vector2 spd = new(0.01f, 1e-12f);
+
+        float axis = 0f;
 
         void Start()
         {
@@ -26,13 +28,13 @@ namespace trrne.Core
         void Update()
         {
             Zoom();
-            Follow();
+            // Follow();
         }
 
         void LateUpdate()
         {
             // Zoom();
-            // Follow();
+            Follow();
         }
 
         void Follow()
@@ -42,17 +44,16 @@ namespace trrne.Core
                 return;
             }
 
-            // FIXME 追随するときにプレイヤーがプルプル震えてみえる
             Vector2 self = transform.position, player = this.player.transform.position;
-            float dx = Mathf.SmoothDamp(self.x, player.x, ref vx, spd.x),
-                dy = Mathf.SmoothDamp(self.y, player.y, ref vy, spd.y) + offsetY;
+            float dx = Mathf.SmoothDamp(self.x, player.x, ref refvx, spd.x),
+                dy = Mathf.SmoothDamp(self.y, player.y, ref refvy, spd.y) + offsetY;
             transform.position = new(dx, dy, z);
         }
 
         void Zoom()
         {
-            var axis = Input.GetAxisRaw(Constant.Keys.Zoom);
-            if (axis == 0)
+
+            if ((axis = Input.GetAxisRaw(Constant.Keys.Zoom)) == 0)
             {
                 return;
             }
