@@ -49,7 +49,7 @@ namespace trrne.Box
         public static Quaternion Q1 => new(1, 1, 1, 1);
 
         /// <summary>
-        /// [xX]<br/>[yY]<br/>[zZ]<br/>[wW]<br/>[zZ]ero<br/>[oO]ne
+        /// [xX]=(1,0,0,0)<br/>[yY]=(0,1,0,0)<br/>[zZ]=(0,0,1,0)<br/>[wW]=(0,0,0,1)<br/>[zZ]ero=(0,0,0,0)<br/>[oO]ne=(1,1,1,1)
         /// </summary>
         public static Quaternion Q(string xyzw01) => xyzw01 switch
         {
@@ -62,19 +62,27 @@ namespace trrne.Box
             _ => throw null
         };
 
-        /// <summary>
-        /// 重力加速度
-        /// </summary>
+        /// <summary> 重力加速度 </summary>
         public static float GravitationalAcceleration => 9.80665f;
 
-        /// <summary>
-        /// 重力加速度
-        /// </summary>
-        public static Vector3 Gravity => -V3Y * GravitationalAcceleration;
+        public static Vector2 Gravity => -V3Y * GravitationalAcceleration;
 
         public static bool Twins(Vector3 n1, Vector3 n2)
-        => Maths.Twins(n1.x, n2.x) && Maths.Twins(n1.y, n2.y) && Maths.Twins(n1.z, n2.z);
+        => Mathf.Approximately(n1.x, n2.x) && Mathf.Approximately(n1.y, n2.y) && Mathf.Approximately(n1.z, n2.z);
 
         [Obsolete] public static Vector2 Direction(Vector2 target, Vector2 origin) => target - origin;
+
+        public static float Angle(in Vector2 a, in Vector2 b)
+        {
+            float lal = Mathf.Sqrt(Mathf.Pow(a.x, 2) + Mathf.Pow(a.y, 2)),
+                lbl = Mathf.Sqrt(Mathf.Pow(b.x, 2) + Mathf.Pow(b.y, 2));
+            float dot = a.x * b.x + a.y * b.y;
+            return Mathf.Acos(dot / (lal * lbl));
+        }
+
+        /// <summary>
+        /// 極座標を直交座標に変換
+        /// </summary>
+        public static Vector2 Polor2Rectangular(in Vector2 p) => new(p.x * MathF.Cos(p.y), p.x * MathF.Sin(p.y));
     }
 }
