@@ -27,7 +27,7 @@ namespace trrne.Brain
 
         void Update()
         {
-            if (sw.SecondF() >= showingTime)
+            if (sw.Secondf() >= showingTime)
             {
                 sw.Reset();
                 StartCoroutine(FadeOut());
@@ -44,7 +44,6 @@ namespace trrne.Brain
                 canvas.alpha = alpha;
             }
             canvas.alpha = 0;
-
             yield return new WaitForSeconds(.5f);
             player.Controllable = true;
         }

@@ -20,7 +20,7 @@ namespace trrne.Core
             angle += Time.deltaTime * speed;
             float r = size * Mathf.Exp(b * angle);
             float x = r * Mathf.Cos(angle), y = r * Mathf.Sin(angle);
-            transform.position = new Vector2(x, y);
+            transform.position = new(x, y);
         }
     }
 }

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
@@ -7,7 +6,7 @@ namespace trrne.Box
 {
     public static class Maths
     {
-        public const float Epsilon = 1e-45f; // 0.000000000000000000000000000000000000000000001
+        public const float Epsilon = 1e-45f;
 
         public static float Min(float a, float b) => (a < b) ? a : b;
         public static float Max(float a, float b) => (a > b) ? a : b;
@@ -56,7 +55,7 @@ namespace trrne.Box
             return true;
         }
 
-        public static int EnumLength<T>(this T t) where T : Enum => Enum.GetNames(t.GetType()).Length;
+        public static int EnumLength<T>(this T t) where T : Enum => Enum.GetValues(t.GetType()).Length;
 
         public static bool IsCaged(this float n, float min, float max) => !(n > max || n < min);
     }

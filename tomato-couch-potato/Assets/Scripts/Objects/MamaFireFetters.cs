@@ -24,20 +24,5 @@ namespace trrne.Core
         }
 
         protected override async UniTask Punishment(Player player) => await player.Punishment(effectDuration, EffectType.Fetters);
-
-        /* protected override async void OnTriggerEnter2D(Collider2D info)
-        {
-            if (info.TryGetComponent(out Player player))
-            {
-                effects.TryInstantiate(transform.position);
-                sr.SetAlpha();
-                if (!player.IsDieProcessing)
-                {
-                    await UniTask.WhenAll(Punishment(player));
-                }
-                try { Destroy(gameObject); }
-                catch { }
-            }
-        } */
     }
 }

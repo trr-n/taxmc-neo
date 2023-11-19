@@ -1,3 +1,4 @@
+using System.ComponentModel;
 using trrne.Box;
 using DG.Tweening;
 using UnityEngine;
@@ -11,16 +12,23 @@ namespace trrne.Core
             Left,
             Right
         }
-
         [SerializeField]
         RotateDirection direct;
+
+        public enum RotateAmount
+        {
+            _90 = 90,
+            _180 = 180,
+        }
+        [SerializeField]
+        RotateAmount amount = RotateAmount._90;
 
         Vector3 rotation;
 
         /// <summary>
         /// 開いているか
         /// </summary>
-        public bool IsOpen { get; private set; }
+        public bool IsOpen { get; private set; } = false;
 
         readonly float rotationSpeed = 0.5f;
 
@@ -42,10 +50,10 @@ namespace trrne.Core
         /// </summary>
         public void On()
         {
-            var rotation = direct switch
+            Vector3 rotation = direct switch
             {
-                RotateDirection.Left => this.rotation + Coordinate.V3Z * 90,
-                RotateDirection.Right => this.rotation - Coordinate.V3Z * 90,
+                RotateDirection.Left => this.rotation + Coordinate.V3Z * ((float)amount - 1e-8f),
+                RotateDirection.Right => this.rotation - Coordinate.V3Z * ((float)amount - 1e-8f),
                 _ => throw null
             };
 

@@ -9,7 +9,7 @@ namespace trrne.Box
         /// actionを一回実行
         /// </summary>
         public void RunOnce(params Action[] actions) =>
-        Shorthand.If(!runonce_flag, () =>
+        (!runonce_flag).If(() =>
         {
             actions.ForEach(action => action());
             runonce_flag = true;
@@ -17,7 +17,7 @@ namespace trrne.Box
 
         readonly static Stopwatch bookingSW = new(true);
         public static void Book(float time, Action action)
-        => Shorthand.If(bookingSW.Sf >= time, () =>
+        => (bookingSW.Secondf() >= time).If(() =>
         {
             action();
             bookingSW.Rubbish();

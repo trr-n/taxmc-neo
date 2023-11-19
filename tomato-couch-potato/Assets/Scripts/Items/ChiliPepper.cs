@@ -10,10 +10,10 @@ namespace trrne.Core
 
         async void OnTriggerEnter2D(Collider2D info)
         {
-            if (info.TryGetComponent(out Player player) && !player.IsDieProcessing)
+            if (info.TryGetComponent(out Player player) && !player.IsDying)
             {
                 effects.TryInstantiate(transform.position);
-                await player.Die(CuzOfDeath.Venom);
+                await player.Die(CuzOfDeath.Caps);
             }
         }
     }

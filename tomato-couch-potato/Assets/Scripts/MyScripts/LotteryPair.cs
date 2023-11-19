@@ -14,7 +14,7 @@ namespace trrne.Box
         public TWeight Weight(int index) => weights[index];
         public TWeight[] Weights() => weights.ToArray();
 
-        public int Count => subjects.Count;
+        public int Size() => subjects.Count;
 
         public LotteryPair(params (TSubject subject, TWeight weight)[] pairs)
         {

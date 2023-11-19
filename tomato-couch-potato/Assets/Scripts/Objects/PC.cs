@@ -15,7 +15,7 @@ namespace trrne.Core
         protected override void Start()
         {
             base.Start();
-            display = transform.GetChild(0).GetComponent<SpriteRenderer>();
+            display = transform.GetComponentFromChild<SpriteRenderer>(0);
             display.color = DisplayColors[Unused];
         }
 
@@ -23,8 +23,7 @@ namespace trrne.Core
 
         void OnTriggerEnter2D(Collider2D info)
         {
-            if (!isLoading && info.TryGetComponent(out Player player)
-                && !player.IsDieProcessing)
+            if (!isLoading && info.TryGetComponent(out Player player) && !player.IsDying)
             {
                 isLoading = true;
 

@@ -12,9 +12,6 @@ namespace trrne.Core
         CarrotFlag flag;
         new BoxCollider2D collider;
 
-        /// <summary>
-        /// 耐久値ぜろだったらtrue
-        /// </summary>
         public bool Mendable { get; private set; }
 
         public float Ratio => (float)flag.Count / limitSteps;
@@ -36,12 +33,10 @@ namespace trrne.Core
             if (!Mendable && flag.Count >= limitSteps)
             {
                 effects.TryInstantiate(transform.position);
-
                 Mendable = true;
                 sr.enabled = false;
                 collider.enabled = false;
             }
-
             sr.sprite = sprites[Ratio < .5f ? 0 : 1];
         }
 

@@ -601,7 +601,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &466411651
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -759,6 +759,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 7281095245200427739, guid: 442ace25410a6cc4eb70cdb6ed501a58, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7533838126954174317, guid: 442ace25410a6cc4eb70cdb6ed501a58, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -879,7 +883,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 4341536153826855774, guid: 9422df6054deb464c93ad0dc08f8396b, type: 3}
       propertyPath: m_LocalScale.x
-      value: 1.5659981
+      value: 0.6655492
       objectReference: {fileID: 0}
     - target: {fileID: 4341536153826855774, guid: 9422df6054deb464c93ad0dc08f8396b, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1096,7 +1100,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2758e39ad4dcd5845ac20d49c2c536b6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  debugT: {fileID: 0}
 --- !u!1 &1052815877
 GameObject:
   m_ObjectHideFlags: 0
@@ -1629,8 +1632,8 @@ Canvas:
   m_GameObject: {fileID: 1422125979}
   m_Enabled: 1
   serializedVersion: 3
-  m_RenderMode: 0
-  m_Camera: {fileID: 0}
+  m_RenderMode: 1
+  m_Camera: {fileID: 1682688414}
   m_PlaneDistance: 100
   m_PixelPerfect: 0
   m_ReceivesEvents: 1
@@ -1831,7 +1834,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 4341536153826855774, guid: 9422df6054deb464c93ad0dc08f8396b, type: 3}
       propertyPath: m_LocalScale.x
-      value: 1.5659981
+      value: 0.56767434
       objectReference: {fileID: 0}
     - target: {fileID: 4341536153826855774, guid: 9422df6054deb464c93ad0dc08f8396b, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1882,6 +1885,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9422df6054deb464c93ad0dc08f8396b, type: 3}
+--- !u!20 &1682688414 stripped
+Camera:
+  m_CorrespondingSourceObject: {fileID: 6928596007885149836, guid: 51ff685ecfb3c0348a23e642675c8e6f, type: 3}
+  m_PrefabInstance: {fileID: 1358057113}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &1730587029 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7533838126954174317, guid: 442ace25410a6cc4eb70cdb6ed501a58, type: 3}
@@ -2131,7 +2139,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1970506326
 MonoBehaviour:
   m_ObjectHideFlags: 0

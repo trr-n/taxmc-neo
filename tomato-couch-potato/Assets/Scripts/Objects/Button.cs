@@ -40,7 +40,7 @@ namespace trrne.Core
         protected override void Behavior()
         {
             // レバーが動作中じゃない、プレイヤーが範囲内にいる、キーが押された
-            if (!isPressing && flag.Hit && Inputs.Down(Constant.Keys.Button))
+            if (!isPressing && flag.IsHitting && Inputs.Down(Constant.Keys.Button))
             {
                 isPressing = true;
                 sr.sprite = sprites[status.active];
@@ -51,7 +51,7 @@ namespace trrne.Core
             }
 
             // 動作中、効果時間がduration以上
-            if (isPressing && effectiveSW.Sf >= duration)
+            if (isPressing && effectiveSW.Secondf() >= duration)
             {
                 effectiveSW.Reset();
                 gimmicks.ForEach(g => g.GetComponent<IGimmick>().Off());

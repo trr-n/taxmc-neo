@@ -11,7 +11,7 @@ namespace trrne.Core
         {
             if (info.CompareTag(Constant.Tags.Player))
             {
-                Count++;
+                ++Count;
             }
         }
     }

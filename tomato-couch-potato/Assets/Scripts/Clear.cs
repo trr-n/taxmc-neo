@@ -20,17 +20,11 @@ namespace trrne.Core
 
         void OnTriggerEnter2D(Collider2D info)
         {
-            if (info.CompareTag(Constant.Tags.Player) && info.TryGetComponent(out Player _))
+            if (info.TryGetComponent(out Player _))
             {
                 sr.sprite = sprites[1];
-                try
-                {
-                    Recorder.Instance.Clear();
-                }
-                catch (Exception)
-                {
-                    print("Cannot read data of singleton.");
-                }
+                try { Recorder.Instance.Clear(); }
+                catch (Exception) { print("Cannot read data of singleton."); }
             }
         }
     }

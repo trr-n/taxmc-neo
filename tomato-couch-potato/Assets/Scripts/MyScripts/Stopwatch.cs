@@ -27,25 +27,17 @@ namespace trrne.Box
         }
         public static void Rubbish(params Stopwatch[] sws) => sws.ForEach(sw => sw.Rubbish());
 
-        public int H => syswatch.Elapsed.Hours;
-        public float Hf => Maths.Round((float)syswatch.Elapsed.TotalHours, 6);
         public int Hour() => syswatch.Elapsed.Hours;
-        public float HourF(int digit = 6) => Maths.Round((float)syswatch.Elapsed.TotalHours, digit);
+        public float Hourf(int digit = 6) => Maths.Round((float)syswatch.Elapsed.TotalHours, digit);
 
-        public int M => syswatch.Elapsed.Minutes;
-        public float Mf => Maths.Round((float)syswatch.Elapsed.TotalMinutes, 6);
         public int Minute() => syswatch.Elapsed.Minutes;
-        public float MinuteF(int digit = 6) => Maths.Round((float)syswatch.Elapsed.TotalMinutes, digit);
+        public float Minutef(int digit = 6) => Maths.Round((float)syswatch.Elapsed.TotalMinutes, digit);
 
-        public int S => syswatch.Elapsed.Seconds;
-        public float Sf => Maths.Round((float)syswatch.Elapsed.TotalSeconds, 6);
         public int Second() => syswatch.Elapsed.Seconds;
-        public float SecondF(int digit = 6) => Maths.Round((float)syswatch.Elapsed.TotalSeconds, digit);
+        public float Secondf(int digit = 6) => Maths.Round((float)syswatch.Elapsed.TotalSeconds, digit);
 
-        public int MS => syswatch.Elapsed.Milliseconds;
-        public float MSf => Maths.Round((float)syswatch.Elapsed.TotalMilliseconds, 6);
-        public int Milliseconds() => syswatch.Elapsed.Milliseconds;
-        public float MillisecondF(int digit = 6) => Maths.Round((float)syswatch.Elapsed.TotalMilliseconds, digit);
+        public int Millisecond() => syswatch.Elapsed.Milliseconds;
+        public float Millisecondf(int digit = 6) => Maths.Round((float)syswatch.Elapsed.TotalMilliseconds, digit);
 
         public TimeSpan Spent() => syswatch.Elapsed;
 
@@ -63,17 +55,17 @@ namespace trrne.Box
             StopwatchFormat.H or StopwatchFormat.h or StopwatchFormat.Hour or StopwatchFormat.hour => Hour(),
             StopwatchFormat.M or StopwatchFormat.m or StopwatchFormat.Minute or StopwatchFormat.minute => Minute(),
             StopwatchFormat.S or StopwatchFormat.s or StopwatchFormat.Second or StopwatchFormat.second => Second(),
-            StopwatchFormat.MS or StopwatchFormat.ms or StopwatchFormat.MilliSecond or StopwatchFormat.millisecond => Milliseconds(),
+            StopwatchFormat.MS or StopwatchFormat.ms or StopwatchFormat.MilliSecond or StopwatchFormat.millisecond => Millisecond(),
             _ => -1,
         };
 
-        public float SpentF(StopwatchFormat format)
+        public float Spentf(StopwatchFormat format)
         => format switch
         {
-            StopwatchFormat.H or StopwatchFormat.h or StopwatchFormat.Hour or StopwatchFormat.hour => HourF(),
-            StopwatchFormat.M or StopwatchFormat.m or StopwatchFormat.Minute or StopwatchFormat.minute => MinuteF(),
-            StopwatchFormat.S or StopwatchFormat.s or StopwatchFormat.Second or StopwatchFormat.second => SecondF(),
-            StopwatchFormat.MS or StopwatchFormat.ms or StopwatchFormat.MilliSecond or StopwatchFormat.millisecond => MillisecondF(),
+            StopwatchFormat.H or StopwatchFormat.h or StopwatchFormat.Hour or StopwatchFormat.hour => Hourf(),
+            StopwatchFormat.M or StopwatchFormat.m or StopwatchFormat.Minute or StopwatchFormat.minute => Minutef(),
+            StopwatchFormat.S or StopwatchFormat.s or StopwatchFormat.Second or StopwatchFormat.second => Secondf(),
+            StopwatchFormat.MS or StopwatchFormat.ms or StopwatchFormat.MilliSecond or StopwatchFormat.millisecond => Millisecondf(),
             _ => -1f,
         };
     }

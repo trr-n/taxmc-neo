@@ -57,7 +57,6 @@ namespace trrne.Core
             {
                 return;
             }
-
             Camera.main.orthographicSize += Mathf.Sign(axis) / 4;
             Camera.main.orthographicSize = Mathf.Clamp(Camera.main.orthographicSize, 2.5f, 12);
         }

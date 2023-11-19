@@ -70,11 +70,12 @@ namespace trrne.Core
             {
                 sr.SetAlpha(0);
                 effects.TryInstantiate(transform.position);
-                if (!player.IsDieProcessing)
+                if (!player.IsDying)
                 {
                     await UniTask.WhenAll(Punishment(player));
                 }
-                Destroy(gameObject);
+                try { Destroy(gameObject); }
+                catch { }
             }
         }
     }

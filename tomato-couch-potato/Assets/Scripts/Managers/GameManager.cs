@@ -11,7 +11,7 @@ namespace trrne.Brain
         Text timeT;
 
         Cam cam;
-        Player player;
+        // Player player;
         TimeManager time;
         PauseMenu menu;
 
@@ -28,7 +28,7 @@ namespace trrne.Brain
             cam = Gobject.GetComponentWithTag<Cam>(Constant.Tags.MainCamera);
             cam.Followable = true;
 
-            player = Gobject.GetComponentWithTag<Player>(Constant.Tags.Player);
+            // player = Gobject.GetComponentWithTag<Player>(Constant.Tags.Player);
             // player.Controllable = true;
 
             var enemies = Gobject.Finds(Constant.Tags.Enemy);
@@ -38,10 +38,6 @@ namespace trrne.Brain
         void Update()
         {
             timeT.SetText(time.CurrentStr);
-#if DEBUG
-            if (Inputs.Down(KeyCode.K)) { player.Controllable = false; }
-            if (Inputs.Up(KeyCode.K)) { player.Controllable = true; }
-#endif
         }
     }
 }

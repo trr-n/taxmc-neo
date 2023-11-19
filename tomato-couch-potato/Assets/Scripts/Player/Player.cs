@@ -6,24 +6,18 @@ using trrne.Brain;
 
 namespace trrne.Core
 {
-    /// <summary>
-    /// 死因
-    /// </summary>
     public enum CuzOfDeath
     {
-        Venom,
-        Fallen,
-        None,
+        Caps,   // 唐辛死
+        Fallen, // 落下死
+        None,   // 不審死
     }
 
-    /// <summary>
-    /// エフェクト
-    /// </summary>
     public enum EffectType
     {
-        Mirror, // 操作左右反転
-        Chain,  // ジャンプ不可
-        Fetters, // 移動速度低下
+        Mirror,     // 操作左右反転
+        Chain,      // ジャンプ不可
+        Fetters,    // 移動速度低下
     }
 
     public class Player : MonoBehaviour, ICreature
@@ -47,9 +41,9 @@ namespace trrne.Core
         public bool IsTeleporting { get; set; }
 
         /// <summary>
-        /// 死亡処理中か
+        /// 死亡中か
         /// </summary>
-        public bool IsDieProcessing { get; set; }
+        public bool IsDying { get; private set; } = false;
 
         /// <summary>
         /// 与えるエフェクト
@@ -67,11 +61,6 @@ namespace trrne.Core
         public bool[] EffectFlags { get; set; }
 
         /// <summary>
-        /// 足かせが付いているときの減速比
-        /// </summary>
-        const float FettersRed = 0.5f;
-
-        /// <summary>
         /// 基礎移動速度
         /// </summary>
         const float BaseSpeed = 20;
@@ -82,14 +71,14 @@ namespace trrne.Core
         const float MaxSpeed = 10;
 
         /// <summary>
-        /// 空中での減速比
+        /// 減速比
         /// </summary>
-        const float FloatingRed = 0.95f;
+        readonly (float fetters, float floating, float move) red = (0.5f, 0.95f, 0.9f);
 
         /// <summary>
         /// 減速比
         /// </summary>
-        const float MoveReductionRatio = 0.9f;
+        // const float MoveReductionRatio = 0.9f;
 
         /// <summary>
         /// ジャンプ力
@@ -149,6 +138,7 @@ namespace trrne.Core
 
             menu = Gobject.GetComponentWithTag<PauseMenu>(Constant.Tags.Manager);
             flag = transform.GetComponentFromChild<PlayerFlag>();
+
             cam = Gobject.GetComponentWithTag<Cam>(Constant.Tags.MainCamera);
 
             animator = GetComponent<Animator>();
@@ -177,7 +167,7 @@ namespace trrne.Core
             Jump();
             Flip();
             Respawn();
-            Punish();
+            PunishFlagsUpdater();
         }
 
         void Def()
@@ -192,11 +182,15 @@ namespace trrne.Core
         /// </summary>
         void Respawn()
         {
-            if (IsDieProcessing && !Inputs.Down(Constant.Keys.Respawn))
+            if (IsDying)
             {
                 return;
             }
-            ReturnToCheckpoint();
+
+            if (Inputs.Down(Constant.Keys.Respawn))
+            {
+                ReturnToCheckpoint();
+            }
         }
 
         public IEnumerator Punishment(float duration, EffectType type)
@@ -210,7 +204,7 @@ namespace trrne.Core
             }
         }
 
-        void Punish()
+        void PunishFlagsUpdater()
         {
             for (int i = 0; i < EffectFlags.Length; i++)
             {
@@ -273,27 +267,29 @@ namespace trrne.Core
                 return;
             }
 
-            bool flag = Input.GetButton(Constant.Keys.Horizontal) && this.flag.OnGround;
-            animator.SetBool(Constant.Animations.Walk, flag);
+            bool walk = Input.GetButton(Constant.Keys.Horizontal) && flag.OnGround;
+            animator.SetBool(Constant.Animations.Walk, walk);
 
             string horizontal = EffectFlags[(int)EffectType.Mirror] ?
                 Constant.Keys.ReversedHorizontal : Constant.Keys.Horizontal;
             Vector2 move = Input.GetAxisRaw(horizontal) * Coordinate.V2X;
 
             // 入力がtolerance以下、氷に乗っていない、浮いていない
-            if (move.magnitude <= InputTolerance && !this.flag.OnIce) // && !IsFloating)
+            if (move.magnitude <= InputTolerance && !flag.OnIce) // && !IsFloating)
             {
                 // x軸の速度をspeed.reduction倍
-                rb.SetVelocity(x: rb.velocity.x * MoveReductionRatio);
+                rb.SetVelocity(x: rb.velocity.x * red.move);
             }
 
             float limit = Shorthand.L1ne(() =>
             {
+                // 足枷がついていたら速度制限をFettersRed倍する
                 if (EffectFlags[(int)EffectType.Fetters])
                 {
-                    return MaxSpeed * FettersRed;
+                    return MaxSpeed * red.fetters;
                 }
-                else if (this.flag.OnIce)
+                // 氷の上にいたら速度制限を2倍にする
+                else if (flag.OnIce)
                 {
                     return MaxSpeed * 2;
                 }
@@ -305,7 +301,7 @@ namespace trrne.Core
             // rb.ClampVelocity(x: (-limit, limit));
 
             // 浮いていたら移動速度低下
-            float velocity = IsFloating ? BaseSpeed * FloatingRed : BaseSpeed;
+            float velocity = IsFloating ? BaseSpeed * red.floating : BaseSpeed;
             rb.velocity += Time.fixedDeltaTime * velocity * move;
         }
 
@@ -314,12 +310,12 @@ namespace trrne.Core
         /// </summary>
         public async UniTask Die(CuzOfDeath cause = CuzOfDeath.None)
         {
-            if (IsDieProcessing)
+            if (IsDying)
             {
                 return;
             }
 
-            IsDieProcessing = true;
+            IsDying = true;
             Controllable = false;
             cam.Followable = false;
 
@@ -327,7 +323,7 @@ namespace trrne.Core
 
             switch (cause)
             {
-                case CuzOfDeath.Venom:
+                case CuzOfDeath.Caps:
                     rb.velocity = Vector2.zero;
                     animator.Play(Constant.Animations.Venomed);
                     break;
@@ -347,7 +343,7 @@ namespace trrne.Core
 
             cam.Followable = true;
             Controllable = true;
-            IsDieProcessing = false;
+            IsDying = false;
         }
 
         public async UniTask Die() => await Die(CuzOfDeath.None);

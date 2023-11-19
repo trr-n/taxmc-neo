@@ -63,7 +63,7 @@ namespace trrne.Core
                 return;
             }
 
-            if (info.TryGetComponent(out Player player) && !player.IsDieProcessing)
+            if (info.TryGetComponent(out Player player) && !player.IsDying)
             {
                 info.transform.DOMove(portalGoal.Goal, teleportSpeed)
                     .SetEase(Ease.OutCubic)

@@ -1,6 +1,6 @@
 ﻿namespace trrne.Box
 {
-    public sealed class SilentClear<T>
+    public sealed class Avocado<T>
     {
         T[] items;
         public int Count { get; private set; }
@@ -8,14 +8,14 @@
 
         public T this[int index] => items[index];
 
-        public SilentClear()
+        public Avocado()
         {
             Capacity = 10;
             items = new T[Capacity];
             Count = 0;
         }
 
-        public SilentClear(int capacity)
+        public Avocado(int capacity)
         {
             Capacity = capacity;
             items = new T[capacity];
@@ -38,7 +38,7 @@
             Count++;
         }
 
-        public void Remove(int index)
+        public void RemoveAt(int index)
         {
             if (Count <= 0)
             {

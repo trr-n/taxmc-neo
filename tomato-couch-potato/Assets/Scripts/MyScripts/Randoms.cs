@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using UnityEngine;
 
 using SysRandom = System.Random;
 using UniRandom = UnityEngine.Random;
@@ -25,9 +24,8 @@ namespace trrne.Box
         {
             string Mixer(char[] array, int start, int end)
             {
-                MonoBehaviour.print(1);
                 bool isAuto = array is null && start == 0 && end == 0;
-                var chars = new char[count];
+                char[] chars = new char[count];
                 for (int i = 0; i < count; i++)
                 {
                     chars[i] = isAuto ?
@@ -52,6 +50,7 @@ namespace trrne.Box
         public static int Choice(this object[] arr) => new SysRandom().Next(0, arr.Length);
         public static T Choice<T>(this T[] arr) => arr[new SysRandom().Next(0, arr.Length)];
         public static T Choice<T>(this List<T> arr) => arr[new SysRandom().Next(0, arr.Count)];
+        public static T Choice<T>(this Array arr) => (T)arr.GetValue(new SysRandom().Next(0, arr.Length));
     }
 }
 

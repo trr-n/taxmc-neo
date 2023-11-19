@@ -43,7 +43,7 @@ namespace trrne.Core
 
         protected override async void Behavior()
         {
-            var configure = transform.position + (hitbox.size * Coordinate.V3Y / 2);
+            Vector2 configure = transform.position + (hitbox.size * Coordinate.V3Y / 2);
             await Horizon();
             await Top(configure);
             await Bottom(configure);
@@ -58,12 +58,9 @@ namespace trrne.Core
             {
                 switch (horizon.hit.GetLayer())
                 {
-                    // プレイヤーにあたったらDie()
                     case Constant.Layers.Player:
                         await player.Die();
                         break;
-
-                    // プレイヤー以外にあたったら進行方向を反転
                     default:
                         speed.real *= -1;
                         break;
@@ -87,23 +84,24 @@ namespace trrne.Core
             bottom.ray = new(conf, -transform.up);
             bottom.hit = Physics2D.Raycast(bottom.ray.origin, bottom.ray.direction, hitbox.size, hitbox.detect);
 
-            if (bottom.hit && bottom.hit.CompareTag(Constant.Tags.Player))
+            if (bottom.hit && bottom.hit.TryGetComponent(out Player player))
             {
-                await bottom.hit.GetComponent<Player>().Die();
+                await player.Die();
             }
         }
 
         public override async UniTask Die()
         {
-            if (!dying)
+            if (dying)
             {
-                dying = true;
-                diefx.TryInstantiate(transform.position);
-                await UniTask.WaitForSeconds(0.1f);
-
-                // オブジェクト破壊
-                Destroy(gameObject);
+                return;
             }
+            dying = true;
+            diefx.TryInstantiate(transform.position);
+            await UniTask.WaitForSeconds(0.1f);
+
+            // オブジェクト破壊
+            Destroy(gameObject);
         }
 
         protected override void Movement() => transform.Translate(Time.deltaTime * speed.real * Coordinate.V2X);

@@ -20,23 +20,23 @@ namespace trrne.Arm
         [SerializeField]
         RectTransform core;
 
-        const string prefix = "stage";
-        const float offset = 18.96f;
+        const string PrefabPrefix = "stage";
+        const float Offset = 18.96f;
 
-        bool scrolling = false;
-        readonly float scrollSpeed = 0.5f;
+        bool isScrolling = false;
+        const float ButtonScrollSpeed = 0.5f;
 
         float horizon;
 
         void Start()
         {
-            core.position = Coordinate.V3X * offset;
+            core.SetPosition(Coordinate.V3X * Offset);
         }
 
         void Update()
         {
 #if DEBUG
-            centerT.text = CenterButton() != null ? CenterButton().name : null ?? "null";
+            centerT.text = CenterButton != null ? CenterButton.name : null ?? "null";
 #endif
             Scroll();
             Transition();
@@ -44,9 +44,8 @@ namespace trrne.Arm
 
         void Transition()
         {
-            if (CenterButton() != null
-                && int.TryParse(Typing.Delete(CenterButton().name, prefix), out int idx)
-            )
+            string name = CenterButton.name;
+            if (CenterButton != null && int.TryParse(name.Delete(PrefabPrefix), out int idx))
             {
                 if (idx <= Recorder.Instance.Done && Inputs.Down(Constant.Keys.Button))
                 {
@@ -59,16 +58,19 @@ namespace trrne.Arm
         /// <summary>
         /// xが一番0に近いボタンを取得
         /// </summary>
-        GameObject CenterButton()
+        GameObject CenterButton
         {
-            foreach (var button in buttons)
+            get
             {
-                if (Maths.CutailedTwins(button.transform.position.x, 0))
+                foreach (var button in buttons)
                 {
-                    return button.gameObject;
+                    if (0f.CutailedTwins(button.transform.position.x))
+                    {
+                        return button.gameObject;
+                    }
                 }
+                return null;
             }
-            return null;
         }
 
         void Scroll()
@@ -78,34 +80,30 @@ namespace trrne.Arm
                 return;
             }
 
-            if (horizon.Sign(1))
+            switch (horizon.Sign())
             {
-                if (CenterButton() != buttons[^1].gameObject)
-                {
-                    Scroller(core.position.x - offset);
-                }
-            }
-            else
-            {
-                if (CenterButton() != buttons[0].gameObject)
-                {
-                    Scroller(core.position.x + offset);
-                }
+                case 1:
+                    (CenterButton != buttons[^1].gameObject)
+                        .If(() => Scroller(core.position.x - Offset));
+                    break;
+                default:
+                    (CenterButton != buttons[0].gameObject)
+                        .If(() => Scroller(core.position.x + Offset));
+                    break;
             }
         }
 
         void Scroller(float targetX)
         {
-            if (scrolling)
+            if (isScrolling)
             {
                 return;
             }
 
-            scrolling = true;
-
-            core.DOMoveX(targetX, scrollSpeed)
+            isScrolling = true;
+            core.DOMoveX(targetX, ButtonScrollSpeed)
                 .SetEase(Ease.InOutCubic)
-                .OnComplete(() => scrolling = false);
+                .OnComplete(() => isScrolling = false);
         }
     }
 }

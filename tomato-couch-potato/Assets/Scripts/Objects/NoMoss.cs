@@ -9,23 +9,28 @@ namespace trrne.Core
     /// </summary>
     public class NoMoss : Object
     {
+        public enum RotateDirection
+        {
+            Left = -1,
+            Right = 1,
+            Fixed = 0
+        }
         [SerializeField]
-        [Range(-1, 1)]
-        int direction;
+        RotateDirection direction;
 
         [SerializeField]
         float speed = 15f;
         public float Speed => speed;
+
         public void SetSpeed(float speed) => this.speed = speed;
 
         public bool Rotatable { get; set; } = true;
 
         protected override void Behavior()
         {
-            if (Rotatable || direction != 0)
+            if (Rotatable || direction != RotateDirection.Fixed)
             {
-                // 回転
-                var rotate = -direction * speed * -Coordinate.V3Z;
+                Vector3 rotate = (float)direction * speed * Coordinate.V3Z;
                 transform.Rotate(rotate * Time.deltaTime, Space.World);
             }
         }

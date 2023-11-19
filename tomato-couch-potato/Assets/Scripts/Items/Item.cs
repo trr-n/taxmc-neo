@@ -50,7 +50,7 @@ namespace trrne.Core
                 return;
             }
 
-            if (anim.sw.Sf >= interval)
+            if (anim.sw.Secondf() >= interval)
             {
                 anim.index = anim.index >= sprites.Length - 1 ? 0 : anim.index += 1;
                 SR.sprite = sprites[anim.index];

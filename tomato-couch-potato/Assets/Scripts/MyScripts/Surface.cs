@@ -27,7 +27,7 @@ namespace trrne.Box
             text.horizontalOverflow = hw;
         }
 
-        public static Color Transparent => Vector4.zero;
+        public static Color Transparent => new(0, 0, 0, 0);
         public static Color Gaming => Color.HSVToRGB(Time.unscaledTime % 1, 1, 1);
 
         public static void SetAlpha(this Image image, float alpha = 0) => image.color = new(image.color.r, image.color.g, image.color.b, alpha);
@@ -36,9 +36,11 @@ namespace trrne.Box
         public static float Alpha(this SpriteRenderer sr) => sr.color.a;
 
         public static void SetColor(this SpriteRenderer sr, Color color) => sr.color = color;
-        public static Color SetColor(this Color color, float? red = null, float? green = null, float? blue = null, float? alpha = null)
+        public static Color SetColor(this Color color,
+            float? red = null, float? green = null, float? blue = null, float? alpha = null)
         => new(red ?? color.r, green ?? color.g, blue ?? color.b, alpha ?? color.a);
 
-        public static bool Twins(Color n1, Color n2) => Mathf.Approximately(n1.r, n2.r) && Mathf.Approximately(n1.g, n2.g) && Mathf.Approximately(n1.b, n2.b);
+        public static bool Twins(Color n1, Color n2)
+        => Mathf.Approximately(n1.r, n2.r) && Mathf.Approximately(n1.g, n2.g) && Mathf.Approximately(n1.b, n2.b);
     }
 }

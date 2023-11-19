@@ -10,25 +10,23 @@ namespace trrne.Core
 
         public enum MovingType
         {
-            Fixed,      // 固定
-            Horizontal, // 左右
-            Vertical    // 上下
+            Fixed,
+            Horizontal,
+            Vertical
         }
 
         [SerializeField]
         MovingType type = MovingType.Fixed;
 
-        /// <summary>
-        /// 上下左右移動の中心座標
-        /// </summary>
-        Vector3 origin;
+        Vector3 center;
 
         readonly Stopwatch pingpong = new(true);
+        float pp = 0f;
 
         protected override void Start()
         {
             base.Start();
-            origin = transform.position;
+            center = transform.position;
         }
 
         protected override void Behavior()
@@ -38,20 +36,20 @@ namespace trrne.Core
                 return;
             }
 
-            // 移動
+            if (type != MovingType.Fixed)
+            {
+                pp = range / 2 + Mathf.PingPong(pingpong.Secondf() * speed, range);
+            }
+
             switch (type)
             {
                 case MovingType.Fixed:
-                default:
                     return;
-
                 case MovingType.Horizontal:
-                    var x = origin.x - range / 2 + Mathf.PingPong(pingpong.Sf * speed, range);
-                    transform.SetPosition(x: x);
+                    transform.SetPosition(x: center.x - pp);
                     break;
                 case MovingType.Vertical:
-                    var y = origin.y - range / 2 + Mathf.PingPong(pingpong.Sf * speed, range);
-                    transform.SetPosition(y: y);
+                    transform.SetPosition(y: center.y - pp);
                     break;
             }
         }
