@@ -183,14 +183,10 @@ namespace trrne.Core
         void Respawn()
         {
             if (IsDying)
-            {
                 return;
-            }
 
             if (Inputs.Down(Constant.Keys.Respawn))
-            {
                 ReturnToCheckpoint();
-            }
         }
 
         public IEnumerator Punishment(float duration, EffectType type)
@@ -207,17 +203,13 @@ namespace trrne.Core
         void PunishFlagsUpdater()
         {
             for (int i = 0; i < EffectFlags.Length; i++)
-            {
                 Effectables[i] = !EffectFlags[i];
-            }
         }
 
         void Flip()
         {
             if (!Controllable || menu.IsPausing || IsTeleporting)
-            {
                 return;
-            }
 
             string horizontal = EffectFlags[(int)EffectType.Mirror] ? Constant.Keys.ReversedHorizontal : Constant.Keys.Horizontal;
             if (Input.GetButtonDown(horizontal))
@@ -240,9 +232,7 @@ namespace trrne.Core
         void Jump()
         {
             if (!Controllable || EffectFlags[(int)EffectType.Chain] || IsTeleporting) // || Jumpable)
-            {
                 return;
-            }
 
             if (!flag.OnGround)
             {
@@ -263,9 +253,7 @@ namespace trrne.Core
         void Move()
         {
             if (!Controllable || IsTeleporting) // || !Movable)
-            {
                 return;
-            }
 
             bool walk = Input.GetButton(Constant.Keys.Horizontal) && flag.OnGround;
             animator.SetBool(Constant.Animations.Walk, walk);
@@ -276,23 +264,17 @@ namespace trrne.Core
 
             // 入力がtolerance以下、氷に乗っていない、浮いていない
             if (move.magnitude <= InputTolerance && !flag.OnIce) // && !IsFloating)
-            {
                 // x軸の速度をspeed.reduction倍
                 rb.SetVelocity(x: rb.velocity.x * red.move);
-            }
 
             float limit = Shorthand.L1ne(() =>
             {
                 // 足枷がついていたら速度制限をFettersRed倍する
                 if (EffectFlags[(int)EffectType.Fetters])
-                {
                     return MaxSpeed * red.fetters;
-                }
                 // 氷の上にいたら速度制限を2倍にする
                 else if (flag.OnIce)
-                {
                     return MaxSpeed * 2;
-                }
                 return MaxSpeed;
             });
 
@@ -311,9 +293,7 @@ namespace trrne.Core
         public async UniTask Die(CuzOfDeath cause = CuzOfDeath.None)
         {
             if (IsDying)
-            {
                 return;
-            }
 
             IsDying = true;
             Controllable = false;

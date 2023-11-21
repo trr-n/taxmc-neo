@@ -36,7 +36,7 @@ namespace trrne.Arm
         void Update()
         {
 #if DEBUG
-            centerT.text = CenterButton != null ? CenterButton.name : null ?? "null";
+            centerT.text = CenterButton() != null ? CenterButton().name : null ?? "null";
 #endif
             Scroll();
             Transition();
@@ -44,8 +44,8 @@ namespace trrne.Arm
 
         void Transition()
         {
-            string name = CenterButton.name;
-            if (CenterButton != null && int.TryParse(name.Delete(PrefabPrefix), out int idx))
+            string name = CenterButton().name;
+            if (CenterButton() != null && int.TryParse(name.Delete(PrefabPrefix), out int idx))
             {
                 if (idx <= Recorder.Instance.Done && Inputs.Down(Constant.Keys.Button))
                 {
@@ -58,37 +58,28 @@ namespace trrne.Arm
         /// <summary>
         /// xが一番0に近いボタンを取得
         /// </summary>
-        GameObject CenterButton
+        GameObject CenterButton()
         {
-            get
-            {
-                foreach (var button in buttons)
-                {
-                    if (0f.CutailedTwins(button.transform.position.x))
-                    {
-                        return button.gameObject;
-                    }
-                }
-                return null;
-            }
+            foreach (var button in buttons)
+                if (0f.CutailedTwins(button.transform.position.x))
+                    return button.gameObject;
+            return null;
         }
 
         void Scroll()
         {
             if ((horizon = Input.GetAxisRaw(Constant.Keys.Horizontal)).Twins(0))
-            {
                 return;
-            }
 
             switch (horizon.Sign())
             {
                 case 1:
-                    (CenterButton != buttons[^1].gameObject)
-                        .If(() => Scroller(core.position.x - Offset));
+                    if (CenterButton() != buttons[^1].gameObject)
+                        Scroller(core.position.x - Offset);
                     break;
                 default:
-                    (CenterButton != buttons[0].gameObject)
-                        .If(() => Scroller(core.position.x + Offset));
+                    if (CenterButton() != buttons[0].gameObject)
+                        Scroller(core.position.x + Offset);
                     break;
             }
         }
@@ -96,9 +87,7 @@ namespace trrne.Arm
         void Scroller(float targetX)
         {
             if (isScrolling)
-            {
                 return;
-            }
 
             isScrolling = true;
             core.DOMoveX(targetX, ButtonScrollSpeed)

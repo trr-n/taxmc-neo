@@ -29,9 +29,7 @@ namespace trrne.Core
         {
             Flip();
             if (this != null && lifetimeSW.Secondf() >= lifetime)
-            {
                 await Die();
-            }
         }
 
         // flip the sprite
@@ -62,9 +60,7 @@ namespace trrne.Core
             {
                 alpha -= Time.deltaTime * FadeSpeed;
                 if (alpha.Twins(0f))
-                {
                     sr.SetAlpha(0);
-                }
                 sr.SetAlpha(alpha);
                 await UniTask.Yield();
             }

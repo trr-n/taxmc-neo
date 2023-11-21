@@ -20,9 +20,7 @@ namespace trrne.Core
         {
             // アクティブなエフェクトのアイコンだけ表示
             for (int i = 0; i < icons.Length; i++)
-            {
                 icons[i].SetActive(player.EffectFlags[i]);
-            }
         }
     }
 }

@@ -30,11 +30,11 @@ namespace trrne.Secret
             };
 
             Rfc2898DeriveBytes deriveBytes = new(password, size.buffer);
-            var salt = deriveBytes.Salt;
+            byte[] salt = deriveBytes.Salt;
             managed.Key = deriveBytes.GetBytes(size.buffer);
             managed.GenerateIV();
 
-            using var encrypt = managed.CreateEncryptor(managed.Key, managed.IV);
+            using ICryptoTransform encrypt = managed.CreateEncryptor(managed.Key, managed.IV);
             byte[] dest = encrypt.TransformFinalBlock(src, 0, src.Length);
             List<byte> compile = new(salt);
             compile.AddRange(managed.IV);
@@ -54,14 +54,12 @@ namespace trrne.Secret
                 Padding = PaddingMode.PKCS7
             };
 
-            List<byte> compile = new(src);
-            List<byte> salt = compile.GetRange(0, size.buffer);
+            List<byte> compile = new(src), salt = compile.GetRange(0, size.buffer);
             managed.IV = compile.GetRange(size.buffer, size.buffer).ToArray();
             managed.Key = new Rfc2898DeriveBytes(password, salt.ToArray()).GetBytes(size.buffer);
 
-            using var decrypt = managed.CreateDecryptor(managed.Key, managed.IV);
-            int index = size.buffer * 2;
-            int count = compile.Count - (size.buffer * 2);
+            using ICryptoTransform decrypt = managed.CreateDecryptor(managed.Key, managed.IV);
+            int index = size.buffer * 2, count = compile.Count - (size.buffer * 2);
             byte[] plain = compile.GetRange(index, count).ToArray();
             return decrypt.TransformFinalBlock(plain, 0, plain.Length);
         }

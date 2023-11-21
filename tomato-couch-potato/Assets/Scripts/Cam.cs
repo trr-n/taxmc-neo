@@ -40,9 +40,7 @@ namespace trrne.Core
         void Follow()
         {
             if (!Followable)
-            {
                 return;
-            }
 
             Vector2 self = transform.position, player = this.player.transform.position;
             float dx = Mathf.SmoothDamp(self.x, player.x, ref refvx, spd.x),
@@ -54,9 +52,8 @@ namespace trrne.Core
         {
 
             if ((axis = Input.GetAxisRaw(Constant.Keys.Zoom)) == 0)
-            {
                 return;
-            }
+
             Camera.main.orthographicSize += Mathf.Sign(axis) / 4;
             Camera.main.orthographicSize = Mathf.Clamp(Camera.main.orthographicSize, 2.5f, 12);
         }

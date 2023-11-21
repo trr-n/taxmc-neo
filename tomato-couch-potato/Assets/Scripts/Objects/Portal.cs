@@ -47,10 +47,8 @@ namespace trrne.Core
 #endif
 
             for (int i = 0; i < children; i++)
-            {
                 // フレームを回転させる
                 frames[i].transform.Rotate(Time.deltaTime * speeds[i] * Coordinate.V3Z);
-            }
 
             // ついでに中心も回転させる
             transform.Rotate(Time.deltaTime * myspeed * Coordinate.V3Z);
@@ -59,9 +57,7 @@ namespace trrne.Core
         void OnTriggerEnter2D(Collider2D info)
         {
             if (warping && !info.CompareTag(Constant.Tags.Player))
-            {
                 return;
-            }
 
             if (info.TryGetComponent(out Player player) && !player.IsDying)
             {

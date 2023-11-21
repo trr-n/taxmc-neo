@@ -38,9 +38,8 @@ namespace trrne.Core
 
         void Start()
         {
-            player = Gobject.GetWithTag(Constant.Tags.Player);
-            var c = player.GetComponent<BoxCollider2D>();
-            ofs = new(0, c.Size().y / 2);
+            player = Gobject.GetGameObjectWithTag(Constant.Tags.Player);
+            ofs = new(0, player.GetComponent<BoxCollider2D>().Size().y / 2);
 
             eyes = transform.GetChildrenGameObject();
             inits = new[] { eyes[0].transform.position, eyes[1].transform.position };
@@ -50,24 +49,31 @@ namespace trrne.Core
 
         void Update()
         {
-            var ofs = player.transform.position + this.ofs;
-            var directions = new[] { ofs - eyes[0].transform.position, ofs - eyes[1].transform.position };
-            var distance = Maths.Average(
-                Vector2.Distance(ofs, eyes[0].transform.position),
-                Vector2.Distance(ofs, eyes[1].transform.position));
+            Vector3 ofs = player.transform.position + this.ofs;
+            Vector3[] directions = { ofs - eyes[0].transform.position, ofs - eyes[1].transform.position };
+            float distance = Maths.Average(Vector2.Distance(ofs, eyes[0].transform.position), Vector2.Distance(ofs, eyes[1].transform.position));
 
-            if (IsPlayerOnDetectRange = playerDetectRange >= distance)
+            // プレイヤーが範囲内にいる
+            if (!(IsPlayerOnDetectRange = playerDetectRange >= distance))
+                return;
+
+            Vector2 ave = new(Maths.Average(eyes[0].transform.position.x, eyes[1].transform.position.x),
+                Maths.Average(eyes[0].transform.position.y, eyes[1].transform.position.y));
+            Ray infrared = new(origin: ave, direction: player.transform.position.ToVec2() - ave);
+
+            // 且つ、プレイヤーとの間に障害物がなかったら
+            if (!Gobject.TryGetRaycast<Player>(infrared, distance))
+                return;
+            // if (Gobject.Raycast(out RaycastHit2D hit, infrared, distance))
+            // ;
+
+            for (int i = 0; i < eyes.Length; i++)
+                eyes[i].transform.position = inits[i] + directions[i].normalized * EyeBump;
+
+            if ((fireRapidTimer += Time.deltaTime) >= fireRapidRate)
             {
-                for (int i = 0; i < eyes.Length; i++)
-                {
-                    eyes[i].transform.position = inits[i] + directions[i].normalized * EyeBump;
-                }
-
-                if ((fireRapidTimer += Time.deltaTime) >= fireRapidRate)
-                {
-                    fires.TryInstantiate(transform.position);
-                    fireRapidTimer = 0;
-                }
+                fires.TryInstantiate(transform.position);
+                fireRapidTimer = 0;
             }
         }
     }

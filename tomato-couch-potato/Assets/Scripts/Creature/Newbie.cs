@@ -53,18 +53,16 @@ namespace trrne.Core
         {
             horizon.ray = new(transform.position - (Coordinate.V3X * hitbox.size / 2), transform.right);
             horizon.hit = Physics2D.Raycast(horizon.ray.origin, horizon.ray.direction, hitbox.size, hitbox.detect);
-
-            if (horizon.hit)
+            if (!horizon.hit)
+                return;
+            switch (horizon.hit.GetLayer())
             {
-                switch (horizon.hit.GetLayer())
-                {
-                    case Constant.Layers.Player:
-                        await player.Die();
-                        break;
-                    default:
-                        speed.real *= -1;
-                        break;
-                }
+                case Constant.Layers.Player:
+                    await player.Die();
+                    break;
+                default:
+                    speed.real *= -1;
+                    break;
             }
         }
 
@@ -72,22 +70,16 @@ namespace trrne.Core
         {
             top.ray = new(conf, transform.up);
             top.hit = Physics2D.Raycast(top.ray.origin, top.ray.direction, hitbox.size, hitbox.detect);
-
             if (top.hit && top.hit.CompareTag(Constant.Tags.Player))
-            {
                 await Die();
-            }
         }
 
         async UniTask Bottom(Vector2 conf)
         {
             bottom.ray = new(conf, -transform.up);
             bottom.hit = Physics2D.Raycast(bottom.ray.origin, bottom.ray.direction, hitbox.size, hitbox.detect);
-
             if (bottom.hit && bottom.hit.TryGetComponent(out Player player))
-            {
                 await player.Die();
-            }
         }
 
         public override async UniTask Die()

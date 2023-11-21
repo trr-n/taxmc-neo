@@ -21,7 +21,6 @@ namespace trrne.Core
         Vector3 center;
 
         readonly Stopwatch pingpong = new(true);
-        float pp = 0f;
 
         protected override void Start()
         {
@@ -31,25 +30,21 @@ namespace trrne.Core
 
         protected override void Behavior()
         {
-            if (App.TimeScale(0))
+            if (App.TimeScale(0) || type == MovingType.Fixed)
             {
                 return;
             }
 
-            if (type != MovingType.Fixed)
-            {
-                pp = range / 2 + Mathf.PingPong(pingpong.Secondf() * speed, range);
-            }
+            float pp(float xy) => xy - range / 2 + Mathf.PingPong(pingpong.Secondf() * speed, range);
 
             switch (type)
             {
-                case MovingType.Fixed:
-                    return;
+                case MovingType.Fixed: return;
                 case MovingType.Horizontal:
-                    transform.SetPosition(x: center.x - pp);
+                    transform.SetPosition(x: pp(center.x));
                     break;
                 case MovingType.Vertical:
-                    transform.SetPosition(y: center.y - pp);
+                    transform.SetPosition(y: pp(center.y));
                     break;
             }
         }

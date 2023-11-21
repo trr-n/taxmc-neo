@@ -3,19 +3,23 @@
 
 using System;
 using UnityEngine;
+using UniGob = UnityEngine.GameObject;
 
 namespace trrne.Box
 {
     public static partial class Gobject
     {
-        public static GameObject GetWithTag(this string tag) => GameObject.FindGameObjectWithTag(tag);
-        public static GameObject[] Finds(string tag) => GameObject.FindGameObjectsWithTag(tag);
-        public static T[] Finds<T>() where T : UnityEngine.Object => GameObject.FindObjectsByType<T>(FindObjectsSortMode.None);
+        public static UniGob GetGameObjectWithTag(this string tag) => UniGob.FindGameObjectWithTag(tag);
+        public static UniGob[] GetGameObjectsWithTag(string tag) => UniGob.FindGameObjectsWithTag(tag);
+        public static T[] Finds<T>(FindObjectsInactive inactive = FindObjectsInactive.Exclude,
+            FindObjectsSortMode mode = FindObjectsSortMode.None) where T : UnityEngine.Object
+        => UniGob.FindObjectsByType<T>(findObjectsInactive: inactive, sortMode: mode);
 
-        public static T GetComponentWithTag<T>(string tag) => GetWithTag(tag).GetComponent<T>();
-        public static T GetComponentWithTag<T>(this GameObject gob) => gob.GetComponent<T>();
-        public static bool TryGetComponentWithTag<T>(out T t, string tag) => GetWithTag(tag).TryGetComponent(out t);
-        [Obsolete] public static T GetComponentWithName<T>(string name) => GameObject.Find(name).GetComponent<T>();
+        public static T GetComponentWithTag<T>(this string tag) => GetGameObjectWithTag(tag).GetComponent<T>();
+        public static T GetComponentWithTag<T>(this UniGob gob) => gob.GetComponent<T>();
+        public static bool TryGetComponentWithTag<T>(out T t, string tag) => GetGameObjectWithTag(tag).TryGetComponent(out t);
+        [Obsolete("Way to get gameobject, GetComponentWithTag is better than this.")]
+        public static T GetComponentWithName<T>(this string name) => UniGob.Find(name).GetComponent<T>();
         public static T GetComponentFromChild<T>(this Transform transform, int index = 0) => transform.GetChild(index).GetComponent<T>();
         public static T GetComponentFromParent<T>(this Transform transform) => transform.parent.GetComponent<T>();
         public static T GetComponentFromRoot<T>(this Transform transform) => transform.root.GetComponent<T>();
@@ -31,28 +35,24 @@ namespace trrne.Box
         public static bool TryGetComponent<T>(this Collision info, out T t) => info.gameObject.TryGetComponent(out t);
         public static bool TryGetComponent<T>(this Collider info, out T t) => info.gameObject.TryGetComponent(out t);
         public static bool TryGetComponent<T>(this RaycastHit2D hit, out T t) => hit.collider.TryGetComponent(out t);
-        public static void TryAction<T>(this Collider2D info, Action<T> action) => Shorthand.If(info.TryGetComponent(out T t), () => action(t));
+        public static void TryAction<T>(this Collider2D info, Action<T> action) => info.TryGetComponent(out T t).If(() => action(t));
 
-        public static GameObject GetChildGameObject(this Transform t) => t.GetChild(0).gameObject;
-        public static GameObject GetChildGameObject(this Transform t, int index) => t.GetChild(index).gameObject;
+        public static UniGob GetChildGameObject(this Transform t) => t.GetChild(0).gameObject;
+        public static UniGob GetChildGameObject(this Transform t, int index) => t.GetChild(index).gameObject;
 
-        public static GameObject[] GetChildrenGameObject(this Transform t)
+        public static UniGob[] GetChildrenGameObject(this Transform t)
         {
-            var children = new GameObject[t.childCount];
+            UniGob[] children = new UniGob[t.childCount];
             for (int i = 0; i < children.Length; i++)
-            {
                 children[i] = t.GetChild(i).gameObject;
-            }
             return children;
         }
 
         public static T[] GetComponentsFromChildren<T>(this Transform t) where T : UnityEngine.Object
         {
-            var children = new T[t.childCount];
+            T[] children = new T[t.childCount];
             for (int i = 0; i < children.Length; i++)
-            {
                 children[i] = t.GetChild(i).GetComponent<T>();
-            }
             return children;
         }
 

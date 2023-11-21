@@ -13,9 +13,7 @@ namespace trrne.Box
             get
             {
                 if (!instance)
-                {
                     instance = (T)FindObjectOfType(typeof(T));
-                }
                 return instance;
             }
         }
@@ -23,10 +21,9 @@ namespace trrne.Box
         protected virtual void Awake()
         {
             if (this != Instance)
-            {
                 Destroy(this);
-            }
-            LiveOnLoad.If(gameObject.LiveOnLoad);
+            if (LiveOnLoad)
+                gameObject.LiveOnLoad();
         }
     }
 }

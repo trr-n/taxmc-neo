@@ -40,26 +40,18 @@ namespace trrne.Brain
         void PanelControl()
         {
             if (!Inputs.Down(Constant.Keys.Pause))
-            {
                 return;
-            }
 
             if (IsPausing)
-            {
                 Inactive();
-            }
             else
-            {
                 Active();
-            }
         }
 
         void FaderHandle(bool fin)
         {
             if (isFading)
-            {
                 return;
-            }
 
             StartCoroutine(Fader(fin));
         }

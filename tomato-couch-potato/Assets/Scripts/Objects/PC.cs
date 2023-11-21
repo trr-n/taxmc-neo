@@ -30,7 +30,7 @@ namespace trrne.Core
                 effects.TryInstantiate(transform.position);
                 display.color = DisplayColors[Used];
 
-                var self = transform.position;
+                Vector2 self = transform.position;
                 player.SetCheckpoint(new(self.x, Maths.Cutail(self.y)));
             }
         }
