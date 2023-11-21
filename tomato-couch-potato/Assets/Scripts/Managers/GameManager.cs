@@ -11,7 +11,6 @@ namespace trrne.Brain
         Text timeT;
 
         Cam cam;
-        // Player player;
         TimeManager time;
         PauseMenu menu;
 
@@ -28,10 +27,7 @@ namespace trrne.Brain
             cam = Gobject.GetComponentWithTag<Cam>(Constant.Tags.MainCamera);
             cam.Followable = true;
 
-            // player = Gobject.GetComponentWithTag<Player>(Constant.Tags.Player);
-            // player.Controllable = true;
-
-            var enemies = Gobject.GetGameObjectsWithTag(Constant.Tags.Enemy);
+            GameObject[] enemies = Gobject.GetGameObjectsWithTag(Constant.Tags.Enemy);
             enemies.ForEach(enemy => enemy.GetComponent<Creature>().Enable = true);
         }
 

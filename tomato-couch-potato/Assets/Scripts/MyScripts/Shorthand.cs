@@ -10,7 +10,7 @@ namespace trrne.Box
         public static void If<T>(this bool boolean, Func<T> func) { if (boolean) { func(); } }
 
         /// <summary>1 line</summary>
-        public static T L1ne<T>(Func<T> func) => func();
+        public static T L1ne<T>(this Func<T> func) => func();
 
         /// <summary>
         /// t1とt2をがっちゃんこする

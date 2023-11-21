@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 
 namespace trrne.Box
@@ -13,10 +12,13 @@ namespace trrne.Box
         public static Quaternion ToQ(this Vector3 vector) => Quaternion.Euler(vector);
         public static Quaternion ToQ(this Vector2 vector) => Quaternion.Euler(vector);
 
+        // from bool
         public static string ToString(this bool boo) => boo ? "true" : "false";
+        public static int ToInt(this bool boo) => boo ? 1 : 0;
+        public static float ToSingle(this bool boo) => boo ? 1f : 0f;
 
-        public static int Cast(this object a, int? b = null) => (int)a;
-        public static float Cast(this object a, float? b = null) => (float)a;
-        public static string Cast(this object a, string b = null) => (string)a;
+        // from string
+        public static int ToInt(this string str) => int.Parse(str);
+        public static float ToSingle(this string str) => float.Parse(str);
     }
 }

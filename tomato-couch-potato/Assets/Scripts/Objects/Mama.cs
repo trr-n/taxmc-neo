@@ -76,5 +76,15 @@ namespace trrne.Core
                 fireRapidTimer = 0;
             }
         }
+
+#if UNITY_EDITOR
+        void OnDrawGizmos()
+        {
+            Gizmos.color = Surface.Gaming;
+            Vector2 ave = new(Maths.Average(eyes[0].transform.position.x, eyes[1].transform.position.x),
+                Maths.Average(eyes[0].transform.position.y, eyes[1].transform.position.y));
+            Gizmos.DrawWireSphere(ave, playerDetectRange / 2);
+        }
+#endif
     }
 }

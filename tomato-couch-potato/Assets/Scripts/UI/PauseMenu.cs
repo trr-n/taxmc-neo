@@ -1,3 +1,4 @@
+using System.Runtime.CompilerServices;
 using System.Collections;
 using trrne.Box;
 using UnityEngine;
@@ -13,8 +14,7 @@ namespace trrne.Brain
 
         public bool IsPausing { get; private set; }
 
-        // (float speed, bool during) fade = (10f, false);
-        float fadeSpeed = 10f;
+        const float FadeSpeed = 10f;
         bool isFading = false;
 
         void Start()
@@ -34,7 +34,8 @@ namespace trrne.Brain
         void State(bool active)
         {
             FaderHandle(active);
-            App.SetTimeScale(active ? 0 : 1);
+            // FIXME タイムスケールいじるとエラー
+            // Time.timeScale = active ? 0 : 1;
         }
 
         void PanelControl()
@@ -43,16 +44,15 @@ namespace trrne.Brain
                 return;
 
             if (IsPausing)
-                Inactive();
+                State(false);
             else
-                Active();
+                State(true);
         }
 
         void FaderHandle(bool fin)
         {
             if (isFading)
                 return;
-
             StartCoroutine(Fader(fin));
         }
 
@@ -62,15 +62,15 @@ namespace trrne.Brain
         IEnumerator Fader(bool fin)
         {
             isFading = true;
+            yield return null;
             float alpha = fin ? 0f : 1;
             while (alpha.IsCaged(0, 1))
             {
-                yield return null;
-
                 canvas.alpha = (fin ?
                     alpha += Time.unscaledDeltaTime :
                     alpha -= Time.unscaledDeltaTime
-                ) * fadeSpeed;
+                ) * FadeSpeed;
+                yield return null;
             }
             isFading = false;
         }

@@ -76,11 +76,6 @@ namespace trrne.Core
         readonly (float fetters, float floating, float move) red = (0.5f, 0.95f, 0.9f);
 
         /// <summary>
-        /// 減速比
-        /// </summary>
-        // const float MoveReductionRatio = 0.9f;
-
-        /// <summary>
         /// ジャンプ力
         /// </summary>
         const float JumpPower = 6f;
@@ -113,7 +108,7 @@ namespace trrne.Core
         const float InputTolerance = 0.33f;
 
         /// <summary>
-        /// 現在のチェックポイントを取得(public)/更新(private)
+        /// 現在のチェックポイントを取得:public<br/>更新:private
         /// </summary>
         public Vector2 Checkpoint { get; private set; }
 
@@ -132,9 +127,6 @@ namespace trrne.Core
         void Start()
         {
             Checkpoint = Vector2.zero;
-
-            // Movable = true;
-            // Jumpable = true;
 
             menu = Gobject.GetComponentWithTag<PauseMenu>(Constant.Tags.Manager);
             flag = transform.GetComponentFromChild<PlayerFlag>();
@@ -231,7 +223,7 @@ namespace trrne.Core
 
         void Jump()
         {
-            if (!Controllable || EffectFlags[(int)EffectType.Chain] || IsTeleporting) // || Jumpable)
+            if (!Controllable || EffectFlags[(int)EffectType.Chain] || IsTeleporting)
                 return;
 
             if (!flag.OnGround)
@@ -241,9 +233,7 @@ namespace trrne.Core
             }
 
             if (Inputs.Down(Constant.Keys.Jump))
-            {
                 rb.velocity += JumpPower * Coordinate.V2Y;
-            }
             animator.SetBool(Constant.Animations.Jump, false);
         }
 
@@ -252,18 +242,18 @@ namespace trrne.Core
         /// </summary>
         void Move()
         {
-            if (!Controllable || IsTeleporting) // || !Movable)
+            if (!Controllable || IsTeleporting)
                 return;
 
-            bool walk = Input.GetButton(Constant.Keys.Horizontal) && flag.OnGround;
-            animator.SetBool(Constant.Animations.Walk, walk);
+            bool walkAnimation = Input.GetButton(Constant.Keys.Horizontal) && flag.OnGround;
+            animator.SetBool(Constant.Animations.Walk, walkAnimation);
 
             string horizontal = EffectFlags[(int)EffectType.Mirror] ?
                 Constant.Keys.ReversedHorizontal : Constant.Keys.Horizontal;
             Vector2 move = Input.GetAxisRaw(horizontal) * Coordinate.V2X;
 
             // 入力がtolerance以下、氷に乗っていない、浮いていない
-            if (move.magnitude <= InputTolerance && !flag.OnIce) // && !IsFloating)
+            if (move.magnitude <= InputTolerance && !flag.OnIce)
                 // x軸の速度をspeed.reduction倍
                 rb.SetVelocity(x: rb.velocity.x * red.move);
 
@@ -278,9 +268,8 @@ namespace trrne.Core
                 return MaxSpeed;
             });
 
-            Vector2 v = rb.velocity;
-            rb.velocity = new(Mathf.Clamp(v.x, -limit, limit), v.y);
-            // rb.ClampVelocity(x: (-limit, limit));
+            // x軸の速度を制限
+            rb.ClampVelocity(x: (-limit, limit));
 
             // 浮いていたら移動速度低下
             float velocity = IsFloating ? BaseSpeed * red.floating : BaseSpeed;
@@ -315,8 +304,16 @@ namespace trrne.Core
 
             await UniTask.Delay(1250);
 
-            // 落とし穴直す
-            Gobject.Finds<Carrot>().ForEach(c => Shorthand.If(c.Mendable, c.Mend));
+            // エフェクトが付与されていたら消す
+            for (int i = 0; i < EffectFlags.Length; i++)
+            {
+                if (!EffectFlags[i])
+                    continue;
+                EffectFlags[i] = false;
+            }
+
+            // 落とし穴を修繕する
+            Gobject.Finds<Carrot>().ForEach(c => c.Mendable.If(c.Mend));
 
             ReturnToCheckpoint();
             animator.StopPlayback();

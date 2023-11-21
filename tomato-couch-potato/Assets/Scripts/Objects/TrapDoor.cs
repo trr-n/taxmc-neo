@@ -1,11 +1,10 @@
-using System.ComponentModel;
 using trrne.Box;
 using DG.Tweening;
 using UnityEngine;
 
 namespace trrne.Core
 {
-    public class TrapDoor : Object, IGimmick
+    public class TrapDoor : Gimmick, IGimmick
     {
         public enum RotateDirection
         {
@@ -37,18 +36,15 @@ namespace trrne.Core
         /// </summary>
         public bool IsRotating { get; private set; }
 
-        protected override void Start()
+        void Start()
         {
-            base.Start();
             rotation = transform.eulerAngles;
         }
-
-        protected override void Behavior() { }
 
         /// <summary>
         /// ギミックを起動する
         /// </summary>
-        public void On()
+        public override void On()
         {
             Vector3 rotation = direct switch
             {
@@ -69,7 +65,7 @@ namespace trrne.Core
         /// <summary>
         /// 停止する
         /// </summary>
-        public void Off()
+        public override void Off()
         {
             transform.DORotate(rotation, rotationSpeed)
                 .OnPlay(() => IsRotating = true)

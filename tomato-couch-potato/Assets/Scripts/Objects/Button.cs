@@ -6,7 +6,7 @@ namespace trrne.Core
     public class Button : Object
     {
         [SerializeField]
-        GameObject[] gimmicks;
+        Gimmick[] gimmicks;
 
         [SerializeField]
         float duration = 2;
@@ -27,11 +27,8 @@ namespace trrne.Core
         {
             base.Start();
             isAnimate = false;
-
             flag = transform.GetComponentFromChild<ButtonFlag>(0);
-
             speaker = Gobject.GetComponentWithTag<AudioSource>(Constant.Tags.Manager);
-
 #if !DEBUG
             sr.color = Colour.transparent;
 #endif
@@ -44,19 +41,22 @@ namespace trrne.Core
             {
                 isPressing = true;
                 sr.sprite = sprites[status.active];
-
                 speaker.TryPlayOneShot(sounds.Choice());
                 effectiveSW.Restart();
-                gimmicks.ForEach(g => g.GetComponent<IGimmick>().On());
+
+                if (gimmicks.Length >= 1)
+                    gimmicks.ForEach(g => g.GetComponent<IGimmick>().On());
             }
 
             // 動作中、効果時間がduration以上
             if (isPressing && effectiveSW.Secondf() >= duration)
             {
                 effectiveSW.Reset();
-                gimmicks.ForEach(g => g.GetComponent<IGimmick>().Off());
-                speaker.TryPlayOneShot(sounds.Choice());
 
+                if (gimmicks.Length >= 1)
+                    gimmicks.ForEach(g => g.GetComponent<IGimmick>().Off());
+
+                speaker.TryPlayOneShot(sounds.Choice());
                 isPressing = false;
                 sr.sprite = sprites[status.inactive];
             }
