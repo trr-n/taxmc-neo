@@ -22,25 +22,27 @@ namespace trrne.Core
         [SerializeField]
         RotateAmount amount = RotateAmount._90;
 
-        Vector3 rotation;
+        // Vector3 rotation;
 
         /// <summary>
         /// 開いているか
         /// </summary>
-        public bool IsOpen { get; private set; } = false;
+        bool isOpen = false;
 
-        readonly float rotationSpeed = 0.5f;
+        // readonly float rotationSpeed = 0.5f;
 
         /// <summary>
         /// 回転してるか
         /// </summary>
-        public bool IsRotating { get; private set; }
+        // bool isRotating = false;
+        (bool flag, float speed, Vector3 value) rotation = (false, 0.5f, new());
 
         void Start()
         {
-            rotation = transform.eulerAngles;
+            rotation.value = transform.eulerAngles;
         }
 
+        const float Offset = 1e-8f;
         /// <summary>
         /// ギミックを起動する
         /// </summary>
@@ -48,17 +50,17 @@ namespace trrne.Core
         {
             Vector3 rotation = direct switch
             {
-                RotateDirection.Left => this.rotation + Coordinate.V3Z * ((float)amount - 1e-8f),
-                RotateDirection.Right => this.rotation - Coordinate.V3Z * ((float)amount - 1e-8f),
+                RotateDirection.Left => this.rotation.value + Coordinate.V3Z * ((float)amount - Offset),
+                RotateDirection.Right => this.rotation.value - Coordinate.V3Z * ((float)amount - Offset),
                 _ => throw null
             };
 
-            transform.DORotate(rotation, rotationSpeed)
-                .OnPlay(() => IsRotating = true)
+            transform.DORotate(rotation, this.rotation.speed)
+                .OnPlay(() => this.rotation.flag = true)
                 .OnComplete(() =>
                 {
-                    IsRotating = false;
-                    IsOpen = true;
+                    this.rotation.flag = false;
+                    isOpen = true;
                 });
         }
 
@@ -67,12 +69,12 @@ namespace trrne.Core
         /// </summary>
         public override void Off()
         {
-            transform.DORotate(rotation, rotationSpeed)
-                .OnPlay(() => IsRotating = true)
+            transform.DORotate(rotation.value, rotation.speed)
+                .OnPlay(() => rotation.flag = true)
                 .OnComplete(() =>
                 {
-                    IsRotating = false;
-                    IsOpen = false;
+                    rotation.flag = false;
+                    isOpen = false;
                 });
         }
     }

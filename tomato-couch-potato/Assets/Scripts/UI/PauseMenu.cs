@@ -34,7 +34,7 @@ namespace trrne.Brain
         void State(bool active)
         {
             FaderHandle(active);
-            // FIXME タイムスケールいじるとエラー
+            // FIXME タイムスケールいじるとキャンバスが上に飛んでいく
             // Time.timeScale = active ? 0 : 1;
         }
 
@@ -66,10 +66,11 @@ namespace trrne.Brain
             float alpha = fin ? 0f : 1;
             while (alpha.IsCaged(0, 1))
             {
-                canvas.alpha = (fin ?
-                    alpha += Time.unscaledDeltaTime :
-                    alpha -= Time.unscaledDeltaTime
-                ) * FadeSpeed;
+                canvas.alpha = FadeSpeed * fin switch
+                {
+                    true => alpha += Time.unscaledDeltaTime,
+                    false => alpha -= Time.unscaledDeltaTime
+                };
                 yield return null;
             }
             isFading = false;

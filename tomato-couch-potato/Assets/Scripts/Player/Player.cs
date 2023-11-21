@@ -48,7 +48,7 @@ namespace trrne.Core
         /// <summary>
         /// 与えるエフェクト
         /// </summary>
-        public int EffectIdx { get; private set; } = -1;
+        int fxidx = -1;
 
         /// <summary>
         /// エフェクトを与えられるか
@@ -61,14 +61,9 @@ namespace trrne.Core
         public bool[] EffectFlags { get; set; }
 
         /// <summary>
-        /// 基礎移動速度
+        /// 移動速度
         /// </summary>
-        const float BaseSpeed = 20;
-
-        /// <summary>
-        /// 上限移動速度
-        /// </summary>        
-        const float MaxSpeed = 10;
+        readonly (float basis, float max) speed = (20, 10);
 
         /// <summary>
         /// 減速比
@@ -76,9 +71,14 @@ namespace trrne.Core
         readonly (float fetters, float floating, float move) red = (0.5f, 0.95f, 0.9f);
 
         /// <summary>
+        /// 重力
+        /// </summary>
+        readonly (float floating, float basis) gscale = (2f, 1f);
+
+        /// <summary>
         /// ジャンプ力
         /// </summary>
-        const float JumpPower = 6f;
+        const float JumpPower = 10f;
 
         /// <summary>
         /// 地に足がついていなかったらtrue
@@ -136,7 +136,7 @@ namespace trrne.Core
             animator = GetComponent<Animator>();
             hitbox = GetComponent<BoxCollider2D>();
             rb = GetComponent<Rigidbody2D>();
-            rb.mass = 60f;
+            rb.gravityScale = gscale.basis;
 
             int length = new EffectType().EnumLength();
             EffectFlags = new bool[length];
@@ -165,8 +165,9 @@ namespace trrne.Core
         void Def()
         {
             CoreOffset = transform.position + new Vector3(0, hitbox.bounds.size.y / 2);
-            IsFloating = !flag.OnGround;
             rb.isKinematic = IsTeleporting;
+            IsFloating = !flag.OnGround;
+            rb.gravityScale = IsFloating ? gscale.floating : gscale.basis;
         }
 
         /// <summary>
@@ -183,12 +184,12 @@ namespace trrne.Core
 
         public IEnumerator Punishment(float duration, EffectType type)
         {
-            if (EffectIdx == -1 && Effectables[EffectIdx = (int)type])
+            if (fxidx == -1 && Effectables[fxidx = (int)type])
             {
-                EffectFlags[EffectIdx] = true;
+                EffectFlags[fxidx] = true;
                 yield return new WaitForSeconds(duration);
-                EffectFlags[EffectIdx] = false;
-                EffectIdx = -1;
+                EffectFlags[fxidx] = false;
+                fxidx = -1;
             }
         }
 
@@ -209,8 +210,6 @@ namespace trrne.Core
                 int current = Maths.Sign(transform.localScale.x);
                 switch (Mathf.Sign(Input.GetAxisRaw(horizontal)))
                 {
-                    case 0:
-                        return;
                     case 1:
                         Shorthand.If(current != 1, () => transform.localScale *= Reverse);
                         break;
@@ -261,18 +260,18 @@ namespace trrne.Core
             {
                 // 足枷がついていたら速度制限をFettersRed倍する
                 if (EffectFlags[(int)EffectType.Fetters])
-                    return MaxSpeed * red.fetters;
+                    return speed.max * red.fetters;
                 // 氷の上にいたら速度制限を2倍にする
                 else if (flag.OnIce)
-                    return MaxSpeed * 2;
-                return MaxSpeed;
+                    return speed.max * 2;
+                return speed.max;
             });
 
             // x軸の速度を制限
             rb.ClampVelocity(x: (-limit, limit));
 
             // 浮いていたら移動速度低下
-            float velocity = IsFloating ? BaseSpeed * red.floating : BaseSpeed;
+            float velocity = IsFloating ? speed.basis * red.floating : speed.basis;
             rb.velocity += Time.fixedDeltaTime * velocity * move;
         }
 
@@ -292,6 +291,7 @@ namespace trrne.Core
 
             switch (cause)
             {
+                case CuzOfDeath.None: return;
                 case CuzOfDeath.Caps:
                     rb.velocity = Vector2.zero;
                     animator.Play(Constant.Animations.Venomed);

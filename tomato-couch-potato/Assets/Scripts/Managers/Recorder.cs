@@ -4,7 +4,7 @@ namespace trrne.Brain
 {
     public class Recorder : Singleton<Recorder>
     {
-        protected override bool LiveOnLoad => true;
+        protected override bool AliveOnLoad => true;
 
         public string Path => Paths.DataPath("save.sav");
         public string Password => "pomodoro";

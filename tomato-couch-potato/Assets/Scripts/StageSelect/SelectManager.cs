@@ -36,7 +36,7 @@ namespace trrne.Arm
         void Update()
         {
 #if DEBUG
-            centerT.text = CenterButton() != null ? CenterButton().name : null ?? "null";
+            centerT.text = CenterButton() != null ? CenterButton().name : "null";
 #endif
             Scroll();
             Transition();
@@ -44,8 +44,8 @@ namespace trrne.Arm
 
         void Transition()
         {
-            string name = CenterButton().name;
-            if (CenterButton() != null && int.TryParse(name.Delete(PrefabPrefix), out int idx))
+            if (CenterButton() != null
+                && int.TryParse(Typing.Delete(CenterButton().name, PrefabPrefix), out int idx))
             {
                 if (idx <= Recorder.Instance.Done && Inputs.Down(Constant.Keys.Button))
                 {
@@ -61,14 +61,14 @@ namespace trrne.Arm
         GameObject CenterButton()
         {
             foreach (var button in buttons)
-                if (0f.CutailedTwins(button.transform.position.x))
+                if (Maths.CutailedTwins(button.transform.position.x, 0f))
                     return button.gameObject;
             return null;
         }
 
         void Scroll()
         {
-            if ((horizon = Input.GetAxisRaw(Constant.Keys.Horizontal)).Twins(0))
+            if (Maths.Twins(horizon = Input.GetAxisRaw(Constant.Keys.Horizontal), 0f))
                 return;
 
             switch (horizon.Sign())

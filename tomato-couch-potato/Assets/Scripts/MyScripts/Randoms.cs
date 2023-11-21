@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-
+using UnityEditor;
 using SysRandom = System.Random;
 using UniRandom = UnityEngine.Random;
 
@@ -12,10 +12,10 @@ namespace trrne.Box
         public static float _(float min = 0f, float max = 0f) => UniRandom.Range(min, max);
         public static int _(int min = 0, int max = 0) => new SysRandom().Next(min, max + 1);
 
-        [Obsolete] public static float Float(float min = 0, float max = 0) => UniRandom.Range(min, max);
-        [Obsolete] public static int Int(int min = 0, int max = 0) => UniRandom.Range(min, max);
-        public static uint Uint(uint min = 0, uint max = 0) => (uint)UniRandom.Range(min, max);
-        public static short Short(short min = 0, short max = 0) => (short)UniRandom.Range(min, max);
+        public static float Single(float min = 0, float max = 0) => UniRandom.Range(min, max);
+        public static int Int32(int min = 0, int max = 0) => new SysRandom().Next(min, max + 1);
+        public static uint UInt32(uint min = 0, uint max = 0) => (uint)UniRandom.Range(min, max);
+        public static short Int16(short min = 0, short max = 0) => (short)UniRandom.Range(min, max);
 
         readonly static char[] alphabets = "0123456789".ToCharArray();
         readonly static char[] numbers = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz".ToCharArray();

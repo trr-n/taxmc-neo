@@ -10,7 +10,7 @@ namespace trrne.test
 
         void Start()
         {
-            for (int i = 0; i <= n; i++)
+            /* for (int i = 0; i <= n; i++)
                 a += i;
 
             // ■■■■■■■■■■
@@ -26,7 +26,7 @@ namespace trrne.test
             // ▢▢▢▢▢▢▢▢▢▢
             b = n * (n + 1) / 2;
 
-            print($"1..{n}\nfor: {a}\nkoushiki: {b}");
+            print($"1..{n}\nfor: {a}\nkoushiki: {b}"); */
         }
     }
 }

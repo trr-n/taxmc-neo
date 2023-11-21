@@ -22,7 +22,7 @@ namespace trrne.Core
         /// </summary>
         protected bool isAnimate { get; set; } = false;
         protected SpriteRenderer sr;
-        protected Vector2 Size => sr.bounds.size;
+        protected Vector2 size => sr.bounds.size;
 
         protected virtual void Start()
         {
@@ -44,7 +44,8 @@ namespace trrne.Core
         readonly Runner set = new();
         void Animation()
         {
-            if (!isAnimate) return;
+            if (!isAnimate)
+                return;
 
             switch (sprites.Length)
             {

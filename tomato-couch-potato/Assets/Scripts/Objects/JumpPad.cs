@@ -13,6 +13,7 @@ namespace trrne.Core
         {
             if (info.TryGetComponent(out Rigidbody2D rb))
             {
+                print("hit!");
                 rb.velocity = Vector2.zero;
                 rb.velocity += jumpPower * rb.mass * DivRatio * Vector2.up;
             }

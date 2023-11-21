@@ -1,3 +1,4 @@
+using System;
 using DG.Tweening;
 using trrne.Box;
 using UnityEngine;
@@ -35,9 +36,9 @@ namespace trrne.Core
             for (int i = 0; i < children; i++)
             {
                 frames[i].GetComponent<SpriteRenderer>().SetAlpha(frameAlpha);
-                speeds[i] = Randoms._(-SpeedRange, SpeedRange);
+                speeds[i] = Randoms.Single(-SpeedRange, SpeedRange);
             }
-            myspeed = Randoms._(-SpeedRange, SpeedRange);
+            myspeed = Randoms.Single(-SpeedRange, SpeedRange);
         }
 
         protected override void Behavior()
@@ -46,8 +47,8 @@ namespace trrne.Core
             Debug.DrawLine(transform.position, portalGoal.Goal); // 目的地まで線を引く
 #endif
 
+            // フレームを回転させる
             for (int i = 0; i < children; i++)
-                // フレームを回転させる
                 frames[i].transform.Rotate(Time.deltaTime * speeds[i] * Coordinate.V3Z);
 
             // ついでに中心も回転させる
@@ -60,7 +61,6 @@ namespace trrne.Core
                 return;
 
             if (info.TryGetComponent(out Player player) && !player.IsDying)
-            {
                 info.transform.DOMove(portalGoal.Goal, teleportSpeed)
                     .SetEase(Ease.OutCubic)
                     .OnPlay(() =>
@@ -74,7 +74,6 @@ namespace trrne.Core
                         player.IsTeleporting = false;
                         warping = false;
                     });
-            }
         }
     }
 }

@@ -5,25 +5,22 @@ namespace trrne.Box
 {
     public abstract class Singleton<T> : MonoBehaviour where T : MonoBehaviour
     {
-        protected virtual bool LiveOnLoad { get; } = true;
+        protected virtual bool AliveOnLoad { get; } = true;
 
         static T instance;
-        public static T Instance
+        public static T Instance => Shorthand.L1ne(() =>
         {
-            get
-            {
-                if (!instance)
-                    instance = (T)FindObjectOfType(typeof(T));
-                return instance;
-            }
-        }
+            if (!instance)
+                instance = (T)FindObjectOfType(typeof(T));
+            return instance;
+        });
 
         protected virtual void Awake()
         {
             if (this != Instance)
                 Destroy(this);
-            if (LiveOnLoad)
-                gameObject.LiveOnLoad();
+            if (AliveOnLoad)
+                DontDestroyOnLoad(gameObject);
         }
     }
 }
