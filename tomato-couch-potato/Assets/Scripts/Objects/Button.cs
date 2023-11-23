@@ -21,7 +21,7 @@ namespace trrne.Core
 
         bool isPressing = false;
 
-        readonly (int active, int inactive) status = (0, 1);
+        readonly (int on, int off) status = (0, 1);
 
         protected override void Start()
         {
@@ -30,7 +30,7 @@ namespace trrne.Core
             flag = transform.GetComponentFromChild<ButtonFlag>(0);
             speaker = Gobject.GetComponentWithTag<AudioSource>(Constant.Tags.Manager);
 #if !DEBUG
-            sr.color = Colour.transparent;
+            sr.color = Surface.Transparent;
 #endif
         }
 
@@ -40,7 +40,7 @@ namespace trrne.Core
             if (!isPressing && flag.IsHitting && Inputs.Down(Constant.Keys.Button))
             {
                 isPressing = true;
-                sr.sprite = sprites[status.active];
+                sr.sprite = sprites[status.on];
                 speaker.TryPlayOneShot(sounds.Choice());
                 effectiveSW.Restart();
 
@@ -58,7 +58,7 @@ namespace trrne.Core
 
                 speaker.TryPlayOneShot(sounds.Choice());
                 isPressing = false;
-                sr.sprite = sprites[status.inactive];
+                sr.sprite = sprites[status.off];
             }
         }
     }

@@ -1,3 +1,4 @@
+using System;
 using System.Diagnostics.Contracts;
 using trrne.Box;
 using UnityEngine;
@@ -24,7 +25,8 @@ namespace trrne.Core
 
         GameObject[] eyes;
         Vector3[] inits;
-        LineRenderer[] lines;
+        // LineRenderer[] lines;
+        Vector3[] directions;
 
         /// <summary>
         /// 黒目の可動域
@@ -42,15 +44,16 @@ namespace trrne.Core
             ofs = new(0, player.GetComponent<BoxCollider2D>().Size().y / 2);
 
             eyes = transform.GetChildrenGameObject();
-            inits = new[] { eyes[0].transform.position, eyes[1].transform.position };
-            lines = new[] { eyes[0].GetComponent<LineRenderer>(), eyes[1].GetComponent<LineRenderer>() };
-            lines.ForEach(l => l.Width(lineWidth));
+            inits = new Vector3[eyes.Length];
+            // inits = new[] { eyes[0].transform.position, eyes[1].transform.position };
+            for (int i = 0; i < inits.Length; i++)
+                inits[i] = eyes[i].transform.position;
         }
 
         void Update()
         {
             Vector3 ofs = player.transform.position + this.ofs;
-            Vector3[] directions = { ofs - eyes[0].transform.position, ofs - eyes[1].transform.position };
+            directions = new[] { ofs - eyes[0].transform.position, ofs - eyes[1].transform.position };
             float distance = Maths.Average(Vector2.Distance(ofs, eyes[0].transform.position), Vector2.Distance(ofs, eyes[1].transform.position));
 
             // プレイヤーが範囲内にいる
@@ -59,17 +62,16 @@ namespace trrne.Core
 
             Vector2 ave = new(Maths.Average(eyes[0].transform.position.x, eyes[1].transform.position.x),
                 Maths.Average(eyes[0].transform.position.y, eyes[1].transform.position.y));
-            Ray infrared = new(origin: ave, direction: player.transform.position.ToVec2() - ave);
+            Ray infrared = new(ave, player.transform.position.ToVec2() - ave);
 
             // 且つ、プレイヤーとの間に障害物がなかったら
             if (!Gobject.TryGetRaycast<Player>(infrared, distance))
                 return;
-            // if (Gobject.Raycast(out RaycastHit2D hit, infrared, distance))
-            // ;
 
             for (int i = 0; i < eyes.Length; i++)
                 eyes[i].transform.position = inits[i] + directions[i].normalized * EyeBump;
 
+            // the fires generate if timer value is upper than rapid rate 
             if ((fireRapidTimer += Time.deltaTime) >= fireRapidRate)
             {
                 fires.TryInstantiate(transform.position);
@@ -80,10 +82,14 @@ namespace trrne.Core
 #if UNITY_EDITOR
         void OnDrawGizmos()
         {
-            Gizmos.color = Surface.Gaming;
-            Vector2 ave = new(Maths.Average(eyes[0].transform.position.x, eyes[1].transform.position.x),
-                Maths.Average(eyes[0].transform.position.y, eyes[1].transform.position.y));
-            Gizmos.DrawWireSphere(ave, playerDetectRange / 2);
+            try
+            {
+                Gizmos.color = Surface.Gaming;
+                Vector2 ave = new(Maths.Average(eyes[0].transform.position.x, eyes[1].transform.position.x),
+                    Maths.Average(eyes[0].transform.position.y, eyes[1].transform.position.y));
+                Gizmos.DrawWireSphere(ave, playerDetectRange / 2);
+            }
+            catch (NullReferenceException) { }
         }
 #endif
     }

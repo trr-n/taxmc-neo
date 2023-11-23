@@ -284,8 +284,7 @@ namespace trrne.Core
                 return;
 
             IsDying = true;
-            Controllable = false;
-            cam.Followable = false;
+            Controllable = cam.Followable = false;
 
             diefx.TryInstantiate(transform.position);
 
@@ -306,20 +305,16 @@ namespace trrne.Core
 
             // エフェクトが付与されていたら消す
             for (int i = 0; i < EffectFlags.Length; i++)
-            {
-                if (!EffectFlags[i])
-                    continue;
-                EffectFlags[i] = false;
-            }
+                if (EffectFlags[i])
+                    EffectFlags[i] = false;
 
             // 落とし穴を修繕する
-            Gobject.Finds<Carrot>().ForEach(c => c.Mendable.If(c.Mend));
+            Gobject.Finds<Carrot>().ForEach(carrot => carrot.Mendable.If(carrot.Mend));
 
             ReturnToCheckpoint();
             animator.StopPlayback();
 
-            cam.Followable = true;
-            Controllable = true;
+            cam.Followable = Controllable = true;
             IsDying = false;
         }
 

@@ -2,7 +2,7 @@
 
 namespace trrne.Box
 {
-    public static class Speaker
+    public static class Audio
     {
         public static AudioClip TryPlayOneShot(this AudioSource source, AudioClip clip, float volume = 1f)
         {

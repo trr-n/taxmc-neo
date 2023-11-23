@@ -13,19 +13,17 @@ namespace trrne.Core
         new BoxCollider2D collider;
 
         public bool Mendable { get; private set; }
-
         public float Ratio => (float)flag.Count / limitSteps;
 
         protected override void Start()
         {
             base.Start();
+            sr.sprite = sprites[0];
 
             flag = transform.GetComponentFromChild<CarrotFlag>();
             flag.Count = 0;
 
             collider = GetComponent<BoxCollider2D>();
-
-            sr.sprite = sprites[0];
         }
 
         protected override void Behavior()
@@ -34,8 +32,7 @@ namespace trrne.Core
             {
                 effects.TryInstantiate(transform.position);
                 Mendable = true;
-                sr.enabled = false;
-                collider.enabled = false;
+                sr.enabled = collider.enabled = false;
             }
             sr.sprite = sprites[Ratio < .5f ? 0 : 1];
         }
@@ -44,8 +41,7 @@ namespace trrne.Core
         {
             Mendable = false;
             flag.Count = 0;
-            sr.enabled = true;
-            collider.enabled = true;
+            sr.enabled = collider.enabled = true;
         }
     }
 }

@@ -52,11 +52,11 @@
 ## メインステージ構成
 
 - [x] Game0
-  - チュートリアル的な感じ
+  - [チュートリアル][tutorial]的な感じ
   - 基本操作を練習できるように
 
 - [ ] Game1
-  - とにかく高難度
+  - [とにかく高難度][gimmicks]
 
 ### チュートリアル構成メモ
 
@@ -70,6 +70,14 @@
 8. にんじん
 9. ゴール
 
+### ステージ1ギミックメモ
+
+1. 空中でレバー、ボタン
+2. 時間制限
+
 <!--? links -->
 [unitask]: https://github.com/Cysharp/UniTask/released
 [dotween]: https://assetstore.unity.com/packages/tools/animation/dotween-hotween-v2-27676
+
+[tutorial]: #チュートリアル構成メモ
+[gimmicks]: #ステージ1ギミックメモ

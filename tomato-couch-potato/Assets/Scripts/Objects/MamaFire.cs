@@ -1,4 +1,5 @@
-﻿using Cysharp.Threading.Tasks;
+﻿using System;
+using Cysharp.Threading.Tasks;
 using trrne.Box;
 using UnityEngine;
 
@@ -51,6 +52,7 @@ namespace trrne.Core
                 return;
 
             Movement();
+
             if (isTracking)
                 direction = (player.transform.position - transform.position).normalized;
         }
@@ -67,7 +69,7 @@ namespace trrne.Core
                 if (!player.IsDying)
                     await UniTask.WhenAll(Punishment(player));
                 try { Destroy(gameObject); }
-                catch { }
+                catch (MissingReferenceException) { }
             }
         }
     }

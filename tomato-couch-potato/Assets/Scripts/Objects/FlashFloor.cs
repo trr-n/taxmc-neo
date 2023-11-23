@@ -25,12 +25,10 @@ namespace trrne.Core
         {
             while (true)
             {
-                sr.enabled = true;
-                collider.enabled = true;
+                sr.enabled = collider.enabled = true;
                 yield return new WaitForSeconds(cooltimes.x != 0 ? cooltimes.x : cooltimes.y);
 
-                sr.enabled = false;
-                collider.enabled = false;
+                sr.enabled = collider.enabled = false;
                 yield return new WaitForSeconds(cooltimes.y);
             }
         }
