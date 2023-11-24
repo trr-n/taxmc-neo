@@ -39,7 +39,7 @@ namespace trrne.Core
             hitbox = GetComponent<CircleCollider2D>();
             hitbox.isTrigger = true;
 
-            player = Gobject.GetComponentWithTag<Player>(Constant.Tags.Player);
+            player = Gobject.GetWithTag<Player>(Constant.Tags.Player);
             direction = (player.CoreOffset - transform.position).normalized;
 
             // life秒後に破壊

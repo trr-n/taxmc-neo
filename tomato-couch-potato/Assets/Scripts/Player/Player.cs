@@ -3,14 +3,15 @@ using UnityEngine;
 using Cysharp.Threading.Tasks;
 using trrne.Box;
 using trrne.Brain;
+using System;
 
 namespace trrne.Core
 {
-    public enum CuzOfDeath
+    public enum Cause
     {
-        Caps,   // 唐辛死
-        Fallen, // 落下死
-        None,   // 不審死
+        Muscarine,  // 紅の天狗
+        Fallen,     // 落下死
+        None,       // 不審死
     }
 
     public enum EffectType
@@ -108,37 +109,26 @@ namespace trrne.Core
         const float InputTolerance = 0.33f;
 
         /// <summary>
-        /// 現在のチェックポイントを取得:public<br/>更新:private
+        /// get current cp:public<br/>set:private
         /// </summary>
-        public Vector2 Checkpoint { get; private set; }
-
-        /// <summary>
-        /// チェックポイントを設定する
-        /// </summary>
+        public Vector2 Checkpoint { get; private set; } = Vector2.zero;
         public void SetCheckpoint(Vector2 position) => Checkpoint = position;
-
-        /// <summary>
-        /// チェックポイントに戻る
-        /// </summary>
         public void ReturnToCheckpoint() => transform.position = Checkpoint;
 
         Vector2 Reverse => new(-1, 1);
 
         void Start()
         {
-            Checkpoint = Vector2.zero;
+            flag = transform.GetFromChild<PlayerFlag>();
+            menu = Gobject.GetWithTag<PauseMenu>(Constant.Tags.Manager);
 
-            menu = Gobject.GetComponentWithTag<PauseMenu>(Constant.Tags.Manager);
-            flag = transform.GetComponentFromChild<PlayerFlag>();
-
-            cam = Gobject.GetComponentWithTag<Cam>(Constant.Tags.MainCamera);
+            cam = Gobject.GetWithTag<Cam>(Constant.Tags.MainCamera);
 
             animator = GetComponent<Animator>();
             hitbox = GetComponent<BoxCollider2D>();
-            rb = GetComponent<Rigidbody2D>();
-            rb.gravityScale = gscale.basis;
+            (rb = GetComponent<Rigidbody2D>()).gravityScale = gscale.basis;
 
-            int length = new EffectType().EnumLength();
+            int length = new EffectType().Length();
             EffectFlags = new bool[length];
             Effectables = new bool[length];
             for (int i = 0; i < EffectFlags.Length; i++)
@@ -165,9 +155,9 @@ namespace trrne.Core
         void Def()
         {
             CoreOffset = transform.position + new Vector3(0, hitbox.bounds.size.y / 2);
-            rb.isKinematic = IsTeleporting;
-            IsFloating = !flag.OnGround;
-            rb.gravityScale = IsFloating ? gscale.floating : gscale.basis;
+            // rb.isKinematic = IsTeleporting;
+            rb.bodyType = IsTeleporting ? RigidbodyType2D.Static : RigidbodyType2D.Dynamic;
+            rb.gravityScale = (IsFloating = !flag.OnGround) ? gscale.floating : gscale.basis;
         }
 
         /// <summary>
@@ -268,7 +258,8 @@ namespace trrne.Core
             });
 
             // x軸の速度を制限
-            rb.ClampVelocity(x: (-limit, limit));
+            if (rb.bodyType != RigidbodyType2D.Static)
+                rb.ClampVelocity(x: (-limit, limit));
 
             // 浮いていたら移動速度低下
             float velocity = IsFloating ? speed.basis * red.floating : speed.basis;
@@ -278,7 +269,7 @@ namespace trrne.Core
         /// <summary>
         /// 成仏
         /// </summary>
-        public async UniTask Die(CuzOfDeath cause = CuzOfDeath.None)
+        public async UniTask Die(Cause cause = Cause.None)
         {
             if (IsDying)
                 return;
@@ -290,12 +281,12 @@ namespace trrne.Core
 
             switch (cause)
             {
-                case CuzOfDeath.None: return;
-                case CuzOfDeath.Caps:
+                case Cause.None: break;
+                case Cause.Muscarine:
                     rb.velocity = Vector2.zero;
                     animator.Play(Constant.Animations.Venomed);
                     break;
-                case CuzOfDeath.Fallen:
+                case Cause.Fallen:
                     animator.Play(Constant.Animations.Die);
                     break;
                 default: break;
@@ -303,12 +294,12 @@ namespace trrne.Core
 
             await UniTask.Delay(1250);
 
-            // エフェクトが付与されていたら消す
+            // remove active fxs
             for (int i = 0; i < EffectFlags.Length; i++)
                 if (EffectFlags[i])
                     EffectFlags[i] = false;
 
-            // 落とし穴を修繕する
+            // mend carrots
             Gobject.Finds<Carrot>().ForEach(carrot => carrot.Mendable.If(carrot.Mend));
 
             ReturnToCheckpoint();
@@ -318,6 +309,6 @@ namespace trrne.Core
             IsDying = false;
         }
 
-        public async UniTask Die() => await Die(CuzOfDeath.None);
+        public async UniTask Die() => await Die(Cause.None);
     }
 }

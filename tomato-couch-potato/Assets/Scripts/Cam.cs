@@ -12,7 +12,8 @@ namespace trrne.Core
         [SerializeField]
         float offsetY = 1;
 
-        float z, refvx, refvy;
+        float z;
+        Vector2 refv = new();
 
         [SerializeField]
         Vector2 spd = new(0.01f, 1e-12f);
@@ -21,7 +22,7 @@ namespace trrne.Core
 
         void Start()
         {
-            player = Gobject.GetComponentWithTag<Player>(Constant.Tags.Player);
+            player = Gobject.GetWithTag<Player>(Constant.Tags.Player);
             z = transform.position.z;
         }
 
@@ -43,8 +44,8 @@ namespace trrne.Core
                 return;
 
             Vector2 self = transform.position, player = this.player.transform.position;
-            float dx = Mathf.SmoothDamp(self.x, player.x, ref refvx, spd.x),
-                dy = Mathf.SmoothDamp(self.y, player.y, ref refvy, spd.y) + offsetY;
+            float dx = Mathf.SmoothDamp(self.x, player.x, ref refv.x, spd.x),
+                dy = Mathf.SmoothDamp(self.y, player.y, ref refv.y, spd.y) + offsetY;
             transform.position = new(dx, dy, z);
         }
 

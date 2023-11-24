@@ -9,7 +9,8 @@ namespace trrne.Core
         public enum RotateDirection
         {
             Left,
-            Right
+            Right,
+            Random
         }
         [SerializeField]
         RotateDirection direct;
@@ -21,15 +22,6 @@ namespace trrne.Core
         }
         [SerializeField]
         RotateAmount amount = RotateAmount._90;
-
-        // Vector3 rotation;
-
-        /// <summary>
-        /// 開いているか
-        /// </summary>
-        bool isOpen = false;
-
-        // readonly float rotationSpeed = 0.5f;
 
         /// <summary>
         /// 回転してるか
@@ -48,20 +40,20 @@ namespace trrne.Core
         /// </summary>
         public override void On()
         {
-            Vector3 rotation = direct switch
+            Vector3 rotation = ((float)amount - Offset) * direct switch
             {
-                RotateDirection.Left => this.rotation.value + Coordinate.V3Z * ((float)amount - Offset),
-                RotateDirection.Right => this.rotation.value - Coordinate.V3Z * ((float)amount - Offset),
-                _ => throw null
+                RotateDirection.Left => this.rotation.value + Coordinate.V3Z,
+                RotateDirection.Right => this.rotation.value - Coordinate.V3Z,
+                RotateDirection.Random or _ => Randoms.Int32(max: Typing.Length2<RotateDirection>()) switch
+                {
+                    0 => this.rotation.value + Coordinate.V3Z,
+                    _ => this.rotation.value - Coordinate.V3Z,
+                }
             };
 
             transform.DORotate(rotation, this.rotation.speed)
                 .OnPlay(() => this.rotation.flag = true)
-                .OnComplete(() =>
-                {
-                    this.rotation.flag = false;
-                    isOpen = true;
-                });
+                .OnComplete(() => this.rotation.flag = false);
         }
 
         /// <summary>
@@ -71,11 +63,7 @@ namespace trrne.Core
         {
             transform.DORotate(rotation.value, rotation.speed)
                 .OnPlay(() => rotation.flag = true)
-                .OnComplete(() =>
-                {
-                    rotation.flag = false;
-                    isOpen = false;
-                });
+                .OnComplete(() => rotation.flag = false);
         }
     }
 }

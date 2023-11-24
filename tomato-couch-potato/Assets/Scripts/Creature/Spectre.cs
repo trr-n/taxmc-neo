@@ -21,7 +21,7 @@ namespace trrne.Core
         {
             Enable = true;
             base.Start();
-            player = Gobject.GetComponentWithTag<Player>(Constant.Tags.Player);
+            player = Gobject.GetWithTag<Player>(Constant.Tags.Player);
             left = transform.localScale.x;
         }
 
@@ -46,7 +46,7 @@ namespace trrne.Core
         // follow the player slowly
         protected override void Movement()
         {
-            Vector3 direction = player.transform.position + player.CoreOffset - transform.position;
+            Vector3 direction = player.CoreOffset - transform.position;
             transform.Translate(Time.deltaTime * MoveSpeed * direction.normalized);
         }
 

@@ -16,7 +16,7 @@ namespace trrne
 
         public readonly struct Layers
         {
-            public const int None = 1 << 0;
+            public const int Default = 1 << 0;
             public const int Player = 1 << 6;
             public const int Jumpable = 1 << 7;
             public const int Object = 1 << 8;

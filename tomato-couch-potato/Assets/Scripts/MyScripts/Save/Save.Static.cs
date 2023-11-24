@@ -24,7 +24,7 @@ namespace trrne.Secret
                 byte[] readArr = new byte[stream.Length];
                 stream.Read(readArr, 0, (int)stream.Length);
                 IEncryption decrypt = new Rijndael(password);
-                read = JsonUtility.FromJson<T>(decrypt.DecryptToString(readArr));
+                read = JsonUtility.FromJson<T>(decrypt.Decrypt2String(readArr));
             }
             return read == null;
         }
@@ -50,7 +50,7 @@ namespace trrne.Secret
             {
                 byte[] arr = new byte[stream.Length];
                 stream.Read(arr, 0, (int)stream.Length);
-                read = JsonSerializer.Deserialize<T>(new Rijndael(password).DecryptToString(arr));
+                read = JsonSerializer.Deserialize<T>(new Rijndael(password).Decrypt2String(arr));
             }
             return read == null;
         }

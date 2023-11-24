@@ -1,6 +1,5 @@
 using UnityEngine;
 using trrne.Box;
-using UnityEngine.UI;
 
 namespace trrne.Core
 {
@@ -13,12 +12,12 @@ namespace trrne.Core
         void Start()
         {
             icons = transform.GetChildrenGameObject();
-            player = Gobject.GetComponentWithTag<Player>(Constant.Tags.Player);
+            player = Gobject.GetWithTag<Player>(Constant.Tags.Player);
         }
 
         void Update()
         {
-            // アクティブなエフェクトのアイコンだけ表示
+            // show active fx icon
             for (int i = 0; i < icons.Length; i++)
                 icons[i].SetActive(player.EffectFlags[i]);
         }

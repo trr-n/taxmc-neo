@@ -40,7 +40,7 @@ namespace trrne.Core
 
         void Start()
         {
-            player = Gobject.GetGameObjectWithTag(Constant.Tags.Player);
+            player = Gobject.GetWithTag(Constant.Tags.Player);
             ofs = new(0, player.GetComponent<BoxCollider2D>().Size().y / 2);
 
             eyes = transform.GetChildrenGameObject();
@@ -56,7 +56,7 @@ namespace trrne.Core
             directions = new[] { ofs - eyes[0].transform.position, ofs - eyes[1].transform.position };
             float distance = Maths.Average(Vector2.Distance(ofs, eyes[0].transform.position), Vector2.Distance(ofs, eyes[1].transform.position));
 
-            // プレイヤーが範囲内にいる
+            // player within range
             if (!(IsPlayerOnDetectRange = playerDetectRange >= distance))
                 return;
 
@@ -64,7 +64,7 @@ namespace trrne.Core
                 Maths.Average(eyes[0].transform.position.y, eyes[1].transform.position.y));
             Ray infrared = new(ave, player.transform.position.ToVec2() - ave);
 
-            // 且つ、プレイヤーとの間に障害物がなかったら
+            // and there is not object between player and me
             if (!Gobject.TryGetRaycast<Player>(infrared, distance))
                 return;
 
@@ -82,14 +82,13 @@ namespace trrne.Core
 #if UNITY_EDITOR
         void OnDrawGizmos()
         {
-            try
-            {
-                Gizmos.color = Surface.Gaming;
-                Vector2 ave = new(Maths.Average(eyes[0].transform.position.x, eyes[1].transform.position.x),
-                    Maths.Average(eyes[0].transform.position.y, eyes[1].transform.position.y));
-                Gizmos.DrawWireSphere(ave, playerDetectRange / 2);
-            }
-            catch (NullReferenceException) { }
+            if (eyes == null || eyes.Length <= 0)
+                return;
+
+            Gizmos.color = Surface.Gaming;
+            Vector2 ave = new(Maths.Average(eyes[0].transform.position.x, eyes[1].transform.position.x),
+                Maths.Average(eyes[0].transform.position.y, eyes[1].transform.position.y));
+            Gizmos.DrawWireSphere(ave, playerDetectRange / 2);
         }
 #endif
     }

@@ -21,9 +21,9 @@ namespace trrne.Box
 
         public static void SetVelocity(this Rigidbody2D rb, float? x = null, float? y = null) => rb.velocity = new(x ?? rb.velocity.x, y ?? rb.velocity.y);
 
-        public static void ClampVelocity(this Rigidbody2D rb, (float? min, float? max)? x = null, (float? min, float? max)? y = null)
-        => rb.velocity = new(x is null ? rb.velocity.x : Mathf.Clamp(rb.velocity.x, (float)x.Value.min, (float)x.Value.max),
-            y is null ? rb.velocity.y : Mathf.Clamp(rb.velocity.y, (float)y.Value.min, (float)y.Value.max));
+        public static void ClampVelocity(this Rigidbody2D rb, (float min, float max)? x = null, (float min, float max)? y = null)
+        => rb.velocity = new(x is null ? rb.velocity.x : Mathf.Clamp(rb.velocity.x, x.Value.min, x.Value.max),
+            y is null ? rb.velocity.y : Mathf.Clamp(rb.velocity.y, y.Value.min, y.Value.max));
 
         public static void SetEuler(this Transform t, float? x = null, float? y = null, float? z = null)
         => t.rotation = Quaternion.Euler(x ?? t.localScale.x, y ?? t.localScale.y, z ?? t.lossyScale.z);

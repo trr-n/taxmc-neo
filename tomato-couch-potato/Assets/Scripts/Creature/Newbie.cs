@@ -27,7 +27,7 @@ namespace trrne.Core
 
         protected override void Start()
         {
-            player = Gobject.GetComponentWithTag<Player>(Constant.Tags.Player);
+            player = Gobject.GetWithTag<Player>(Constant.Tags.Player);
 
             speed.real = facing switch
             {
@@ -85,9 +85,7 @@ namespace trrne.Core
         public override async UniTask Die()
         {
             if (dying)
-            {
                 return;
-            }
             dying = true;
             diefx.TryInstantiate(transform.position);
             await UniTask.WaitForSeconds(0.1f);

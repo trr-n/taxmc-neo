@@ -1,4 +1,3 @@
-using System.Runtime.CompilerServices;
 using System.Collections;
 using trrne.Box;
 using UnityEngine;
@@ -43,10 +42,7 @@ namespace trrne.Brain
             if (!Inputs.Down(Constant.Keys.Pause))
                 return;
 
-            if (IsPausing)
-                State(false);
-            else
-                State(true);
+            State(!IsPausing);
         }
 
         void FaderHandle(bool fin)
@@ -62,14 +58,13 @@ namespace trrne.Brain
         IEnumerator Fader(bool fin)
         {
             isFading = true;
-            yield return null;
             float alpha = fin ? 0f : 1;
             while (alpha.IsCaged(0, 1))
             {
                 canvas.alpha = FadeSpeed * fin switch
                 {
                     true => alpha += Time.unscaledDeltaTime,
-                    false => alpha -= Time.unscaledDeltaTime
+                    false or _ => alpha -= Time.unscaledDeltaTime
                 };
                 yield return null;
             }

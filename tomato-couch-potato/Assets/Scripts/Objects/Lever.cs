@@ -19,8 +19,8 @@ namespace trrne.Core
         protected override void Start()
         {
             base.Start();
-            flag = transform.GetComponentFromChild<LeverFlag>();
-            source = Gobject.GetComponentWithTag<AudioSource>(Constant.Tags.Manager);
+            flag = transform.GetFromChild<LeverFlag>();
+            source = Gobject.GetWithTag<AudioSource>(Constant.Tags.Manager);
 
             sr.sprite = sprites[isActive ? 0 : 1];
         }

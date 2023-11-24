@@ -1,4 +1,4 @@
-// 学校提供
+// 提供
 
 using System.Text;
 using System.Collections.Generic;
@@ -64,7 +64,7 @@ namespace trrne.Secret
             return decrypt.TransformFinalBlock(plain, 0, plain.Length);
         }
 
-        public string DecryptToString(byte[] src) => Encoding.UTF8.GetString(Decrypt(src));
+        public string Decrypt2String(byte[] src) => Encoding.UTF8.GetString(Decrypt(src));
     }
 }
 

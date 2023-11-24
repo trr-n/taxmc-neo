@@ -4,7 +4,7 @@ using Cysharp.Threading.Tasks;
 
 namespace trrne.Core
 {
-    public class ChiliPepper : Object
+    public class FlyAgaric : Object
     {
         protected override void Behavior() { }
 
@@ -13,7 +13,7 @@ namespace trrne.Core
             if (info.TryGetComponent(out Player player) && !player.IsDying)
             {
                 effects.TryInstantiate(transform.position);
-                await player.Die(CuzOfDeath.Caps);
+                await player.Die(Cause.Muscarine);
             }
         }
     }

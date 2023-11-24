@@ -1,18 +1,19 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 namespace trrne.Box
 {
     public class Anima
     {
-        (int i, Stopwatch sw) colour = (0, new(true)), sprite = (0, new(true));
+        (int idx, Stopwatch sw) colour = (0, new(true)), sprite = (0, new(true));
 
         public void Colour(bool enable, SpriteRenderer sr, in float interval, params Color[] colours)
         {
             if (enable && colour.sw.Secondf() >= interval)
             {
                 sprite.sw.Reset();
-                colour.i = colour.i >= colours.Length - 1 ? colour.i = 0 : colour.i += 1;
-                sr.color = colours[colour.i];
+                colour.idx = colour.idx >= colours.Length - 1 ? colour.idx = 0 : colour.idx += 1;
+                sr.color = colours[colour.idx];
                 colour.sw.Restart();
             }
         }
@@ -22,8 +23,8 @@ namespace trrne.Box
             if (enable && sprite.sw.Second() >= interval)
             {
                 sprite.sw.Reset();
-                sprite.i = sprite.i >= pics.Length - 1 ? 0 : sprite.i += 1;
-                sr.sprite = pics[sprite.i];
+                sprite.idx = sprite.idx >= pics.Length - 1 ? 0 : sprite.idx += 1;
+                sr.sprite = pics[sprite.idx];
                 sprite.sw.Restart();
             }
         }
@@ -31,6 +32,6 @@ namespace trrne.Box
 
     public static class Anima2
     {
-        public static float Length(this Animator animator) => animator.GetNextAnimatorStateInfo(0).length;
+        [Obsolete] public static float Length(this Animator animator) => animator.GetNextAnimatorStateInfo(0).length;
     }
 }

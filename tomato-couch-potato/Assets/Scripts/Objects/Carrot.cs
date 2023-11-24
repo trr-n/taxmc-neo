@@ -20,7 +20,7 @@ namespace trrne.Core
             base.Start();
             sr.sprite = sprites[0];
 
-            flag = transform.GetComponentFromChild<CarrotFlag>();
+            flag = transform.GetFromChild<CarrotFlag>();
             flag.Count = 0;
 
             collider = GetComponent<BoxCollider2D>();

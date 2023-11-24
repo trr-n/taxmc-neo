@@ -3,26 +3,25 @@
 
 using System;
 using UnityEngine;
-using UniGob = UnityEngine.GameObject;
 
 namespace trrne.Box
 {
     public static partial class Gobject
     {
-        public static UniGob GetGameObjectWithTag(this string tag) => UniGob.FindGameObjectWithTag(tag);
-        public static UniGob[] GetGameObjectsWithTag(string tag) => UniGob.FindGameObjectsWithTag(tag);
+        public static GameObject GetWithTag(this string tag) => GameObject.FindGameObjectWithTag(tag);
+        public static GameObject[] GetsWithTag(this string tag) => GameObject.FindGameObjectsWithTag(tag);
         public static T[] Finds<T>(FindObjectsInactive inactive = FindObjectsInactive.Exclude,
             FindObjectsSortMode mode = FindObjectsSortMode.None) where T : UnityEngine.Object
-        => UniGob.FindObjectsByType<T>(findObjectsInactive: inactive, sortMode: mode);
+        => GameObject.FindObjectsByType<T>(findObjectsInactive: inactive, sortMode: mode);
 
-        public static T GetComponentWithTag<T>(this string tag) => GetGameObjectWithTag(tag).GetComponent<T>();
-        public static T GetComponentWithTag<T>(this UniGob gob) => gob.GetComponent<T>();
-        public static bool TryGetComponentWithTag<T>(out T t, string tag) => GetGameObjectWithTag(tag).TryGetComponent(out t);
+        public static T GetWithTag<T>(this string tag) => GetWithTag(tag).GetComponent<T>();
+        public static T GetWithTag<T>(this GameObject gob) => gob.GetComponent<T>();
+        public static bool TryGetWithTag<T>(out T t, string tag) => GetWithTag(tag).TryGetComponent(out t);
         [Obsolete("Way to get gameobject, GetComponentWithTag is better than this.")]
-        public static T GetComponentWithName<T>(this string name) => UniGob.Find(name).GetComponent<T>();
-        public static T GetComponentFromChild<T>(this Transform transform, int index = 0) => transform.GetChild(index).GetComponent<T>();
-        public static T GetComponentFromParent<T>(this Transform transform) => transform.parent.GetComponent<T>();
-        public static T GetComponentFromRoot<T>(this Transform transform) => transform.root.GetComponent<T>();
+        public static T GetWithName<T>(this string name) => GameObject.Find(name).GetComponent<T>();
+        public static T GetFromChild<T>(this Transform transform, int index = 0) => transform.GetChild(index).GetComponent<T>();
+        public static T GetFromParent<T>(this Transform transform) => transform.parent.GetComponent<T>();
+        public static T GetFromRoot<T>(this Transform transform) => transform.root.GetComponent<T>();
 
         public static T GetComponent<T>(this Collision2D info) => info.gameObject.GetComponent<T>();
         public static T GetComponent<T>(this Collider2D info) => info.gameObject.GetComponent<T>();
@@ -37,12 +36,12 @@ namespace trrne.Box
         public static bool TryGetComponent<T>(this RaycastHit2D hit, out T t) => hit.collider.TryGetComponent(out t);
         public static void TryAction<T>(this Collider2D info, Action<T> action) => info.TryGetComponent(out T t).If(() => action(t));
 
-        public static UniGob GetChildGameObject(this Transform t) => t.GetChild(0).gameObject;
-        public static UniGob GetChildGameObject(this Transform t, int index) => t.GetChild(index).gameObject;
+        public static GameObject GetChildGameObject(this Transform t) => t.GetChild(0).gameObject;
+        public static GameObject GetChildGameObject(this Transform t, int index) => t.GetChild(index).gameObject;
 
-        public static UniGob[] GetChildrenGameObject(this Transform t)
+        public static GameObject[] GetChildrenGameObject(this Transform t)
         {
-            UniGob[] children = new UniGob[t.childCount];
+            GameObject[] children = new GameObject[t.childCount];
             for (int i = 0; i < children.Length; i++)
                 children[i] = t.GetChild(i).gameObject;
             return children;

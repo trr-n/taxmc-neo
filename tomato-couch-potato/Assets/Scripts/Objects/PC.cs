@@ -15,7 +15,7 @@ namespace trrne.Core
         protected override void Start()
         {
             base.Start();
-            display = transform.GetComponentFromChild<SpriteRenderer>(0);
+            display = transform.GetFromChild<SpriteRenderer>(0);
             display.color = DisplayColors[Unused];
         }
 

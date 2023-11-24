@@ -46,8 +46,6 @@ namespace trrne.Box
             return true;
         }
 
-        public static int EnumLength<T>(this T t) where T : Enum => Enum.GetValues(t.GetType()).Length;
-
         public static bool IsCaged(this float n, float min, float max) => !(n > max || n < min);
     }
 }

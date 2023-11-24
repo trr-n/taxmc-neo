@@ -27,8 +27,8 @@ namespace trrne.Core
         {
             base.Start();
             isAnimate = false;
-            flag = transform.GetComponentFromChild<ButtonFlag>(0);
-            speaker = Gobject.GetComponentWithTag<AudioSource>(Constant.Tags.Manager);
+            flag = transform.GetFromChild<ButtonFlag>(0);
+            speaker = Gobject.GetWithTag<AudioSource>(Constant.Tags.Manager);
 #if !DEBUG
             sr.color = Surface.Transparent;
 #endif

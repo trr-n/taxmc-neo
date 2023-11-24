@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 namespace trrne.Box
@@ -30,5 +31,7 @@ namespace trrne.Box
 
         // from float
         public static int ToInt(this float single) => Maths.Cutail(single);
+
+        public static T ToEnum<T>(this int index) where T : Enum => (T)Enum.ToObject(typeof(T), index);
     }
 }

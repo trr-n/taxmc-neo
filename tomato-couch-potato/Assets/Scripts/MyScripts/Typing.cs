@@ -24,5 +24,8 @@ namespace trrne.Box
 
         public static string Link(this char[] objs) => string.Join("", objs);
         public static string Link(this byte[] b) => string.Join("", b);
+
+        public static int Length<T>(this T t) where T : Enum => Enum.GetValues(t.GetType()).Length;
+        public static int Length2<T>() where T : Enum => Enum.GetValues(typeof(T)).Length;
     }
 }
