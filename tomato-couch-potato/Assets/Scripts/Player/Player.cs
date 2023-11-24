@@ -115,7 +115,7 @@ namespace trrne.Core
         public void SetCheckpoint(Vector2 position) => Checkpoint = position;
         public void ReturnToCheckpoint() => transform.position = Checkpoint;
 
-        Vector2 Reverse => new(-1, 1);
+        Vector2 reverse => new(-1, 1);
 
         void Start()
         {
@@ -201,10 +201,10 @@ namespace trrne.Core
                 switch (Mathf.Sign(Input.GetAxisRaw(horizontal)))
                 {
                     case 1:
-                        Shorthand.If(current != 1, () => transform.localScale *= Reverse);
+                        Shorthand.If(current != 1, () => transform.localScale *= reverse);
                         break;
                     case -1:
-                        Shorthand.If(current != -1, () => transform.localScale *= Reverse);
+                        Shorthand.If(current != -1, () => transform.localScale *= reverse);
                         break;
                 }
             }
@@ -248,10 +248,8 @@ namespace trrne.Core
 
             float limit = Shorthand.L1ne(() =>
             {
-                // 足枷がついていたら速度制限をFettersRed倍する
                 if (EffectFlags[(int)EffectType.Fetters])
                     return speed.max * red.fetters;
-                // 氷の上にいたら速度制限を2倍にする
                 else if (flag.OnIce)
                     return speed.max * 2;
                 return speed.max;
@@ -262,8 +260,8 @@ namespace trrne.Core
                 rb.ClampVelocity(x: (-limit, limit));
 
             // 浮いていたら移動速度低下
-            float velocity = IsFloating ? speed.basis * red.floating : speed.basis;
-            rb.velocity += Time.fixedDeltaTime * velocity * move;
+            float scalar = IsFloating ? speed.basis * red.floating : speed.basis;
+            rb.velocity += Time.fixedDeltaTime * scalar * move;
         }
 
         /// <summary>

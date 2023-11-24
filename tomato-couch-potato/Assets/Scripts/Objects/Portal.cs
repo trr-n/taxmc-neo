@@ -1,4 +1,3 @@
-using System;
 using DG.Tweening;
 using trrne.Box;
 using UnityEngine;
@@ -11,10 +10,10 @@ namespace trrne.Core
         PortalGoal portalGoal;
 
         [SerializeField]
-        float teleportSpeed = 3f;
+        float teleportSpeed = 1.5f;
 
         [SerializeField]
-        float frameAlpha = .75f;
+        float framesAlpha = .75f;
 
         const float SpeedRange = 30;
 
@@ -35,7 +34,7 @@ namespace trrne.Core
             speeds = new float[children];
             for (int i = 0; i < children; i++)
             {
-                frames[i].GetComponent<SpriteRenderer>().SetAlpha(frameAlpha);
+                frames[i].GetComponent<SpriteRenderer>().SetAlpha(framesAlpha);
                 speeds[i] = Randoms.Single(-SpeedRange, SpeedRange);
             }
             myspeed = Randoms.Single(-SpeedRange, SpeedRange);
@@ -44,7 +43,8 @@ namespace trrne.Core
         protected override void Behavior()
         {
 #if DEBUG
-            Debug.DrawLine(transform.position, portalGoal.Goal); // 目的地まで線を引く
+            // draw line to goal
+            Debug.DrawLine(transform.position, portalGoal.Goal);
 #endif
 
             // フレームを回転させる

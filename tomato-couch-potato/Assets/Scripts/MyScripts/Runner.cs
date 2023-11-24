@@ -8,19 +8,13 @@ namespace trrne.Box
         /// <summary>
         /// actionを一回実行
         /// </summary>
-        public void RunOnce(params Action[] actions) =>
-        (!runonce_flag).If(() =>
+        public void RunOnce(params Action[] actions)
         {
-            actions.ForEach(action => action());
-            runonce_flag = true;
-        });
-
-        readonly static Stopwatch bookingSW = new(true);
-        public static void Book(float time, Action action)
-        => (bookingSW.Secondf() >= time).If(() =>
-        {
-            action();
-            bookingSW.Rubbish();
-        });
+            if (!runonce_flag)
+            {
+                actions.ForEach(action => action());
+                runonce_flag = true;
+            }
+        }
     }
 }

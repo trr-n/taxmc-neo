@@ -1,6 +1,8 @@
 using trrne.Box;
 using DG.Tweening;
 using UnityEngine;
+using System;
+using System.Runtime.Serialization;
 
 namespace trrne.Core
 {
@@ -34,21 +36,17 @@ namespace trrne.Core
             rotation.value = transform.eulerAngles;
         }
 
-        const float Offset = 1e-8f;
         /// <summary>
         /// ギミックを起動する
         /// </summary>
         public override void On()
         {
-            Vector3 rotation = ((float)amount - Offset) * direct switch
+            Vector3 offset = Coordinate.V3Z * ((float)amount - 1e-8f);
+            Vector3 rotation = direct switch
             {
-                RotateDirection.Left => this.rotation.value + Coordinate.V3Z,
-                RotateDirection.Right => this.rotation.value - Coordinate.V3Z,
-                RotateDirection.Random or _ => Randoms.Int32(max: Typing.Length2<RotateDirection>()) switch
-                {
-                    0 => this.rotation.value + Coordinate.V3Z,
-                    _ => this.rotation.value - Coordinate.V3Z,
-                }
+                RotateDirection.Left => this.rotation.value + offset,
+                RotateDirection.Right => this.rotation.value - offset,
+                _ => throw new Exception()
             };
 
             transform.DORotate(rotation, this.rotation.speed)

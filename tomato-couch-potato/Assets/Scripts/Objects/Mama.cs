@@ -25,7 +25,6 @@ namespace trrne.Core
 
         GameObject[] eyes;
         Vector3[] inits;
-        // LineRenderer[] lines;
         Vector3[] directions;
 
         /// <summary>
@@ -45,7 +44,6 @@ namespace trrne.Core
 
             eyes = transform.GetChildrenGameObject();
             inits = new Vector3[eyes.Length];
-            // inits = new[] { eyes[0].transform.position, eyes[1].transform.position };
             for (int i = 0; i < inits.Length; i++)
                 inits[i] = eyes[i].transform.position;
         }

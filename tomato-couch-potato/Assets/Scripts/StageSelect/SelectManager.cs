@@ -44,15 +44,11 @@ namespace trrne.Arm
 
         void Transition()
         {
-            if (CenterButton() != null
-                && int.TryParse(Typing.Delete(CenterButton().name, PrefabPrefix), out int idx))
-            {
-                if (idx <= Recorder.Instance.Done && Inputs.Down(Constant.Keys.Button))
-                {
-                    print(Constant.Scenes.Prefix + idx);
-                    Scenes.Load(Constant.Scenes.Prefix + idx);
-                }
-            }
+            string removed = Typing.Delete(CenterButton().name, PrefabPrefix);
+            if (CenterButton() != null && int.TryParse(removed, out int idx)
+                && idx <= Recorder.Instance.Done && Inputs.Down(Constant.Keys.Button)
+            )
+                Scenes.Load(Constant.Scenes.Prefix + idx);
         }
 
         /// <summary>
@@ -68,7 +64,7 @@ namespace trrne.Arm
 
         void Scroll()
         {
-            if (Maths.Twins(horizon = Input.GetAxisRaw(Constant.Keys.Horizontal), 0f))
+            if ((horizon = Input.GetAxisRaw(Constant.Keys.Horizontal)).Twins(0f))
                 return;
 
             switch (horizon.Sign())

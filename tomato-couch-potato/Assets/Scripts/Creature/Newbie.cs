@@ -25,6 +25,8 @@ namespace trrne.Core
 
         (float basis, float real) speed = (2f, 0);
 
+        bool hit = false;
+
         protected override void Start()
         {
             player = Gobject.GetWithTag<Player>(Constant.Tags.Player);
@@ -70,15 +72,18 @@ namespace trrne.Core
         {
             top.ray = new(conf, transform.up);
             top.hit = Physics2D.Raycast(top.ray.origin, top.ray.direction, hitbox.size, hitbox.detect);
-            if (top.hit && top.hit.CompareTag(Constant.Tags.Player))
+            if (top.hit && top.hit.TryGetComponent(out Player _))
+            {
+                hit = true;
                 await Die();
+            }
         }
 
         async UniTask Bottom(Vector2 conf)
         {
             bottom.ray = new(conf, -transform.up);
             bottom.hit = Physics2D.Raycast(bottom.ray.origin, bottom.ray.direction, hitbox.size, hitbox.detect);
-            if (bottom.hit && bottom.hit.TryGetComponent(out Player player))
+            if (!hit && bottom.hit && bottom.hit.TryGetComponent(out Player player))
                 await player.Die();
         }
 

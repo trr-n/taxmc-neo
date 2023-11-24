@@ -34,7 +34,7 @@ namespace trrne.Box
         public float Minutef(int digit = 6) => Maths.Round((float)syswatch.Elapsed.TotalMinutes, digit);
 
         public int Second() => syswatch.Elapsed.Seconds;
-        public float Secondf(int digit = 6) => Maths.Round((float)syswatch.Elapsed.TotalSeconds, digit);
+        public float Secondf(int digit = 6) => MathF.Round((float)syswatch.Elapsed.TotalSeconds, digit);
 
         public int Millisecond() => syswatch.Elapsed.Milliseconds;
         public float Millisecondf(int digit = 6) => Maths.Round((float)syswatch.Elapsed.TotalMilliseconds, digit);

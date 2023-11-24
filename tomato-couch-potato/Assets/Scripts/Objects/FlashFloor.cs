@@ -9,12 +9,12 @@ namespace trrne.Core
         [Tooltip("yを0にすると両方にxの値が入る")]
         Vector2 cooltimes = new(0, default);
 
-        new BoxCollider2D collider;
+        BoxCollider2D hitbox;
 
         protected override void Start()
         {
             base.Start();
-            collider = GetComponent<BoxCollider2D>();
+            hitbox = GetComponent<BoxCollider2D>();
             StartCoroutine(Flash());
         }
 
@@ -25,10 +25,10 @@ namespace trrne.Core
         {
             while (true)
             {
-                sr.enabled = collider.enabled = true;
+                sr.enabled = hitbox.enabled = true;
                 yield return new WaitForSeconds(cooltimes.x != 0 ? cooltimes.x : cooltimes.y);
 
-                sr.enabled = collider.enabled = false;
+                sr.enabled = hitbox.enabled = false;
                 yield return new WaitForSeconds(cooltimes.y);
             }
         }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using Cysharp.Threading.Tasks;
 using trrne.Box;
 using UnityEngine;
@@ -42,8 +43,14 @@ namespace trrne.Core
             player = Gobject.GetWithTag<Player>(Constant.Tags.Player);
             direction = (player.CoreOffset - transform.position).normalized;
 
-            // life秒後に破壊
-            Destroy(gameObject, life);
+            StartCoroutine(Destroy());
+        }
+
+        IEnumerator Destroy()
+        {
+            yield return new WaitForSeconds(life);
+            // 破壊処理
+            Destroy(gameObject);
         }
 
         protected virtual void Update()
