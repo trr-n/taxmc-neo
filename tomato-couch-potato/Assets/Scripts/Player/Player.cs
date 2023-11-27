@@ -57,6 +57,7 @@ namespace trrne.Core
 
         public Vector2 Checkpoint { get; private set; } = Vector2.zero;
         public void SetCheckpoint(Vector2 position) => Checkpoint = position;
+        public void SetCheckpoint(float x, float y) => Checkpoint = new(x, y);
         public void ReturnToCheckpoint() => transform.position = Checkpoint;
 
         Vector2 reverse => new(-1, 1);
@@ -65,12 +66,11 @@ namespace trrne.Core
         {
             flag = transform.GetFromChild<PlayerFlag>();
             menu = Gobject.GetWithTag<PauseMenu>(Constant.Tags.Manager);
-
             cam = Gobject.GetWithTag<Cam>(Constant.Tags.MainCamera);
-
             animator = GetComponent<Animator>();
             hitbox = GetComponent<BoxCollider2D>();
-            (rb = GetComponent<Rigidbody2D>()).gravityScale = gscale.basis;
+            rb = GetComponent<Rigidbody2D>();
+            rb.gravityScale = gscale.basis;
 
             int length = new Effect().Length();
             EffectFlags = new bool[length];
@@ -144,7 +144,6 @@ namespace trrne.Core
             {
                 return;
             }
-
             string horizontal = EffectFlags[(int)Effect.Mirror] ?
                 Constant.Keys.MirroredHorizontal : Constant.Keys.Horizontal;
             if (Input.GetButtonDown(horizontal))

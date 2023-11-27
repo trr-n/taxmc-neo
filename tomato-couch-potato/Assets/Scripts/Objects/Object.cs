@@ -48,7 +48,6 @@ namespace trrne.Core
             {
                 return;
             }
-
             switch (sprites.Length)
             {
                 case 0:

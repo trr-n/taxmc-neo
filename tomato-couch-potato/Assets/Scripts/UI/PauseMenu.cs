@@ -43,7 +43,6 @@ namespace trrne.Brain
             {
                 return;
             }
-
             State(!IsPausing);
         }
 

@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace trrne.Box
+﻿namespace trrne.Box
 {
     public static class Lottery
     {
@@ -12,7 +10,6 @@ namespace trrne.Box
             {
                 throw new Karappoyanke("nanka kakankai");
             }
-
             float[] totals = new float[weights.Length];
             float total = 0f;
             for (int i = 0; i < weights.Length; i++)

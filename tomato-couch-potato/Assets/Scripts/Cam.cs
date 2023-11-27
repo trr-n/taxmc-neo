@@ -44,7 +44,8 @@ namespace trrne.Core
             {
                 return;
             }
-            Vector2 self = transform.position, player = this.player.transform.position;
+            Vector2 self = transform.position,
+                player = this.player.transform.position;
             float dx = Mathf.SmoothDamp(self.x, player.x, ref refv.x, spd.x),
                 dy = Mathf.SmoothDamp(self.y, player.y, ref refv.y, spd.y) + offsetY;
             transform.position = new(dx, dy, z);

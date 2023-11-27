@@ -20,7 +20,9 @@ namespace trrne.Core
         protected virtual void Update()
         {
             if (this == null || !Enable)
+            {
                 return;
+            }
 
             Movement();
             Behavior();

@@ -15,8 +15,8 @@ namespace trrne.Core
         protected override void Start()
         {
             base.Start();
-            (display = transform.GetFromChild<SpriteRenderer>(0))
-                .color = DisplayColors[Unused];
+            display = transform.GetFromChild<SpriteRenderer>(0);
+            display.color = DisplayColors[Unused];
         }
 
         protected override void Behavior() { }
@@ -26,12 +26,10 @@ namespace trrne.Core
             if (!isLoading && info.TryGetComponent(out Player player) && !player.IsDying)
             {
                 isLoading = true;
-
                 effects.TryInstantiate(transform.position);
                 display.color = DisplayColors[Used];
-
-                Vector2 self = transform.position;
-                player.SetCheckpoint(new(self.x, Maths.Cutail(self.y)));
+                player.SetCheckpoint(x: transform.position.x,
+                    y: Maths.Cutail(transform.position.y));
             }
         }
     }

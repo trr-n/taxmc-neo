@@ -20,7 +20,8 @@ namespace trrne.Box
         public static string SetText(this Text text, object obj) => text.text = obj.ToString();
         public static void SetTextSize(this Text text, int size) => text.fontSize = size;
 
-        public static void TextSettings(this Text text, TextAnchor anchor, VerticalWrapMode vw, HorizontalWrapMode hw)
+        public static void TextSettings(this Text text,
+            TextAnchor anchor, VerticalWrapMode vw, HorizontalWrapMode hw)
         {
             text.alignment = anchor;
             text.verticalOverflow = vw;
@@ -30,8 +31,10 @@ namespace trrne.Box
         public static Color Transparent => new(0, 0, 0, 0);
         public static Color Gaming => Color.HSVToRGB(Time.unscaledTime % 1, 1, 1);
 
-        public static void SetAlpha(this Image image, float alpha = 0) => image.color = new(image.color.r, image.color.g, image.color.b, alpha);
-        public static void SetAlpha(this SpriteRenderer sr, float alpha = 0) => sr.color = new(sr.color.r, sr.color.g, sr.color.b, alpha);
+        public static void SetAlpha(this Image image, float alpha = 0)
+        => image.color = new(image.color.r, image.color.g, image.color.b, alpha);
+        public static void SetAlpha(this SpriteRenderer sr, float alpha = 0)
+        => sr.color = new(sr.color.r, sr.color.g, sr.color.b, alpha);
         public static float Alpha(this Image image) => image.color.a;
         public static float Alpha(this SpriteRenderer sr) => sr.color.a;
 

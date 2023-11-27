@@ -13,8 +13,8 @@ namespace trrne.Core
         {
             // r=ae^(bθ)
             angle += Time.deltaTime * speed;
-            float r = a * Mathf.Exp(b * angle);
-            float x = r * Mathf.Cos(angle), y = r * Mathf.Sin(angle);
+            float zip = a * Mathf.Exp(b * angle);
+            float x = zip * Mathf.Cos(angle), y = zip * Mathf.Sin(angle);
             transform.position = new(x, y);
         }
     }

@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using UnityEditor;
 using SysRandom = System.Random;
 using UniRandom = UnityEngine.Random;
 
@@ -17,8 +16,8 @@ namespace trrne.Box
         public static uint UInt32(uint min = 0, uint max = 0) => (uint)UniRandom.Range(min, max);
         public static short Int16(short min = 0, short max = 0) => (short)UniRandom.Range(min, max);
 
-        readonly static char[] alphabets = "0123456789".ToCharArray();
-        readonly static char[] numbers = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz".ToCharArray();
+        readonly static char[] alphabets = "0123456789".ToCharArray(),
+            numbers = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz".ToCharArray();
 
         public static string String(int count, RandomStringOutput? output = null)
         {

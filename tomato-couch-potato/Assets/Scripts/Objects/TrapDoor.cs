@@ -2,7 +2,6 @@ using trrne.Box;
 using DG.Tweening;
 using UnityEngine;
 using System;
-using System.Runtime.Serialization;
 
 namespace trrne.Core
 {
@@ -25,10 +24,6 @@ namespace trrne.Core
         [SerializeField]
         RotateAmount amount = RotateAmount._90;
 
-        /// <summary>
-        /// 回転してるか
-        /// </summary>
-        // bool isRotating = false;
         (bool flag, float speed, Vector3 value) rotation = (false, 0.5f, new());
 
         void Start()
@@ -36,9 +31,6 @@ namespace trrne.Core
             rotation.value = transform.eulerAngles;
         }
 
-        /// <summary>
-        /// ギミックを起動する
-        /// </summary>
         public override void On()
         {
             Vector3 offset = Coordinate.V3Z * ((float)amount - 1e-8f);
@@ -53,9 +45,6 @@ namespace trrne.Core
                 .OnComplete(() => this.rotation.flag = false);
         }
 
-        /// <summary>
-        /// 停止する
-        /// </summary>
         public override void Off()
         {
             transform.DORotate(rotation.value, rotation.speed)

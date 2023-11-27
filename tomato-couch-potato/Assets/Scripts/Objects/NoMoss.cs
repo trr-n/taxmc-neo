@@ -27,10 +27,12 @@ namespace trrne.Core
 
         protected override void Behavior()
         {
-            if (Rotatable || direction != RotateDirection.Fixed)
+            if (!Rotatable || this.direction == RotateDirection.Fixed)
             {
-                transform.Rotate(Time.deltaTime * (float)direction * speed * Coordinate.V3Z, Space.World);
+                return;
             }
+            Vector3 direction = (float)this.direction * speed * Coordinate.V3Z;
+            transform.Rotate(Time.deltaTime * direction, Space.World);
         }
     }
 }

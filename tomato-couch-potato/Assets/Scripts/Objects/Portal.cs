@@ -27,10 +27,7 @@ namespace trrne.Core
         protected override void Start()
         {
             base.Start();
-
-            // パーティクルを除くため-1
             children = frames.Length;
-
             speeds = new float[children];
             for (int i = 0; i < children; i++)
             {
@@ -43,17 +40,12 @@ namespace trrne.Core
         protected override void Behavior()
         {
 #if DEBUG
-            // draw line to goal
             Debug.DrawLine(transform.position, portalGoal.Goal);
 #endif
-
-            // フレームを回転させる
             for (int i = 0; i < children; i++)
             {
                 frames[i].transform.Rotate(Time.deltaTime * speeds[i] * Coordinate.V3Z);
             }
-
-            // ついでに中心も回転させる
             transform.Rotate(Time.deltaTime * myspeed * Coordinate.V3Z);
         }
 
@@ -79,7 +71,6 @@ namespace trrne.Core
                         player.IsTeleporting = false;
                         warping = false;
                     });
-
             }
         }
     }

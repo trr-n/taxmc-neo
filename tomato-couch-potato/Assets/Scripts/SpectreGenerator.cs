@@ -21,12 +21,10 @@ namespace trrne.Core
         void Update()
         {
             transform.position = player.position + new Vector3(0, 12f);
-
-            if (alive != null)
+            if (alive == null)
             {
-                return;
+                alive = spectre.TryInstantiate(transform.position);
             }
-            alive = spectre.TryInstantiate(transform.position);
         }
     }
 }

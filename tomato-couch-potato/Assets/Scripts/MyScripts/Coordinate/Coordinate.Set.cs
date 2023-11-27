@@ -14,14 +14,19 @@ namespace trrne.Box
         public static void SetPosition(this RectTransform rt, Vector2 position) => rt.transform.position = position;
         public static void SetPosition(this RectTransform rt, Vector3 position) => rt.transform.position = (Vector2)position;
 
-        public static void ClampPosition(this Transform t, float? minX = null, float? maxX = null, float? minY = null, float? maxY = null)
-        => t.position = new(Mathf.Clamp(t.position.x, (float)minX, (float)maxX), Mathf.Clamp(t.position.y, (float)minY, (float)maxY));
+        public static void ClampPosition(this Transform t,
+            float? minX = null, float? maxX = null, float? minY = null, float? maxY = null)
+        => t.position = new(Mathf.Clamp(t.position.x, (float)minX, (float)maxX),
+            Mathf.Clamp(t.position.y, (float)minY, (float)maxY));
         public static void ClampPosition(this Transform t, float? x = null, float? y = null)
-        => t.position = new(Mathf.Clamp(t.position.x, (float)x, (float)-x), Mathf.Clamp(t.position.y, (float)y, (float)-y));
+        => t.position = new(Mathf.Clamp(t.position.x, (float)x, (float)-x),
+            Mathf.Clamp(t.position.y, (float)y, (float)-y));
 
-        public static void SetVelocity(this Rigidbody2D rb, float? x = null, float? y = null) => rb.velocity = new(x ?? rb.velocity.x, y ?? rb.velocity.y);
+        public static void SetVelocity(this Rigidbody2D rb, float? x = null, float? y = null)
+        => rb.velocity = new(x ?? rb.velocity.x, y ?? rb.velocity.y);
 
-        public static void ClampVelocity(this Rigidbody2D rb, (float min, float max)? x = null, (float min, float max)? y = null)
+        public static void ClampVelocity(this Rigidbody2D rb,
+            (float min, float max)? x = null, (float min, float max)? y = null)
         => rb.velocity = new(x is null ? rb.velocity.x : Mathf.Clamp(rb.velocity.x, x.Value.min, x.Value.max),
             y is null ? rb.velocity.y : Mathf.Clamp(rb.velocity.y, y.Value.min, y.Value.max));
 

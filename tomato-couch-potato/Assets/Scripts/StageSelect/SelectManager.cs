@@ -76,7 +76,6 @@ namespace trrne.Arm
             {
                 return;
             }
-
             switch (horizon.Sign())
             {
                 case 1:

@@ -11,6 +11,8 @@ namespace trrne.Box
 
         public static Vector2 Normalized(this Vector2 v) => v.normalized;
 
-        [Obsolete] public static float Magnitude(this Quaternion q) => Mathf.Sqrt(q.x * q.x + q.y * q.y + q.z * q.z + q.w * q.w);
+        [Obsolete]
+        public static float Magnitude(this Quaternion q)
+        => Mathf.Sqrt(q.x * q.x + q.y * q.y + q.z * q.z + q.w * q.w);
     }
 }

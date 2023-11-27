@@ -54,7 +54,8 @@ namespace trrne.Core
         {
             Vector3 ofs = player.transform.position + this.ofs;
             directions = new[] { ofs - eyes[0].transform.position, ofs - eyes[1].transform.position };
-            float distance = Maths.Average(Vector2.Distance(ofs, eyes[0].transform.position), Vector2.Distance(ofs, eyes[1].transform.position));
+            float distance = Maths.Average(Vector2.Distance(ofs, eyes[0].transform.position),
+                Vector2.Distance(ofs, eyes[1].transform.position));
 
             // player within range
             if (!(IsPlayerOnDetectRange = playerDetectRange >= distance))

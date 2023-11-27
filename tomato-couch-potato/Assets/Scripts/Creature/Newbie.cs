@@ -22,9 +22,7 @@ namespace trrne.Core
         Player player;
 
         bool dying = false;
-
         (float basis, float real) speed = (2f, 0);
-
         bool hit = false;
 
         protected override void Start()

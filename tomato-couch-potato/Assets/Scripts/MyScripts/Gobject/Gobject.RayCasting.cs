@@ -7,7 +7,8 @@ namespace trrne.Box
         public static bool BoxCast(out RaycastHit2D hit, Vector2 center, Vector2 size)
         => hit = Physics2D.BoxCast(center, size, 0, Vector2.up);
 
-        public static bool BoxCast(out RaycastHit2D hit, Vector2 center, Vector2 size, int layer, float distance = 1, float angle = 0, Vector2 direction = new())
+        public static bool BoxCast(out RaycastHit2D hit,
+            Vector2 center, Vector2 size, int layer, float distance = 1, float angle = 0, Vector2 direction = new())
         => hit = Physics2D.BoxCast(center, size, angle, direction, distance, layer);
 
         public static bool RayCast(out RaycastHit2D hit, Ray ray, float distance)

@@ -35,10 +35,9 @@ namespace trrne.Core
         protected virtual void Start()
         {
             Enable = true;
-
             sr = GetComponent<SpriteRenderer>();
-            (hitbox = GetComponent<CircleCollider2D>()).isTrigger = true;
-
+            hitbox = GetComponent<CircleCollider2D>();
+            hitbox.isTrigger = true;
             player = Gobject.GetWithTag<Player>(Constant.Tags.Player);
             direction = (player.CoreOffset - transform.position).normalized;
 
@@ -48,8 +47,10 @@ namespace trrne.Core
         IEnumerator Destroy()
         {
             yield return new WaitForSeconds(life);
-            // 破壊処理
-            Destroy(gameObject);
+            if (this != null)
+            {
+                Destroy(gameObject);
+            }
         }
 
         protected virtual void Update()

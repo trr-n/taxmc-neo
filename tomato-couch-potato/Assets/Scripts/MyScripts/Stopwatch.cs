@@ -11,7 +11,10 @@ namespace trrne.Box
         public Stopwatch(bool start)
         {
             syswatch = new();
-            Shorthand.If(start, () => syswatch.Start());
+            if (start)
+            {
+                syswatch.Start();
+            }
         }
 
         public void Start() => syswatch.Start();
@@ -28,16 +31,20 @@ namespace trrne.Box
         public static void Rubbish(params Stopwatch[] sws) => sws.ForEach(sw => sw.Rubbish());
 
         public int Hour() => syswatch.Elapsed.Hours;
-        public float Hourf(int digit = 6) => Maths.Round((float)syswatch.Elapsed.TotalHours, digit);
+        public float Hourf(int digit = 6)
+        => Maths.Round((float)syswatch.Elapsed.TotalHours, digit);
 
         public int Minute() => syswatch.Elapsed.Minutes;
-        public float Minutef(int digit = 6) => Maths.Round((float)syswatch.Elapsed.TotalMinutes, digit);
+        public float Minutef(int digit = 6)
+        => Maths.Round((float)syswatch.Elapsed.TotalMinutes, digit);
 
         public int Second() => syswatch.Elapsed.Seconds;
-        public float Secondf(int digit = 6) => MathF.Round((float)syswatch.Elapsed.TotalSeconds, digit);
+        public float Secondf(int digit = 6)
+        => MathF.Round((float)syswatch.Elapsed.TotalSeconds, digit);
 
         public int Millisecond() => syswatch.Elapsed.Milliseconds;
-        public float Millisecondf(int digit = 6) => Maths.Round((float)syswatch.Elapsed.TotalMilliseconds, digit);
+        public float Millisecondf(int digit = 6)
+        => Maths.Round((float)syswatch.Elapsed.TotalMilliseconds, digit);
 
         public TimeSpan Spent() => syswatch.Elapsed;
 
