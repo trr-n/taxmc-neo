@@ -26,7 +26,7 @@ namespace trrne
         public readonly struct Keys
         {
             public const string Horizontal = "Horizontal";
-            public const string ReversedHorizontal = "ReversedHorizontal";
+            public const string MirroredHorizontal = "ReversedHorizontal";
             public const string Vertical = "Vertical";
             public const string Wheel = "Mouse ScrollWheel";
             public const string Jump = "Jump";

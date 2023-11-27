@@ -46,7 +46,9 @@ namespace trrne.Core
         void Animation()
         {
             if (!animatable)
+            {
                 return;
+            }
             if (anim.sw.Secondf() >= interval)
             {
                 anim.index = anim.index >= sprites.Length - 1 ? 0 : anim.index += 1;

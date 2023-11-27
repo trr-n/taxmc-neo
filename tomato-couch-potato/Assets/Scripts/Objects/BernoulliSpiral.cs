@@ -9,11 +9,6 @@ namespace trrne.Core
 
         float angle = 0f;
 
-        protected override void Start()
-        {
-            print("hello world");
-        }
-
         protected override void Behavior()
         {
             // r=ae^(bθ)

@@ -9,7 +9,9 @@ namespace trrne.Box
         public static int Weighted(params float[] weights)
         {
             if (weights.Length <= 0)
+            {
                 throw new Karappoyanke("nanka kakankai");
+            }
 
             float[] totals = new float[weights.Length];
             float total = 0f;
@@ -25,11 +27,15 @@ namespace trrne.Box
             {
                 int middle = (bottom + top) / 2;
                 if (random > totals[middle])
+                {
                     bottom = middle + 1;
+                }
                 else
                 {
                     if (random >= (middle > 0 ? totals[middle - 1] : 0))
+                    {
                         return middle;
+                    }
                     top = middle;
                 }
             }

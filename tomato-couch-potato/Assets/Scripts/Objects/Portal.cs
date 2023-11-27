@@ -49,7 +49,9 @@ namespace trrne.Core
 
             // フレームを回転させる
             for (int i = 0; i < children; i++)
+            {
                 frames[i].transform.Rotate(Time.deltaTime * speeds[i] * Coordinate.V3Z);
+            }
 
             // ついでに中心も回転させる
             transform.Rotate(Time.deltaTime * myspeed * Coordinate.V3Z);
@@ -58,9 +60,12 @@ namespace trrne.Core
         void OnTriggerEnter2D(Collider2D info)
         {
             if (warping && !info.CompareTag(Constant.Tags.Player))
+            {
                 return;
+            }
 
             if (info.TryGetComponent(out Player player) && !player.IsDying)
+            {
                 info.transform.DOMove(portalGoal.Goal, teleportSpeed)
                     .SetEase(Ease.OutCubic)
                     .OnPlay(() =>
@@ -74,6 +79,8 @@ namespace trrne.Core
                         player.IsTeleporting = false;
                         warping = false;
                     });
+
+            }
         }
     }
 }

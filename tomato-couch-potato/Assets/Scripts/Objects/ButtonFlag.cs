@@ -10,13 +10,17 @@ namespace trrne.Core
         void OnTriggerEnter2D(Collider2D info)
         {
             if (info.CompareLayer(Constant.Layers.Player))
+            {
                 IsHitting = true;
+            }
         }
 
         void OnTriggerExit2D(Collider2D info)
         {
             if (info.CompareLayer(Constant.Layers.Player))
+            {
                 IsHitting = false;
+            }
         }
     }
 }

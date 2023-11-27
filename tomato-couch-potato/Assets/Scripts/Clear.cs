@@ -14,8 +14,7 @@ namespace trrne.Core
 
         void Start()
         {
-            sr = GetComponent<SpriteRenderer>();
-            sr.sprite = sprites[0];
+            (sr = GetComponent<SpriteRenderer>()).sprite = sprites[0];
         }
 
         void OnTriggerEnter2D(Collider2D info)

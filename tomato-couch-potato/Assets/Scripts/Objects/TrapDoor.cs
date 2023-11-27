@@ -48,7 +48,6 @@ namespace trrne.Core
                 RotateDirection.Right => this.rotation.value - offset,
                 _ => throw new Exception()
             };
-
             transform.DORotate(rotation, this.rotation.speed)
                 .OnPlay(() => this.rotation.flag = true)
                 .OnComplete(() => this.rotation.flag = false);

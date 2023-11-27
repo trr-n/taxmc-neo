@@ -27,7 +27,9 @@ namespace trrne.Box
                 bool isAuto = array is null && start == 0 && end == 0;
                 char[] chars = new char[count];
                 for (int i = 0; i < count; i++)
+                {
                     chars[i] = isAuto ? alphabets.Concat(numbers).ToArray().Choice() : array[_(start, end)];
+                }
                 return chars.Link();
             }
 

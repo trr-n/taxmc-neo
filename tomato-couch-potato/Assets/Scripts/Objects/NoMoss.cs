@@ -28,7 +28,9 @@ namespace trrne.Core
         protected override void Behavior()
         {
             if (Rotatable || direction != RotateDirection.Fixed)
+            {
                 transform.Rotate(Time.deltaTime * (float)direction * speed * Coordinate.V3Z, Space.World);
+            }
         }
     }
 }

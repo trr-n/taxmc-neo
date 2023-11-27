@@ -45,11 +45,14 @@ namespace trrne.Core
         void Animation()
         {
             if (!isAnimate)
+            {
                 return;
+            }
 
             switch (sprites.Length)
             {
-                case 0: return;
+                case 0:
+                    return;
                 case 1:
                     set.RunOnce(() => sr.sprite = sprites[0]);
                     break;

@@ -13,13 +13,17 @@ namespace trrne.Core
         void OnTriggerEnter2D(Collider2D info)
         {
             if (info.TryGetComponent(out Player _))
+            {
                 Hit = true;
+            }
         }
 
         void OnTriggerExit2D(Collider2D info)
         {
             if (info.TryGetComponent(out Player _))
+            {
                 Hit = false;
+            }
         }
     }
 }

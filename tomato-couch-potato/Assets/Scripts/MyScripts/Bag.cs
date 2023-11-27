@@ -29,7 +29,9 @@
                 Capacity += 2;
                 T[] items = new T[Capacity];
                 for (int i = 0; i < Count; i++)
+                {
                     items[i] = this.items[i];
+                }
                 this.items = items;
             }
             items[Count] = item;
@@ -39,10 +41,16 @@
         public void RemoveAt(int index)
         {
             if (Count <= 0)
+            {
                 return;
+            }
             for (int i = 0; i < Count; i++)
+            {
                 if (i != index)
+                {
                     continue;
+                }
+            }
             Count--;
         }
     }

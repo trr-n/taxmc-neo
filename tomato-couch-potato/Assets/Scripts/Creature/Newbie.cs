@@ -56,7 +56,9 @@ namespace trrne.Core
             horizon.ray = new(transform.position - (Coordinate.V3X * hitbox.size / 2), transform.right);
             horizon.hit = Physics2D.Raycast(horizon.ray.origin, horizon.ray.direction, hitbox.size, hitbox.detect);
             if (!horizon.hit)
+            {
                 return;
+            }
             switch (horizon.hit.GetLayer())
             {
                 case Constant.Layers.Player:
@@ -84,13 +86,17 @@ namespace trrne.Core
             bottom.ray = new(conf, -transform.up);
             bottom.hit = Physics2D.Raycast(bottom.ray.origin, bottom.ray.direction, hitbox.size, hitbox.detect);
             if (!hit && bottom.hit && bottom.hit.TryGetComponent(out Player player))
+            {
                 await player.Die();
+            }
         }
 
         public override async UniTask Die()
         {
             if (dying)
+            {
                 return;
+            }
             dying = true;
             diefx.TryInstantiate(transform.position);
             await UniTask.WaitForSeconds(0.1f);

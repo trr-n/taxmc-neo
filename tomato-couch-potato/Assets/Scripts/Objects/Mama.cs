@@ -45,7 +45,9 @@ namespace trrne.Core
             eyes = transform.GetChildrenGameObject();
             inits = new Vector3[eyes.Length];
             for (int i = 0; i < inits.Length; i++)
+            {
                 inits[i] = eyes[i].transform.position;
+            }
         }
 
         void Update()
@@ -56,7 +58,9 @@ namespace trrne.Core
 
             // player within range
             if (!(IsPlayerOnDetectRange = playerDetectRange >= distance))
+            {
                 return;
+            }
 
             Vector2 ave = new(Maths.Average(eyes[0].transform.position.x, eyes[1].transform.position.x),
                 Maths.Average(eyes[0].transform.position.y, eyes[1].transform.position.y));
@@ -64,10 +68,14 @@ namespace trrne.Core
 
             // and there is not object between player and me
             if (!Gobject.TryGetRaycast<Player>(infrared, distance))
+            {
                 return;
+            }
 
             for (int i = 0; i < eyes.Length; i++)
+            {
                 eyes[i].transform.position = inits[i] + directions[i].normalized * EyeBump;
+            }
 
             // the fires generate if timer value is upper than rapid rate 
             if ((fireRapidTimer += Time.deltaTime) >= fireRapidRate)
@@ -81,7 +89,9 @@ namespace trrne.Core
         void OnDrawGizmos()
         {
             if (eyes == null || eyes.Length <= 0)
+            {
                 return;
+            }
 
             Gizmos.color = Surface.Gaming;
             Vector2 ave = new(Maths.Average(eyes[0].transform.position.x, eyes[1].transform.position.x),

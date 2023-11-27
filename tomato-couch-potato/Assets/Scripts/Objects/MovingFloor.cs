@@ -31,7 +31,9 @@ namespace trrne.Core
         protected override void Behavior()
         {
             if (App.TimeScale(0) || type == MovingType.Fixed)
+            {
                 return;
+            }
 
             float pp(float xy) => xy - range / 2 + Mathf.PingPong(pingpong.Secondf() * speed, range);
             switch (type)

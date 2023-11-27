@@ -29,15 +29,19 @@ namespace trrne.Core
         {
             Flip();
             if (this != null && lifetimeSW.Secondf() >= lifetime)
+            {
                 await Die();
+            }
         }
 
         // flip the sprite
         void Flip()
         {
-            float selfx = transform.position.x, playerx = player.transform.position.x;
+            float selfx = transform.position.x,
+                playerx = player.transform.position.x;
             float scalex = transform.localScale.x;
-            if ((selfx > playerx && left != scalex) || (selfx < playerx && left == scalex))
+            if ((selfx > playerx && left != scalex)
+                || (selfx < playerx && left == scalex))
             {
                 transform.localScale *= Mirrored;
             }

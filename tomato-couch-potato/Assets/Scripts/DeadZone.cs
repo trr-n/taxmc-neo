@@ -15,6 +15,8 @@ namespace trrne.Core
                 case Constant.Layers.Creature:
                     info.TryAction<Creature>(async enemy => await enemy.Die());
                     break;
+                default:
+                    break;
             }
         }
     }

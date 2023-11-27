@@ -36,13 +36,21 @@ namespace trrne.Box
         public static bool IsPrime(int n)
         {
             if (n == 2 || n == 3)
+            {
                 return true;
+            }
             if (n <= 1 || n % 2 == 0)
+            {
                 return false;
+            }
 
             for (int i = 4; i < Mathf.Sqrt(n); i++)
+            {
                 if (n % i == 0)
+                {
                     return false;
+                }
+            }
             return true;
         }
 

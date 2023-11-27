@@ -9,14 +9,6 @@ namespace trrne.Box
         public static void If(this bool boolean, Action action) { if (boolean) { action(); } }
         public static void If<T>(this bool boolean, Func<T> func) { if (boolean) { func(); } }
 
-        public static bool Is(this object a, params object[] bs)
-        {
-            foreach (var b in bs)
-                if (a == bs)
-                    return true;
-            return false;
-        }
-
         /// <summary>1 line</summary>
         public static T L1ne<T>(Func<T> func) => func();
 

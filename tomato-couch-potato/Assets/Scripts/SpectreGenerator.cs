@@ -23,7 +23,9 @@ namespace trrne.Core
             transform.position = player.position + new Vector3(0, 12f);
 
             if (alive != null)
+            {
                 return;
+            }
             alive = spectre.TryInstantiate(transform.position);
         }
     }

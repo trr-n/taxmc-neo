@@ -10,11 +10,12 @@ namespace trrne.Box
         /// </summary>
         public void RunOnce(params Action[] actions)
         {
-            if (!runonce_flag)
+            if (runonce_flag)
             {
-                actions.ForEach(action => action());
-                runonce_flag = true;
+                return;
             }
+            actions.ForEach(action => action());
+            runonce_flag = true;
         }
     }
 }

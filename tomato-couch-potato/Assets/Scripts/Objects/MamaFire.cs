@@ -37,8 +37,7 @@ namespace trrne.Core
             Enable = true;
 
             sr = GetComponent<SpriteRenderer>();
-            hitbox = GetComponent<CircleCollider2D>();
-            hitbox.isTrigger = true;
+            (hitbox = GetComponent<CircleCollider2D>()).isTrigger = true;
 
             player = Gobject.GetWithTag<Player>(Constant.Tags.Player);
             direction = (player.CoreOffset - transform.position).normalized;
@@ -56,12 +55,15 @@ namespace trrne.Core
         protected virtual void Update()
         {
             if (!Enable)
+            {
                 return;
-
+            }
             Movement();
 
             if (isTracking)
+            {
                 direction = (player.transform.position - transform.position).normalized;
+            }
         }
 
         protected abstract void Movement();
@@ -74,7 +76,9 @@ namespace trrne.Core
                 sr.SetAlpha(0);
                 effects.TryInstantiate(transform.position);
                 if (!player.IsDying)
+                {
                     await UniTask.WhenAll(Punishment(player));
+                }
                 try { Destroy(gameObject); }
                 catch (MissingReferenceException) { }
             }

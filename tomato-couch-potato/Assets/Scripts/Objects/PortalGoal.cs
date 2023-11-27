@@ -25,7 +25,9 @@ namespace trrne.Core
         void Update()
         {
             if (!IsUpdate)
+            {
                 return;
+            }
             Goal = transform.position;
         }
     }

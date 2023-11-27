@@ -19,7 +19,9 @@ namespace trrne.Core
         {
             // show active fx icon
             for (int i = 0; i < icons.Length; i++)
+            {
                 icons[i].SetActive(player.EffectFlags[i]);
+            }
         }
     }
 }

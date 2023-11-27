@@ -15,9 +15,11 @@ namespace trrne.Box
 
         public static string[] Names()
         {
-            var names = new string[sceneCount];
+            string[] names = new string[sceneCount];
             for (int i = 0; i < sceneCount; i++)
+            {
                 names[i] = GetSceneAt(i).name;
+            }
             return names.Length switch
             {
                 0 => throw new Karappoyanke("tabun settei sitenai"),

@@ -11,16 +11,23 @@ namespace trrne.Box
         public static T Instance => Shorthand.L1ne(() =>
         {
             if (!instance)
+            {
                 instance = (T)FindObjectOfType(typeof(T));
+            }
             return instance;
         });
 
         protected virtual void Awake()
         {
             if (this != Instance)
+            {
                 Destroy(this);
+            }
+
             if (AliveOnLoad)
+            {
                 DontDestroyOnLoad(gameObject);
+            }
         }
     }
 }

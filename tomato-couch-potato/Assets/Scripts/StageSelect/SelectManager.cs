@@ -45,10 +45,14 @@ namespace trrne.Arm
         void Transition()
         {
             string removed = Typing.Delete(CenterButton().name, PrefabPrefix);
-            if (CenterButton() != null && int.TryParse(removed, out int idx)
-                && idx <= Recorder.Instance.Done && Inputs.Down(Constant.Keys.Button)
+            if (CenterButton() != null
+                && int.TryParse(removed, out int idx)
+                && idx <= Recorder.Instance.Done
+                && Inputs.Down(Constant.Keys.Button)
             )
+            {
                 Scenes.Load(Constant.Scenes.Prefix + idx);
+            }
         }
 
         /// <summary>
@@ -57,25 +61,35 @@ namespace trrne.Arm
         GameObject CenterButton()
         {
             foreach (var button in buttons)
+            {
                 if (Maths.CutailedTwins(button.transform.position.x, 0f))
+                {
                     return button.gameObject;
+                }
+            }
             return null;
         }
 
         void Scroll()
         {
             if ((horizon = Input.GetAxisRaw(Constant.Keys.Horizontal)).Twins(0f))
+            {
                 return;
+            }
 
             switch (horizon.Sign())
             {
                 case 1:
                     if (CenterButton() != buttons[^1].gameObject)
+                    {
                         Scroller(core.position.x - Offset);
+                    }
                     break;
                 default:
                     if (CenterButton() != buttons[0].gameObject)
+                    {
                         Scroller(core.position.x + Offset);
+                    }
                     break;
             }
         }
@@ -83,8 +97,9 @@ namespace trrne.Arm
         void Scroller(float targetX)
         {
             if (isScrolling)
+            {
                 return;
-
+            }
             isScrolling = true;
             core.DOMoveX(targetX, ButtonScrollSpeed)
                 .SetEase(Ease.InOutCubic)

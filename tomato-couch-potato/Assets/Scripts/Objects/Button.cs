@@ -45,7 +45,9 @@ namespace trrne.Core
                 effectiveSW.Restart();
 
                 if (gimmicks.Length >= 1)
+                {
                     gimmicks.ForEach(gimmick => gimmick.GetComponent<IGimmick>().On());
+                }
             }
 
             // 動作中、効果時間がduration以上
@@ -54,7 +56,9 @@ namespace trrne.Core
                 effectiveSW.Reset();
 
                 if (gimmicks.Length >= 1)
+                {
                     gimmicks.ForEach(gimmick => gimmick.GetComponent<IGimmick>().Off());
+                }
 
                 speaker.TryPlayOneShot(sounds.Choice());
                 isPressing = false;

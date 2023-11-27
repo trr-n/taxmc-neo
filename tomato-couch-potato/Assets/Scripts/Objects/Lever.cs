@@ -28,7 +28,9 @@ namespace trrne.Core
         protected override void Behavior()
         {
             if (!flag.Hit)
+            {
                 return;
+            }
 
             // active
             if (isActive && Inputs.Down(Constant.Keys.Button))
