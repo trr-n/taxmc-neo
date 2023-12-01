@@ -6,72 +6,92 @@ namespace trrne.Core
 {
     public class Newbie : Creature, ICreature
     {
-        public enum StartFacing
+        public enum Facing
         {
+            Fixed,
             Left,
             Right,
             Random
         }
 
+        public Facing facing = Facing.Fixed;
+
         [SerializeField]
-        StartFacing facing = StartFacing.Right;
+        float speed = 2f;
+        float direction = 0;
 
         (Ray ray, RaycastHit2D hit) horizon, top, bottom;
-        (float size, int detect) hitbox => (1.2f, Constant.Layers.Player | Constant.Layers.Jumpable);
+        readonly (float size, int detect) hitbox = (1.2f, Config.Layers.Player | Config.Layers.Jumpable);
 
         Player player;
 
-        bool dying = false;
-        (float basis, float real) speed = (2f, 0);
-        bool hit = false;
+        bool dying = false, hit = false;
 
         protected override void Start()
         {
-            player = Gobject.GetWithTag<Player>(Constant.Tags.Player);
+            player = Gobject.GetWithTag<Player>(Config.Tags.Player);
+        }
 
-            speed.real = facing switch
+        void SetFacing(Facing facing)
+        {
+            this.facing = facing;
+            direction = facing switch
             {
-                StartFacing.Left => -speed.basis,
-                StartFacing.Right => speed.basis,
-                StartFacing.Random or _ => Randoms._(max: 2) switch
+                Facing.Fixed => 0,
+                Facing.Left => -speed,
+                Facing.Right => speed,
+                Facing.Random or _ => Rnd.Int32(max: 1) switch
                 {
-                    1 => -speed.basis,
-                    _ => speed.basis
+                    0 => -speed,
+                    1 or _ => speed
                 }
             };
         }
 
         protected override async void Behavior()
         {
-            Vector2 configure = transform.position + (hitbox.size * Coordinate.V3Y / 2);
-            await Horizon();
-            await Top(configure);
-            await Bottom(configure);
+            SetFacing(facing);
+
+            Vector3 conf = hitbox.size * Coordinate.V3Y / 2;
+            await Horizon(conf);
+            await Top(conf);
+            await Bottom(conf);
         }
 
-        async UniTask Horizon()
+        async UniTask Horizon(Vector3 conf)
         {
-            horizon.ray = new(transform.position - (Coordinate.V3X * hitbox.size / 2), transform.right);
-            horizon.hit = Physics2D.Raycast(horizon.ray.origin, horizon.ray.direction, hitbox.size, hitbox.detect);
+            horizon.ray = new(transform.position - conf, transform.right);
+            horizon.hit = Physics2D.Raycast(
+                origin: horizon.ray.origin,
+                direction: horizon.ray.direction,
+                distance: hitbox.size,
+                layerMask: hitbox.detect
+            );
             if (!horizon.hit)
             {
                 return;
             }
+
             switch (horizon.hit.GetLayer())
             {
-                case Constant.Layers.Player:
+                case Config.Layers.Player:
                     await player.Die();
                     break;
                 default:
-                    speed.real *= -1;
+                    direction *= -1;
                     break;
             }
         }
 
-        async UniTask Top(Vector2 conf)
+        async UniTask Top(Vector3 conf)
         {
-            top.ray = new(conf, transform.up);
-            top.hit = Physics2D.Raycast(top.ray.origin, top.ray.direction, hitbox.size, hitbox.detect);
+            top.ray = new(transform.position + conf, transform.up);
+            top.hit = Physics2D.Raycast(
+                origin: top.ray.origin,
+                direction: top.ray.direction,
+                distance: hitbox.size,
+                layerMask: hitbox.detect
+            );
             if (top.hit && top.hit.TryGetComponent(out Player _))
             {
                 hit = true;
@@ -79,10 +99,15 @@ namespace trrne.Core
             }
         }
 
-        async UniTask Bottom(Vector2 conf)
+        async UniTask Bottom(Vector3 conf)
         {
-            bottom.ray = new(conf, -transform.up);
-            bottom.hit = Physics2D.Raycast(bottom.ray.origin, bottom.ray.direction, hitbox.size, hitbox.detect);
+            bottom.ray = new(transform.position + conf, -transform.up);
+            bottom.hit = Physics2D.Raycast(
+                origin: bottom.ray.origin,
+                direction: bottom.ray.direction,
+                distance: hitbox.size,
+                layerMask: hitbox.detect
+            );
             if (!hit && bottom.hit && bottom.hit.TryGetComponent(out Player player))
             {
                 await player.Die();
@@ -95,14 +120,18 @@ namespace trrne.Core
             {
                 return;
             }
+
             dying = true;
             diefx.TryInstantiate(transform.position);
             await UniTask.WaitForSeconds(0.1f);
 
-            // オブジェクト破壊
             Destroy(gameObject);
         }
 
-        protected override void Movement() => transform.Translate(Time.deltaTime * speed.real * Coordinate.V2X);
+        protected override void Movement()
+        {
+            // print($"{name} is moving!");
+            transform.Translate(Time.deltaTime * direction * Coordinate.V2X);
+        }
     }
 }

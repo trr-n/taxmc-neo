@@ -1,5 +1,3 @@
-using System;
-using System.Diagnostics.Contracts;
 using trrne.Box;
 using UnityEngine;
 
@@ -35,11 +33,11 @@ namespace trrne.Core
         /// <summary>
         /// 範囲内にいるか
         /// </summary>
-        [Pure] public bool IsPlayerOnDetectRange { get; private set; }
+        public bool IsPlayerOnDetectRange { get; private set; }
 
         void Start()
         {
-            player = Gobject.GetWithTag(Constant.Tags.Player);
+            player = Gobject.GetWithTag(Config.Tags.Player);
             ofs = new(0, player.GetComponent<BoxCollider2D>().Size().y / 2);
 
             eyes = transform.GetChildrenGameObject();

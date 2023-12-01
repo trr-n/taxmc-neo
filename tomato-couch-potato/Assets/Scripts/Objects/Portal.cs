@@ -32,9 +32,9 @@ namespace trrne.Core
             for (int i = 0; i < children; i++)
             {
                 frames[i].GetComponent<SpriteRenderer>().SetAlpha(framesAlpha);
-                speeds[i] = Randoms.Single(-SpeedRange, SpeedRange);
+                speeds[i] = Rnd.Single(-SpeedRange, SpeedRange);
             }
-            myspeed = Randoms.Single(-SpeedRange, SpeedRange);
+            myspeed = Rnd.Single(-SpeedRange, SpeedRange);
         }
 
         protected override void Behavior()
@@ -51,7 +51,7 @@ namespace trrne.Core
 
         void OnTriggerEnter2D(Collider2D info)
         {
-            if (warping && !info.CompareTag(Constant.Tags.Player))
+            if (warping && !info.CompareTag(Config.Tags.Player))
             {
                 return;
             }

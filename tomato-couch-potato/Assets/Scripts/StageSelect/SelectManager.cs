@@ -48,10 +48,10 @@ namespace trrne.Arm
             if (CenterButton() != null
                 && int.TryParse(removed, out int idx)
                 && idx <= Recorder.Instance.Done
-                && Inputs.Down(Constant.Keys.Button)
+                && Inputs.Down(Config.Keys.Button)
             )
             {
-                Scenes.Load(Constant.Scenes.Prefix + idx);
+                Scenes.Load(Config.Scenes.Prefix + idx);
             }
         }
 
@@ -72,7 +72,7 @@ namespace trrne.Arm
 
         void Scroll()
         {
-            if ((horizon = Input.GetAxisRaw(Constant.Keys.Horizontal)).Twins(0f))
+            if ((horizon = Input.GetAxisRaw(Config.Keys.Horizontal)).Twins(0f))
             {
                 return;
             }

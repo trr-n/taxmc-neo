@@ -172,5 +172,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   diefx: {fileID: 0}
-  enable: 0
-  facing: 0
+  facing: 1
+  speed: 2

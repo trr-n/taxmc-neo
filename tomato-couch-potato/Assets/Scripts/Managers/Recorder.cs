@@ -11,7 +11,7 @@ namespace trrne.Brain
 
         public int Max => 2;
 
-        public int CurrentIndex => int.Parse(Scenes.Active().Delete(Constant.Scenes.Prefix));
+        public int CurrentIndex => int.Parse(Scenes.Active().Delete(Config.Scenes.Prefix));
 
         public int Stay { get; private set; }
         public int Done { get; private set; }
@@ -21,10 +21,10 @@ namespace trrne.Brain
         public void Clear()
         {
             // クリアしたシーンの名前に数字が含まれているか
-            if (int.TryParse(Scenes.Active().Delete(Constant.Scenes.Prefix), out _))
+            if (int.TryParse(Scenes.Active().Delete(Config.Scenes.Prefix), out _))
             {
                 ++Done;
-                Scenes.Load(Constant.Scenes.Select);
+                Scenes.Load(Config.Scenes.Select);
             }
         }
     }

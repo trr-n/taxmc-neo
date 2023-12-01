@@ -32,9 +32,9 @@ namespace trrne.Box
         public static bool UpAnd(params string[] names)
         => (from n in names where Up(n) select n).Count() == names.Length;
 
-        public static Vector2 Axis() => new(Input.GetAxis(Constant.Keys.Horizontal), Input.GetAxis(Constant.Keys.Vertical));
+        public static Vector2 Axis() => new(Input.GetAxis(Config.Keys.Horizontal), Input.GetAxis(Config.Keys.Vertical));
         public static Vector2 Axis(string x, string y) => new(Input.GetAxis(x), Input.GetAxis(y));
-        public static Vector2 AxisRaw() => new(Input.GetAxisRaw(Constant.Keys.Horizontal), Input.GetAxisRaw(Constant.Keys.Vertical));
+        public static Vector2 AxisRaw() => new(Input.GetAxisRaw(Config.Keys.Horizontal), Input.GetAxisRaw(Config.Keys.Vertical));
         public static Vector2 AxisRaw(string x, string y) => new(Input.GetAxisRaw(x), Input.GetAxisRaw(y));
 
         // public static bool Down(Key key) => Keyboard.current[key].wasPressedThisFrame;

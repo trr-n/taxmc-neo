@@ -6,7 +6,7 @@ using UniRandom = UnityEngine.Random;
 
 namespace trrne.Box
 {
-    public static class Randoms
+    public static class Rnd
     {
         public static float _(float min = 0f, float max = 0f) => UniRandom.Range(min, max);
         public static int _(int min = 0, int max = 0) => new SysRandom().Next(min, max + 1);

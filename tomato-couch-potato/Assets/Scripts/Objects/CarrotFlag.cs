@@ -8,7 +8,7 @@ namespace trrne.Core
 
         void OnTriggerEnter2D(Collider2D info)
         {
-            if (info.CompareTag(Constant.Tags.Player))
+            if (info.CompareTag(Config.Tags.Player))
             {
                 ++Count;
             }

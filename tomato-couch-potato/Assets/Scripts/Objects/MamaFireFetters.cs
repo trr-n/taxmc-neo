@@ -18,11 +18,12 @@ namespace trrne.Core
         protected override void Movement()
         {
             // プレイヤーとの距離がdetectRange以下なら追随する
-            float distance = Vector2.Distance(transform.position, player.CoreOffset);
+            float distance = Vector2.Distance(transform.position, player.Core);
             isTracking = distance < detectRange;
             transform.Translate(Time.deltaTime * speed * direction);
         }
 
-        protected override async UniTask Punishment(Player player) => await player.Punishment(effectDuration, Effect.Fetters);
+        protected override async UniTask Punishment(Player player)
+        => await player.Punishment(effectDuration, Effect.Fetters);
     }
 }

@@ -8,9 +8,9 @@ namespace trrne.Core
 {
     public enum Cause
     {
-        Muscarine,
-        Fallen,
-        None,
+        NONE,
+        Muscarine,  // 毒
+        Fallen,     // 落下死
     }
 
     public enum Effect
@@ -34,12 +34,22 @@ namespace trrne.Core
         public bool[] Effectables { get; private set; }
         public bool[] EffectFlags { get; set; }
 
-        readonly (float basis, float max) speed = (20, 10);
-        readonly (float fetters, float floating, float move) reduction = (0.5f, 0.95f, 0.9f);
+        readonly (float basis, float max) speed = (
+            basis: 20,
+            max: 10
+        );
 
-        readonly (float floating, float basis) gscale = (2f, 1f);
+        readonly (float fetters, float floating, float move) reduction = (
+            fetters: 0.5f,
+            floating: 0.95f,
+            move: 0.9f
+        );
 
-        const float JumpPower = 10f;
+        readonly (float floating, float basis) gscale = (
+            floating: 3f,
+            basis: 1f
+        );
+        const float JumpPower = 13f;
 
         public bool IsFloating { get; private set; }
         public Vector2 Velocity { get; private set; }
@@ -51,7 +61,7 @@ namespace trrne.Core
         PauseMenu menu;
         BoxCollider2D hitbox;
 
-        public Vector3 CoreOffset { get; private set; }
+        public Vector3 Core { get; private set; }
 
         const float InputTolerance = 0.33f;
 
@@ -65,8 +75,8 @@ namespace trrne.Core
         void Start()
         {
             flag = transform.GetFromChild<PlayerFlag>();
-            menu = Gobject.GetWithTag<PauseMenu>(Constant.Tags.Manager);
-            cam = Gobject.GetWithTag<Cam>(Constant.Tags.MainCamera);
+            menu = Gobject.GetWithTag<PauseMenu>(Config.Tags.Manager);
+            cam = Gobject.GetWithTag<Cam>(Config.Tags.MainCamera);
             animator = GetComponent<Animator>();
             hitbox = GetComponent<BoxCollider2D>();
             rb = GetComponent<Rigidbody2D>();
@@ -98,7 +108,7 @@ namespace trrne.Core
 
         void Def()
         {
-            CoreOffset = transform.position + new Vector3(0, hitbox.bounds.size.y / 2);
+            Core = transform.position + new Vector3(0, hitbox.bounds.size.y / 2);
             rb.bodyType = IsTeleporting ? RigidbodyType2D.Static : RigidbodyType2D.Dynamic;
             rb.gravityScale = (IsFloating = !flag.OnGround) ? gscale.floating : gscale.basis;
         }
@@ -113,7 +123,7 @@ namespace trrne.Core
                 return;
             }
 
-            if (Inputs.Down(Constant.Keys.Respawn))
+            if (Inputs.Down(Config.Keys.Respawn))
             {
                 ReturnToCheckpoint();
             }
@@ -144,8 +154,9 @@ namespace trrne.Core
             {
                 return;
             }
+
             string horizontal = EffectFlags[(int)Effect.Mirror] ?
-                Constant.Keys.MirroredHorizontal : Constant.Keys.Horizontal;
+                Config.Keys.MirroredHorizontal : Config.Keys.Horizontal;
             if (Input.GetButtonDown(horizontal))
             {
                 int current = Maths.Sign(transform.localScale.x);
@@ -153,11 +164,15 @@ namespace trrne.Core
                 {
                     case 1:
                         if (current != 1)
+                        {
                             transform.localScale *= reverse;
+                        }
                         break;
                     case -1:
                         if (current != -1)
+                        {
                             transform.localScale *= reverse;
+                        }
                         break;
                 }
             }
@@ -172,15 +187,15 @@ namespace trrne.Core
 
             if (!flag.OnGround)
             {
-                animator.SetBool(Constant.Animations.Jump, true);
+                animator.SetBool(Config.Animations.Jump, true);
                 return;
             }
 
-            if (Inputs.Down(Constant.Keys.Jump))
+            if (Inputs.Down(Config.Keys.Jump))
             {
                 rb.velocity += JumpPower * Coordinate.V2Y;
             }
-            animator.SetBool(Constant.Animations.Jump, false);
+            animator.SetBool(Config.Animations.Jump, false);
         }
 
         /// <summary>
@@ -193,11 +208,11 @@ namespace trrne.Core
                 return;
             }
 
-            bool walk = Inputs.Pressed(Constant.Keys.Horizontal) && flag.OnGround;
-            animator.SetBool(Constant.Animations.Walk, walk);
+            bool walk = Inputs.Pressed(Config.Keys.Horizontal) && flag.OnGround;
+            animator.SetBool(Config.Animations.Walk, walk);
 
             string horizontal = EffectFlags[(int)Effect.Mirror] ?
-                Constant.Keys.MirroredHorizontal : Constant.Keys.Horizontal;
+                Config.Keys.MirroredHorizontal : Config.Keys.Horizontal;
             Vector2 move = Input.GetAxisRaw(horizontal) * Coordinate.V2X;
 
             // 入力がtolerance以下、氷に乗っていない
@@ -234,14 +249,15 @@ namespace trrne.Core
         /// <summary>
         /// 成仏
         /// </summary>
-        public async UniTask Die(Cause cause = Cause.None)
+        public async UniTask Die(Cause cause = Cause.NONE)
         {
             if (IsDying)
             {
                 return;
             }
 
-            hitbox.excludeLayers += Constant.Layers.Creature;
+            // 敵への当たり判定は除外
+            hitbox.excludeLayers += Config.Layers.Creature;
 
             IsDying = true;
             Controllable = cam.Followable = false;
@@ -250,15 +266,15 @@ namespace trrne.Core
 
             switch (cause)
             {
-                case Cause.None: break;
+                case Cause.NONE:
+                    break;
                 case Cause.Muscarine:
                     rb.velocity = Vector2.zero;
-                    animator.Play(Constant.Animations.Venomed);
+                    animator.Play(Config.Animations.Venomed);
                     break;
                 case Cause.Fallen:
-                    animator.Play(Constant.Animations.Die);
+                    animator.Play(Config.Animations.Die);
                     break;
-                default: break;
             }
 
             await UniTask.Delay(1250);
@@ -270,18 +286,17 @@ namespace trrne.Core
             }
 
             // mend carrots
-            Carrot[] carrots = Gobject.Finds<Carrot>();
-            carrots.ForEach(carrot => carrot.Mendable.If(carrot.Mend));
+            Gobject.Finds<Carrot>().ForEach(c => c.Mendable.If(c.Mend));
 
             ReturnToCheckpoint();
             animator.StopPlayback();
 
-            hitbox.excludeLayers -= Constant.Layers.Creature;
+            hitbox.excludeLayers -= Config.Layers.Creature;
 
             cam.Followable = Controllable = true;
             IsDying = false;
         }
 
-        public async UniTask Die() => await Die(Cause.None);
+        public async UniTask Die() => await Die(Cause.NONE);
     }
 }

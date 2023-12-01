@@ -10,7 +10,7 @@ namespace trrne.Brain
         /// <summary>
         /// 現在のタイム
         /// </summary>
-        public (int Minutes, int Seconds) Current => (sw.Minute(), sw.Second());
+        public (int Minutes, int Seconds) Current => (sw.M(), sw.S());
         public string CurrentStr => sw.Spent(StopwatchOutput.MS);
 
         /// <summary>

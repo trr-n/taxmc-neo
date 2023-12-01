@@ -19,9 +19,9 @@ namespace trrne.Box
         public static bool TryGetWithTag<T>(out T t, string tag) => GetWithTag(tag).TryGetComponent(out t);
         [Obsolete("Way to get gameobject, GetComponentWithTag is better than this.")]
         public static T GetWithName<T>(this string name) => GameObject.Find(name).GetComponent<T>();
-        public static T GetFromChild<T>(this Transform transform, int index = 0) => transform.GetChild(index).GetComponent<T>();
-        public static T GetFromParent<T>(this Transform transform) => transform.parent.GetComponent<T>();
-        public static T GetFromRoot<T>(this Transform transform) => transform.root.GetComponent<T>();
+        public static T GetFromChild<T>(this Transform t, int index = 0) => t.GetChild(index).GetComponent<T>();
+        public static T GetFromParent<T>(this Transform t) => t.parent.GetComponent<T>();
+        public static T GetFromRoot<T>(this Transform t) => t.root.GetComponent<T>();
 
         public static T GetComponent<T>(this Collision2D info) => info.gameObject.GetComponent<T>();
         public static T GetComponent<T>(this Collider2D info) => info.gameObject.GetComponent<T>();
@@ -34,10 +34,11 @@ namespace trrne.Box
         public static bool TryGetComponent<T>(this Collision info, out T t) => info.gameObject.TryGetComponent(out t);
         public static bool TryGetComponent<T>(this Collider info, out T t) => info.gameObject.TryGetComponent(out t);
         public static bool TryGetComponent<T>(this RaycastHit2D hit, out T t) => hit.collider.TryGetComponent(out t);
-        public static void TryAction<T>(this Collider2D info, Action<T> action) => info.TryGetComponent(out T t).If(() => action(t));
+        public static void TryAction<T>(this Collider2D info, Action<T> action)
+        => info.TryGetComponent(out T t).If(() => action(t));
 
         public static GameObject GetChildGameObject(this Transform t) => t.GetChild(0).gameObject;
-        public static GameObject GetChildGameObject(this Transform t, int index) => t.GetChild(index).gameObject;
+        public static GameObject GetChildGameObject(this Transform t, int i) => t.GetChild(i).gameObject;
 
         public static GameObject[] GetChildrenGameObject(this Transform t)
         {

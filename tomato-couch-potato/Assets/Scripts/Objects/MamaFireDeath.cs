@@ -14,7 +14,7 @@ namespace trrne.Core
         protected override void Movement()
         {
             // プレイヤーとの距離がchaseRange以下になるまで追随、以下になったらそのまま直進
-            float distance = Vector2.Distance(transform.position, player.CoreOffset);
+            float distance = Vector2.Distance(transform.position, player.Core);
             if (!isClose && distance <= chaseRange)
             {
                 isClose = true;
@@ -23,6 +23,7 @@ namespace trrne.Core
             transform.Translate(Time.deltaTime * speed * direction);
         }
 
-        protected override async UniTask Punishment(Player player) => await player.Die();
+        protected override async UniTask Punishment(Player player)
+        => await player.Die();
     }
 }

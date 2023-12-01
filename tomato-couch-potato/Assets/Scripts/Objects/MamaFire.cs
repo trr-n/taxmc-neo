@@ -35,11 +35,15 @@ namespace trrne.Core
         protected virtual void Start()
         {
             Enable = true;
+
             sr = GetComponent<SpriteRenderer>();
+
             hitbox = GetComponent<CircleCollider2D>();
             hitbox.isTrigger = true;
-            player = Gobject.GetWithTag<Player>(Constant.Tags.Player);
-            direction = (player.CoreOffset - transform.position).normalized;
+
+            player = Gobject.GetWithTag<Player>(Config.Tags.Player);
+
+            direction = (player.Core - transform.position).normalized;
 
             StartCoroutine(Destroy());
         }
@@ -59,6 +63,7 @@ namespace trrne.Core
             {
                 return;
             }
+
             Movement();
 
             if (isTracking)

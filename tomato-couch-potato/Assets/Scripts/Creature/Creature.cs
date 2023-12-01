@@ -28,19 +28,8 @@ namespace trrne.Core
             Behavior();
         }
 
-        /// <summary>
-        /// 移動
-        /// </summary>
         protected abstract void Movement();
-
-        /// <summary>
-        /// 振舞 / プレイヤー検知など
-        /// </summary>
         protected abstract void Behavior();
-
-        /// <summary>
-        /// 死<br/>asyncつける
-        /// </summary>
         public abstract UniTask Die();
     }
 }

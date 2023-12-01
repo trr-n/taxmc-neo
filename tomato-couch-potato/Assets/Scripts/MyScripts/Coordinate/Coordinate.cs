@@ -70,7 +70,7 @@ namespace trrne.Box
         public static bool Twins(Vector3 n1, Vector3 n2)
         => Mathf.Approximately(n1.x, n2.x) && Mathf.Approximately(n1.y, n2.y) && Mathf.Approximately(n1.z, n2.z);
 
-        [Obsolete] public static Vector2 Direction(Vector2 target, Vector2 origin) => target - origin;
+        [Obsolete] public static Vector2 Direction(Vector2 t, Vector2 o) => t - o;
 
         public static float Angle(in Vector2 a, in Vector2 b)
         {

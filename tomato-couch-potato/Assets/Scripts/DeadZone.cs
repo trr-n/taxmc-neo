@@ -9,10 +9,10 @@ namespace trrne.Core
         {
             switch (info.GetLayer())
             {
-                case Constant.Layers.Player:
+                case Config.Layers.Player:
                     info.TryAction<Player>(async player => await player.Die());
                     break;
-                case Constant.Layers.Creature:
+                case Config.Layers.Creature:
                     info.TryAction<Creature>(async enemy => await enemy.Die());
                     break;
             }

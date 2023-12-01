@@ -22,7 +22,7 @@ namespace trrne.Core
 
         void Start()
         {
-            player = Gobject.GetWithTag<Player>(Constant.Tags.Player);
+            player = Gobject.GetWithTag<Player>(Config.Tags.Player);
             z = transform.position.z;
         }
 
@@ -54,7 +54,7 @@ namespace trrne.Core
         void Zoom()
         {
 
-            if ((axis = Input.GetAxisRaw(Constant.Keys.Zoom)) == 0)
+            if ((axis = Input.GetAxisRaw(Config.Keys.Zoom)) == 0)
             {
                 return;
             }

@@ -49,7 +49,8 @@ namespace trrne.Core
             {
                 return;
             }
-            if (anim.sw.Secondf() >= interval)
+
+            if (anim.sw.Sf() >= interval)
             {
                 anim.index = anim.index >= sprites.Length - 1 ? 0 : anim.index += 1;
                 SR.sprite = sprites[anim.index];
@@ -65,6 +66,6 @@ namespace trrne.Core
         /// <summary>
         /// 画像を設定
         /// </summary>
-        protected void SetSprite(Sprite sprite) => SR.sprite = sprite;
+        protected void SetSprite(Sprite _sprite) => SR.sprite = _sprite;
     }
 }

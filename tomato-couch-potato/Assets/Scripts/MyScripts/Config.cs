@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace trrne
 {
-    public struct Constant
+    public struct Config
     {
         public readonly struct Scenes
         {

@@ -44,14 +44,13 @@ namespace trrne.Core
         readonly Runner set = new();
         void Animation()
         {
-            if (!isAnimate)
+            if (!isAnimate || sprites.Length <= 0)
             {
                 return;
             }
+
             switch (sprites.Length)
             {
-                case 0:
-                    return;
                 case 1:
                     set.RunOnce(() => sr.sprite = sprites[0]);
                     break;

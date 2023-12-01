@@ -14,7 +14,7 @@ namespace trrne.Core
 
         void Start()
         {
-            player = Gobject.GetWithTag(Constant.Tags.Player).transform;
+            player = Gobject.GetWithTag(Config.Tags.Player).transform;
             alive = spectre.TryInstantiate(transform.position);
         }
 

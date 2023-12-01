@@ -12,7 +12,10 @@ namespace trrne.Core
             isTracking = false;
         }
 
-        protected override void Movement() => transform.Translate(Time.deltaTime * speed * direction);
-        protected override async UniTask Punishment(Player player) => await player.Punishment(effectDuration, Effect.Mirror);
+        protected override void Movement()
+        => transform.Translate(Time.deltaTime * speed * direction);
+
+        protected override async UniTask Punishment(Player player)
+        => await player.Punishment(effectDuration, Effect.Mirror);
     }
 }

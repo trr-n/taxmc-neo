@@ -28,8 +28,10 @@ namespace trrne.Core
                 isLoading = true;
                 effects.TryInstantiate(transform.position);
                 display.color = DisplayColors[Used];
-                player.SetCheckpoint(x: transform.position.x,
-                    y: Maths.Cutail(transform.position.y));
+                player.SetCheckpoint(
+                    x: transform.position.x,
+                    y: Maths.Cutail(transform.position.y)
+                );
             }
         }
     }

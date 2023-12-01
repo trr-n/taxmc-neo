@@ -21,14 +21,16 @@ namespace trrne.Core
         {
             Enable = true;
             base.Start();
-            player = Gobject.GetWithTag<Player>(Constant.Tags.Player);
+
+            player = Gobject.GetWithTag<Player>(Config.Tags.Player);
             left = transform.localScale.x;
         }
 
         protected override async void Behavior()
         {
             Flip();
-            if (this != null && lifetimeSW.Secondf() >= lifetime)
+
+            if (this != null && lifetimeSW.Sf() >= lifetime)
             {
                 await Die();
             }
@@ -38,8 +40,8 @@ namespace trrne.Core
         void Flip()
         {
             float selfx = transform.position.x,
-                playerx = player.transform.position.x;
-            float scalex = transform.localScale.x;
+                playerx = player.transform.position.x,
+                scalex = transform.localScale.x;
             if ((selfx > playerx && left != scalex)
                 || (selfx < playerx && left == scalex))
             {
@@ -50,13 +52,13 @@ namespace trrne.Core
         // follow the player slowly
         protected override void Movement()
         {
-            Vector3 direction = player.CoreOffset - transform.position;
+            Vector3 direction = player.Core - transform.position;
             transform.Translate(Time.deltaTime * MoveSpeed * direction.normalized);
         }
 
         public override async UniTask Die() => await Die(UniTask.Delay(0));
 
-        public async UniTask Die(UniTask task)
+        public async UniTask Die(UniTask _task)
         {
             lifetimeSW.Reset();
             float alpha = 1;
@@ -68,7 +70,7 @@ namespace trrne.Core
                 sr.SetAlpha(alpha);
                 await UniTask.Yield();
             }
-            await UniTask.WhenAll(task);
+            await UniTask.WhenAll(_task);
             Destroy(gameObject);
         }
 

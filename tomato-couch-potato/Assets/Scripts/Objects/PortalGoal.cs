@@ -15,7 +15,7 @@ namespace trrne.Core
         {
             Goal = transform.position;
             sr = GetComponent<SpriteRenderer>();
-#if DEBUG
+#if UNITY_EDITOR
             sr.SetAlpha(1);
 #else
             sr.SetAlpha(0);

@@ -27,8 +27,8 @@ namespace trrne.Core
         {
             base.Start();
             isAnimate = false;
-            flag = transform.GetFromChild<ButtonFlag>(0);
-            speaker = Gobject.GetWithTag<AudioSource>(Constant.Tags.Manager);
+            flag = transform.GetFromChild<ButtonFlag>();
+            speaker = Gobject.GetWithTag<AudioSource>(Config.Tags.Manager);
 #if !DEBUG
             sr.color = Surface.Transparent;
 #endif
@@ -37,7 +37,7 @@ namespace trrne.Core
         protected override void Behavior()
         {
             // レバーが動作中じゃない、プレイヤーが範囲内にいる、キーが押された
-            if (!isPressing && flag.IsHitting && Inputs.Down(Constant.Keys.Button))
+            if (!isPressing && flag.IsHitting && Inputs.Down(Config.Keys.Button))
             {
                 isPressing = true;
                 sr.sprite = sprites[status.on];
@@ -46,18 +46,18 @@ namespace trrne.Core
 
                 if (gimmicks.Length >= 1)
                 {
-                    gimmicks.ForEach(gimmick => gimmick.GetComponent<IGimmick>().On());
+                    gimmicks.ForEach(g => g.GetComponent<IGimmick>().On());
                 }
             }
 
             // 動作中、効果時間がduration以上
-            if (isPressing && effectiveSW.Secondf() >= duration)
+            if (isPressing && effectiveSW.Sf() >= duration)
             {
                 effectiveSW.Reset();
 
                 if (gimmicks.Length >= 1)
                 {
-                    gimmicks.ForEach(gimmick => gimmick.GetComponent<IGimmick>().Off());
+                    gimmicks.ForEach(g => g.GetComponent<IGimmick>().Off());
                 }
 
                 speaker.TryPlayOneShot(sounds.Choice());

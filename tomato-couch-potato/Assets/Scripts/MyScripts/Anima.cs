@@ -9,7 +9,7 @@ namespace trrne.Box
 
         public void Colour(bool enable, SpriteRenderer sr, in float interval, params Color[] colours)
         {
-            if (enable && colour.sw.Secondf() >= interval)
+            if (enable && colour.sw.Sf() >= interval)
             {
                 sprite.sw.Reset();
                 colour.idx = colour.idx >= colours.Length - 1 ? colour.idx = 0 : colour.idx += 1;
@@ -20,7 +20,7 @@ namespace trrne.Box
 
         public void Sprite(bool enable, SpriteRenderer sr, in float interval, params Sprite[] pics)
         {
-            if (enable && sprite.sw.Second() >= interval)
+            if (enable && sprite.sw.S() >= interval)
             {
                 sprite.sw.Reset();
                 sprite.idx = sprite.idx >= pics.Length - 1 ? 0 : sprite.idx += 1;

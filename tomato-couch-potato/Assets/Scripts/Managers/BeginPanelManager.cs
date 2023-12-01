@@ -21,13 +21,13 @@ namespace trrne.Brain
             canvas.alpha = 1;
             sw.Start();
 
-            player = Gobject.GetWithTag<Player>(Constant.Tags.Player);
+            player = Gobject.GetWithTag<Player>(Config.Tags.Player);
             player.Controllable = false;
         }
 
         void Update()
         {
-            if (sw.Secondf() >= showingTime)
+            if (sw.Sf() >= showingTime)
             {
                 sw.Reset();
                 StartCoroutine(FadeOut());

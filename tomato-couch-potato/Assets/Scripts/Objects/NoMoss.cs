@@ -14,6 +14,7 @@ namespace trrne.Core
             Right = 1,
             Fixed = 0
         }
+
         [SerializeField]
         RotateDirection direction;
 
@@ -31,6 +32,7 @@ namespace trrne.Core
             {
                 return;
             }
+
             Vector3 direction = (float)this.direction * speed * Coordinate.V3Z;
             transform.Rotate(Time.deltaTime * direction, Space.World);
         }

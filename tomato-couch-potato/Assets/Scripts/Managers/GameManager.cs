@@ -24,10 +24,10 @@ namespace trrne.Brain
 
             Physics2D.gravity = Coordinate.Gravity;
 
-            cam = Gobject.GetWithTag<Cam>(Constant.Tags.MainCamera);
+            cam = Gobject.GetWithTag<Cam>(Config.Tags.MainCamera);
             cam.Followable = true;
 
-            GameObject[] enemies = Gobject.GetsWithTag(Constant.Tags.Enemy);
+            GameObject[] enemies = Gobject.GetsWithTag(Config.Tags.Enemy);
             enemies.ForEach(enemy => enemy.GetComponent<Creature>().Enable = true);
         }
 
