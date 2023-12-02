@@ -7,9 +7,10 @@ namespace trrne.Box
 {
     public static class TypeCasting
     {
-        public static Vector2 ToVec2(this Vector3 vector) => (Vector2)vector;
+        public static Vector2 ToV2(this Vector3 vector) => (Vector2)vector;
 
         public static Vector3 ToVec3(this Vector2 vector) => (Vector3)vector;
+        [Obsolete]
         public static Vector3 ToVec3(this Quaternion q)
         => new(2 * ((q.x * q.w) + (q.y * q.z)),
             2 * ((q.x * q.z) - (q.y * q.w)),

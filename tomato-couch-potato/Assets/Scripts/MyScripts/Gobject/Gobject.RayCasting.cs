@@ -37,5 +37,10 @@ namespace trrne.Box
 
         public static bool LineCast(out RaycastHit2D hit, (Vector3 start, Vector3 end) ray, int layer)
         => hit = Physics2D.Linecast(ray.start, ray.end, layer);
+
+        // --------------------------------------------------------------------
+
+        public static RaycastHit2D Raycast(this Ray ray, float distance, int layer)
+        => Physics2D.Raycast(ray.origin, ray.direction, distance, layer);
     }
 }

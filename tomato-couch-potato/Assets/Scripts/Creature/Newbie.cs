@@ -20,8 +20,12 @@ namespace trrne.Core
         float speed = 2f;
         float direction = 0;
 
-        (Ray ray, RaycastHit2D hit) horizon, top, bottom;
-        readonly (float size, int detect) hitbox = (1.2f, Config.Layers.Player | Config.Layers.Jumpable);
+        // (Ray ray, RaycastHit2D hit) left, right;
+        (Ray ray, RaycastHit2D hit)[] horizon = new (Ray ray, RaycastHit2D hit)[2];
+        (Ray ray, RaycastHit2D hit) top, bottom;
+        float length, offset, originOffset, half;
+        const int DetectLayers = Config.Layers.Player | Config.Layers.Jumpable;
+
 
         Player player;
 
@@ -29,7 +33,14 @@ namespace trrne.Core
 
         protected override void Start()
         {
+            Enable = true;
             player = Gobject.GetWithTag<Player>(Config.Tags.Player);
+
+            BoxCollider2D c = GetComponent<BoxCollider2D>();
+            offset = c.size.x * 1.2f;
+            length = c.size.x * 0.8f;
+            originOffset = (c.size.x - length) * 2;
+            half = c.size.x * 0.5f;
         }
 
         void SetFacing(Facing facing)
@@ -52,67 +63,105 @@ namespace trrne.Core
         {
             SetFacing(facing);
 
-            Vector3 conf = hitbox.size * Coordinate.V3Y / 2;
-            await Horizon(conf);
-            await Top(conf);
-            await Bottom(conf);
+            // await Horizon();
+            await Horizon2();
+            // await Top();
+            // await Bottom();
         }
 
-        async UniTask Horizon(Vector3 conf)
+        // async UniTask Horizon()
+        // {
+        //     // TODO 超コードクローン
+        //     left.ray = new(
+        //         origin: transform.position + new Vector3(-offset / 2, -originOffset),
+        //         direction: transform.up
+        //     );
+        //     left.hit = Gobject.Raycast(left.ray, length, DetectLayers);
+        //     left.ray.DrawRay(length, Color.red);
+
+        //     right.ray = new(
+        //         origin: transform.position + new Vector3(offset / 2, -originOffset),
+        //         direction: transform.up
+        //     );
+        //     right.hit = Gobject.Raycast(right.ray, length, DetectLayers);
+        //     right.ray.DrawRay(length, Color.blue);
+
+        //     if (!left.hit || !right.hit)
+        //     {
+        //         return;
+        //     }
+
+        //     switch (left.hit.GetLayer() | right.hit.GetLayer())
+        //     {
+        //         case Config.Layers.Player:
+        //             await player.Die();
+        //             break;
+        //         default:
+        //             moveDirection *= -1;
+        //             break;
+        //     }
+        // }
+
+        async UniTask Horizon2()
         {
-            horizon.ray = new(transform.position - conf, transform.right);
-            horizon.hit = Physics2D.Raycast(
-                origin: horizon.ray.origin,
-                direction: horizon.ray.direction,
-                distance: hitbox.size,
-                layerMask: hitbox.detect
-            );
-            if (!horizon.hit)
+            for (int i = 0, j = -1; j < 2; i++, j += 2)
             {
-                return;
-            }
+                horizon[i].ray = new(
+                    origin: transform.position + new Vector3(-offset * j / 2, -originOffset),
+                    direction: transform.up
+                );
+                horizon[i].hit = Gobject.Raycast(horizon[i].ray, length, DetectLayers);
+                horizon[i].ray.DrawRay(length, Color.red);
 
-            switch (horizon.hit.GetLayer())
-            {
-                case Config.Layers.Player:
-                    await player.Die();
-                    break;
-                default:
-                    direction *= -1;
-                    break;
+                if (!horizon[i].hit)
+                {
+                    continue;
+                }
+
+                switch (horizon[i].hit.GetLayer())
+                {
+                    case Config.Layers.Player:
+                        await player.Die();
+                        break;
+                    default:
+                        direction *= -1;
+                        break;
+                }
             }
         }
 
-        async UniTask Top(Vector3 conf)
-        {
-            top.ray = new(transform.position + conf, transform.up);
-            top.hit = Physics2D.Raycast(
-                origin: top.ray.origin,
-                direction: top.ray.direction,
-                distance: hitbox.size,
-                layerMask: hitbox.detect
-            );
-            if (top.hit && top.hit.TryGetComponent(out Player _))
-            {
-                hit = true;
-                await Die();
-            }
-        }
+        // async UniTask Top()
+        // {
+        //     top.ray = new(transform.position, transform.up);
+        //     top.hit = Physics2D.Raycast(
+        //         origin: top.ray.origin,
+        //         direction: top.ray.direction,
+        //         distance: hitbox.size.y,
+        //         layerMask: hitbox.detect
+        //     );
+        //     top.ray.DrawRay(hitbox.size.y, Color.green);
+        //     if (top.hit && top.hit.TryGetComponent(out Player _))
+        //     {
+        //         hit = true;
+        //         await Die();
+        //     }
+        // }
 
-        async UniTask Bottom(Vector3 conf)
-        {
-            bottom.ray = new(transform.position + conf, -transform.up);
-            bottom.hit = Physics2D.Raycast(
-                origin: bottom.ray.origin,
-                direction: bottom.ray.direction,
-                distance: hitbox.size,
-                layerMask: hitbox.detect
-            );
-            if (!hit && bottom.hit && bottom.hit.TryGetComponent(out Player player))
-            {
-                await player.Die();
-            }
-        }
+        // async UniTask Bottom()
+        // {
+        //     bottom.ray = new(transform.position, -transform.up);
+        //     bottom.hit = Physics2D.Raycast(
+        //         origin: bottom.ray.origin,
+        //         direction: bottom.ray.direction,
+        //         distance: hitbox.size.y,
+        //         layerMask: hitbox.detect
+        //     );
+        //     bottom.ray.DrawRay(hitbox.size.y, Color.blue);
+        //     if (!hit && bottom.hit && bottom.hit.TryGetComponent(out Player player))
+        //     {
+        //         await player.Die();
+        //     }
+        // }
 
         public override async UniTask Die()
         {
@@ -129,9 +178,6 @@ namespace trrne.Core
         }
 
         protected override void Movement()
-        {
-            // print($"{name} is moving!");
-            transform.Translate(Time.deltaTime * direction * Coordinate.V2X);
-        }
+        => transform.Translate(Time.deltaTime * direction * Coordinate.V2X);
     }
 }

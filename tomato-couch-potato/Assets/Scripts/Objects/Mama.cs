@@ -63,7 +63,7 @@ namespace trrne.Core
 
             Vector2 ave = new(Maths.Average(eyes[0].transform.position.x, eyes[1].transform.position.x),
                 Maths.Average(eyes[0].transform.position.y, eyes[1].transform.position.y));
-            Ray infrared = new(ave, player.transform.position.ToVec2() - ave);
+            Ray infrared = new(ave, player.transform.position.ToV2() - ave);
 
             // and there is not object between player and me
             if (!Gobject.TryGetRaycast<Player>(infrared, distance))

@@ -11,9 +11,9 @@ namespace trrne.Core
 
         Player player;
         readonly Stopwatch lifetimeSW = new(true);
-        const float FadeSpeed = 2;
-
-        const float MoveSpeed = 0.5f;
+        // const float FadeSpeed = 2;
+        // const float MoveSpeed = 0.5f;
+        readonly (float fade, float move) speed = (2f, 0.5f);
         float left = 0f;
         Vector2 Mirrored => new(-1, 1);
 
@@ -53,7 +53,7 @@ namespace trrne.Core
         protected override void Movement()
         {
             Vector3 direction = player.Core - transform.position;
-            transform.Translate(Time.deltaTime * MoveSpeed * direction.normalized);
+            transform.Translate(Time.deltaTime * speed.move * direction.normalized);
         }
 
         public override async UniTask Die() => await Die(UniTask.Delay(0));
@@ -64,11 +64,14 @@ namespace trrne.Core
             float alpha = 1;
             while (alpha >= 0 && this != null)
             {
-                alpha -= Time.deltaTime * FadeSpeed;
-                if (alpha.Twins(0f))
-                    sr.SetAlpha(0);
-                sr.SetAlpha(alpha);
-                await UniTask.Yield();
+                alpha -= Time.deltaTime * speed.fade;
+                // if (alpha.Twins(0f))
+                // {
+                //     sr.SetAlpha(0);
+                // }
+                // sr.SetAlpha(alpha);
+                sr.SetAlpha(alpha.Twins(0f) ? 0 : alpha);
+                await UniTask.WaitForSeconds(Time.deltaTime);
             }
             await UniTask.WhenAll(_task);
             Destroy(gameObject);
