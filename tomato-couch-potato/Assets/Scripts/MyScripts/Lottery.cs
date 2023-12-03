@@ -4,14 +4,15 @@
     {
         // https://nekojara.city/unity-weighted-random-selection
         // https://youtu.be/3CQCBQRq0FA
-        public static int Weighted(params float[] weights)
+        public static int BinarySearchTree(params float[] weights)
         {
             if (weights.Length <= 0)
             {
                 throw new Karappoyanke("nanka kakankai");
             }
-            float[] totals = new float[weights.Length];
-            float total = 0f;
+
+            var totals = new float[weights.Length];
+            var total = 0f;
             for (int i = 0; i < weights.Length; i++)
             {
                 total += weights[i];
@@ -44,7 +45,7 @@
         {
             0 => throw null,
             1 => pairs.Subject(0),
-            _ => pairs.Subject(Weighted(pairs.Weights()))
+            _ => pairs.Subject(BinarySearchTree(pairs.Weights()))
         };
     }
 }

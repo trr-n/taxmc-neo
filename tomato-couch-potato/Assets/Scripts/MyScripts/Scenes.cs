@@ -15,11 +15,12 @@ namespace trrne.Box
 
         public static string[] Names()
         {
-            string[] names = new string[sceneCount];
+            var names = new string[sceneCount];
             for (int i = 0; i < sceneCount; i++)
             {
                 names[i] = GetSceneAt(i).name;
             }
+
             return names.Length switch
             {
                 0 => throw new Karappoyanke("tabun settei sitenai"),
@@ -27,7 +28,8 @@ namespace trrne.Box
             };
         }
 
-        public static int Total(ScenesCountingFormat which) => which switch
+        public static int Total(ScenesCountingFormat which)
+        => which switch
         {
             ScenesCountingFormat.Unbuilt => sceneCountInBuildSettings,
             ScenesCountingFormat.Built => sceneCount,

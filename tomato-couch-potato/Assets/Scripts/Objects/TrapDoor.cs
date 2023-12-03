@@ -33,7 +33,7 @@ namespace trrne.Core
 
         public override void On()
         {
-            Vector3 offset = Coordinate.V3Z * ((float)amount - 1e-8f);
+            Vector3 offset = new(0, 0, (float)amount - 1e-8f);
             Vector3 rotation = direct switch
             {
                 RotateDirection.Left => this.rotation.value + offset,

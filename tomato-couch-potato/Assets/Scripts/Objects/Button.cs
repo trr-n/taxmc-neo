@@ -26,6 +26,7 @@ namespace trrne.Core
         protected override void Start()
         {
             base.Start();
+
             isAnimate = false;
             flag = transform.GetFromChild<ButtonFlag>();
             speaker = Gobject.GetWithTag<AudioSource>(Config.Tags.Manager);
@@ -37,7 +38,7 @@ namespace trrne.Core
         protected override void Behavior()
         {
             // レバーが動作中じゃない、プレイヤーが範囲内にいる、キーが押された
-            if (!isPressing && flag.IsHitting && Inputs.Down(Config.Keys.Button))
+            if (!isPressing && flag.IsHit && Inputs.Down(Config.Keys.Button))
             {
                 isPressing = true;
                 sr.sprite = sprites[status.on];

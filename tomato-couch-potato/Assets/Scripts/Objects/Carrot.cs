@@ -18,6 +18,7 @@ namespace trrne.Core
         protected override void Start()
         {
             base.Start();
+
             sr.sprite = sprites[0];
             flag = transform.GetFromChild<CarrotFlag>();
             flag.Count = 0;

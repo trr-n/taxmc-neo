@@ -27,6 +27,7 @@ namespace trrne.Core
         protected override void Start()
         {
             base.Start();
+
             children = frames.Length;
             speeds = new float[children];
             for (int i = 0; i < children; i++)

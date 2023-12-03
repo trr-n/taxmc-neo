@@ -15,6 +15,7 @@ namespace trrne.Core
         protected override void Start()
         {
             base.Start();
+
             display = transform.GetFromChild<SpriteRenderer>(0);
             display.color = DisplayColors[Unused];
         }
@@ -26,8 +27,10 @@ namespace trrne.Core
             if (!isLoading && info.TryGetComponent(out Player player) && !player.IsDying)
             {
                 isLoading = true;
+
                 effects.TryInstantiate(transform.position);
                 display.color = DisplayColors[Used];
+
                 player.SetCheckpoint(
                     x: transform.position.x,
                     y: Maths.Cutail(transform.position.y)

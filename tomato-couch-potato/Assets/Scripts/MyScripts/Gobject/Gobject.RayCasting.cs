@@ -8,21 +8,21 @@ namespace trrne.Box
         => hit = Physics2D.BoxCast(center, size, 0, Vector2.up);
 
         public static bool BoxCast(out RaycastHit2D hit,
-            Vector2 center, Vector2 size, int layer, float distance = 1, float angle = 0, Vector2 direction = new())
-        => hit = Physics2D.BoxCast(center, size, angle, direction, distance, layer);
+            Vector2 center, Vector2 size, int layer, float length = 1, float angle = 0, Vector2 direction = new())
+        => hit = Physics2D.BoxCast(center, size, angle, direction, length, layer);
 
-        public static bool RayCast(out RaycastHit2D hit, Ray ray, float distance)
-        => hit = Physics2D.Raycast(ray.origin, ray.direction, distance);
+        public static bool RayCast(out RaycastHit2D hit, Ray ray, float length)
+        => hit = Physics2D.Raycast(ray.origin, ray.direction, length);
 
-        public static bool RayCast(out RaycastHit2D hit, Ray ray, int layer, float distance)
-        => hit = Physics2D.Raycast(ray.origin, ray.direction, distance, layer);
+        public static bool RayCast(out RaycastHit2D hit, Ray ray, int layer, float length)
+        => hit = Physics2D.Raycast(ray.origin, ray.direction, length, layer);
 
-        public static bool RayCastAll(out RaycastHit2D[] hit, Ray ray, float distance)
-        => (hit = Physics2D.RaycastAll(ray.origin, ray.direction, distance)).Length > 0;
+        public static bool RayCastAll(out RaycastHit2D[] hit, Ray ray, float length)
+        => (hit = Physics2D.RaycastAll(ray.origin, ray.direction, length)).Length > 0;
 
-        public static bool TryGetRaycast<T>(Ray ray, float distance)
+        public static bool TryGetRaycast<T>(Ray ray, float length)
         {
-            RaycastHit2D hit = Physics2D.Raycast(ray.origin, ray.direction, distance);
+            RaycastHit2D hit = Physics2D.Raycast(ray.origin, ray.direction, length);
             return hit && hit.TryGetComponent(out T _);
         }
 
@@ -40,7 +40,7 @@ namespace trrne.Box
 
         // --------------------------------------------------------------------
 
-        public static RaycastHit2D Raycast(this Ray ray, float distance, int layer)
-        => Physics2D.Raycast(ray.origin, ray.direction, distance, layer);
+        public static RaycastHit2D Raycast(this Ray ray, float length, int layer)
+        => Physics2D.Raycast(ray.origin, ray.direction, length, layer);
     }
 }

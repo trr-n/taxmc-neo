@@ -4,7 +4,8 @@ namespace trrne.Box
 {
     public static class Times
     {
-        public static string Raw => (Date(TimesFormat.Domestics) + Time(TimesFormat.Domestics)).DeleteLump("/", ":");
+        public static string Raw()
+        => (Date(TimesFormat.Domestics) + Time(TimesFormat.Domestics)).DeleteLump("/", ":");
 
         public static string Date(TimesFormat format = TimesFormat.Domestics)
         => format switch

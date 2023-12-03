@@ -52,7 +52,7 @@ namespace trrne.Core
         // follow the player slowly
         protected override void Movement()
         {
-            Vector3 direction = player.Core - transform.position;
+            var direction = player.Core - transform.position;
             transform.Translate(Time.deltaTime * speed.move * direction.normalized);
         }
 
@@ -61,7 +61,7 @@ namespace trrne.Core
         public async UniTask Die(UniTask _task)
         {
             lifetimeSW.Reset();
-            float alpha = 1;
+            var alpha = 1f;
             while (alpha >= 0 && this != null)
             {
                 alpha -= Time.deltaTime * speed.fade;

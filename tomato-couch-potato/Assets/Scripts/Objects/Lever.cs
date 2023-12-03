@@ -19,6 +19,7 @@ namespace trrne.Core
         protected override void Start()
         {
             base.Start();
+
             flag = transform.GetFromChild<LeverFlag>();
             source = Gobject.GetWithTag<AudioSource>(Config.Tags.Manager);
 

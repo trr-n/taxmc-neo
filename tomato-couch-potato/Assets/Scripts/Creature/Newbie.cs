@@ -8,22 +8,22 @@ namespace trrne.Core
     {
         public enum Facing
         {
-            Fixed,
+            None,
             Left,
             Right,
             Random
         }
 
-        public Facing facing = Facing.Fixed;
+        [SerializeField]
+        Facing facing = Facing.None;
 
         [SerializeField]
         float speed = 2f;
         float direction = 0;
 
-        // (Ray ray, RaycastHit2D hit) left, right;
-        (Ray ray, RaycastHit2D hit)[] horizon = new (Ray ray, RaycastHit2D hit)[2];
+        readonly (Ray ray, RaycastHit2D hit)[] horizon = { new(), new() };
         (Ray ray, RaycastHit2D hit) top, bottom;
-        float length, offset, originOffset, half;
+        float length, offset, originOffset;
         const int DetectLayers = Config.Layers.Player | Config.Layers.Jumpable;
 
 
@@ -36,19 +36,18 @@ namespace trrne.Core
             Enable = true;
             player = Gobject.GetWithTag<Player>(Config.Tags.Player);
 
-            BoxCollider2D c = GetComponent<BoxCollider2D>();
-            offset = c.size.x * 1.2f;
-            length = c.size.x * 0.8f;
-            originOffset = (c.size.x - length) * 2;
-            half = c.size.x * 0.5f;
+            var hitbox = GetComponent<BoxCollider2D>();
+            offset = hitbox.size.x * 1.2f;
+            length = hitbox.size.x * 0.8f;
+            originOffset = (hitbox.size.x - length) * 2;
         }
 
-        void SetFacing(Facing facing)
+        public void SetFacing(Facing facing)
         {
             this.facing = facing;
             direction = facing switch
             {
-                Facing.Fixed => 0,
+                Facing.None => 0,
                 Facing.Left => -speed,
                 Facing.Right => speed,
                 Facing.Random or _ => Rnd.Int32(max: 1) switch
@@ -63,54 +62,25 @@ namespace trrne.Core
         {
             SetFacing(facing);
 
-            // await Horizon();
-            await Horizon2();
-            // await Top();
-            // await Bottom();
+            if (player.IsDying)
+            {
+                return;
+            }
+
+            await Horizon(-offset, -originOffset);
+            await Top(-originOffset, offset);
+            await Bottom(-originOffset, -offset);
         }
 
-        // async UniTask Horizon()
-        // {
-        //     // TODO 超コードクローン
-        //     left.ray = new(
-        //         origin: transform.position + new Vector3(-offset / 2, -originOffset),
-        //         direction: transform.up
-        //     );
-        //     left.hit = Gobject.Raycast(left.ray, length, DetectLayers);
-        //     left.ray.DrawRay(length, Color.red);
-
-        //     right.ray = new(
-        //         origin: transform.position + new Vector3(offset / 2, -originOffset),
-        //         direction: transform.up
-        //     );
-        //     right.hit = Gobject.Raycast(right.ray, length, DetectLayers);
-        //     right.ray.DrawRay(length, Color.blue);
-
-        //     if (!left.hit || !right.hit)
-        //     {
-        //         return;
-        //     }
-
-        //     switch (left.hit.GetLayer() | right.hit.GetLayer())
-        //     {
-        //         case Config.Layers.Player:
-        //             await player.Die();
-        //             break;
-        //         default:
-        //             moveDirection *= -1;
-        //             break;
-        //     }
-        // }
-
-        async UniTask Horizon2()
+        async UniTask Horizon(float originX, float originY)
         {
             for (int i = 0, j = -1; j < 2; i++, j += 2)
             {
                 horizon[i].ray = new(
-                    origin: transform.position + new Vector3(-offset * j / 2, -originOffset),
-                    direction: transform.up
+                    transform.position + new Vector3(originX * j / 2, originY),
+                    transform.up
                 );
-                horizon[i].hit = Gobject.Raycast(horizon[i].ray, length, DetectLayers);
+                horizon[i].hit = horizon[i].ray.Raycast(length, DetectLayers);
                 horizon[i].ray.DrawRay(length, Color.red);
 
                 if (!horizon[i].hit)
@@ -130,38 +100,36 @@ namespace trrne.Core
             }
         }
 
-        // async UniTask Top()
-        // {
-        //     top.ray = new(transform.position, transform.up);
-        //     top.hit = Physics2D.Raycast(
-        //         origin: top.ray.origin,
-        //         direction: top.ray.direction,
-        //         distance: hitbox.size.y,
-        //         layerMask: hitbox.detect
-        //     );
-        //     top.ray.DrawRay(hitbox.size.y, Color.green);
-        //     if (top.hit && top.hit.TryGetComponent(out Player _))
-        //     {
-        //         hit = true;
-        //         await Die();
-        //     }
-        // }
+        async UniTask Top(float originX, float originY)
+        {
+            top.ray = new(
+                transform.position + new Vector3(originX, originY / 2),
+                transform.right
+            );
+            top.hit = top.ray.Raycast(length, DetectLayers);
+            top.ray.DrawRay(length, Surface.Gaming);
 
-        // async UniTask Bottom()
-        // {
-        //     bottom.ray = new(transform.position, -transform.up);
-        //     bottom.hit = Physics2D.Raycast(
-        //         origin: bottom.ray.origin,
-        //         direction: bottom.ray.direction,
-        //         distance: hitbox.size.y,
-        //         layerMask: hitbox.detect
-        //     );
-        //     bottom.ray.DrawRay(hitbox.size.y, Color.blue);
-        //     if (!hit && bottom.hit && bottom.hit.TryGetComponent(out Player player))
-        //     {
-        //         await player.Die();
-        //     }
-        // }
+            if (top.hit && top.hit.TryGetComponent(out Player _))
+            {
+                hit = true;
+                await Die();
+            }
+        }
+
+        async UniTask Bottom(float originX, float originY)
+        {
+            bottom.ray = new(
+                transform.position + new Vector3(originX, originY / 2),
+                transform.right
+            );
+            bottom.hit = bottom.ray.Raycast(length, DetectLayers);
+            bottom.ray.DrawRay(length, Surface.Gaming);
+
+            if (!hit && bottom.hit && bottom.hit.TryGetComponent(out Player _))
+            {
+                await player.Die();
+            }
+        }
 
         public override async UniTask Die()
         {

@@ -33,7 +33,7 @@ namespace trrne.Core
                 return;
             }
 
-            Vector3 direction = (float)this.direction * speed * Coordinate.V3Z;
+            Vector3 direction = new(0, 0, (float)this.direction * speed);
             transform.Rotate(Time.deltaTime * direction, Space.World);
         }
     }
