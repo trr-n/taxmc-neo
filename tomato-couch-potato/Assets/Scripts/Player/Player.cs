@@ -8,7 +8,7 @@ namespace trrne.Core
 {
     public enum Cause
     {
-        NONE,
+        None,
         Muscarine,  // 毒
         Fallen,     // 落下死
     }
@@ -67,10 +67,11 @@ namespace trrne.Core
 
         public Vector2 Checkpoint { get; private set; } = Vector2.zero;
         public void SetCheckpoint(Vector2 position) => Checkpoint = position;
-        public void SetCheckpoint(float x, float y) => Checkpoint = new(x, y);
+        public void SetCheckpoint(float? x = null, float? y = null)
+        => Checkpoint = new(x ?? transform.position.x, y ?? transform.position.y);
         public void ReturnToCheckpoint() => transform.position = Checkpoint;
 
-        Vector2 reverse => new(-1, 1);
+        readonly Vector2 reverse = new(-1, 1);
 
         void Start()
         {
@@ -249,7 +250,7 @@ namespace trrne.Core
         /// <summary>
         /// 成仏
         /// </summary>
-        public async UniTask Die(Cause cause = Cause.NONE)
+        public async UniTask Die(Cause cause = Cause.None)
         {
             if (IsDying)
             {
@@ -266,7 +267,7 @@ namespace trrne.Core
 
             switch (cause)
             {
-                case Cause.NONE:
+                case Cause.None:
                     break;
                 case Cause.Muscarine:
                     rb.velocity = Vector2.zero;
@@ -297,6 +298,6 @@ namespace trrne.Core
             IsDying = false;
         }
 
-        public async UniTask Die() => await Die(Cause.NONE);
+        public async UniTask Die() => await Die(Cause.None);
     }
 }

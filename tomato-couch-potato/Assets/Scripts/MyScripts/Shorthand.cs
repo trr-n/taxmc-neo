@@ -29,8 +29,8 @@ namespace trrne.Box
         /// </summary>
         public static void NotVacant(this object obj, Action action) => If(obj != null, action);
 
-        public static void DrawRay(this Ray ray, float distance, Color color)
-        => Debug.DrawRay(ray.origin, ray.direction * distance, color);
+        public static void DrawRay(this Ray ray, float length, Color color)
+        => Debug.DrawRay(ray.origin, ray.direction * length, color);
     }
 }
 

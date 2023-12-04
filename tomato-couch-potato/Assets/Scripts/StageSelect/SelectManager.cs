@@ -76,6 +76,7 @@ namespace trrne.Arm
             {
                 return;
             }
+
             switch (horizon.Sign())
             {
                 case 1:
@@ -99,7 +100,9 @@ namespace trrne.Arm
             {
                 return;
             }
+
             isScrolling = true;
+
             core.DOMoveX(targetX, ButtonScrollSpeed)
                 .SetEase(Ease.InOutCubic)
                 .OnComplete(() => isScrolling = false);
