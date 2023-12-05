@@ -85,7 +85,11 @@ namespace trrne.Core
                 {
                     await UniTask.WhenAll(Punishment(player));
                 }
-                try { Destroy(gameObject); }
+
+                try
+                {
+                    Destroy(gameObject);
+                }
                 catch (MissingReferenceException) { }
             }
         }

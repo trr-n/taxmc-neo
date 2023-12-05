@@ -3,7 +3,8 @@ using UnityEngine;
 
 namespace trrne.Box
 {
-    public abstract class Singleton<T> : MonoBehaviour where T : MonoBehaviour
+    public abstract class Singleton<T> : MonoBehaviour
+        where T : MonoBehaviour
     {
         protected virtual bool AliveOnLoad { get; } = true;
 

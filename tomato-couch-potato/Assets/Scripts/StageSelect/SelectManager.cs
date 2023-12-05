@@ -44,7 +44,7 @@ namespace trrne.Arm
 
         void Transition()
         {
-            string removed = Typing.Delete(CenterButton().name, PrefabPrefix);
+            var removed = CenterButton().name.Delete(PrefabPrefix);
             if (CenterButton() != null
                 && int.TryParse(removed, out int idx)
                 && idx <= Recorder.Instance.Done

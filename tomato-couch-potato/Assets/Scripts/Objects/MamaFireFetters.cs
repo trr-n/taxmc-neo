@@ -18,7 +18,7 @@ namespace trrne.Core
         protected override void Movement()
         {
             // プレイヤーとの距離がdetectRange以下なら追随する
-            float distance = Vector2.Distance(transform.position, player.Core);
+            var distance = Vector2.Distance(transform.position, player.Core);
             isTracking = distance < detectRange;
             transform.Translate(Time.deltaTime * speed * direction);
         }

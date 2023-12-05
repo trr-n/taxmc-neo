@@ -34,7 +34,7 @@ namespace trrne.Core
         public override void On()
         {
             Vector3 offset = new(0, 0, (float)amount - 1e-8f);
-            Vector3 rotation = direct switch
+            var rotation = direct switch
             {
                 RotateDirection.Left => this.rotation.value + offset,
                 RotateDirection.Right => this.rotation.value - offset,

@@ -20,7 +20,7 @@ namespace trrne.Box
         public static bool RayCastAll(out RaycastHit2D[] hit, Ray ray, float length)
         => (hit = Physics2D.RaycastAll(ray.origin, ray.direction, length)).Length > 0;
 
-        public static bool TryGetRaycast<T>(Ray ray, float length)
+        public static bool TryGetRaycast<T>(this Ray ray, float length)
         {
             RaycastHit2D hit = Physics2D.Raycast(ray.origin, ray.direction, length);
             return hit && hit.TryGetComponent(out T _);

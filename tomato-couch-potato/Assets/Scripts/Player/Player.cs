@@ -156,7 +156,7 @@ namespace trrne.Core
                 return;
             }
 
-            string horizontal = EffectFlags[(int)Effect.Mirror] ?
+            var horizontal = EffectFlags[(int)Effect.Mirror] ?
                 Config.Keys.MirroredHorizontal : Config.Keys.Horizontal;
             if (Input.GetButtonDown(horizontal))
             {

@@ -1,3 +1,4 @@
+using System;
 using trrne.Box;
 using UnityEngine;
 
@@ -5,6 +6,9 @@ namespace trrne.Core
 {
     public class Mama : MonoBehaviour
     {
+        [SerializeField]
+        MamaFlag flag;
+
         [SerializeField]
         GameObject[] fires;
 
@@ -15,12 +19,9 @@ namespace trrne.Core
         [SerializeField]
         float lineWidth = .5f;
 
+        Player player;
+
         [SerializeField]
-        float playerDetectRange = 13f;
-
-        GameObject player;
-        Vector3 ofs;
-
         GameObject[] eyes;
         Vector3[] inits;
         Vector3[] directions;
@@ -30,19 +31,12 @@ namespace trrne.Core
         /// </summary>
         const float EyeBump = 0.25f;
 
-        /// <summary>
-        /// 範囲内にいるか
-        /// </summary>
-        public bool IsPlayerOnDetectRange { get; private set; }
-
         void Start()
         {
-            player = Gobject.GetWithTag(Config.Tags.Player);
-            ofs = new(0, player.GetComponent<BoxCollider2D>().Size().y / 2);
+            player = Gobject.GetWithTag<Player>(Config.Tags.Player);
 
-            eyes = transform.GetChildrenGameObject();
             inits = new Vector3[eyes.Length];
-            for (int i = 0; i < inits.Length; i++)
+            for (int i = 0; i < eyes.Length; i++)
             {
                 inits[i] = eyes[i].transform.position;
             }
@@ -50,23 +44,12 @@ namespace trrne.Core
 
         void Update()
         {
-            Vector3 ofs = player.transform.position + this.ofs;
-            directions = new[] { ofs - eyes[0].transform.position, ofs - eyes[1].transform.position };
-            float distance = Maths.Average(Vector2.Distance(ofs, eyes[0].transform.position),
-                Vector2.Distance(ofs, eyes[1].transform.position));
+            print("OnRange: " + flag.OnRange);
+
+            directions = new[] { player.Core - eyes[0].transform.position, player.Core - eyes[1].transform.position };
 
             // player within range
-            if (!(IsPlayerOnDetectRange = playerDetectRange >= distance))
-            {
-                return;
-            }
-
-            Vector2 ave = new(Maths.Average(eyes[0].transform.position.x, eyes[1].transform.position.x),
-                Maths.Average(eyes[0].transform.position.y, eyes[1].transform.position.y));
-            Ray infrared = new(ave, player.transform.position.ToV2() - ave);
-
-            // and there is not object between player and me
-            if (!Gobject.TryGetRaycast<Player>(infrared, distance))
+            if (!flag.OnRange)
             {
                 return;
             }
@@ -83,20 +66,5 @@ namespace trrne.Core
                 fireRapidTimer = 0;
             }
         }
-
-#if UNITY_EDITOR
-        void OnDrawGizmos()
-        {
-            if (eyes == null || eyes.Length <= 0)
-            {
-                return;
-            }
-
-            Gizmos.color = Surface.Gaming;
-            Vector2 ave = new(Maths.Average(eyes[0].transform.position.x, eyes[1].transform.position.x),
-                Maths.Average(eyes[0].transform.position.y, eyes[1].transform.position.y));
-            Gizmos.DrawWireSphere(ave, playerDetectRange / 2);
-        }
-#endif
     }
 }
