@@ -61,15 +61,10 @@ namespace trrne.Core
         public async UniTask Die(UniTask _task)
         {
             lifetimeSW.Reset();
-            var alpha = 1f;
+            float alpha = 1f;
             while (alpha >= 0 && this != null)
             {
                 alpha -= Time.deltaTime * speed.fade;
-                // if (alpha.Twins(0f))
-                // {
-                //     sr.SetAlpha(0);
-                // }
-                // sr.SetAlpha(alpha);
                 sr.SetAlpha(alpha.Twins(0f) ? 0 : alpha);
                 await UniTask.WaitForSeconds(Time.deltaTime);
             }

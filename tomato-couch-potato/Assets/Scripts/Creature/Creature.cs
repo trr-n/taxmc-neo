@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace trrne.Core
 {
-    public abstract class Creature : MonoBehaviour
+    public abstract class Creature : MonoBehaviour, ICreature
     {
         [SerializeField]
         protected GameObject diefx;

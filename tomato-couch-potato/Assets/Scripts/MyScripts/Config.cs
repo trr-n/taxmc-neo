@@ -66,7 +66,7 @@ namespace trrne
 
         public readonly struct SpawnPositions
         {
-            public static Vector2 Stage1 => Coordinate.V30;
+            public static Vector2 Stage1 => Vector2.zero;
         }
     }
 }

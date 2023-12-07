@@ -33,9 +33,9 @@ namespace trrne.Core
             for (int i = 0; i < children; i++)
             {
                 frames[i].GetComponent<SpriteRenderer>().SetAlpha(framesAlpha);
-                speeds[i] = Rnd.Single(-SpeedRange, SpeedRange);
+                speeds[i] = Rnd.Float(-SpeedRange, SpeedRange);
             }
-            myspeed = Rnd.Single(-SpeedRange, SpeedRange);
+            myspeed = Rnd.Float(-SpeedRange, SpeedRange);
         }
 
         protected override void Behavior()
@@ -45,9 +45,9 @@ namespace trrne.Core
 #endif
             for (int i = 0; i < children; i++)
             {
-                frames[i].transform.Rotate(Time.deltaTime * speeds[i] * Coordinate.V3Z);
+                frames[i].transform.Rotate(Time.deltaTime * speeds[i] * Vec.VZ);
             }
-            transform.Rotate(Time.deltaTime * myspeed * Coordinate.V3Z);
+            transform.Rotate(Time.deltaTime * myspeed * Vec.VZ);
         }
 
         void OnTriggerEnter2D(Collider2D info)

@@ -44,20 +44,18 @@ namespace trrne.Core
             {
                 return;
             }
-            Vector2 self = transform.position,
-                player = this.player.transform.position;
-            float dx = Mathf.SmoothDamp(self.x, player.x, ref refv.x, spd.x),
-                dy = Mathf.SmoothDamp(self.y, player.y, ref refv.y, spd.y) + offsetY;
-            transform.position = new(dx, dy, z);
+
+            var p = player.transform.position;
+            transform.position = new(p.x, p.y + offsetY, z);
         }
 
         void Zoom()
         {
-
             if ((axis = Input.GetAxisRaw(Config.Keys.Zoom)) == 0)
             {
                 return;
             }
+
             Camera.main.orthographicSize += Mathf.Sign(axis) / 4;
             Camera.main.orthographicSize = Mathf.Clamp(Camera.main.orthographicSize, 2.5f, 12);
         }

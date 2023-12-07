@@ -8,13 +8,13 @@ namespace trrne.Box
 {
     public static class Rnd
     {
-        public static float _(float min = 0f, float max = 0f) => UniRandom.Range(min, max);
-        public static int _(int min = 0, int max = 0) => new SysRandom().Next(min, max + 1);
+        // public static float _(float min = 0f, float max = 0f) => UniRandom.Range(min, max);
+        // public static int _(int min = 0, int max = 0) => new SysRandom().Next(min, max + 1);
 
-        public static float Single(float min = 0, float max = 0) => UniRandom.Range(min, max);
-        public static int Int32(int min = 0, int max = 0) => new SysRandom().Next(min, max + 1);
-        public static uint UInt32(uint min = 0, uint max = 0) => (uint)UniRandom.Range(min, max);
-        public static short Int16(short min = 0, short max = 0) => (short)UniRandom.Range(min, max);
+        public static float Float(float min = 0, float max = 0) => UniRandom.Range(min, max);
+        public static int Int(int min = 0, int max = 0) => new SysRandom().Next(min, max + 1);
+        public static uint UInt(uint min = 0, uint max = 0) => (uint)UniRandom.Range(min, max);
+        public static short Short(short min = 0, short max = 0) => (short)UniRandom.Range(min, max);
 
         readonly static char[] alphabets = "0123456789".ToCharArray(),
             numbers = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz".ToCharArray();
@@ -27,7 +27,7 @@ namespace trrne.Box
                 var chars = new char[count];
                 for (int i = 0; i < count; i++)
                 {
-                    chars[i] = auto ? alphabets.Concat(numbers).ToArray().Choice() : array[_(start, end)];
+                    chars[i] = auto ? alphabets.Concat(numbers).ToArray().Choice() : array[Int(start, end)];
                 }
                 return chars.Link();
             }
@@ -42,7 +42,7 @@ namespace trrne.Box
             };
         }
 
-        public static string String() => String(_(2, 10), RandomStringOutput.Auto);
+        public static string String() => String(Int(2, 10), RandomStringOutput.Auto);
         public static string String(int count) => String(count, RandomStringOutput.Auto);
 
         public static int Choice(this object[] arr) => new SysRandom().Next(0, arr.Length);

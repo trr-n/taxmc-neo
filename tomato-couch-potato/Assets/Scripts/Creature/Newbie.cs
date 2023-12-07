@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 using trrne.Box;
 using UnityEngine;
@@ -57,7 +56,7 @@ namespace trrne.Core
                 Facing.None => 0,
                 Facing.Left => -speed,
                 Facing.Right => speed,
-                Facing.Random or _ => Rnd.Int32(max: 1) switch
+                Facing.Random or _ => Rnd.Int(max: 1) switch
                 {
                     0 => -speed,
                     1 or _ => speed
@@ -76,7 +75,7 @@ namespace trrne.Core
         {
             try
             {
-                if (hitVertical)
+                if (this == null || hitVertical)
                 {
                     return;
                 }
@@ -124,6 +123,11 @@ namespace trrne.Core
         {
             try
             {
+                if (this == null)
+                {
+                    return;
+                }
+
                 top.ray = new(
                     transform.position + new Vector3(originX, originY / 2),
                     transform.right
@@ -147,6 +151,11 @@ namespace trrne.Core
         {
             try
             {
+                if (this == null)
+                {
+                    return;
+                }
+
                 bottom.ray = new(
                     transform.position + new Vector3(originX, originY / 2),
                     transform.right
@@ -183,7 +192,7 @@ namespace trrne.Core
 
         protected override void Movement()
         {
-            var dir = Time.deltaTime * direction * Coordinate.V2X;
+            var dir = Time.deltaTime * direction * Vec.VX;
             // print(dir);
             transform.Translate(dir);
         }

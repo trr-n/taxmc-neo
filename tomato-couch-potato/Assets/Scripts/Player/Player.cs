@@ -194,7 +194,7 @@ namespace trrne.Core
 
             if (Inputs.Down(Config.Keys.Jump))
             {
-                rb.velocity += JumpPower * Coordinate.V2Y;
+                rb.velocity += JumpPower * Vec.VY.ToV2();
             }
             animator.SetBool(Config.Animations.Jump, false);
         }
@@ -214,7 +214,7 @@ namespace trrne.Core
 
             string horizontal = EffectFlags[(int)Effect.Mirror] ?
                 Config.Keys.MirroredHorizontal : Config.Keys.Horizontal;
-            Vector2 move = Input.GetAxisRaw(horizontal) * Coordinate.V2X;
+            Vector2 move = Input.GetAxisRaw(horizontal) * Vec.VX;
 
             // 入力がtolerance以下、氷に乗っていない
             if (move.magnitude <= InputTolerance && !flag.OnIce)

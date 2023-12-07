@@ -10,7 +10,8 @@ namespace trrne.Core
         [SerializeField]
         protected GameObject effect;
 
-        [SerializeField, Tooltip("アニメーション用の画像")]
+        [Tooltip("アニメーション用の画像")]
+        [SerializeField]
         protected Sprite[] sprites;
 
         protected SpriteRenderer SR { get; private set; }

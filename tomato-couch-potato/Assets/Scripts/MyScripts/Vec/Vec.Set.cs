@@ -2,7 +2,7 @@
 
 namespace trrne.Box
 {
-    public static partial class Coordinate
+    public static partial class Vec
     {
         public static void SetPosition(this Transform t, float? x = null, float? y = null, float? z = null)
         => t.position = new(x ?? t.position.x, y ?? t.position.y, z ?? t.position.z);
