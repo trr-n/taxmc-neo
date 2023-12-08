@@ -1,3 +1,4 @@
+using trrne.Box;
 using UnityEngine;
 
 namespace trrne.Core
@@ -12,7 +13,7 @@ namespace trrne.Core
             if (info.TryGetComponent(out Rigidbody2D rb))
             {
                 rb.velocity = Vector2.zero;
-                rb.velocity += jumpPower * Vector2.up;
+                rb.velocity += jumpPower * transform.up.ToV2();
             }
         }
     }
