@@ -16,9 +16,6 @@ namespace trrne.Core
         float fireRapidRate = 2f;
         float fireRapidTimer = 0;
 
-        [SerializeField]
-        float lineWidth = .5f;
-
         Player player;
 
         [SerializeField]

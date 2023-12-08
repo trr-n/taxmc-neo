@@ -12,12 +12,14 @@ namespace trrne.Core
             {
                 await creature.Die();
             }
-
-            try
+            else
             {
-                Destroy(info.gameObject);
+                try
+                {
+                    Destroy(info.gameObject);
+                }
+                catch { }
             }
-            catch { }
         }
     }
 }

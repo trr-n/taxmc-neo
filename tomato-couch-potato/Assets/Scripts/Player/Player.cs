@@ -1,8 +1,10 @@
-﻿using System.Collections;
+﻿using System.Linq;
+using System.Collections;
 using UnityEngine;
 using Cysharp.Threading.Tasks;
 using trrne.Box;
 using trrne.Brain;
+using UnityEngine.UI;
 
 namespace trrne.Core
 {
@@ -56,7 +58,6 @@ namespace trrne.Core
 
         Rigidbody2D rb;
         Animator animator;
-        PlayerFlag flag;
         Cam cam;
         PauseMenu menu;
         BoxCollider2D hitbox;
@@ -66,16 +67,20 @@ namespace trrne.Core
         const float InputTolerance = 0.33f;
 
         public Vector2 Checkpoint { get; private set; } = Vector2.zero;
+
         public void SetCheckpoint(Vector2 position) => Checkpoint = position;
         public void SetCheckpoint(float? x = null, float? y = null)
         => Checkpoint = new(x ?? transform.position.x, y ?? transform.position.y);
+
         public void ReturnToCheckpoint() => transform.position = Checkpoint;
 
         readonly Vector2 reverse = new(-1, 1);
 
+        Vector2 box;
+        (bool ice, bool ground) on = (false, false);
+
         void Start()
         {
-            flag = transform.GetFromChild<PlayerFlag>();
             menu = Gobject.GetWithTag<PauseMenu>(Config.Tags.Manager);
             cam = Gobject.GetWithTag<Cam>(Config.Tags.MainCamera);
             animator = GetComponent<Animator>();
@@ -91,6 +96,9 @@ namespace trrne.Core
                 EffectFlags[i] = false;
                 Effectables[i] = true;
             }
+
+            box.x = hitbox.bounds.size.x * 0.8f;
+            box.y = hitbox.bounds.size.y * 0.1f;
         }
 
         void FixedUpdate()
@@ -98,20 +106,56 @@ namespace trrne.Core
             Move();
         }
 
+        [SerializeField]
+        Text floatingT;
+
         void Update()
         {
             Def();
+            Footer();
             Jump();
             Flip();
             Respawn();
             PunishFlagsUpdater();
         }
 
+        void LateUpdate()
+        {
+            floatingT.SetText($"{nameof(on.ground)}: {on.ground}\n{nameof(IsFloating)}: {IsFloating}");
+        }
+
         void Def()
         {
             Core = transform.position + new Vector3(0, hitbox.bounds.size.y / 2);
             rb.bodyType = IsTeleporting ? RigidbodyType2D.Static : RigidbodyType2D.Dynamic;
-            rb.gravityScale = (IsFloating = !flag.OnGround) ? gscale.floating : gscale.basis;
+            IsFloating = !on.ground;
+            rb.gravityScale = IsFloating ? gscale.floating : gscale.basis;
+        }
+
+        void Footer()
+        {
+            Cube cube = new(transform.position, box);
+            var hit = Gobject.Boxcast(cube, Config.Layers.Jumpable);
+            if (!hit)
+            {
+                on.ice = on.ground = false;
+                return;
+            }
+
+            if (hit.CompareLayer(Config.Layers.Jumpable))
+            {
+                on.ground = true;
+            }
+            if (hit.CompareTag(Config.Tags.Ice))
+            {
+                on.ice = true;
+            }
+        }
+
+        void OnDrawGizmos()
+        {
+            Gizmos.color = Color.red;
+            Gizmos.DrawWireCube(transform.position, box);
         }
 
         /// <summary>
@@ -186,7 +230,7 @@ namespace trrne.Core
                 return;
             }
 
-            if (!flag.OnGround)
+            if (!on.ground)
             {
                 animator.SetBool(Config.Animations.Jump, true);
                 return;
@@ -209,7 +253,7 @@ namespace trrne.Core
                 return;
             }
 
-            bool walk = Inputs.Pressed(Config.Keys.Horizontal) && flag.OnGround;
+            bool walk = Inputs.Pressed(Config.Keys.Horizontal) && on.ground;
             animator.SetBool(Config.Animations.Walk, walk);
 
             string horizontal = EffectFlags[(int)Effect.Mirror] ?
@@ -217,7 +261,7 @@ namespace trrne.Core
             Vector2 move = Input.GetAxisRaw(horizontal) * Vec.VX;
 
             // 入力がtolerance以下、氷に乗っていない
-            if (move.magnitude <= InputTolerance && !flag.OnIce)
+            if (move.magnitude <= InputTolerance && !on.ice)
             {
                 // x軸の速度をspeed.reduction倍
                 rb.SetVelocity(x: rb.velocity.x * reduction.move);
@@ -229,7 +273,7 @@ namespace trrne.Core
                 {
                     return speed.max * reduction.fetters;
                 }
-                else if (flag.OnIce)
+                else if (on.ice)
                 {
                     return speed.max * 2;
                 }
@@ -280,12 +324,6 @@ namespace trrne.Core
 
             await UniTask.Delay(1250);
 
-            // remove active fxs
-            for (int i = 0; i < EffectFlags.Length; i++)
-            {
-                EffectFlags[i] = false;
-            }
-
             // mend carrots
             Gobject.Finds<Carrot>().ForEach(c => c.Mendable.If(c.Mend));
 
@@ -296,6 +334,12 @@ namespace trrne.Core
 
             cam.Followable = Controllable = true;
             IsDying = false;
+
+            // エフェクトを削除
+            for (int i = 0; i < EffectFlags.Length; i++)
+            {
+                EffectFlags[i] = false;
+            }
         }
 
         public async UniTask Die() => await Die(Cause.None);
