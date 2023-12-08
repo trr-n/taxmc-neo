@@ -1,4 +1,4 @@
-﻿using System.Linq;
+﻿using System.Transactions;
 using System.Collections;
 using UnityEngine;
 using Cysharp.Threading.Tasks;
@@ -134,9 +134,8 @@ namespace trrne.Core
 
         void Footer()
         {
-            Cube cube = new(transform.position, box);
-            var hit = Gobject.Boxcast(cube, Config.Layers.Jumpable);
-            if (!hit)
+            // var hit = Gobject.Boxcast(transform.position, box, );
+            if (!Gobject.Boxcast(out var hit, transform.position, box, Config.Layers.Jumpable))
             {
                 on.ice = on.ground = false;
                 return;
@@ -287,7 +286,7 @@ namespace trrne.Core
             }
 
             // 浮いていたら移動速度低下
-            float scalar = IsFloating ? reduction.floating : 1;
+            float scalar = IsFloating ? reduction.floating : 1f;
             rb.velocity += Time.fixedDeltaTime * speed.basis * scalar * move;
         }
 

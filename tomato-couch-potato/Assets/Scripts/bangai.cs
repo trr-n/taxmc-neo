@@ -33,9 +33,9 @@ namespace trrne.test
         }
     }
 
-    public class V2
+    public class V2 : IEquatable<V2>
     {
-        float x, y;
+        private float x, y;
 
         public V2(float x, float y)
         {
@@ -44,6 +44,20 @@ namespace trrne.test
         }
 
         public V2() : this(0f, 0f) { }
+
+        public void Set(float x, float y)
+        {
+            this.x = x;
+            this.y = y;
+        }
+
+        public void Set(V2 other)
+        {
+            x = other.x;
+            y = other.y;
+        }
+
+        public V2 Get() => new(x, y);
 
         public static V2 operator +(V2 a, V2 b) => new(a.x + b.x, a.y + b.y);
         public static V2 operator +(V2 a, float b) => new(a.x + b, a.y + b);
@@ -70,6 +84,11 @@ namespace trrne.test
         public static bool operator <(V2 a, V2 b) => a.x < b.x && a.y < b.y;
         public static bool operator <=(V2 a, V2 b) => a.x <= b.x && a.y <= b.y;
 
+        public bool Equals(V2 other) => new V2(x, y) == other;
+
+        public override bool Equals(object obj) => base.Equals(obj);
+        public override int GetHashCode() => base.GetHashCode();
+
         public V2 Abs() => new(x >= 0 ? x : -x, y >= 0 ? y : -y);
 
         public static float Dot(V2 a, V2 b) => a.x * b.x + a.y * b.y;
@@ -90,6 +109,8 @@ namespace trrne.test
             return MathF.Acos(Dot(a, b) / na / nb * (180 / MathF.PI));
         }
 
-        public static V2 FromPolar(V2 a) => new(a.x * MathF.Cos(a.y), a.x * MathF.Sin(a.y));
+        public static V2 P2R(V2 a) => new(a.x * MathF.Cos(a.y), a.x * MathF.Sin(a.y));
+        public static V2 R2P(V2 a) => new();
+        // https://www.optics-words.com/english_for_science/coordinate.html#chapter2_3
     }
 }

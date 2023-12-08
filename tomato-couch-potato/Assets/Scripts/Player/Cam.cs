@@ -13,11 +13,6 @@ namespace trrne.Core
         float offsetY = 1;
 
         float z;
-        Vector2 refv = new();
-
-        [SerializeField]
-        Vector2 spd = new(0.01f, 1e-12f);
-
         float axis = 0f;
 
         void Start()

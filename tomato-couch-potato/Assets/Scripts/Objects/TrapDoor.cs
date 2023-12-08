@@ -13,6 +13,7 @@ namespace trrne.Core
             Right,
             Random
         }
+
         [SerializeField]
         RotateDirection direct;
 
@@ -21,6 +22,7 @@ namespace trrne.Core
             _90 = 90,
             _180 = 180,
         }
+
         [SerializeField]
         RotateAmount amount = RotateAmount._90;
 
@@ -33,13 +35,14 @@ namespace trrne.Core
 
         public override void On()
         {
-            Vector3 offset = new(0, 0, (float)amount - 1e-8f);
+            var offset = Vec.VZ * ((float)amount - 1e-8f);
             var rotation = direct switch
             {
                 RotateDirection.Left => this.rotation.value + offset,
                 RotateDirection.Right => this.rotation.value - offset,
                 _ => throw new Exception()
             };
+
             transform.DORotate(rotation, this.rotation.speed)
                 .OnPlay(() => this.rotation.flag = true)
                 .OnComplete(() => this.rotation.flag = false);
