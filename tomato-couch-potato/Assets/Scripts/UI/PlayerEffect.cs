@@ -6,7 +6,6 @@ namespace trrne.Core
     public class PlayerEffect : MonoBehaviour
     {
         GameObject[] icons;
-
         Player player;
 
         void Start()

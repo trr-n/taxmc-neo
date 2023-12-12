@@ -51,7 +51,8 @@ namespace trrne.Core
             floating: 3f,
             basis: 1f
         );
-        const float JumpPower = 13f;
+
+        const float JUMP_POWER = 13f;
 
         public bool IsFloating { get; private set; }
         public Vector2 Velocity { get; private set; }
@@ -64,7 +65,7 @@ namespace trrne.Core
 
         public Vector3 Core { get; private set; }
 
-        const float InputTolerance = 0.33f;
+        const float INPUT_TOLERANCE = 0.33f;
 
         public Vector2 Checkpoint { get; private set; } = Vector2.zero;
 
@@ -237,7 +238,7 @@ namespace trrne.Core
 
             if (Inputs.Down(Config.Keys.Jump))
             {
-                rb.velocity += JumpPower * Vec.VY.ToV2();
+                rb.velocity += JUMP_POWER * Vec.Y.ToV2();
             }
             animator.SetBool(Config.Animations.Jump, false);
         }
@@ -257,10 +258,10 @@ namespace trrne.Core
 
             string horizontal = EffectFlags[(int)Effect.Mirror] ?
                 Config.Keys.MirroredHorizontal : Config.Keys.Horizontal;
-            Vector2 move = Input.GetAxisRaw(horizontal) * Vec.VX;
+            Vector2 move = Input.GetAxisRaw(horizontal) * Vec.X;
 
             // 入力がtolerance以下、氷に乗っていない
-            if (move.magnitude <= InputTolerance && !on.ice)
+            if (move.magnitude <= INPUT_TOLERANCE && !on.ice)
             {
                 // x軸の速度をspeed.reduction倍
                 rb.SetVelocity(x: rb.velocity.x * reduction.move);

@@ -22,7 +22,7 @@ namespace trrne.Core
 
         bool isPressing = false;
 
-        readonly (int on, int off) status = (0, 1);
+        const int ON = 0, OFF = 1;
 
         protected override void Start()
         {
@@ -42,7 +42,7 @@ namespace trrne.Core
             if (!isPressing && flag.IsHit && Inputs.Down(Config.Keys.Button))
             {
                 isPressing = true;
-                sr.sprite = sprites[status.on];
+                sr.sprite = sprites[ON];
                 speaker.TryPlayOneShot(sounds.Choice());
                 effectiveSW.Restart();
 
@@ -64,7 +64,7 @@ namespace trrne.Core
 
                 speaker.TryPlayOneShot(sounds.Choice());
                 isPressing = false;
-                sr.sprite = sprites[status.off];
+                sr.sprite = sprites[OFF];
             }
         }
     }

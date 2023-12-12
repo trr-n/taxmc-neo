@@ -4,10 +4,17 @@ namespace trrne.Box
 {
     public static class Typing
     {
-        public static string ReplaceLump(this string target, in string[] befores, string after)
+        public static string ReplaceLump(this string target, string[] befores, string after)
         {
             befores.ForEach(before => target = target.Replace(before, after));
             return target;
+        }
+
+        public static void ReplaceLump2(ref string target, string[] befores, string after)
+        {
+            string temp = target;
+            befores.ForEach(before => temp = temp.Replace(before, after));
+            target = temp;
         }
 
         public static string Delete(this string target, string be) => target.Replace(be, "");

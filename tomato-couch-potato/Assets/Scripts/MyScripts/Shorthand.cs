@@ -16,8 +16,10 @@ namespace trrne.Box
         /// <summary>
         /// t1とt2をがっちゃんこする
         /// </summary>
-        public static IEnumerable<(T1, T2)> Zip<T1, T2>(T1[] t1, T2[] t2) => t1.SelectMany(t11 => t2.Select(t22 => (t11, t22)));
-        public static IEnumerable<(T1, T2)> Zip<T1, T2>(List<T1> t1, List<T2> t2) => Zip(t1.ToArray(), t2.ToArray());
+        public static IEnumerable<(T1, T2)> Zip<T1, T2>(T1[] t1, T2[] t2)
+        => t1.SelectMany(t11 => t2.Select(t22 => (t11, t22)));
+        public static IEnumerable<(T1, T2)> Zip<T1, T2>(List<T1> t1, List<T2> t2)
+        => Zip(t1.ToArray(), t2.ToArray());
 
         public static void ForEach<T>(this T[] array, Action<T> action) => Array.ForEach(array, action);
         public static void ForEach<T>(this IEnumerable<T> array, Action<T> action) => Array.ForEach(array.ToArray(), action);

@@ -21,12 +21,12 @@ namespace trrne.Core
         [SerializeField]
         GameObject[] eyes;
         Vector3[] inits;
-        Vector3[] directions;
+        // Vector3[] directions;
 
         /// <summary>
         /// 黒目の可動域
         /// </summary>
-        const float EyeBump = 0.25f;
+        const float EYE_BUMP = 0.25f;
 
         void Start()
         {
@@ -41,9 +41,10 @@ namespace trrne.Core
 
         void Update()
         {
-            print("OnRange: " + flag.OnRange);
-
-            directions = new[] { player.Core - eyes[0].transform.position, player.Core - eyes[1].transform.position };
+            Vector3[] directions = {
+                player.Core - eyes[0].transform.position,
+                player.Core - eyes[1].transform.position
+            };
 
             // player within range
             if (!flag.OnRange)
@@ -53,7 +54,7 @@ namespace trrne.Core
 
             for (int i = 0; i < eyes.Length; i++)
             {
-                eyes[i].transform.position = inits[i] + directions[i].normalized * EyeBump;
+                eyes[i].transform.position = inits[i] + directions[i].normalized * EYE_BUMP;
             }
 
             // the fires generate if timer value is upper than rapid rate 

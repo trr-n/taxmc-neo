@@ -56,7 +56,7 @@ namespace trrne.Core
                 Facing.None => 0,
                 Facing.Left => -speed,
                 Facing.Right => speed,
-                Facing.Random or _ => Rnd.Int(max: 1) switch
+                Facing.Random or _ => Rand.Int(max: 1) switch
                 {
                     0 => -speed,
                     1 or _ => speed
@@ -192,7 +192,7 @@ namespace trrne.Core
 
         protected override void Movement()
         {
-            var dir = Time.deltaTime * direction * Vec.VX;
+            var dir = Time.deltaTime * direction * Vec.X;
             // print(dir);
             transform.Translate(dir);
         }

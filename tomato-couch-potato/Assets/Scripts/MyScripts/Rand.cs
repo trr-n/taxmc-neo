@@ -1,26 +1,28 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using SysRandom = System.Random;
-using UniRandom = UnityEngine.Random;
 
 namespace trrne.Box
 {
-    public static class Rnd
+    public static class Rand
     {
-        // public static float _(float min = 0f, float max = 0f) => UniRandom.Range(min, max);
-        // public static int _(int min = 0, int max = 0) => new SysRandom().Next(min, max + 1);
+        readonly static Random rand;
+        static Rand() => rand = new();
 
-        public static float Float(float min = 0, float max = 0) => UniRandom.Range(min, max);
-        public static int Int(int min = 0, int max = 0) => new SysRandom().Next(min, max + 1);
-        public static uint UInt(uint min = 0, uint max = 0) => (uint)UniRandom.Range(min, max);
-        public static short Short(short min = 0, short max = 0) => (short)UniRandom.Range(min, max);
+        static float Rangef(float min, float max)
+        {
+            float range = max - min;
+            return (float)((rand.NextDouble() * range) + min);
+        }
 
-        readonly static char[] alphabets = "0123456789".ToCharArray(),
-            numbers = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz".ToCharArray();
+        public static float Float(float min = 0, float max = 0) => Rangef(min, max);
+        public static int Int(int min = 0, int max = 0) => rand.Next(min, max + 1);
 
         public static string String(int count, RandomStringOutput? output = null)
         {
+            char[] alphabets = "0123456789".ToCharArray(),
+               numbers = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz".ToCharArray();
+
             string Mixer(char[] array, int start, int end)
             {
                 var auto = array is null && start == 0 && end == 0;
@@ -45,10 +47,10 @@ namespace trrne.Box
         public static string String() => String(Int(2, 10), RandomStringOutput.Auto);
         public static string String(int count) => String(count, RandomStringOutput.Auto);
 
-        public static int Choice(this object[] arr) => new SysRandom().Next(0, arr.Length);
-        public static T Choice<T>(this T[] arr) => arr[new SysRandom().Next(0, arr.Length)];
-        public static T Choice<T>(this List<T> arr) => arr[new SysRandom().Next(0, arr.Count)];
-        public static T Choice<T>(this Array arr) => (T)arr.GetValue(new SysRandom().Next(0, arr.Length));
+        public static int Choice(this object[] arr) => rand.Next(0, arr.Length);
+        public static T Choice<T>(this T[] arr) => arr[rand.Next(0, arr.Length)];
+        public static T Choice<T>(this List<T> arr) => arr[rand.Next(0, arr.Count)];
+        public static T Choice<T>(this Array arr) => (T)arr.GetValue(rand.Next(0, arr.Length));
     }
 }
 

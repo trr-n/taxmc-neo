@@ -30,14 +30,14 @@ namespace trrne.Core
             Move();
         }
 
-        public void SetDirection(in Direction direction)
+        public void SetDirection(Direction direction)
         {
             this.direction = direction;
             speed = direction switch
             {
                 Direction.Left => -baseSpeed,
                 Direction.Right => baseSpeed,
-                Direction.Random or _ => Rnd.Int(max: 1) switch
+                Direction.Random or _ => Rand.Int(max: 1) switch
                 {
                     0 => -baseSpeed,
                     _ => baseSpeed
@@ -47,11 +47,11 @@ namespace trrne.Core
 
         void Move()
         {
-            var speed = Time.deltaTime * this.speed;
-            transform.Translate(speed * Vec.VX, Space.World);
+            float speed = Time.deltaTime * this.speed;
+            transform.Translate(speed * Vec.X, Space.World);
 
-            var rotate = Maths.Abs(this.speed * 32f);
-            transform.Rotate(-speed * rotate * Vec.VZ, Space.Self);
+            float rotate = Maths.Abs(this.speed * 32f);
+            transform.Rotate(-speed * rotate * Vec.Z, Space.Self);
         }
     }
 }

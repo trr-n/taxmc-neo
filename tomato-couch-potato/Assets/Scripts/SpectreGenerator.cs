@@ -9,7 +9,6 @@ namespace trrne.Core
         GameObject spectre;
 
         GameObject alive;
-
         Transform player;
 
         void Start()

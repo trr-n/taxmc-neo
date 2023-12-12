@@ -7,7 +7,7 @@ namespace trrne.test
     {
         (Ray ray, RaycastHit2D hit) left;
 
-        const int IgnoreLayer = ~(1 << 0);
+        const int IGNORE_LAYER = ~(1 << 0);
         float length, half, offset, originOffset;
 
         void Start()
@@ -30,7 +30,7 @@ namespace trrne.test
                 origin: transform.position + new Vector3(-offset / 2, -originOffset),
                 direction: transform.up.ToV2());
             left.ray.DrawRay(length, Surface.Gaming);
-            left.hit = Gobject.Raycast(left.ray, length, IgnoreLayer);
+            left.hit = Gobject.Raycast(left.ray, length, IGNORE_LAYER);
             if (left.hit)
             {
                 print("left hit: " + left.hit.collider.name);

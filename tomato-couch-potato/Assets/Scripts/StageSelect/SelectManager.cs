@@ -20,17 +20,17 @@ namespace trrne.Arm
         [SerializeField]
         RectTransform core;
 
-        const string PrefabPrefix = "stage";
-        const float Offset = 18.96f;
+        const string PREFAB_PREFIX = "stage";
+        const float OFFSET = 18.96f;
 
         bool isScrolling = false;
-        const float ButtonScrollSpeed = 0.5f;
+        const float BUTTON_SCROLL_SPEED = 0.5f;
 
         float horizon;
 
         void Start()
         {
-            core.SetPosition(Vec.VX * Offset);
+            core.SetPosition(Vec.X * OFFSET);
         }
 
         void Update()
@@ -44,7 +44,7 @@ namespace trrne.Arm
 
         void Transition()
         {
-            var removed = CenterButton().name.Delete(PrefabPrefix);
+            var removed = CenterButton().name.Delete(PREFAB_PREFIX);
             if (CenterButton() != null
                 && int.TryParse(removed, out int idx)
                 && idx <= Recorder.Instance.Done
@@ -82,19 +82,19 @@ namespace trrne.Arm
                 case 1:
                     if (CenterButton() != buttons[^1].gameObject)
                     {
-                        Scroller(core.position.x - Offset);
+                        Scroller(core.position.x - OFFSET);
                     }
                     break;
                 default:
                     if (CenterButton() != buttons[0].gameObject)
                     {
-                        Scroller(core.position.x + Offset);
+                        Scroller(core.position.x + OFFSET);
                     }
                     break;
             }
         }
 
-        void Scroller(float targetX)
+        void Scroller(float x)
         {
             if (isScrolling)
             {
@@ -103,7 +103,7 @@ namespace trrne.Arm
 
             isScrolling = true;
 
-            core.DOMoveX(targetX, ButtonScrollSpeed)
+            core.DOMoveX(x, BUTTON_SCROLL_SPEED)
                 .SetEase(Ease.InOutCubic)
                 .OnComplete(() => isScrolling = false);
         }

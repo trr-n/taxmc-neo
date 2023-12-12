@@ -33,9 +33,9 @@ namespace trrne.Core
             for (int i = 0; i < children; i++)
             {
                 frames[i].GetComponent<SpriteRenderer>().SetAlpha(framesAlpha);
-                speeds[i] = Rnd.Float(-SpeedRange, SpeedRange);
+                speeds[i] = Rand.Float(-SpeedRange, SpeedRange);
             }
-            myspeed = Rnd.Float(-SpeedRange, SpeedRange);
+            myspeed = Rand.Float(-SpeedRange, SpeedRange);
         }
 
         protected override void Behavior()
@@ -45,19 +45,16 @@ namespace trrne.Core
 #endif
             for (int i = 0; i < children; i++)
             {
-                frames[i].transform.Rotate(Time.deltaTime * speeds[i] * Vec.VZ);
+                frames[i].transform.Rotate(Time.deltaTime * speeds[i] * Vec.Z);
             }
-            transform.Rotate(Time.deltaTime * myspeed * Vec.VZ);
+            transform.Rotate(Time.deltaTime * myspeed * Vec.Z);
         }
 
         void OnTriggerEnter2D(Collider2D info)
         {
-            if (warping && !info.CompareTag(Config.Tags.Player))
-            {
-                return;
-            }
-
-            if (info.TryGetComponent(out Player player) && !player.IsDying)
+            if (!warping
+                && info.TryGetComponent(out Player player)
+                && !player.IsDying)
             {
                 info.transform.DOMove(portalGoal.Goal, teleportSpeed)
                     .SetEase(Ease.OutCubic)

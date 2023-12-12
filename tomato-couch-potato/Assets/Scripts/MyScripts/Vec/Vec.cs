@@ -5,9 +5,9 @@ namespace trrne.Box
 {
     public static partial class Vec
     {
-        public static Vector3 VX => new(1, 0);
-        public static Vector3 VY => new(0, 1);
-        public static Vector3 VZ => new(0, 0, 1);
+        public static Vector3 X => new(1, 0);
+        public static Vector3 Y => new(0, 1);
+        public static Vector3 Z => new(0, 0, 1);
 
         public static Quaternion QX => new(1, 0, 0, 0);
         public static Quaternion QY => new(0, 1, 0, 0);
@@ -35,12 +35,12 @@ namespace trrne.Box
         /// </summary>
         public static float GravitationalAcceleration => 9.80665f;
 
-        public static Vector2 Gravity => GravitationalAcceleration * -VY;
+        public static Vector2 Gravity => GravitationalAcceleration * -Y;
 
-        public static bool Twins(in Vector3 n1, in Vector3 n2)
+        public static bool Twins(Vector3 n1, Vector3 n2)
         => Mathf.Approximately(n1.x, n2.x) && Mathf.Approximately(n1.y, n2.y) && Mathf.Approximately(n1.z, n2.z);
 
-        public static float Angle(in Vector2 a, in Vector2 b)
+        public static float Angle(Vector2 a, Vector2 b)
         {
             (float a, float b) norm = (
                 Mathf.Sqrt(a.x * a.x + a.y * a.y),
@@ -52,6 +52,6 @@ namespace trrne.Box
         /// <summary>
         /// 極座標を直交座標に変換
         /// </summary>
-        public static Vector2 Polor2Rectangular(in Vector2 p) => new(p.x * MathF.Cos(p.y), p.x * MathF.Sin(p.y));
+        public static Vector2 Polor2Rectangular(Vector2 p) => new(p.x * MathF.Cos(p.y), p.x * MathF.Sin(p.y));
     }
 }

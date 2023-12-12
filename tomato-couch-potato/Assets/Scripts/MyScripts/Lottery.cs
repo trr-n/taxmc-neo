@@ -19,7 +19,7 @@
                 totals[i] = total;
             }
 
-            float random = Rnd.Float(max: total);
+            float random = Rand.Float(max: total);
             int bottom = 0, top = totals.Length - 1;
             while (bottom < top)
             {

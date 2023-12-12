@@ -35,10 +35,10 @@ namespace trrne.Secret
             managed.GenerateIV();
 
             using ICryptoTransform encrypt = managed.CreateEncryptor(managed.Key, managed.IV);
-            byte[] dest = encrypt.TransformFinalBlock(src, 0, src.Length);
+            byte[] dst = encrypt.TransformFinalBlock(src, 0, src.Length);
             List<byte> compile = new(salt);
             compile.AddRange(managed.IV);
-            compile.AddRange(dest);
+            compile.AddRange(dst);
             return compile.ToArray();
         }
 

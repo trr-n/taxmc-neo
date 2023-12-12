@@ -13,7 +13,7 @@ namespace trrne.Brain
 
         public bool IsPausing { get; private set; }
 
-        const float FadeSpeed = 10f;
+        const float FADE_SPEED = 10f;
         bool isFading = false;
 
         void Start()
@@ -64,7 +64,7 @@ namespace trrne.Brain
             float alpha = fin ? 0f : 1;
             while (alpha.IsCaged(0, 1))
             {
-                canvas.alpha = FadeSpeed * fin switch
+                canvas.alpha = FADE_SPEED * fin switch
                 {
                     true => alpha += Time.unscaledDeltaTime,
                     false or _ => alpha -= Time.unscaledDeltaTime

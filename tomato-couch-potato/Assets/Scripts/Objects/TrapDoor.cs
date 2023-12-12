@@ -26,33 +26,45 @@ namespace trrne.Core
         [SerializeField]
         RotateAmount amount = RotateAmount._90;
 
-        (bool flag, float speed, Vector3 value) rotation = (false, 0.5f, new());
+        [SerializeField]
+        float speed = 0.5f;
+        Vector3 value;
+
+        const float OFFSET = 1e-8f;
+
+        BoxCollider2D hitbox;
 
         void Start()
         {
-            rotation.value = transform.eulerAngles;
+            value = transform.eulerAngles;
+            hitbox = transform.GetFromChild<BoxCollider2D>(0);
         }
 
         public override void On()
         {
-            var offset = Vec.VZ * ((float)amount - 1e-8f);
+            var offset = Vec.Z * ((float)amount - OFFSET);
             var rotation = direct switch
             {
-                RotateDirection.Left => this.rotation.value + offset,
-                RotateDirection.Right => this.rotation.value - offset,
+                RotateDirection.Left => value + offset,
+                RotateDirection.Right => value - offset,
+                RotateDirection.Random => Rand.Int(max: 1) switch
+                {
+                    0 => value + offset,
+                    _ => value - offset
+                },
                 _ => throw new Exception()
             };
 
-            transform.DORotate(rotation, this.rotation.speed)
-                .OnPlay(() => this.rotation.flag = true)
-                .OnComplete(() => this.rotation.flag = false);
+            transform.DORotate(rotation, speed)
+                .OnPlay(() => hitbox.enabled = false)
+                .OnComplete(() => hitbox.enabled = true);
         }
 
         public override void Off()
         {
-            transform.DORotate(rotation.value, rotation.speed)
-                .OnPlay(() => rotation.flag = true)
-                .OnComplete(() => rotation.flag = false);
+            transform.DORotate(value, speed)
+                .OnPlay(() => hitbox.enabled = false)
+                .OnComplete(() => hitbox.enabled = true);
         }
     }
 }

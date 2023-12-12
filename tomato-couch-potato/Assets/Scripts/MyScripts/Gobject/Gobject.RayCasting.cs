@@ -39,7 +39,7 @@ namespace trrne.Box
 
         public static RaycastHit2D Boxcast(this Cube cube,
             int layer, float length = 1, float angle = 0, Vector2 direction = new())
-        => Physics2D.BoxCast(cube.center, cube.size, angle, direction, length, layer);
+        => Physics2D.BoxCast(cube.origin, cube.size, angle, direction, length, layer);
 
         public static RaycastHit2D Boxcast(Vector3 center, Vector3 size,
             int layer, float length = 1, float angle = 0, Vector2 direction = new())

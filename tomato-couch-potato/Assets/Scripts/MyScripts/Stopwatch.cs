@@ -1,43 +1,51 @@
 using System;
-using SystemStopwatch = System.Diagnostics.Stopwatch;
+using SSW = System.Diagnostics.Stopwatch;
 
 namespace trrne.Box
 {
     public sealed class Stopwatch
     {
-        readonly SystemStopwatch syswatch;
+        readonly SSW ssw;
 
-        public Stopwatch() => syswatch = new();
+        public Stopwatch() => ssw = new();
         public Stopwatch(bool start)
         {
-            syswatch = new();
-            start.If(syswatch.Start);
+            ssw = new();
+            start.If(ssw.Start);
         }
 
-        public void Start() => syswatch.Start();
-        public void Stop() => syswatch.Stop();
-        public void Restart() => syswatch.Restart();
-        public void Reset() => syswatch.Reset();
-        public bool IsRunning() => syswatch.IsRunning;
+        public void Start() => ssw.Start();
+        public void Stop() => ssw.Stop();
+        public void Restart() => ssw.Restart();
+        public void Reset() => ssw.Reset();
+        public bool IsRunning() => ssw.IsRunning;
 
         public static void Start(params Stopwatch[] sws) => sws.ForEach(sw => sw.Start());
         public static void Stop(params Stopwatch[] sws) => sws.ForEach(sw => sw.Stop());
         public static void Restart(params Stopwatch[] sws) => sws.ForEach(sw => sw.Restart());
         public static void Reset(params Stopwatch[] sws) => sws.ForEach(sw => sw.Reset());
 
-        public int H() => syswatch.Elapsed.Hours;
-        public float Hf(int digit = 6) => MathF.Round((float)syswatch.Elapsed.TotalHours, digit);
+        public int H() => ssw.Elapsed.Hours;
+        public float Hf(int digit = 6) => MathF.Round((float)ssw.Elapsed.TotalHours, digit);
+        public int h => H();
+        public float hf => Hf();
 
-        public int M() => syswatch.Elapsed.Minutes;
-        public float Mf(int digit = 6) => MathF.Round((float)syswatch.Elapsed.TotalMinutes, digit);
+        public int M() => ssw.Elapsed.Minutes;
+        public float Mf(int digit = 6) => MathF.Round((float)ssw.Elapsed.TotalMinutes, digit);
+        public int m => M();
+        public float mf => Mf();
 
-        public int S() => syswatch.Elapsed.Seconds;
-        public float Sf(int digit = 6) => MathF.Round((float)syswatch.Elapsed.TotalSeconds, digit);
+        public int S() => ssw.Elapsed.Seconds;
+        public float Sf(int digit = 6) => MathF.Round((float)ssw.Elapsed.TotalSeconds, digit);
+        public int s => S();
+        public float sf => Sf();
 
-        public int MS() => syswatch.Elapsed.Milliseconds;
-        public float MSf(int digit = 6) => MathF.Round((float)syswatch.Elapsed.TotalMilliseconds, digit);
+        public int MS() => ssw.Elapsed.Milliseconds;
+        public float MSf(int digit = 6) => MathF.Round((float)ssw.Elapsed.TotalMilliseconds, digit);
+        public int ms => MS();
+        public float msf => MSf();
 
-        public TimeSpan Spent() => syswatch.Elapsed;
+        public TimeSpan Spent() => ssw.Elapsed;
 
         public string Spent(StopwatchOutput output)
         => output switch

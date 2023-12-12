@@ -21,7 +21,10 @@ namespace trrne.Box
         public static void SetTextSize(this Text text, int size) => text.fontSize = size;
 
         public static void TextSettings(this Text text,
-            TextAnchor anchor, VerticalWrapMode vw, HorizontalWrapMode hw)
+           TextAnchor anchor,
+           VerticalWrapMode vw,
+           HorizontalWrapMode hw
+        )
         {
             text.alignment = anchor;
             text.verticalOverflow = vw;
@@ -43,7 +46,7 @@ namespace trrne.Box
             float? red = null, float? green = null, float? blue = null, float? alpha = null)
         => new(red ?? color.r, green ?? color.g, blue ?? color.b, alpha ?? color.a);
 
-        public static bool Twins(Color n1, Color n2)
+        public static bool Twins(in Color n1, Color n2)
         => Mathf.Approximately(n1.r, n2.r) && Mathf.Approximately(n1.g, n2.g) && Mathf.Approximately(n1.b, n2.b);
     }
 }

@@ -7,16 +7,16 @@ namespace trrne.Box
 {
     public static class Systems
     {
-        public static string OS => operatingSystem;
-        public static int RAM => systemMemorySize / 1000;
-        public static string CPU => processorType;
-        public static string GPU => graphicsDeviceName;
-        public static int VRAM => graphicsMemorySize / 1000;
+        public static string os => operatingSystem;
+        public static int ram => systemMemorySize / 1000;
+        public static string cpu => processorType;
+        public static string gpu => graphicsDeviceName;
+        public static int vram => graphicsMemorySize / 1000;
 
-        public static string Name => Dns.GetHostName();
-        public static IPAddress[] Addresses => Dns.GetHostAddresses(Dns.GetHostName());
-        public static string OSVersion => Environment.OSVersion.VersionString;
-        public static int CPUs => Environment.ProcessorCount;
+        public static string name => Dns.GetHostName();
+        public static IPAddress[] addresses => Dns.GetHostAddresses(Dns.GetHostName());
+        public static string osVersion => Environment.OSVersion.VersionString;
+        public static int cpuCount => Environment.ProcessorCount;
     }
 }
 

@@ -21,7 +21,6 @@ namespace trrne.Core
         [SerializeField]
         float speed = 15f;
         public float Speed => speed;
-
         public void SetSpeed(float speed) => this.speed = speed;
 
         public bool Rotatable { get; set; } = true;
@@ -33,7 +32,7 @@ namespace trrne.Core
                 return;
             }
 
-            Vector3 direction = new(0, 0, (float)this.direction * speed);
+            var direction = (float)this.direction * speed * Vec.Z;
             transform.Rotate(Time.deltaTime * direction, Space.World);
         }
     }
