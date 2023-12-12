@@ -9,6 +9,10 @@ namespace trrne.test
 
         void Start()
         {
+            // for (int i = 0; i < 10; ++i)
+            // {
+            //     print(Rand.String(10, RandStringType.Mixed));
+            // }
             // o = transform.position;
 
             // for (int i = 0; i < 10; i++)

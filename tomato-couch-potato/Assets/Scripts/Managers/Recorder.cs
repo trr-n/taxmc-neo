@@ -1,4 +1,5 @@
 using trrne.Box;
+using UnityEngine;
 
 namespace trrne.Brain
 {
@@ -18,6 +19,14 @@ namespace trrne.Brain
 
         public float Progress => Maths.Ratio(Max, Done);
 
+        AudioSource source;
+
+        protected override void Awake()
+        {
+            base.Awake();
+            source = GetComponent<AudioSource>();
+        }
+
         public void Clear()
         {
             // クリアしたシーンの名前に数字が含まれているか
@@ -27,5 +36,7 @@ namespace trrne.Brain
                 Scenes.Load(Config.Scenes.Select);
             }
         }
+
+        public void PlayOneShot(AudioClip clip) => source.PlayOneShot(clip);
     }
 }

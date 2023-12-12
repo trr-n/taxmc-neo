@@ -18,34 +18,40 @@ namespace trrne.Box
         public static float Float(float min = 0, float max = 0) => Rangef(min, max);
         public static int Int(int min = 0, int max = 0) => rand.Next(min, max + 1);
 
-        public static string String(int count, RandomStringOutput? output = null)
+        public static string String(int length, RandStringType? type = null)
         {
-            char[] alphabets = "0123456789".ToCharArray(),
-               numbers = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz".ToCharArray();
+            char[] numbers = "0123456789".ToCharArray(),
+               alphabets = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz".ToCharArray();
 
-            string Mixer(char[] array, int start, int end)
+            string Mixer(char[] array, int? start, int? end)
             {
-                var auto = array is null && start == 0 && end == 0;
-                var chars = new char[count];
-                for (int i = 0; i < count; i++)
+                bool isMixed = Shorthand.None(array, start, end);
+                char[] chars = new char[length];
+                for (int i = 0; i < length; i++)
                 {
-                    chars[i] = auto ? alphabets.Concat(numbers).ToArray().Choice() : array[Int(start, end)];
+                    chars[i] = isMixed switch
+                    {
+                        true => alphabets.Concat(numbers).ToArray().Choice(),
+                        false => array[Int((int)start, (int)end - 1)]
+                    };
                 }
                 return chars.Link();
             }
 
-            return output switch
+            return type switch
             {
-                RandomStringOutput.Alphabet => Mixer(alphabets, 0, alphabets.Length),
-                RandomStringOutput.Upper => Mixer(alphabets, alphabets.Length / 2, alphabets.Length),
-                RandomStringOutput.Lower => Mixer(alphabets, 0, alphabets.Length),
-                RandomStringOutput.Number => Mixer(numbers, 0, numbers.Length),
-                RandomStringOutput.Auto or _ => Mixer(null, 0, 0)
+                RandStringType.ABMixed => Mixer(alphabets, 0, alphabets.Length),
+                RandStringType.ABUpper => Mixer(alphabets, alphabets.Length / 2, alphabets.Length),
+                RandStringType.ABLower => Mixer(alphabets, 0, alphabets.Length),
+                RandStringType.Number => Mixer(numbers, 0, numbers.Length),
+                RandStringType.Mixed or _ => Mixer(null, null, null)
             };
         }
 
-        public static string String() => String(Int(2, 10), RandomStringOutput.Auto);
-        public static string String(int count) => String(count, RandomStringOutput.Auto);
+        public static string String() => String(Int(2, 10), RandStringType.Mixed);
+        public static string String(int length) => String(length, RandStringType.Mixed);
+
+        public static void String(ref string output, int length) => output = String(length);
 
         public static int Choice(this object[] arr) => rand.Next(0, arr.Length);
         public static T Choice<T>(this T[] arr) => arr[rand.Next(0, arr.Length)];
@@ -53,5 +59,3 @@ namespace trrne.Box
         public static T Choice<T>(this Array arr) => (T)arr.GetValue(rand.Next(0, arr.Length));
     }
 }
-
-// RAND_MAX(C++) https://learn.microsoft.com/ja-jp/cpp/c-runtime-library/rand-max?view=msvc-170

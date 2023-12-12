@@ -31,6 +31,15 @@ namespace trrne.Box
         /// </summary>
         public static void NotVacant(this object obj, Action action) => If(obj != null, action);
 
+        public static T[] Set<T>(this T[] array, T t)
+        {
+            for (int i = 0; i < array.Length; ++i)
+            {
+                array[i] = t;
+            }
+            return array;
+        }
+
         public static void DrawRay(this Ray ray, float length, Color color)
         => Debug.DrawRay(ray.origin, ray.direction * length, color);
     }

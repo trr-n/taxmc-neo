@@ -1,4 +1,4 @@
-﻿using System.Transactions;
+﻿// using System.Transactions;
 using System.Collections;
 using UnityEngine;
 using Cysharp.Threading.Tasks;
@@ -98,17 +98,14 @@ namespace trrne.Core
                 Effectables[i] = true;
             }
 
-            box.x = hitbox.bounds.size.x * 0.8f;
-            box.y = hitbox.bounds.size.y * 0.1f;
+            var size = hitbox.bounds.size;
+            box = new(size.x * .8f, size.y * .1f);
         }
 
         void FixedUpdate()
         {
             Move();
         }
-
-        [SerializeField]
-        Text floatingT;
 
         void Update()
         {
@@ -120,10 +117,15 @@ namespace trrne.Core
             PunishFlagsUpdater();
         }
 
+#if DEBUG
+        [SerializeField]
+        Text floatingT;
+
         void LateUpdate()
         {
             floatingT.SetText($"{nameof(on.ground)}: {on.ground}\n{nameof(IsFloating)}: {IsFloating}");
         }
+#endif
 
         void Def()
         {
@@ -135,28 +137,34 @@ namespace trrne.Core
 
         void Footer()
         {
-            // var hit = Gobject.Boxcast(transform.position, box, );
-            if (!Gobject.Boxcast(out var hit, transform.position, box, Config.Layers.Jumpable))
+            var hitJumpable = Gobject.Boxcast(
+                transform.position,
+                box,
+                Config.Layers.Jumpable
+            );
+            if (!hitJumpable)
             {
                 on.ice = on.ground = false;
                 return;
             }
 
-            if (hit.CompareLayer(Config.Layers.Jumpable))
+            if (hitJumpable.CompareLayer(Config.Layers.Jumpable))
             {
                 on.ground = true;
             }
-            if (hit.CompareTag(Config.Tags.Ice))
+            if (hitJumpable.CompareTag(Config.Tags.Ice))
             {
                 on.ice = true;
             }
         }
 
+#if DEBUG
         void OnDrawGizmos()
         {
             Gizmos.color = Color.red;
             Gizmos.DrawWireCube(transform.position, box);
         }
+#endif
 
         /// <summary>
         /// スペースでリスポーンする
@@ -336,10 +344,8 @@ namespace trrne.Core
             IsDying = false;
 
             // エフェクトを削除
-            for (int i = 0; i < EffectFlags.Length; i++)
-            {
-                EffectFlags[i] = false;
-            }
+            // EffectFlags = Enumerable.Repeat(false, EffectFlags.Length).ToArray();
+            EffectFlags.Set(false);
         }
 
         public async UniTask Die() => await Die(Cause.None);

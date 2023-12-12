@@ -37,12 +37,12 @@ namespace trrne.Box
         International
     }
 
-    public enum RandomStringOutput
+    public enum RandStringType
     {
-        Auto,
-        Alphabet,
-        Upper,
-        Lower,
+        Mixed,
+        ABMixed,
+        ABUpper,
+        ABLower,
         Number
     }
 

@@ -12,6 +12,9 @@ namespace trrne.Core
         [SerializeField]
         protected Sprite[] sprites;
 
+        [SerializeField]
+        protected AudioClip[] ses;
+
         /// <summary>
         /// アニメーションの間隔
         /// </summary>
