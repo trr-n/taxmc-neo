@@ -11,10 +11,13 @@ namespace trrne.Core
         [SerializeField]
         float interval = 1f, accelRatio = 5f, startDelay = 0f;
 
+        [Header("速度")]
+        [SerializeField]
+        float down = 7.5f, up = 3f;
+
         readonly Stopwatch startDelaySW = new(true);
 
         bool isDossun = true;
-        const float DOWN = 7.5f, UP = 3f;
         float power = 0f;
 
         Rigidbody2D rb;
@@ -41,7 +44,7 @@ namespace trrne.Core
                 return;
             }
             power += Time.deltaTime * accelRatio;
-            transform.Translate(Time.deltaTime * power * DOWN * -Vec.Y);
+            transform.Translate(Time.deltaTime * power * down * -Vec.Y);
         }
 
         async void OnTriggerEnter2D(Collider2D other)
@@ -59,7 +62,7 @@ namespace trrne.Core
                 isDossun = false;
 
                 // initPosに移動
-                transform.DOMove(initPos, UP)
+                transform.DOMove(initPos, up)
                     .SetEase(Ease.OutCubic)
                     .OnComplete(async () =>
                     {

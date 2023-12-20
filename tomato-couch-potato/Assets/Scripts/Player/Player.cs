@@ -40,7 +40,7 @@ namespace trrne.Core
             max: 10
         );
 
-        readonly (float fetters, float floating, float move) reduction = (
+        readonly (float fetters, float floating, float move) red = (
             fetters: 0.5f,
             floating: 0.95f,
             move: 0.9f
@@ -78,6 +78,8 @@ namespace trrne.Core
         Vector2 box;
         (bool ice, bool ground) isLandingOn = (false, false);
 
+        readonly V2 sizeRatio = new(.8f, .1f);
+
         void Start()
         {
             menu = Gobject.GetWithTag<PauseMenu>(Config.Tags.MANAGER);
@@ -97,7 +99,7 @@ namespace trrne.Core
             }
 
             var size = hitbox.bounds.size;
-            box = new(size.x * .8f, size.y * .1f);
+            box = new(size.x * sizeRatio.x, size.y * sizeRatio.y);
         }
 
         void FixedUpdate()
@@ -271,14 +273,14 @@ namespace trrne.Core
             if (move.magnitude <= INPUT_TOLERANCE && !isLandingOn.ice)
             {
                 // x軸の速度をspeed.reduction倍
-                rb.SetVelocity(x: rb.velocity.x * reduction.move);
+                rb.SetVelocity(x: rb.velocity.x * red.move);
             }
 
             float limit = Shorthand.L1ne(() =>
             {
                 if (EffectFlags[(int)Effect.Fetters])
                 {
-                    return speed.max * reduction.fetters;
+                    return speed.max * red.fetters;
                 }
                 else if (isLandingOn.ice)
                 {
@@ -294,7 +296,7 @@ namespace trrne.Core
             }
 
             // 浮いていたら移動速度低下
-            float scalar = IsFloating ? reduction.floating : 1f;
+            float scalar = IsFloating ? red.floating : 1f;
             rb.velocity += Time.fixedDeltaTime * speed.basis * scalar * move;
         }
 
