@@ -13,16 +13,16 @@ namespace trrne.Core
         readonly Stopwatch lifetimeSW = new(true);
         // const float FadeSpeed = 2;
         // const float MoveSpeed = 0.5f;
-        readonly (float fade, float move) speed = (2f, 0.5f);
+        (float fade, float move) speed => (2f, 0.5f);
         float left = 0f;
-        Vector2 Mirrored => new(-1, 1);
+        Vector2 mirrored => new(-1, 1);
 
         protected override void Start()
         {
             Enable = true;
             base.Start();
 
-            player = Gobject.GetWithTag<Player>(Config.Tags.Player);
+            player = Gobject.GetWithTag<Player>(Config.Tags.PLAYER);
             left = transform.localScale.x;
         }
 
@@ -45,7 +45,7 @@ namespace trrne.Core
             if ((selfx > playerx && left != scalex)
                 || (selfx < playerx && left == scalex))
             {
-                transform.localScale *= Mirrored;
+                transform.localScale *= mirrored;
             }
         }
 

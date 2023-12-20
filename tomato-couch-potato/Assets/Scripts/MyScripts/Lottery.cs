@@ -4,7 +4,7 @@
     {
         // https://nekojara.city/unity-weighted-random-selection
         // https://youtu.be/3CQCBQRq0FA
-        public static int BinarySearchTree(params float[] weights)
+        public static int Bst(params float[] weights)
         {
             if (weights.Length <= 0)
             {
@@ -45,7 +45,7 @@
         {
             0 => throw null,
             1 => pairs.Subject(0),
-            _ => pairs.Subject(BinarySearchTree(pairs.Weights()))
+            _ => pairs.Subject(Bst(pairs.Weights()))
         };
     }
 }

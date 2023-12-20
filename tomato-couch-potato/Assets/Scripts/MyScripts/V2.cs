@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿#pragma warning disable IDE1006
+
+using UnityEngine;
 
 namespace trrne.Box
 {
@@ -25,7 +27,7 @@ namespace trrne.Box
             y = a.y;
         }
 
-        public V2 Get() => this;
+        public V2 get => this;
 
         public static V2 operator +(in V2 a) => new(+a.x, +a.y);
         public static V2 operator -(in V2 a) => new(-a.x, -a.y);
@@ -51,7 +53,9 @@ namespace trrne.Box
 
         public static bool operator ==(in V2 a, in V2 b) => a.x == b.x && a.y == b.y;
         public static bool operator !=(in V2 a, in V2 b) => a.x != b.x && a.y != b.y;
+        public static bool operator >(in V2 a, in V2 b) => a.x > b.x && a.y > b.y;
         public static bool operator >=(in V2 a, in V2 b) => a.x >= b.x && a.y >= b.y;
+        public static bool operator <(in V2 a, in V2 b) => a.x < b.x && a.y < b.y;
         public static bool operator <=(in V2 a, in V2 b) => a.x <= b.x && a.y <= b.y;
 
         public static explicit operator Vector2(in V2 a) => new(a.x, a.y);

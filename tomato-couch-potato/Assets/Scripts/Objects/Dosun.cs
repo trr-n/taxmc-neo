@@ -9,10 +9,9 @@ namespace trrne.Core
     public class Dosun : Object
     {
         [SerializeField]
-        float interval = 1f;
+        float interval = 1f, accelRatio = 5f, startDelay = 0f;
 
-        [SerializeField]
-        float accelRatio = 5f;
+        readonly Stopwatch startDelaySW = new(true);
 
         bool isDossun = true;
         const float DOWN = 7.5f, UP = 3f;
@@ -29,44 +28,49 @@ namespace trrne.Core
             rb.gravityScale = 0;
 
             initPos = transform.position;
+
+            Invoke(nameof(StopStartDelaySW), startDelay);
         }
+
+        void StopStartDelaySW() => startDelaySW.Stop();
 
         protected override void Behavior()
         {
-            if (isDossun)
+            if (!isDossun || startDelaySW.IsRunning())
             {
-                power += Time.deltaTime * accelRatio;
-                transform.Translate(Time.deltaTime * power * DOWN * -Vec.Y);
+                return;
             }
+            power += Time.deltaTime * accelRatio;
+            transform.Translate(Time.deltaTime * power * DOWN * -Vec.Y);
         }
 
         async void OnTriggerEnter2D(Collider2D other)
         {
-            // 落下中
-            if (isDossun)
+            if (!isDossun || startDelaySW.IsRunning())
             {
-                // 地面にあたったら
-                if (other.CompareLayer(Config.Layers.Jumpable))
-                {
-                    Recorder.Instance.PlayOneShot(ses.Choice());
+                return;
+            }
 
-                    power = 0f;
-                    isDossun = false;
-                    // 初期座標に移動
-                    transform.DOMove(initPos, UP)
-                        .SetEase(Ease.OutCubic)
-                        .OnComplete(async () =>
-                        {
-                            // interval秒経過後落下させる
-                            await UniTask.WaitForSeconds(interval);
-                            isDossun = true;
-                        });
-                }
+            if (other.CompareLayer(Config.Layers.JUMPABLE))
+            {
+                Recorder.Instance.PlayOneShot(ses.Choice());
 
-                if (other.TryGetComponent(out ICreature creature))
-                {
-                    await creature.Die();
-                }
+                power = 0f;
+                isDossun = false;
+
+                // initPosに移動
+                transform.DOMove(initPos, UP)
+                    .SetEase(Ease.OutCubic)
+                    .OnComplete(async () =>
+                    {
+                        // interval秒経過後落下する
+                        await UniTask.WaitForSeconds(interval);
+                        isDossun = true;
+                    });
+            }
+            else if (other.TryGetComponent(out ICreature creature))
+            {
+                await creature.Die();
             }
         }
     }

@@ -7,6 +7,7 @@ namespace trrne.Core
     {
         [SerializeField]
         bool IsUpdate = false;
+
         public Vector2 Goal { get; private set; }
 
         SpriteRenderer sr;

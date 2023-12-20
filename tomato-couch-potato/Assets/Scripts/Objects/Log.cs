@@ -50,7 +50,7 @@ namespace trrne.Core
             float speed = Time.deltaTime * this.speed;
             transform.Translate(speed * Vec.X, Space.World);
 
-            float rotate = Maths.Abs(this.speed * 32f);
+            float rotate = NumCs.Abs(this.speed * 32f);
             transform.Rotate(-speed * rotate * Vec.Z, Space.Self);
         }
     }

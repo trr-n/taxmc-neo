@@ -4,7 +4,8 @@ namespace trrne.Box
 {
     public static class Line
     {
-        public static void Width(this LineRenderer line, float width) => line.startWidth = line.endWidth = width;
+        public static void Width(this LineRenderer line, float width)
+        => line.startWidth = line.endWidth = width;
 
         public static void Width(this LineRenderer line, float? start = null, float? end = null)
         {

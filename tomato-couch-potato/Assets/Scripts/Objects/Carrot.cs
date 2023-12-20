@@ -21,7 +21,7 @@ namespace trrne.Core
 
             sr.sprite = sprites[0];
             flag = transform.GetFromChild<CarrotFlag>();
-            flag.Count = 0;
+            flag.ResetCount();
             collider = GetComponent<BoxCollider2D>();
         }
 
@@ -39,7 +39,7 @@ namespace trrne.Core
         public void Mend()
         {
             Mendable = false;
-            flag.Count = 0;
+            flag.ResetCount();
             sr.enabled = collider.enabled = true;
         }
     }

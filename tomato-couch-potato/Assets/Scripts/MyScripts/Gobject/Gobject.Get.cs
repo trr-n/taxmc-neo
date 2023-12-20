@@ -8,6 +8,12 @@ namespace trrne.Box
 {
     public static partial class Gobject
     {
+        /// <summary>
+        /// タグで検索し取得する -> <b>GameObject</b><br/>
+        /// <c>Gobject.GetWithTag(tag)</c>
+        /// </summary>
+        /// <param name="tag"></param>
+        /// <returns>取得したオブジェクトを返す</returns>
         public static GameObject GetWithTag(this string tag) => GameObject.FindGameObjectWithTag(tag);
         public static GameObject[] GetsWithTag(this string tag) => GameObject.FindGameObjectsWithTag(tag);
         public static T[] Finds<T>(FindObjectsInactive inactive = FindObjectsInactive.Exclude,
@@ -17,7 +23,7 @@ namespace trrne.Box
         public static T GetWithTag<T>(this string tag) => GetWithTag(tag).GetComponent<T>();
         public static T GetWithTag<T>(this GameObject gob) => gob.GetComponent<T>();
         public static bool TryGetWithTag<T>(out T t, string tag) => GetWithTag(tag).TryGetComponent(out t);
-        [Obsolete("Way to get gameobject, GetComponentWithTag is better than this.")]
+        [Obsolete("Way to get gameobject, GetWithTag is better than this.")]
         public static T GetWithName<T>(this string name) => GameObject.Find(name).GetComponent<T>();
         public static T GetFromChild<T>(this Transform t, int index = 0) => t.GetChild(index).GetComponent<T>();
         public static T GetFromParent<T>(this Transform t) => t.parent.GetComponent<T>();

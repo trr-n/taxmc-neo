@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 
 namespace trrne.Box
@@ -6,7 +5,7 @@ namespace trrne.Box
     public abstract class Singleton<T> : MonoBehaviour
         where T : MonoBehaviour
     {
-        protected virtual bool AliveOnLoad { get; } = true;
+        protected virtual bool dontDestroy { get; } = true;
 
         static T instance;
         public static T Instance => Shorthand.L1ne(() =>
@@ -25,7 +24,7 @@ namespace trrne.Box
                 Destroy(this);
             }
 
-            if (AliveOnLoad)
+            if (dontDestroy)
             {
                 DontDestroyOnLoad(gameObject);
             }

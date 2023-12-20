@@ -6,7 +6,8 @@ namespace trrne.Box
 {
     public static class Inputs
     {
-        public static bool Down() => Input.anyKeyDown;
+        public static bool down => Input.anyKeyDown;
+        public static bool Down() => down;
         public static bool Down(int click) => Input.GetMouseButtonDown(click);
         public static bool Down(KeyCode key) => Input.GetKeyDown(key);
         public static bool Down(string name) => Input.GetButtonDown(name);
@@ -15,7 +16,8 @@ namespace trrne.Box
         public static bool DownAnd(params string[] names)
         => (from n in names where Down(n) select n).Count() == names.Length;
 
-        public static bool Pressed() => Input.anyKey;
+        public static bool pressed => Input.anyKey;
+        public static bool Pressed() => pressed;
         public static bool Pressed(int click) => Input.GetMouseButton(click);
         public static bool Pressed(KeyCode key) => Input.GetKey(key);
         public static bool Pressed(string name) => Input.GetButton(name);
@@ -32,9 +34,9 @@ namespace trrne.Box
         public static bool UpAnd(params string[] names)
         => (from n in names where Up(n) select n).Count() == names.Length;
 
-        public static Vector2 Axis() => new(Input.GetAxis(Config.Keys.Horizontal), Input.GetAxis(Config.Keys.Vertical));
+        public static Vector2 Axis() => new(Input.GetAxis(Config.Keys.HORIZONTAL), Input.GetAxis(Config.Keys.VERTICAL));
         public static Vector2 Axis(string x, string y) => new(Input.GetAxis(x), Input.GetAxis(y));
-        public static Vector2 AxisRaw() => new(Input.GetAxisRaw(Config.Keys.Horizontal), Input.GetAxisRaw(Config.Keys.Vertical));
+        public static Vector2 AxisRaw() => new(Input.GetAxisRaw(Config.Keys.HORIZONTAL), Input.GetAxisRaw(Config.Keys.VERTICAL));
         public static Vector2 AxisRaw(string x, string y) => new(Input.GetAxisRaw(x), Input.GetAxisRaw(y));
 
         // public static bool Down(Key key) => Keyboard.current[key].wasPressedThisFrame;

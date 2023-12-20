@@ -1,5 +1,3 @@
-#pragma warning disable IDE0002
-
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -24,6 +22,13 @@ namespace trrne.Box
 
         public static bool IsActive(this Text txt) => txt.IsActive();
 
+        /// <summary>
+        /// アクティブかどうかを判定する -> <b>bool</b><br/>
+        /// <c>gob.IsActive(ActiveStatus.Self)</c>
+        /// </summary>
+        /// <param name="gob">対象</param>
+        /// <param name="active">あ</param>
+        /// <returns>アクティブならtrueを返す</returns>
         public static bool IsActive(this GameObject gob, ActiveStatus? active = null)
         => active switch
         {

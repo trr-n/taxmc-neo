@@ -1,4 +1,3 @@
-using System;
 using trrne.Box;
 using UnityEngine;
 
@@ -30,7 +29,7 @@ namespace trrne.Core
 
         void Start()
         {
-            player = Gobject.GetWithTag<Player>(Config.Tags.Player);
+            player = Gobject.GetWithTag<Player>(Config.Tags.PLAYER);
 
             inits = new Vector3[eyes.Length];
             for (int i = 0; i < eyes.Length; i++)
@@ -47,7 +46,7 @@ namespace trrne.Core
             };
 
             // player within range
-            if (!flag.OnRange)
+            if (!flag.IsInsideRange)
             {
                 return;
             }

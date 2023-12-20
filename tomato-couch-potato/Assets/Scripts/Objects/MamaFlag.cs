@@ -4,13 +4,13 @@ namespace trrne.Core
 {
     public class MamaFlag : MonoBehaviour
     {
-        public bool OnRange { get; private set; }
+        public bool IsInsideRange { get; private set; }
 
         void OnTriggerEnter2D(Collider2D info)
         {
             if (info.TryGetComponent(out Player _))
             {
-                OnRange = true;
+                IsInsideRange = true;
             }
         }
 
@@ -18,7 +18,7 @@ namespace trrne.Core
         {
             if (info.TryGetComponent(out Player _))
             {
-                OnRange = false;
+                IsInsideRange = false;
             }
         }
     }

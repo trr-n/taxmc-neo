@@ -1,5 +1,4 @@
 using Cysharp.Threading.Tasks;
-using trrne.Box;
 using UnityEngine;
 
 namespace trrne.Core

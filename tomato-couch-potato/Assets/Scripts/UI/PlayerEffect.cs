@@ -11,7 +11,7 @@ namespace trrne.Core
         void Start()
         {
             icons = transform.GetChildrenGameObject();
-            player = Gobject.GetWithTag<Player>(Config.Tags.Player);
+            player = Gobject.GetWithTag<Player>(Config.Tags.PLAYER);
         }
 
         void Update()

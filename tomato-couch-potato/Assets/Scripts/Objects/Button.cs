@@ -1,4 +1,3 @@
-using System;
 using trrne.Box;
 using UnityEngine;
 
@@ -30,7 +29,7 @@ namespace trrne.Core
 
             isAnimate = false;
             flag = transform.GetFromChild<ButtonFlag>();
-            speaker = Gobject.GetWithTag<AudioSource>(Config.Tags.Manager);
+            speaker = Gobject.GetWithTag<AudioSource>(Config.Tags.MANAGER);
 #if !DEBUG
             sr.color = Surface.Transparent;
 #endif
@@ -39,7 +38,7 @@ namespace trrne.Core
         protected override void Behavior()
         {
             // レバーが動作中じゃない、プレイヤーが範囲内にいる、キーが押された
-            if (!isPressing && flag.IsHit && Inputs.Down(Config.Keys.Button))
+            if (!isPressing && flag.IsHit && Inputs.Down(Config.Keys.BUTTON))
             {
                 isPressing = true;
                 sr.sprite = sprites[ON];

@@ -4,35 +4,32 @@ namespace trrne.Secret
 {
     public class XOR : IEncryption
     {
-        readonly byte encryptKey;
+        readonly byte key;
 
-        public XOR(byte key)
-        {
-            encryptKey = key;
-        }
+        public XOR(byte key) => this.key = key;
 
         public byte[] Encrypt(byte[] src)
         {
-            byte[] dest = new byte[src.Length];
+            byte[] dst = new byte[src.Length];
             for (int i = 0; i < src.Length; i++)
             {
-                dest[i] = src[i];
-                dest[i] ^= encryptKey;
+                dst[i] = src[i];
+                dst[i] ^= key;
             }
-            return dest;
+            return dst;
         }
 
         public byte[] Encrypt(string src) => Encrypt(Encoding.UTF8.GetBytes(src));
 
         public byte[] Decrypt(byte[] src)
         {
-            byte[] dest = new byte[src.Length];
+            byte[] dst = new byte[src.Length];
             for (int i = 0; i < src.Length; i++)
             {
-                dest[i] = src[i];
-                dest[i] ^= encryptKey;
+                dst[i] = src[i];
+                dst[i] ^= key;
             }
-            return dest;
+            return dst;
         }
 
         public string Decrypt2String(byte[] src) => Encoding.UTF8.GetString(Decrypt(src));

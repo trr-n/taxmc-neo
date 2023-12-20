@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using Cysharp.Threading.Tasks;
 using trrne.Box;
 using UnityEngine;
@@ -41,7 +40,7 @@ namespace trrne.Core
             hitbox = GetComponent<CircleCollider2D>();
             hitbox.isTrigger = true;
 
-            player = Gobject.GetWithTag<Player>(Config.Tags.Player);
+            player = Gobject.GetWithTag<Player>(Config.Tags.PLAYER);
 
             direction = (player.Core - transform.position).normalized;
 

@@ -1,6 +1,4 @@
-﻿using System.Globalization;
-using System;
-using trrne.Box;
+﻿using trrne.Box;
 using UnityEngine;
 
 namespace trrne.Core

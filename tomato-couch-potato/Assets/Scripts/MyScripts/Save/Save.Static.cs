@@ -1,6 +1,4 @@
-﻿// 学校提供
-
-using System;
+﻿using System;
 using System.IO;
 using System.Text.Json;
 using UnityEngine;

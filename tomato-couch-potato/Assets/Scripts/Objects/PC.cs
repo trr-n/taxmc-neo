@@ -6,7 +6,7 @@ namespace trrne.Core
     public class PC : Object
     {
         Color[] DisplayColors => new Color[] { Color.red, Color.green };
-        const int Unused = 0, Used = 1;
+        const int UNUSED = 0, USED = 1;
 
         SpriteRenderer display;
 
@@ -17,7 +17,7 @@ namespace trrne.Core
             base.Start();
 
             display = transform.GetFromChild<SpriteRenderer>(0);
-            display.color = DisplayColors[Unused];
+            display.color = DisplayColors[UNUSED];
         }
 
         protected override void Behavior() { }
@@ -29,11 +29,11 @@ namespace trrne.Core
                 isLoading = true;
 
                 effects.TryInstantiate(transform.position);
-                display.color = DisplayColors[Used];
+                display.color = DisplayColors[USED];
 
                 player.SetCheckpoint(
                     x: transform.position.x,
-                    y: Maths.Cutail(transform.position.y)
+                    y: NumCs.Cutail(transform.position.y)
                 );
             }
         }

@@ -21,7 +21,7 @@ namespace trrne.Core
             base.Start();
 
             flag = transform.GetFromChild<LeverFlag>();
-            source = Gobject.GetWithTag<AudioSource>(Config.Tags.Manager);
+            source = Gobject.GetWithTag<AudioSource>(Config.Tags.MANAGER);
 
             sr.sprite = sprites[isActive ? 0 : 1];
         }
@@ -33,14 +33,14 @@ namespace trrne.Core
                 return;
             }
 
-            if (isActive && Inputs.Down(Config.Keys.Button))
+            if (isActive && Inputs.Down(Config.Keys.BUTTON))
             {
                 source.TryPlayOneShot(sounds.Choice());
                 sr.sprite = sprites[1];
                 gimmicks.ForEach(gim => gim.TryGetComponent(out IGimmick g).If(g.On));
                 isActive = false;
             }
-            else if (!isActive && Inputs.Down(Config.Keys.Button))
+            else if (!isActive && Inputs.Down(Config.Keys.BUTTON))
             {
                 source.TryPlayOneShot(sounds.Choice());
                 sr.sprite = sprites[0];

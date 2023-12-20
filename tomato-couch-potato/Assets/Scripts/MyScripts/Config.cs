@@ -1,4 +1,3 @@
-using trrne.Box;
 using UnityEngine;
 
 namespace trrne
@@ -7,51 +6,51 @@ namespace trrne
     {
         public readonly struct Scenes
         {
-            public const string Title = "Title";
-            public const string Select = "Select";
-            public const string Prefix = "Game";
-            public const string Game0 = "Game0";
-            public const string Game1 = "Game1";
+            public const string TITLE = "Title";
+            public const string SELECT = "Select";
+            public const string PREFIX = "Game";
+            public const string GAME0 = "Game0";
+            public const string GAME1 = "Game1";
         }
 
         public readonly struct Layers
         {
-            public const int Default = 1 << 0;
-            public const int Player = 1 << 6;
-            public const int Jumpable = 1 << 7;
-            public const int Object = 1 << 8;
-            public const int Creature = 1 << 9;
+            public const int DEFAULT = 1 << 0;
+            public const int PLAYER = 1 << 6;
+            public const int JUMPABLE = 1 << 7;
+            public const int OBJECT = 1 << 8;
+            public const int CREATURE = 1 << 9;
         }
 
         public readonly struct Keys
         {
-            public const string Horizontal = "Horizontal";
-            public const string MirroredHorizontal = "ReversedHorizontal";
-            public const string Vertical = "Vertical";
-            public const string Wheel = "Mouse ScrollWheel";
-            public const string Jump = "Jump";
-            public const string Down = "Down";
-            public const string Zoom = "Zoom";
-            public const string Button = "Button";
-            public const string Pause = "Pause";
-            public const string Respawn = "Respawn";
+            public const string HORIZONTAL = "Horizontal";
+            public const string MIRRORED_HORIZONTAL = "ReversedHorizontal";
+            public const string VERTICAL = "Vertical";
+            public const string WHEEL = "Mouse ScrollWheel";
+            public const string JUMP = "Jump";
+            public const string DOWN = "Down";
+            public const string ZOOM = "Zoom";
+            public const string BUTTON = "Button";
+            public const string PAUSE = "Pause";
+            public const string RESPAWN = "Respawn";
         }
 
         public readonly struct Tags
         {
-            public const string Manager = "Manager";
-            public const string Jumpable = "Jumpable";
-            public const string Player = "Player";
-            public const string Ladder = "Ladder";
-            public const string Pad = "Pad";
-            public const string MainCamera = "MainCamera";
-            public const string Enemy = "Enemy";
-            public const string Panel = "Panel";
-            public const string Ice = "Ice";
-            public const string Hole = "Hole";
-            public const string Mama = "Mama";
-            public const string Info = "Info";
-            public const string Spectre = "Spectre";
+            public const string MANAGER = "Manager";
+            public const string JUMPABLE = "Jumpable";
+            public const string PLAYER = "Player";
+            public const string LADDER = "Ladder";
+            public const string JUMP_PAD = "Pad";
+            public const string MAIN_CAMERA = "MainCamera";
+            public const string ENEMY = "Enemy";
+            public const string PANEL = "Panel";
+            public const string ICE = "Ice";
+            public const string HOLE = "Hole";
+            public const string MAMA = "Mama";
+            public const string INFO = "Info";
+            public const string SPECTRE = "Spectre";
         }
 
         public readonly struct Animations

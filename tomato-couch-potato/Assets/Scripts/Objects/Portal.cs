@@ -15,7 +15,7 @@ namespace trrne.Core
         [SerializeField]
         float framesAlpha = .75f;
 
-        const float SpeedRange = 30;
+        const float SPEED_RANGE = 30;
 
         [SerializeField]
         GameObject[] frames;
@@ -33,9 +33,9 @@ namespace trrne.Core
             for (int i = 0; i < children; i++)
             {
                 frames[i].GetComponent<SpriteRenderer>().SetAlpha(framesAlpha);
-                speeds[i] = Rand.Float(-SpeedRange, SpeedRange);
+                speeds[i] = Rand.Float(-SPEED_RANGE, SPEED_RANGE);
             }
-            myspeed = Rand.Float(-SpeedRange, SpeedRange);
+            myspeed = Rand.Float(-SPEED_RANGE, SPEED_RANGE);
         }
 
         protected override void Behavior()

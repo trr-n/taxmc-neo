@@ -5,19 +5,19 @@ namespace trrne.Brain
 {
     public class Recorder : Singleton<Recorder>
     {
-        protected override bool AliveOnLoad => true;
+        protected override bool dontDestroy => true;
 
         public string Path => Paths.DataPath("save.sav");
         public string Password => "pomodoro";
 
         public int Max => 2;
 
-        public int CurrentIndex => int.Parse(Scenes.Active().Delete(Config.Scenes.Prefix));
+        public int CurrentIndex => int.Parse(Scenes.Active().Delete(Config.Scenes.PREFIX));
 
         public int Stay { get; private set; }
         public int Done { get; private set; }
 
-        public float Progress => Maths.Ratio(Max, Done);
+        public float Progress => NumCs.Ratio(Max, Done);
 
         AudioSource source;
 
@@ -30,10 +30,10 @@ namespace trrne.Brain
         public void Clear()
         {
             // クリアしたシーンの名前に数字が含まれているか
-            if (int.TryParse(Scenes.Active().Delete(Config.Scenes.Prefix), out _))
+            if (int.TryParse(Scenes.Active().Delete(Config.Scenes.PREFIX), out _))
             {
                 ++Done;
-                Scenes.Load(Config.Scenes.Select);
+                Scenes.Load(Config.Scenes.SELECT);
             }
         }
 

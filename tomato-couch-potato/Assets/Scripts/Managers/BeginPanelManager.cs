@@ -10,8 +10,7 @@ namespace trrne.Brain
         [SerializeField]
         CanvasGroup canvas;
 
-        const float showingTime = 3;
-        const float fadingSpeed = 10;
+        const float SHOW_TIME = 3, FADE_SPEED = 10;
         readonly Stopwatch sw = new();
 
         Player player;
@@ -21,13 +20,13 @@ namespace trrne.Brain
             canvas.alpha = 1;
             sw.Start();
 
-            player = Gobject.GetWithTag<Player>(Config.Tags.Player);
+            player = Gobject.GetWithTag<Player>(Config.Tags.PLAYER);
             player.Controllable = false;
         }
 
         void Update()
         {
-            if (sw.Sf() >= showingTime)
+            if (sw.Sf() >= SHOW_TIME)
             {
                 sw.Reset();
                 StartCoroutine(FadeOut());
@@ -40,7 +39,7 @@ namespace trrne.Brain
             while (alpha >= 0)
             {
                 yield return null;
-                alpha -= Time.unscaledDeltaTime * fadingSpeed;
+                alpha -= Time.unscaledDeltaTime * FADE_SPEED;
                 canvas.alpha = alpha;
             }
             canvas.alpha = 0;

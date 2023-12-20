@@ -39,7 +39,7 @@ namespace trrne.Brain
 
         void PanelControl()
         {
-            if (!Inputs.Down(Config.Keys.Pause))
+            if (!Inputs.Down(Config.Keys.PAUSE))
             {
                 return;
             }

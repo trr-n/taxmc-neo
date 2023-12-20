@@ -1,5 +1,4 @@
-﻿// using System.Transactions;
-using System.Collections;
+﻿using System.Collections;
 using UnityEngine;
 using Cysharp.Threading.Tasks;
 using trrne.Box;
@@ -65,25 +64,24 @@ namespace trrne.Core
 
         public Vector3 Core { get; private set; }
 
-        const float INPUT_TOLERANCE = 0.33f;
+        const float INPUT_TOLERANCE = 1 / 3;
 
         public Vector2 Checkpoint { get; private set; } = Vector2.zero;
 
         public void SetCheckpoint(Vector2 position) => Checkpoint = position;
         public void SetCheckpoint(float? x = null, float? y = null)
         => Checkpoint = new(x ?? transform.position.x, y ?? transform.position.y);
-
         public void ReturnToCheckpoint() => transform.position = Checkpoint;
 
         readonly Vector2 reverse = new(-1, 1);
 
         Vector2 box;
-        (bool ice, bool ground) on = (false, false);
+        (bool ice, bool ground) isLandingOn = (false, false);
 
         void Start()
         {
-            menu = Gobject.GetWithTag<PauseMenu>(Config.Tags.Manager);
-            cam = Gobject.GetWithTag<Cam>(Config.Tags.MainCamera);
+            menu = Gobject.GetWithTag<PauseMenu>(Config.Tags.MANAGER);
+            cam = Gobject.GetWithTag<Cam>(Config.Tags.MAIN_CAMERA);
             animator = GetComponent<Animator>();
             hitbox = GetComponent<BoxCollider2D>();
             rb = GetComponent<Rigidbody2D>();
@@ -123,7 +121,7 @@ namespace trrne.Core
 
         void LateUpdate()
         {
-            floatingT.SetText($"{nameof(on.ground)}: {on.ground}\n{nameof(IsFloating)}: {IsFloating}");
+            floatingT.SetText($"{nameof(isLandingOn.ground)}: {isLandingOn.ground}\n{nameof(IsFloating)}: {IsFloating}");
         }
 #endif
 
@@ -131,7 +129,7 @@ namespace trrne.Core
         {
             Core = transform.position + new Vector3(0, hitbox.bounds.size.y / 2);
             rb.bodyType = IsTeleporting ? RigidbodyType2D.Static : RigidbodyType2D.Dynamic;
-            IsFloating = !on.ground;
+            IsFloating = !isLandingOn.ground;
             rb.gravityScale = IsFloating ? gscale.floating : gscale.basis;
         }
 
@@ -140,21 +138,21 @@ namespace trrne.Core
             var hitJumpable = Gobject.Boxcast(
                 transform.position,
                 box,
-                Config.Layers.Jumpable
+                Config.Layers.JUMPABLE
             );
             if (!hitJumpable)
             {
-                on.ice = on.ground = false;
+                isLandingOn.ice = isLandingOn.ground = false;
                 return;
             }
 
-            if (hitJumpable.CompareLayer(Config.Layers.Jumpable))
+            if (hitJumpable.CompareLayer(Config.Layers.JUMPABLE))
             {
-                on.ground = true;
+                isLandingOn.ground = true;
             }
-            if (hitJumpable.CompareTag(Config.Tags.Ice))
+            if (hitJumpable.CompareTag(Config.Tags.ICE))
             {
-                on.ice = true;
+                isLandingOn.ice = true;
             }
         }
 
@@ -176,7 +174,7 @@ namespace trrne.Core
                 return;
             }
 
-            if (Inputs.Down(Config.Keys.Respawn))
+            if (Inputs.Down(Config.Keys.RESPAWN))
             {
                 ReturnToCheckpoint();
             }
@@ -208,12 +206,13 @@ namespace trrne.Core
                 return;
             }
 
-            var horizontal = EffectFlags[(int)Effect.Mirror] ?
-                Config.Keys.MirroredHorizontal : Config.Keys.Horizontal;
-            if (Input.GetButtonDown(horizontal))
+            string horizontal = EffectFlags[(int)Effect.Mirror] ?
+                Config.Keys.MIRRORED_HORIZONTAL : Config.Keys.HORIZONTAL;
+            if (Inputs.Down(horizontal))
             {
-                int current = Maths.Sign(transform.localScale.x);
-                switch (Mathf.Sign(Input.GetAxisRaw(horizontal)))
+                int current = NumCs.Sign(transform.localScale.x);
+                float axis_h = Input.GetAxisRaw(horizontal);
+                switch (Mathf.Sign(axis_h))
                 {
                     case 1:
                         if (current != 1)
@@ -238,13 +237,13 @@ namespace trrne.Core
                 return;
             }
 
-            if (!on.ground)
+            if (!isLandingOn.ground)
             {
                 animator.SetBool(Config.Animations.Jump, true);
                 return;
             }
 
-            if (Inputs.Down(Config.Keys.Jump))
+            if (Inputs.Down(Config.Keys.JUMP))
             {
                 rb.velocity += JUMP_POWER * Vec.Y.ToV2();
             }
@@ -261,15 +260,15 @@ namespace trrne.Core
                 return;
             }
 
-            bool walk = Inputs.Pressed(Config.Keys.Horizontal) && on.ground;
+            bool walk = Inputs.Pressed(Config.Keys.HORIZONTAL) && isLandingOn.ground;
             animator.SetBool(Config.Animations.Walk, walk);
 
             string horizontal = EffectFlags[(int)Effect.Mirror] ?
-                Config.Keys.MirroredHorizontal : Config.Keys.Horizontal;
+                Config.Keys.MIRRORED_HORIZONTAL : Config.Keys.HORIZONTAL;
             Vector2 move = Input.GetAxisRaw(horizontal) * Vec.X;
 
             // 入力がtolerance以下、氷に乗っていない
-            if (move.magnitude <= INPUT_TOLERANCE && !on.ice)
+            if (move.magnitude <= INPUT_TOLERANCE && !isLandingOn.ice)
             {
                 // x軸の速度をspeed.reduction倍
                 rb.SetVelocity(x: rb.velocity.x * reduction.move);
@@ -281,7 +280,7 @@ namespace trrne.Core
                 {
                     return speed.max * reduction.fetters;
                 }
-                else if (on.ice)
+                else if (isLandingOn.ice)
                 {
                     return speed.max * 2;
                 }
@@ -310,7 +309,7 @@ namespace trrne.Core
             }
 
             // 敵への当たり判定は除外
-            hitbox.excludeLayers += Config.Layers.Creature;
+            hitbox.excludeLayers += Config.Layers.CREATURE;
 
             IsDying = true;
             Controllable = cam.Followable = false;
@@ -338,7 +337,7 @@ namespace trrne.Core
             ReturnToCheckpoint();
             animator.StopPlayback();
 
-            hitbox.excludeLayers -= Config.Layers.Creature;
+            hitbox.excludeLayers -= Config.Layers.CREATURE;
 
             cam.Followable = Controllable = true;
             IsDying = false;

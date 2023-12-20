@@ -1,5 +1,3 @@
-using System;
-using trrne.Box;
 using UnityEngine;
 
 namespace trrne.Core
@@ -11,15 +9,10 @@ namespace trrne.Core
             if (info.TryGetComponent(out ICreature creature))
             {
                 await creature.Die();
+                return;
             }
-            else
-            {
-                try
-                {
-                    Destroy(info.gameObject);
-                }
-                catch { }
-            }
+            try { Destroy(info.gameObject); }
+            catch { }
         }
     }
 }

@@ -12,24 +12,21 @@ namespace trrne.Core
         [SerializeField]
         float offsetY = 1;
 
-        float z;
-        float axis = 0f;
+        float z, axis = 0f;
 
         void Start()
         {
-            player = Gobject.GetWithTag<Player>(Config.Tags.Player);
+            player = Gobject.GetWithTag<Player>(Config.Tags.PLAYER);
             z = transform.position.z;
         }
 
         void Update()
         {
             Zoom();
-            // Follow();
         }
 
         void LateUpdate()
         {
-            // Zoom();
             Follow();
         }
 
@@ -46,7 +43,7 @@ namespace trrne.Core
 
         void Zoom()
         {
-            if ((axis = Input.GetAxisRaw(Config.Keys.Zoom)) == 0)
+            if ((axis = Input.GetAxisRaw(Config.Keys.ZOOM)) == 0)
             {
                 return;
             }

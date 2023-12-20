@@ -48,10 +48,10 @@ namespace trrne.Arm
             if (CenterButton() != null
                 && int.TryParse(removed, out int idx)
                 && idx <= Recorder.Instance.Done
-                && Inputs.Down(Config.Keys.Button)
+                && Inputs.Down(Config.Keys.BUTTON)
             )
             {
-                Scenes.Load(Config.Scenes.Prefix + idx);
+                Scenes.Load(Config.Scenes.PREFIX + idx);
             }
         }
 
@@ -62,7 +62,7 @@ namespace trrne.Arm
         {
             foreach (var button in buttons)
             {
-                if (Maths.CutailedTwins(button.transform.position.x, 0f))
+                if (0f.CutailedTwins(button.transform.position.x))
                 {
                     return button.gameObject;
                 }
@@ -72,7 +72,7 @@ namespace trrne.Arm
 
         void Scroll()
         {
-            if ((horizon = Input.GetAxisRaw(Config.Keys.Horizontal)).Twins(0f))
+            if (0f.Twins(horizon = Input.GetAxisRaw(Config.Keys.HORIZONTAL)))
             {
                 return;
             }

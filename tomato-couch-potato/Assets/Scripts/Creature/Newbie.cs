@@ -26,9 +26,10 @@ namespace trrne.Core
         readonly (Ray ray, RaycastHit2D hit)[] horizon = { new(), new() };
         (Ray ray, RaycastHit2D hit) top, bottom;
         float length, offset, originOffset;
-        const int DetectLayers = Config.Layers.Player | Config.Layers.Jumpable;
+        const int DETECT_LAYERS = Config.Layers.PLAYER | Config.Layers.JUMPABLE;
 
-        bool hitHorizon = false, hitVertical = false;
+        // bool hitHorizon = false, hitVertical = false;
+        (bool horizon, bool vertical) hit = (false, false);
 
         Player player;
 
@@ -38,7 +39,7 @@ namespace trrne.Core
         {
             Enable = true;
 
-            player = Gobject.GetWithTag<Player>(Config.Tags.Player);
+            player = Gobject.GetWithTag<Player>(Config.Tags.PLAYER);
 
             var hitbox = GetComponent<BoxCollider2D>();
             offset = hitbox.size.x * 1.2f;
@@ -75,7 +76,7 @@ namespace trrne.Core
         {
             try
             {
-                if (this == null || hitVertical)
+                if (this == null || hit.vertical)
                 {
                     return;
                 }
@@ -86,7 +87,7 @@ namespace trrne.Core
                         transform.position + new Vector3(originX * j / 2, originY),
                         transform.up
                     );
-                    horizon[i].hit = horizon[i].ray.Raycast(length, DetectLayers);
+                    horizon[i].hit = horizon[i].ray.Raycast(length, DETECT_LAYERS);
                     horizon[i].ray.DrawRay(length, Color.green);
 
                     if (!horizon[i].hit)
@@ -96,7 +97,7 @@ namespace trrne.Core
 
                     switch (horizon[i].hit.GetLayer())
                     {
-                        case Config.Layers.Player:
+                        case Config.Layers.PLAYER:
                             if (!isDestroy || !player.IsDying)
                             {
                                 await player.Die();
@@ -114,9 +115,9 @@ namespace trrne.Core
 
         IEnumerator HitHorizonChanger()
         {
-            hitHorizon = true;
+            hit.horizon = true;
             yield return new WaitForSeconds(Time.deltaTime * 2);
-            hitHorizon = false;
+            hit.horizon = false;
         }
 
         async UniTask Top(float originX, float originY)
@@ -132,14 +133,14 @@ namespace trrne.Core
                     transform.position + new Vector3(originX, originY / 2),
                     transform.right
                 );
-                top.hit = top.ray.Raycast(length, DetectLayers);
+                top.hit = top.ray.Raycast(length, DETECT_LAYERS);
                 top.ray.DrawRay(length, Color.red);
 
-                if (!isDestroy && !hitHorizon
+                if (!isDestroy && !hit.horizon
                     && top.hit && top.hit.TryGetComponent(out Player _)
                     && !player.IsDying)
                 {
-                    hitVertical = true;
+                    hit.vertical = true;
                     isDestroy = true;
                     await Die();
                 }
@@ -160,7 +161,7 @@ namespace trrne.Core
                     transform.position + new Vector3(originX, originY / 2),
                     transform.right
                 );
-                bottom.hit = bottom.ray.Raycast(length, DetectLayers);
+                bottom.hit = bottom.ray.Raycast(length, DETECT_LAYERS);
                 bottom.ray.DrawRay(length, Color.blue);
 
                 if (bottom.hit && bottom.hit.TryGetComponent(out Player _))
