@@ -26,7 +26,7 @@ namespace trrne.Box
 
         public static int ToInt(this bool boolean) => boolean ? 1 : 0;
         public static int ToInt(this string str) => int.Parse(str);
-        public static int ToInt(this float single) => NumCs.Cutail(single);
+        public static int ToInt(this float single) => Numcs.Cutail(single);
 
         public static float ToFloat(this bool boolean) => boolean ? 1f : 0f;
         public static float ToFloat(this string str) => float.Parse(str);

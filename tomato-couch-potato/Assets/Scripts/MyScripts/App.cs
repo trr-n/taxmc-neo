@@ -16,7 +16,7 @@ namespace trrne.Box
         public static void SetFPS(FrameRate fps) => UniApp.targetFrameRate = (int)fps;
 
         public static float FPS(int digit) => (float)Math.Round(1 / Time.unscaledDeltaTime, digit);
-        public static int FPS() => NumCs.Cutail(FPS());
+        public static int FPS() => Numcs.Cutail(FPS());
 
         public static void SetCursorStatus(CursorAppearance appear, CursorRangeOfMotion rangeOfMotion)
         {

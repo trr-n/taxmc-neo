@@ -35,18 +35,18 @@ namespace trrne.Core
         public bool[] Effectables { get; private set; }
         public bool[] EffectFlags { get; set; }
 
-        readonly (float basis, float max) speed = (
+        (float basis, float max) speed => (
             basis: 20,
             max: 10
         );
 
-        readonly (float fetters, float floating, float move) red = (
-            fetters: 0.5f,
-            floating: 0.95f,
-            move: 0.9f
+        (float fetters, float floating, float move) red => (
+           fetters: 0.5f,
+           floating: 0.95f,
+           move: 0.9f
         );
 
-        readonly (float floating, float basis) gscale = (
+        (float floating, float basis) gscale => (
             floating: 3f,
             basis: 1f
         );
@@ -55,6 +55,7 @@ namespace trrne.Core
 
         public bool IsFloating { get; private set; }
         public Vector2 Velocity { get; private set; }
+        bool onIce = false, onGround = false;
 
         Rigidbody2D rb;
         Animator animator;
@@ -73,12 +74,10 @@ namespace trrne.Core
         => Checkpoint = new(x ?? transform.position.x, y ?? transform.position.y);
         public void ReturnToCheckpoint() => transform.position = Checkpoint;
 
-        readonly Vector2 reverse = new(-1, 1);
+        Vector2 reverse => new(-1, 1);
 
         Vector2 box;
-        (bool ice, bool ground) isLandingOn = (false, false);
-
-        readonly V2 sizeRatio = new(.8f, .1f);
+        Vector2 sizeRatio => new(.8f, .1f);
 
         void Start()
         {
@@ -98,8 +97,10 @@ namespace trrne.Core
                 Effectables[i] = true;
             }
 
-            var size = hitbox.bounds.size;
-            box = new(size.x * sizeRatio.x, size.y * sizeRatio.y);
+            box = new(
+                hitbox.bounds.size.x * sizeRatio.x,
+                hitbox.bounds.size.y * sizeRatio.y
+            );
         }
 
         void FixedUpdate()
@@ -123,7 +124,7 @@ namespace trrne.Core
 
         void LateUpdate()
         {
-            floatingT.SetText($"{nameof(isLandingOn.ground)}: {isLandingOn.ground}\n{nameof(IsFloating)}: {IsFloating}");
+            floatingT.SetText($"OnIce: {onIce}\nOnGround: {onGround}");
         }
 #endif
 
@@ -131,31 +132,20 @@ namespace trrne.Core
         {
             Core = transform.position + new Vector3(0, hitbox.bounds.size.y / 2);
             rb.bodyType = IsTeleporting ? RigidbodyType2D.Static : RigidbodyType2D.Dynamic;
-            IsFloating = !isLandingOn.ground;
+            IsFloating = !onGround;
             rb.gravityScale = IsFloating ? gscale.floating : gscale.basis;
         }
 
         void Footer()
         {
-            var hitJumpable = Gobject.Boxcast(
-                transform.position,
-                box,
-                Config.Layers.JUMPABLE
-            );
-            if (!hitJumpable)
+            if (!Gobject.Boxcast(out var hit, transform.position, box, Config.Layers.JUMPABLE))
             {
-                isLandingOn.ice = isLandingOn.ground = false;
+                onIce = onGround = false;
                 return;
             }
 
-            if (hitJumpable.CompareLayer(Config.Layers.JUMPABLE))
-            {
-                isLandingOn.ground = true;
-            }
-            if (hitJumpable.CompareTag(Config.Tags.ICE))
-            {
-                isLandingOn.ice = true;
-            }
+            onGround = hit.CompareLayer(Config.Layers.JUMPABLE);
+            onIce = hit.CompareTag(Config.Tags.ICE);
         }
 
 #if DEBUG
@@ -212,9 +202,9 @@ namespace trrne.Core
                 Config.Keys.MIRRORED_HORIZONTAL : Config.Keys.HORIZONTAL;
             if (Inputs.Down(horizontal))
             {
-                int current = NumCs.Sign(transform.localScale.x);
-                float axis_h = Input.GetAxisRaw(horizontal);
-                switch (Mathf.Sign(axis_h))
+                int current = Numcs.Sign(transform.localScale.x);
+                float haxis = Input.GetAxisRaw(horizontal);
+                switch (Numcs.Sign(haxis))
                 {
                     case 1:
                         if (current != 1)
@@ -239,7 +229,7 @@ namespace trrne.Core
                 return;
             }
 
-            if (!isLandingOn.ground)
+            if (!onGround)
             {
                 animator.SetBool(Config.Animations.Jump, true);
                 return;
@@ -262,7 +252,7 @@ namespace trrne.Core
                 return;
             }
 
-            bool walk = Inputs.Pressed(Config.Keys.HORIZONTAL) && isLandingOn.ground;
+            bool walk = Inputs.Pressed(Config.Keys.HORIZONTAL) && onGround;
             animator.SetBool(Config.Animations.Walk, walk);
 
             string horizontal = EffectFlags[(int)Effect.Mirror] ?
@@ -270,7 +260,7 @@ namespace trrne.Core
             Vector2 move = Input.GetAxisRaw(horizontal) * Vec.X;
 
             // 入力がtolerance以下、氷に乗っていない
-            if (move.magnitude <= INPUT_TOLERANCE && !isLandingOn.ice)
+            if (move.magnitude <= INPUT_TOLERANCE && !onIce)
             {
                 // x軸の速度をspeed.reduction倍
                 rb.SetVelocity(x: rb.velocity.x * red.move);
@@ -282,7 +272,7 @@ namespace trrne.Core
                 {
                     return speed.max * red.fetters;
                 }
-                else if (isLandingOn.ice)
+                else if (onIce)
                 {
                     return speed.max * 2;
                 }

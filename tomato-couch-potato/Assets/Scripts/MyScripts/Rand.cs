@@ -9,11 +9,13 @@ namespace trrne.Box
         readonly static Random rand;
         static Rand() => rand = new();
 
-        static float Rangef(float min, float max)
-        {
-            float range = max - min;
-            return (float)((rand.NextDouble() * range) + min);
-        }
+        /// <summary>
+        /// 乱数生成器 -> <b>double</b><br/>
+        /// </summary>
+        /// <param name="min">最小値</param>
+        /// <param name="max">最大値(含む)</param>
+        /// <returns>minからmaxまでの乱数を返す</returns>
+        public static double Double(double min, double max) => (rand.NextDouble() * (max - min)) + min;
 
         /// <summary>
         /// 乱数生成器 -> <b>float</b><br/>
@@ -21,7 +23,7 @@ namespace trrne.Box
         /// <param name="min">最小値</param>
         /// <param name="max">最大値(含む)</param>
         /// <returns>minからmaxまでの乱数を返す</returns>
-        public static float Float(float min = 0, float max = 0) => Rangef(min, max);
+        public static float Float(float min = 0, float max = 0) => (float)Double(min, max);
 
         /// <summary>
         /// 乱数生成器 -> <b>float</b><br/>

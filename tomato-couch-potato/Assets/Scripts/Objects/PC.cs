@@ -33,7 +33,7 @@ namespace trrne.Core
 
                 player.SetCheckpoint(
                     x: transform.position.x,
-                    y: NumCs.Cutail(transform.position.y)
+                    y: Numcs.Cutail(transform.position.y)
                 );
             }
         }

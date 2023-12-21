@@ -3,7 +3,7 @@ using System.Linq;
 
 namespace trrne.Box
 {
-    public static class NumCs
+    public static class Numcs
     {
         /// <summary>
         /// イプシロン(-45乗) -> <b>float</b><br/>

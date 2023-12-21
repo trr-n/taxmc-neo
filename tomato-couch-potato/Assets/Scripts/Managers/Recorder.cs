@@ -17,7 +17,7 @@ namespace trrne.Brain
         public int Stay { get; private set; }
         public int Done { get; private set; }
 
-        public float Progress => NumCs.Ratio(Max, Done);
+        public float Progress => Numcs.Ratio(Max, Done);
 
         AudioSource source;
 
