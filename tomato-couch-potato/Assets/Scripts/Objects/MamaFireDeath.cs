@@ -22,7 +22,6 @@ namespace trrne.Core
             transform.Translate(Time.deltaTime * speed * direction);
         }
 
-        protected override async UniTask Punishment(Player player)
-        => await player.Die();
+        protected override async UniTask Punishment(Player player) => await player.Die();
     }
 }

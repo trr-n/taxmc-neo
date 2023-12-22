@@ -21,9 +21,8 @@ namespace trrne.Brain
 
         AudioSource source;
 
-        protected override void Awake()
+        void Start()
         {
-            base.Awake();
             source = GetComponent<AudioSource>();
         }
 
@@ -38,5 +37,6 @@ namespace trrne.Brain
         }
 
         public void PlayOneShot(AudioClip clip) => source.PlayOneShot(clip);
+        public void PlayOneShot(AudioClip clip, float volume) => source.PlayOneShot(clip, volume);
     }
 }

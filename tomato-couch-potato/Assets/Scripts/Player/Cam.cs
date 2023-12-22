@@ -7,17 +7,20 @@ namespace trrne.Core
     {
         public bool Followable { get; set; }
 
-        Player player;
-
         [SerializeField]
         float offsetY = 1;
 
-        float z, axis = 0f;
+        float kaxis = 0f, maxis = 0f;
+        float raw = 0f;
+        const float Z = -10f;
+
+        Player player;
+
+        (float min, float max) zoom => (4.5f, 12f);
 
         void Start()
         {
             player = Gobject.GetWithTag<Player>(Config.Tags.PLAYER);
-            z = transform.position.z;
         }
 
         void Update()
@@ -38,19 +41,37 @@ namespace trrne.Core
             }
 
             var p = player.transform.position;
-            transform.position = new(p.x, p.y + offsetY, z);
+            transform.position = new(p.x, p.y + offsetY, Z);
         }
 
         void Zoom()
         {
-            if ((axis = Input.GetAxisRaw(Config.Keys.ZOOM)) == 0)
+            if (Inputs.Down(Config.Keys.RESET_ZOOM))
+            {
+                raw = zoom.max - zoom.min;
+                FetchValue(raw);
+            }
+
+            kaxis = Input.GetAxisRaw(Config.Keys.ZOOM);
+            maxis = Input.GetAxisRaw(Config.Keys.MOUSE_ZOOM);
+            if (0f.Twins(kaxis + maxis))
             {
                 return;
             }
 
-            Camera.main.orthographicSize += Mathf.Sign(axis) / 4;
-            Camera.main.orthographicSize = Mathf.Clamp(Camera.main.orthographicSize, 2.5f, 12);
+            if (kaxis != 0)
+            {
+                raw += Mathf.Sign(kaxis) / 4;
+            }
+            else if (maxis != 0)
+            {
+                raw += -Mathf.Sign(maxis);
+            }
+            raw = Mathf.Clamp(raw, zoom.min, zoom.max);
+            FetchValue(raw);
         }
+
+        void FetchValue(float value) => Camera.main.orthographicSize = value;
     }
 }
 

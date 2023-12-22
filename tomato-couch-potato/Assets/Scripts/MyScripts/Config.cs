@@ -34,6 +34,8 @@ namespace trrne
             public const string BUTTON = "Button";
             public const string PAUSE = "Pause";
             public const string RESPAWN = "Respawn";
+            public const string MOUSE_ZOOM = "Mouse ScrollWheel Zoom";
+            public const string RESET_ZOOM = "ResetZoom";
         }
 
         public readonly struct Tags

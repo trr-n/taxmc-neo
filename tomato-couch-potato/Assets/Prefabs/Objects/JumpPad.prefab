@@ -145,6 +145,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   jumpPower: 1
+  se: {fileID: 8300000, guid: 09a4aba8fa869d546acd60481e8bbcaf, type: 3}
 --- !u!1 &2706704060884034851
 GameObject:
   m_ObjectHideFlags: 0

@@ -24,7 +24,8 @@ namespace trrne.Box
         public static void ForEach<T>(this T[] array, Action<T> action) => Array.ForEach(array, action);
         public static void ForEach<T>(this IEnumerable<T> array, Action<T> action) => Array.ForEach(array.ToArray(), action);
 
-        public static bool None(params object[] objs) => (from o in objs where o is null select o).ToArray().Length >= 1;
+        public static bool None(params object[] objs)
+        => (from obj in objs where obj is null select obj).ToArray().Length >= 1;
 
         /// <summary>
         /// obj != nullだったらactionを実行する

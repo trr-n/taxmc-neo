@@ -1,4 +1,4 @@
-using trrne.Box;
+using trrne.Brain;
 using UnityEngine;
 
 namespace trrne.Core
@@ -8,12 +8,16 @@ namespace trrne.Core
         [SerializeField]
         float jumpPower = 10f;
 
+        [SerializeField]
+        AudioClip se;
+
         void OnTriggerEnter2D(Collider2D info)
         {
             if (info.TryGetComponent(out Rigidbody2D rb))
             {
                 rb.velocity = Vector2.zero;
-                rb.velocity += jumpPower * transform.up.ToV2();
+                rb.velocity += jumpPower * (Vector2)transform.up;
+                Recorder.Instance.PlayOneShot(se);
             }
         }
     }

@@ -23,6 +23,8 @@ namespace trrne.Core
         Rigidbody2D rb;
         Vector3 initPos;
 
+        Transform player;
+
         protected override void Start()
         {
             base.Start();
@@ -31,6 +33,8 @@ namespace trrne.Core
             rb.gravityScale = 0;
 
             initPos = transform.position;
+
+            player = Gobject.GetWithTag<Transform>(Config.Tags.PLAYER);
 
             Invoke(nameof(StopStartDelaySW), startDelay);
         }
@@ -56,7 +60,8 @@ namespace trrne.Core
 
             if (other.CompareLayer(Config.Layers.JUMPABLE))
             {
-                Recorder.Instance.PlayOneShot(ses.Choice());
+                var distance = Vector2.Distance(transform.position, player.position);
+                Recorder.Instance.PlayOneShot(ses.Choice(), 1 / (distance / 1.2f));
 
                 power = 0f;
                 isDossun = false;

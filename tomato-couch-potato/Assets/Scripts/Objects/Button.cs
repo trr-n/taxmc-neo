@@ -1,4 +1,5 @@
 using trrne.Box;
+using trrne.Brain;
 using UnityEngine;
 
 namespace trrne.Core
@@ -14,8 +15,6 @@ namespace trrne.Core
         [SerializeField]
         AudioClip[] sounds;
 
-        AudioSource speaker;
-
         readonly Stopwatch effectiveSW = new();
         ButtonFlag flag;
 
@@ -23,13 +22,16 @@ namespace trrne.Core
 
         const int ON = 0, OFF = 1;
 
+        Transform player;
+
         protected override void Start()
         {
             base.Start();
 
             isAnimate = false;
             flag = transform.GetFromChild<ButtonFlag>();
-            speaker = Gobject.GetWithTag<AudioSource>(Config.Tags.MANAGER);
+
+            player = Gobject.GetWithTag<Transform>(Config.Tags.PLAYER);
 #if !DEBUG
             sr.color = Surface.Transparent;
 #endif
@@ -42,7 +44,8 @@ namespace trrne.Core
             {
                 isPressing = true;
                 sr.sprite = sprites[ON];
-                speaker.TryPlayOneShot(sounds.Choice());
+                var distance = Vector2.Distance(transform.position, player.position);
+                Recorder.Instance.PlayOneShot(sounds.Choice(), 1 / (distance + 1));
                 effectiveSW.Restart();
 
                 if (gimmicks.Length >= 1)
@@ -61,7 +64,8 @@ namespace trrne.Core
                     gimmicks.ForEach(g => g.GetComponent<IGimmick>().Off());
                 }
 
-                speaker.TryPlayOneShot(sounds.Choice());
+                var distance = Vector2.Distance(transform.position, player.position);
+                Recorder.Instance.PlayOneShot(sounds.Choice(), 1 / (distance + 1));
                 isPressing = false;
                 sr.sprite = sprites[OFF];
             }

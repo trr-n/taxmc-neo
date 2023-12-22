@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 
 namespace trrne.Box
@@ -15,7 +16,7 @@ namespace trrne.Box
         /// <param name="min">最小値</param>
         /// <param name="max">最大値(含む)</param>
         /// <returns>minからmaxまでの乱数を返す</returns>
-        public static double Double(double min, double max) => (rand.NextDouble() * (max - min)) + min;
+        public static double Double(double min = 0.0, double max = 0.0) => (rand.NextDouble() * (max - min)) + min;
 
         /// <summary>
         /// 乱数生成器 -> <b>float</b><br/>
@@ -51,11 +52,9 @@ namespace trrne.Box
                 char[] chars = new char[length];
                 for (int i = 0; i < length; i++)
                 {
-                    chars[i] = isMixed switch
-                    {
-                        true => alphabets.Concat(numbers).ToArray().Choice(),
-                        false => array[Int((int)start, (int)end - 1)]
-                    };
+                    chars[i] = isMixed ?
+                        alphabets.Concat(numbers).ToArray().Choice() :
+                        array[Int((int)start, (int)end - 1)];
                 }
                 return chars.Link();
             }

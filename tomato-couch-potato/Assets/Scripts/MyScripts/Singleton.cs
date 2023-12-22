@@ -8,14 +8,17 @@ namespace trrne.Box
         protected virtual bool dontDestroy { get; } = true;
 
         static T instance;
-        public static T Instance => Shorthand.L1ne(() =>
+        public static T Instance
         {
-            if (!instance)
+            get
             {
-                instance = (T)FindObjectOfType(typeof(T));
+                if (!instance)
+                {
+                    instance = (T)FindObjectOfType(typeof(T));
+                }
+                return instance;
             }
-            return instance;
-        });
+        }
 
         protected virtual void Awake()
         {

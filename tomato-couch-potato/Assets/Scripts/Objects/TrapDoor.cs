@@ -30,6 +30,10 @@ namespace trrne.Core
         float speed = 0.5f;
         Vector3 value;
 
+        [Tooltip("回転中の当たり判定")]
+        [SerializeField]
+        bool enableColliderOnRotating = false;
+
         const float OFFSET = 1e-8f;
 
         BoxCollider2D hitbox;
@@ -56,14 +60,14 @@ namespace trrne.Core
             };
 
             transform.DORotate(rotation, speed)
-                .OnPlay(() => hitbox.enabled = false)
+                .OnPlay(() => (!enableColliderOnRotating).If(() => hitbox.enabled = false))
                 .OnComplete(() => hitbox.enabled = true);
         }
 
         public override void Off()
         {
             transform.DORotate(value, speed)
-                .OnPlay(() => hitbox.enabled = false)
+                .OnPlay(() => (!enableColliderOnRotating).If(() => hitbox.enabled = false))
                 .OnComplete(() => hitbox.enabled = true);
         }
     }
