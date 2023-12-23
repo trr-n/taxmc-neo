@@ -15,7 +15,7 @@ namespace trrne.Core
         [SerializeField]
         float framesAlpha = .75f;
 
-        const float SPEED_RANGE = 30;
+        const float FRAME_ROTATE_SPEED = 30;
 
         [SerializeField]
         GameObject[] frames;
@@ -33,14 +33,14 @@ namespace trrne.Core
             for (int i = 0; i < children; i++)
             {
                 frames[i].GetComponent<SpriteRenderer>().SetAlpha(framesAlpha);
-                speeds[i] = Rand.Float(-SPEED_RANGE, SPEED_RANGE);
+                speeds[i] = Rand.Float(-FRAME_ROTATE_SPEED, FRAME_ROTATE_SPEED);
             }
-            myspeed = Rand.Float(-SPEED_RANGE, SPEED_RANGE);
+            myspeed = Rand.Float(-FRAME_ROTATE_SPEED, FRAME_ROTATE_SPEED);
         }
 
         protected override void Behavior()
         {
-#if DEBUG
+#if UNITY_EDITOR
             Debug.DrawLine(transform.position, portalGoal.Goal);
 #endif
             for (int i = 0; i < children; i++)
@@ -52,9 +52,8 @@ namespace trrne.Core
 
         void OnTriggerEnter2D(Collider2D info)
         {
-            if (!warping
-                && info.TryGetComponent(out Player player)
-                && !player.IsDying)
+            if (!warping && info.TryGetComponent(out Player player) && !player.IsDying
+            )
             {
                 info.transform.DOMove(portalGoal.Goal, teleportSpeed)
                     .SetEase(Ease.OutCubic)

@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Linq;
 
 namespace trrne.Box
@@ -8,7 +7,7 @@ namespace trrne.Box
     public static class Rand
     {
         readonly static Random rand;
-        static Rand() => rand = new();
+        static Rand() => rand = new((int)DateTime.Now.Ticks);
 
         /// <summary>
         /// 乱数生成器 -> <b>double</b><br/>
@@ -16,7 +15,7 @@ namespace trrne.Box
         /// <param name="min">最小値</param>
         /// <param name="max">最大値(含む)</param>
         /// <returns>minからmaxまでの乱数を返す</returns>
-        public static double Double(double min = 0.0, double max = 0.0) => (rand.NextDouble() * (max - min)) + min;
+        public static double Double(double min = 0.0, double max = 0.0) => min + (rand.NextDouble() * (max - min));
 
         /// <summary>
         /// 乱数生成器 -> <b>float</b><br/>

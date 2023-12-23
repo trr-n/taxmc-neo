@@ -41,9 +41,9 @@ namespace trrne.Core
         );
 
         (float fetters, float floating, float move) red => (
-           fetters: 0.5f,
-           floating: 0.95f,
-           move: 0.9f
+            fetters: 0.5f,
+            floating: 0.95f,
+            move: 0.9f
         );
 
         (float floating, float basis) gscale => (
@@ -55,7 +55,8 @@ namespace trrne.Core
 
         public bool IsFloating { get; private set; }
         public Vector2 Velocity { get; private set; }
-        bool onIce = false, onGround = false;
+        bool onIce = false;
+        bool onGround = false;
 
         Rigidbody2D rb;
         Animator animator;
@@ -77,7 +78,7 @@ namespace trrne.Core
         Vector2 reverse => new(-1, 1);
 
         Vector2 box;
-        Vector2 sizeRatio => new(.8f, .1f);
+        Vector2 sizeMulRatio => new(.8f, .1f);
 
         void Start()
         {
@@ -98,8 +99,8 @@ namespace trrne.Core
             }
 
             box = new(
-                hitbox.bounds.size.x * sizeRatio.x,
-                hitbox.bounds.size.y * sizeRatio.y
+                hitbox.bounds.size.x * sizeMulRatio.x,
+                hitbox.bounds.size.y * sizeMulRatio.y
             );
         }
 

@@ -1,8 +1,8 @@
+using UnityEngine;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using trrne.Box;
 using trrne.Brain;
-using UnityEngine;
 
 namespace trrne.Core
 {
@@ -18,7 +18,9 @@ namespace trrne.Core
         readonly Stopwatch startDelaySW = new(true);
 
         bool isDossun = true;
-        float power = 0f;
+        float dossunPower = 0f;
+        (float MIN, float MAX) DOSSUN_POWER => (0f, 20f);
+        const float DOSSUN_VOLUME_REDUCTION_RATIO = 1.2f;
 
         Rigidbody2D rb;
         Vector3 initPos;
@@ -47,8 +49,9 @@ namespace trrne.Core
             {
                 return;
             }
-            power += Time.deltaTime * accelRatio;
-            transform.Translate(Time.deltaTime * power * down * -Vec.Y);
+            dossunPower += Time.deltaTime * accelRatio;
+            dossunPower = Mathf.Clamp(dossunPower, DOSSUN_POWER.MIN, DOSSUN_POWER.MAX);
+            transform.Translate(Time.deltaTime * dossunPower * down * -Vec.Y);
         }
 
         async void OnTriggerEnter2D(Collider2D other)
@@ -60,10 +63,10 @@ namespace trrne.Core
 
             if (other.CompareLayer(Config.Layers.JUMPABLE))
             {
-                var distance = Vector2.Distance(transform.position, player.position);
-                Recorder.Instance.PlayOneShot(ses.Choice(), 1 / (distance / 1.2f));
+                float distance = (transform.position - player.position).magnitude;
+                Recorder.Instance.PlayOneShot(ses.Choice(), 1 / (distance / DOSSUN_VOLUME_REDUCTION_RATIO));
 
-                power = 0f;
+                dossunPower = 0f;
                 isDossun = false;
 
                 // initPosに移動

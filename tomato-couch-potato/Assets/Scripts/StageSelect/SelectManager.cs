@@ -20,7 +20,7 @@ namespace trrne.Arm
         [SerializeField]
         RectTransform core;
 
-        const string PREFAB_PREFIX = "stage";
+        const string STAGE_NAME_PREFIX = "stage";
         const float OFFSET = 18.96f;
 
         bool isScrolling = false;
@@ -44,7 +44,7 @@ namespace trrne.Arm
 
         void Transition()
         {
-            var removed = CenterButton().name.Delete(PREFAB_PREFIX);
+            var removed = CenterButton().name.Delete(STAGE_NAME_PREFIX);
             if (CenterButton() != null
                 && int.TryParse(removed, out int idx)
                 && idx <= Recorder.Instance.Done
@@ -62,7 +62,7 @@ namespace trrne.Arm
         {
             foreach (var button in buttons)
             {
-                if (0f.CutailedTwins(button.transform.position.x))
+                if (.0.CutailedTwins(button.transform.position.x))
                 {
                     return button.gameObject;
                 }
@@ -72,7 +72,7 @@ namespace trrne.Arm
 
         void Scroll()
         {
-            if (0f.Twins(horizon = Input.GetAxisRaw(Config.Keys.HORIZONTAL)))
+            if (.0.Twins(horizon = Input.GetAxisRaw(Config.Keys.HORIZONTAL)))
             {
                 return;
             }
@@ -94,7 +94,7 @@ namespace trrne.Arm
             }
         }
 
-        void Scroller(float x)
+        void Scroller(in float x)
         {
             if (isScrolling)
             {

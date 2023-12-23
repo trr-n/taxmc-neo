@@ -1,5 +1,6 @@
-using trrne.Box;
+using System;
 using UnityEngine;
+using trrne.Box;
 
 namespace trrne.Core
 {
@@ -32,8 +33,7 @@ namespace trrne.Core
 
         public void SetDirection(Direction direction)
         {
-            this.direction = direction;
-            speed = direction switch
+            speed = (this.direction = direction) switch
             {
                 Direction.Left => -baseSpeed,
                 Direction.Right => baseSpeed,
@@ -47,11 +47,8 @@ namespace trrne.Core
 
         void Move()
         {
-            float speed = Time.deltaTime * this.speed;
-            transform.Translate(speed * Vec.X, Space.World);
-
-            float rotate = Numcs.Abs(this.speed * 32f);
-            transform.Rotate(-speed * rotate * Vec.Z, Space.Self);
+            transform.Translate(Time.deltaTime * speed, 0, 0, Space.World);
+            transform.Rotate(0, 0, -speed * MathF.Abs(speed * 32f), Space.Self);
         }
     }
 }

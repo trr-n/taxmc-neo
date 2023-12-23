@@ -7,17 +7,17 @@ namespace trrne.Core
     {
         public bool IsHit { get; private set; }
 
-        void OnTriggerEnter2D(Collider2D info)
+        void OnTriggerEnter2D(Collider2D other)
         {
-            if (info.CompareLayer(Config.Layers.PLAYER))
+            if (other.CompareLayer(Config.Layers.PLAYER))
             {
                 IsHit = true;
             }
         }
 
-        void OnTriggerExit2D(Collider2D info)
+        void OnTriggerExit2D(Collider2D other)
         {
-            if (info.CompareLayer(Config.Layers.PLAYER))
+            if (other.CompareLayer(Config.Layers.PLAYER))
             {
                 IsHit = false;
             }

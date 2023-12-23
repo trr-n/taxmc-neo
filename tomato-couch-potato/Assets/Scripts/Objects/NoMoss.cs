@@ -10,8 +10,8 @@ namespace trrne.Core
     {
         public enum RotateDirection
         {
-            Left = -1,
-            Right = 1,
+            Left = 1,
+            Right = -1,
             Fixed = 0
         }
 
@@ -27,13 +27,12 @@ namespace trrne.Core
 
         protected override void Behavior()
         {
-            if (!Rotatable || this.direction == RotateDirection.Fixed)
+            if (!Rotatable || direction == RotateDirection.Fixed)
             {
                 return;
             }
 
-            var direction = (float)this.direction * speed * Vec.Z;
-            transform.Rotate(Time.deltaTime * direction, Space.World);
+            transform.Rotate(0, 0, Time.deltaTime * (float)direction * speed, Space.World);
         }
     }
 }

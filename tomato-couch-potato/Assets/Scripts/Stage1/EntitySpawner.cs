@@ -28,9 +28,9 @@ namespace trrne.Core
             {
                 entity.Instantiate(transform.position);
             }
-            catch (UnassignedReferenceException)
+            catch (UnassignedReferenceException e)
             {
-                throw new Karappoyanke();
+                throw new Karappoyanke(e.Message);
             }
         }
     }

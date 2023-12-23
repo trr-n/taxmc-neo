@@ -32,7 +32,7 @@ namespace trrne.Core
             player = Gobject.GetWithTag<Player>(Config.Tags.PLAYER);
 
             inits = new Vector3[eyes.Length];
-            for (int i = 0; i < eyes.Length; i++)
+            for (int i = 0; i < eyes.Length; ++i)
             {
                 inits[i] = eyes[i].transform.position;
             }
@@ -40,23 +40,22 @@ namespace trrne.Core
 
         void Update()
         {
-            Vector3[] directions = {
-                player.Core - eyes[0].transform.position,
-                player.Core - eyes[1].transform.position
-            };
-
-            // player within range
             if (!flag.IsInsideRange)
             {
                 return;
             }
 
-            for (int i = 0; i < eyes.Length; i++)
+            Vector3[] directions = {
+                player.Core - eyes[0].transform.position,
+                player.Core - eyes[1].transform.position
+            };
+
+
+            for (int i = 0; i < eyes.Length; ++i)
             {
                 eyes[i].transform.position = inits[i] + directions[i].normalized * EYE_BUMP;
             }
 
-            // the fires generate if timer value is upper than rapid rate 
             if ((fireRapidTimer += Time.deltaTime) >= fireRapidRate)
             {
                 fires.TryInstantiate(transform.position);

@@ -6,7 +6,8 @@ namespace trrne.Core
     public class PC : Object
     {
         Color[] DisplayColors => new Color[] { Color.red, Color.green };
-        const int UNUSED = 0, USED = 1;
+        const int UNUSED = 0;
+        const int USED = 1;
 
         SpriteRenderer display;
 

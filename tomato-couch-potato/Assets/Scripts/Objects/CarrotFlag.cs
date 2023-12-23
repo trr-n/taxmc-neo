@@ -7,9 +7,9 @@ namespace trrne.Core
         public int Count { get; private set; }
         public void ResetCount() => Count = 0;
 
-        void OnTriggerEnter2D(Collider2D info)
+        void OnTriggerEnter2D(Collider2D other)
         {
-            if (info.CompareTag(Config.Tags.PLAYER))
+            if (other.CompareTag(Config.Tags.PLAYER))
             {
                 ++Count;
             }

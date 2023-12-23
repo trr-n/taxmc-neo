@@ -9,7 +9,7 @@ namespace trrne.Box
     {
         public double x, y, z;
 
-        public V3(double x, double y, double z)
+        public V3(in double x, in double y, in double z)
         {
             this.x = x;
             this.y = y;
@@ -18,53 +18,46 @@ namespace trrne.Box
 
         public V3() : this(0, 0, 0) { }
 
-        public void Set(double x, double y, double z)
-        {
-            this.x = x;
-            this.y = y;
-            this.z = z;
-        }
+        public V3(in V3 other) : this(other.x, other.y, other.z) { }
 
-        public void Set(V3 other)
-        {
-            x = other.x;
-            y = other.y;
-            z = other.z;
-        }
+        public static V3 operator +(in V3 a) => new(+a.x, +a.y, +a.z);
+        public static V3 operator +(in V3 a, in V3 b) => new(a.x + b.x, a.y + b.y, a.z + b.z);
+        public static V3 operator +(in V3 a, in double b) => new(a.x + b, a.y + b, a.z + b);
+        public static V3 operator +(in double b, in V3 a) => new(b + a.x, b + a.y, b + a.z);
 
-        public V3 Get() => this;
+        public static V3 operator -(in V3 a) => new(-a.x, -a.y, -a.z);
+        public static V3 operator -(in V3 a, in V3 b) => new(a.x - b.x, a.y - b.y, a.z - b.z);
+        public static V3 operator -(in V3 a, in double b) => new(a.x - b, a.y - b, a.z - b);
+        public static V3 operator -(in double b, in V3 a) => new(b - a.x, b - a.y, b - a.z);
 
-        public static V3 operator +(V3 a) => new(+a.x, +a.y, +a.z);
-        public static V3 operator +(V3 a, V3 b) => new(a.x + b.x, a.y + b.y, a.z + b.z);
-        public static V3 operator +(V3 a, double b) => new(a.x + b, a.y + b, a.z + b);
-        public static V3 operator +(double b, V3 a) => new(b + a.x, b + a.y, b + a.z);
+        public static V3 operator *(in V3 a, in V3 b) => new(a.x * b.x, a.y * b.y, a.z * b.z);
+        public static V3 operator *(in V3 a, in double b) => new(a.x * b, a.y * b, a.z * b);
+        public static V3 operator *(in double b, in V3 a) => new(b * a.x, b * a.y, b * a.z);
 
-        public static V3 operator -(V3 a) => new(-a.x, -a.y, -a.z);
-        public static V3 operator -(V3 a, V3 b) => new(a.x - b.x, a.y - b.y, a.z - b.z);
-        public static V3 operator -(V3 a, double b) => new(a.x - b, a.y - b, a.z - b);
-        public static V3 operator -(double b, V3 a) => new(b - a.x, b - a.y, b - a.z);
+        public static V3 operator /(in V3 a, in V3 b) => new(a.x / b.x, a.y / b.y, a.z / b.z);
+        public static V3 operator /(in V3 a, in double b) => new(a.x / b, a.y / b, a.z / b);
+        public static V3 operator /(in double a, in V3 b) => new(a / b.x, a / b.y, a / b.z);
 
-        public static V3 operator *(V3 a, V3 b) => new(a.x * b.x, a.y * b.y, a.z * b.z);
-        public static V3 operator *(V3 a, double b) => new(a.x * b, a.y * b, a.z * b);
-        public static V3 operator *(double b, V3 a) => new(b * a.x, b * a.y, b * a.z);
+        public static V3 operator ++(in V3 a) => new(a.x + 1, a.y + 1, a.z + 1);
+        public static V3 operator --(in V3 a) => new(a.x - 1, a.y - 1, a.z - 1);
 
-        public static V3 operator /(V3 a, V3 b) => new(a.x / b.x, a.y / b.y, a.z / b.z);
-        public static V3 operator /(V3 a, double b) => new(a.x / b, a.y / b, a.z / b);
-        public static V3 operator /(double a, V3 b) => new(a / b.x, a / b.y, a / b.z);
+        public static bool operator ==(in V3 a, in V3 b) => a.x == b.x && a.y == b.y && a.z == b.z;
+        public static bool operator !=(in V3 a, in V3 b) => a.x != b.x && a.y != b.y && a.z != b.z;
+        public static bool operator >(in V3 a, in V3 b) => a.x > b.x && a.y > b.y && a.z > b.z;
+        public static bool operator >=(in V3 a, in V3 b) => a.x >= b.x && a.y >= b.y && a.z >= b.z;
+        public static bool operator <(in V3 a, in V3 b) => a.x < b.x && a.y < b.y && a.z < b.z;
+        public static bool operator <=(in V3 a, in V3 b) => a.x <= b.x && a.y <= b.y && a.z <= b.z;
 
-        public static V3 operator ++(V3 a) => new(a.x + 1, a.y + 1, a.z + 1);
-        public static V3 operator --(V3 a) => new(a.x - 1, a.y - 1, a.z - 1);
+        // public static bool operator >(in V3 a, in double b) => a.x > b && a.y > b && a.z > b;
+        // public static bool operator >=(in V3 a, in double b) => a.x >= b && a.y >= b && a.z >= b;
+        // public static bool operator <(in V3 a, in double b) => a.x < b && a.y < b && a.z < b;
+        // public static bool operator <=(in V3 a, in double b) => a.x <= b && a.y <= b && a.z <= b;
 
-        public static bool operator ==(V3 a, V3 b) => a.x == b.x && a.y == b.y && a.z == b.z;
-        public static bool operator !=(V3 a, V3 b) => a.x != b.x && a.y != b.y && a.z != b.z;
-        public static bool operator >(V3 a, V3 b) => a.x > b.x && a.y > b.y && a.z > b.z;
-        public static bool operator >=(V3 a, V3 b) => a.x >= b.x && a.y >= b.y && a.z >= b.z;
-        public static bool operator <(V3 a, V3 b) => a.x < b.x && a.y < b.y && a.z < b.z;
-        public static bool operator <=(V3 a, V3 b) => a.x <= b.x && a.y <= b.y && a.z <= b.z;
+        public bool Twins(in double ofs) => ofs.Twins(x) && ofs.Twins(y) && ofs.Twins(z);
 
-        public static explicit operator string(V3 a) => $"({a.x}, {a.y}, {a.z})";
-        public static explicit operator Vector2(V3 a) => new((float)a.x, (float)a.y);
-        public static explicit operator Vector3(V3 a) => new((float)a.x, (float)a.y, (float)a.z);
+        public static explicit operator string(in V3 a) => $"({a.x}, {a.y}, {a.z})";
+        public static explicit operator Vector2(in V3 a) => new((float)a.x, (float)a.y);
+        public static explicit operator Vector3(in V3 a) => new((float)a.x, (float)a.y, (float)a.z);
 
         public override bool Equals(object obj) => base.Equals(obj);
         public override int GetHashCode() => base.GetHashCode();
@@ -72,10 +65,10 @@ namespace trrne.Box
         public double Mag() => Math.Sqrt(x * x + y * y);
         public V3 Nor() => new(x / Mag(), y / Mag(), z / Mag());
 
-        public double Dot(V3 other) => x * other.x + y * other.y + z * other.z;
-        public double Dot(V3 a, V3 b) => a.Dot(b);
+        public double Dot(in V3 other) => x * other.x + y * other.y + z * other.z;
+        public double Dot(in V3 a, in V3 b) => a.Dot(b);
 
-        public double Angle(V3 other)
+        public double Angle(in V3 other)
         {
             double lselfl = Mag(), lotherl = other.Mag();
             if (Math.Abs(lselfl + lotherl) < 1e-44)
@@ -84,6 +77,30 @@ namespace trrne.Box
             }
             return Math.Acos(Dot(other) / lselfl / lotherl) * (180 / MathF.PI);
         }
-        public static double Angle(V3 a, V3 b) => a.Angle(b);
+        public static double Angle(in V3 a, in V3 b) => a.Angle(b);
+
+        public void Translate(in V3 v)
+        {
+            if (v.Twins(0.0))
+            {
+                return;
+            }
+
+            x += v.x;
+            y += v.y;
+            z += v.z;
+        }
+
+        public void Translate(in double d)
+        {
+            if (d.Twins(0.0))
+            {
+                return;
+            }
+
+            x += d;
+            y += d;
+            z += d;
+        }
     }
 }

@@ -28,7 +28,7 @@ namespace trrne.Core
 
         protected override void Behavior()
         {
-            if (!flag.Hit)
+            if (!flag.IsHitting)
             {
                 return;
             }
@@ -37,14 +37,26 @@ namespace trrne.Core
             {
                 source.TryPlayOneShot(sounds.Choice());
                 sr.sprite = sprites[1];
-                gimmicks.ForEach(gim => gim.TryGetComponent(out IGimmick g).If(g.On));
+                gimmicks.ForEach(gimmick =>
+                {
+                    if (gimmick.TryGetComponent(out IGimmick g))
+                    {
+                        g.On();
+                    }
+                });
                 isActive = false;
             }
             else if (!isActive && Inputs.Down(Config.Keys.BUTTON))
             {
                 source.TryPlayOneShot(sounds.Choice());
                 sr.sprite = sprites[0];
-                gimmicks.ForEach(gim => gim.TryGetComponent(out IGimmick g).If(g.Off));
+                gimmicks.ForEach(gim =>
+                {
+                    if (gim.TryGetComponent(out IGimmick g))
+                    {
+                        g.Off();
+                    }
+                });
                 isActive = true;
             }
         }

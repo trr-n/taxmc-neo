@@ -34,9 +34,9 @@ namespace trrne.test
 
     public class V2 : IEquatable<V2>
     {
-        private float x, y;
+        private double x, y;
 
-        public V2(float x, float y)
+        public V2(double x, double y)
         {
             this.x = x;
             this.y = y;
@@ -44,7 +44,7 @@ namespace trrne.test
 
         public V2() : this(0f, 0f) { }
 
-        public void Set(float x, float y)
+        public void Set(double x, double y)
         {
             this.x = x;
             this.y = y;
@@ -59,20 +59,20 @@ namespace trrne.test
         public V2 Get() => new(x, y);
 
         public static V2 operator +(V2 a, V2 b) => new(a.x + b.x, a.y + b.y);
-        public static V2 operator +(V2 a, float b) => new(a.x + b, a.y + b);
-        public static V2 operator +(float a, V2 b) => new(a + b.x, a + b.y);
+        public static V2 operator +(V2 a, double b) => new(a.x + b, a.y + b);
+        public static V2 operator +(double a, V2 b) => new(a + b.x, a + b.y);
 
         public static V2 operator -(V2 a, V2 b) => new(a.x - b.x, a.y - b.y);
-        public static V2 operator -(V2 a, float b) => new(a.x - b, a.y - b);
-        public static V2 operator -(float a, V2 b) => new(a - b.x, a - b.y);
+        public static V2 operator -(V2 a, double b) => new(a.x - b, a.y - b);
+        public static V2 operator -(double a, V2 b) => new(a - b.x, a - b.y);
 
         public static V2 operator *(V2 a, V2 b) => new(a.x * b.x, a.y * b.y);
-        public static V2 operator *(V2 a, float b) => new(a.x * b, a.y * b);
-        public static V2 operator *(float a, V2 b) => new(a * b.x, a * b.y);
+        public static V2 operator *(V2 a, double b) => new(a.x * b, a.y * b);
+        public static V2 operator *(double a, V2 b) => new(a * b.x, a * b.y);
 
         public static V2 operator /(V2 a, V2 b) => new(a.x / b.x, a.y / b.y);
-        public static V2 operator /(V2 a, float b) => new(a.x / b, a.y / b);
-        public static V2 operator /(float a, V2 b) => new(a / b.x, a / b.y);
+        public static V2 operator /(V2 a, double b) => new(a.x / b, a.y / b);
+        public static V2 operator /(double a, V2 b) => new(a / b.x, a / b.y);
 
         public static bool operator ==(V2 a, V2 b) => a.x == b.x && a.y == b.y;
         public static bool operator !=(V2 a, V2 b) => a.x != b.x && a.y != b.y;
@@ -83,33 +83,34 @@ namespace trrne.test
         public static bool operator <(V2 a, V2 b) => a.x < b.x && a.y < b.y;
         public static bool operator <=(V2 a, V2 b) => a.x <= b.x && a.y <= b.y;
 
-        public bool Equals(V2 other) => new V2(x, y) == other;
+        // public bool Equals(V2 other) => new V2(x, y) == other;
+        public bool Equals(V2 other) => this == other;
 
         public override bool Equals(object obj) => base.Equals(obj);
         public override int GetHashCode() => base.GetHashCode();
 
-        public V2 Abs() => new(x >= 0 ? x : -x, y >= 0 ? y : -y);
+        public V2 Abs() => new(Math.Abs(x), Math.Abs(y));
 
-        public static float Dot(V2 a, V2 b) => a.x * b.x + a.y * b.y;
+        public static double Dot(V2 a, V2 b) => a.x * b.x + a.y * b.y;
 
-        public static float Cross(V2 a, V2 b) => a.x * b.y - a.y * b.x;
+        public static double Cross(V2 a, V2 b) => a.x * b.y - a.y * b.x;
 
-        public float Magnitude() => MathF.Sqrt(x * x + y * y);
+        public double Magnitude() => Math.Sqrt(x * x + y * y);
 
-        public static float Distance(V2 a, V2 b) => (a - b).Magnitude();
+        public static double Distance(V2 a, V2 b) => (a - b).Magnitude();
 
-        public static float Angle(V2 a, V2 b)
+        public static double Angle(V2 a, V2 b)
         {
-            float na = a.Magnitude(), nb = b.Magnitude();
-            if (MathF.Abs(na + nb) < 1e-45f)
+            double na = a.Magnitude(),
+                nb = b.Magnitude();
+            if (Math.Abs(na + nb) < 1e-44f)
             {
                 return 0f;
             }
-            return MathF.Acos(Dot(a, b) / na / nb * (180 / MathF.PI));
+            return Math.Acos(Dot(a, b) / na / nb * (180 / Math.PI));
         }
 
-        public static V2 P2R(V2 a) => new(a.x * MathF.Cos(a.y), a.x * MathF.Sin(a.y));
-        public static V2 R2P(V2 a) => new();
+        public static V2 P2R(V2 a) => new(a.x * Math.Cos(a.y), a.x * Math.Sin(a.y));
         // https://www.optics-words.com/english_for_science/coordinate.html#chapter2_3
     }
 }

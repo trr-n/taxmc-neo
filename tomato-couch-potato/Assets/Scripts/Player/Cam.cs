@@ -16,7 +16,7 @@ namespace trrne.Core
 
         Player player;
 
-        (float min, float max) zoom => (4.5f, 12f);
+        (float MIN, float MAX) ZOOM => (4.5f, 12f);
 
         void Start()
         {
@@ -48,7 +48,7 @@ namespace trrne.Core
         {
             if (Inputs.Down(Config.Keys.RESET_ZOOM))
             {
-                raw = zoom.max - zoom.min;
+                raw = ZOOM.MAX - ZOOM.MIN;
                 FetchValue(raw);
             }
 
@@ -67,7 +67,7 @@ namespace trrne.Core
             {
                 raw += -Mathf.Sign(maxis);
             }
-            raw = Mathf.Clamp(raw, zoom.min, zoom.max);
+            raw = Mathf.Clamp(raw, ZOOM.MIN, ZOOM.MAX);
             FetchValue(raw);
         }
 

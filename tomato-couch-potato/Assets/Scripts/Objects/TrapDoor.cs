@@ -34,7 +34,7 @@ namespace trrne.Core
         [SerializeField]
         bool enableColliderOnRotating = false;
 
-        const float OFFSET = 1e-8f;
+        const float ROTATE_OFFSET = 1e-8f;
 
         BoxCollider2D hitbox;
 
@@ -46,7 +46,7 @@ namespace trrne.Core
 
         public override void On()
         {
-            var offset = Vec.Z * ((float)amount - OFFSET);
+            Vector3 offset = new(0, 0, (float)amount - ROTATE_OFFSET);
             var rotation = direct switch
             {
                 RotateDirection.Left => value + offset,
@@ -60,14 +60,27 @@ namespace trrne.Core
             };
 
             transform.DORotate(rotation, speed)
-                .OnPlay(() => (!enableColliderOnRotating).If(() => hitbox.enabled = false))
+                .OnPlay(() =>
+                {
+                    if (!enableColliderOnRotating)
+                    {
+                        hitbox.enabled = false;
+                    }
+                })
                 .OnComplete(() => hitbox.enabled = true);
         }
 
         public override void Off()
         {
             transform.DORotate(value, speed)
-                .OnPlay(() => (!enableColliderOnRotating).If(() => hitbox.enabled = false))
+                .OnPlay(() =>
+                {
+                    if (!enableColliderOnRotating)
+                    {
+                        hitbox.enabled = false;
+                    }
+                }
+                )
                 .OnComplete(() => hitbox.enabled = true);
         }
     }

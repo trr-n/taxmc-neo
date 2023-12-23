@@ -35,7 +35,7 @@ namespace trrne.Core
                 return;
             }
 
-            var pp = range / 2 + Mathf.PingPong(pingpong.Sf() * speed, range) * Time.timeScale;
+            float pp = range / 2 + Mathf.PingPong(pingpong.Sf() * speed, range) * Time.timeScale;
             switch (type)
             {
                 case MovingType.Horizontal:

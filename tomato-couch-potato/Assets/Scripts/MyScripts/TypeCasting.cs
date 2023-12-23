@@ -7,6 +7,8 @@ namespace trrne.Box
 {
     public static class TypeCasting
     {
+        public static T Cast<T>(this object o) => (T)o;
+
         public static Vector2 ToV2(this Vector3 vector) => (Vector2)vector;
 
         public static Vector3 ToV3(this Vector2 vector) => (Vector3)vector;

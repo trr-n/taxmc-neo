@@ -11,16 +11,26 @@ namespace trrne.Core
         bool isLanding = false;
         float timer = 0f;
 
-        Vector2 hitbox => new(size.x * 0.9f, size.y * 0.5f);
+        Vector2 hitboxSize => new(size.x * 0.9f, size.y * 0.5f);
+
+        BoxCollider2D hitbox;
+
+        public bool Mendable { get; private set; }
+
+        protected override void Start()
+        {
+            base.Start();
+            hitbox = GetComponent<BoxCollider2D>();
+        }
 
         protected override void Behavior()
         {
             DetectPlayer();
-            AddLandingTimer();
+            IncrementLandingTimer();
             DestroyMe();
         }
 
-        void AddLandingTimer()
+        void IncrementLandingTimer()
         {
             if (isLanding)
             {
@@ -36,12 +46,21 @@ namespace trrne.Core
             {
                 return;
             }
-            Destroy(gameObject);
+            sr.enabled = false;
+            Mendable = true;
+            // Destroy(gameObject);
+        }
+
+        void Mend()
+        {
+            sr.enabled = true;
+            Mendable = false;
         }
 
         void DetectPlayer()
         {
-            isLanding = Gobject.Boxcast(out var hit, transform.position, hitbox, Config.Layers.PLAYER)
+            isLanding = Gobject.Boxcast(
+                out var hit, transform.position, hitboxSize, Config.Layers.PLAYER)
                 && hit.TryGetComponent<Player>(out _);
         }
     }
