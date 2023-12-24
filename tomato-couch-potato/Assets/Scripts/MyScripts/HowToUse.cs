@@ -169,21 +169,25 @@ sealed class HowToUse : Singleton<HowToUse>
     void Lottery_()
     {
         // LotteryPairで各要素と、その重みを定義
-        LotteryPair<string, float> pair = new(
+        LotteryPair<string> pair = new(
             ("tanaka", 10),
             ("matsuda", 90),
-            ("yoshino", 11.1f)
+            ("yoshino", 11.1)
         );
         _ = Lottery.Weighted(pair);
 
         // 二分探索木(binary search tree)
-        _ = Lottery.Bst(1.2f, 0.2f, 123.4f);
+        _ = Lottery.Bst(1.2, 0.2, 123.4);
     }
 
-    struct SaveData { public string name; public int age; }
+    struct SaveData
+    {
+        public string name;
+        public int age;
+    }
     void Save_()
     {
-        SaveData data = new SaveData
+        SaveData data = new()
         {
             name = "hoge",
             age = 100

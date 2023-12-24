@@ -81,7 +81,7 @@ namespace trrne.Core
                     return;
                 }
 
-                for (int i = 0, j = -1; j < 2; i++, j += 2)
+                for (int i = 0, j = -1; j < 2; ++i, j += 2)
                 {
                     horizon[i].ray = new(
                         transform.position + new Vector3(originX * j / 2, originY),

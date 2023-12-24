@@ -7,12 +7,12 @@ namespace trrne.Box
     {
         readonly SSW ssw;
 
-        public Stopwatch() => ssw = new();
         public Stopwatch(bool start)
         {
             ssw = new();
             start.If(ssw.Start);
         }
+        public Stopwatch() : this(false) { }
 
         public void Start() => ssw.Start();
         public void Stop() => ssw.Stop();

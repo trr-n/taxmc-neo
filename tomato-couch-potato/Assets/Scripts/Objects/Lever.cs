@@ -28,7 +28,7 @@ namespace trrne.Core
 
         protected override void Behavior()
         {
-            if (!flag.IsHitting)
+            if (!flag.IsHitting != false)
             {
                 return;
             }

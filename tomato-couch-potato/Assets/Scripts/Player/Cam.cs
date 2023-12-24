@@ -16,7 +16,9 @@ namespace trrne.Core
 
         Player player;
 
-        (float MIN, float MAX) ZOOM => (4.5f, 12f);
+        // (float MIN, float MAX) ZOOM => (4.5f, 12f);
+        const float ZOOM_MIN = 4.5f;
+        const float ZOOM_MAX = 12f;
 
         void Start()
         {
@@ -29,11 +31,6 @@ namespace trrne.Core
         }
 
         void LateUpdate()
-        {
-            Follow();
-        }
-
-        void Follow()
         {
             if (!Followable)
             {
@@ -48,8 +45,7 @@ namespace trrne.Core
         {
             if (Inputs.Down(Config.Keys.RESET_ZOOM))
             {
-                raw = ZOOM.MAX - ZOOM.MIN;
-                FetchValue(raw);
+                FetchValue(raw = ZOOM_MAX - ZOOM_MIN);
             }
 
             kaxis = Input.GetAxisRaw(Config.Keys.ZOOM);
@@ -67,11 +63,11 @@ namespace trrne.Core
             {
                 raw += -Mathf.Sign(maxis);
             }
-            raw = Mathf.Clamp(raw, ZOOM.MIN, ZOOM.MAX);
-            FetchValue(raw);
+            FetchValue(raw = Mathf.Clamp(raw, ZOOM_MIN, ZOOM_MAX));
         }
 
-        void FetchValue(float value) => Camera.main.orthographicSize = value;
+        void FetchValue(float value)
+        => Camera.main.orthographicSize = value;
     }
 }
 

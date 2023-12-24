@@ -27,7 +27,7 @@ namespace trrne.Brain
             cam = Gobject.GetWithTag<Cam>(Config.Tags.MAIN_CAMERA);
             cam.Followable = true;
 
-            GameObject[] enemies = Gobject.GetsWithTag(Config.Tags.ENEMY);
+            var enemies = Gobject.GetsWithTag(Config.Tags.ENEMY);
             enemies.ForEach(enemy => enemy.GetComponent<Creature>().Enable = true);
         }
 

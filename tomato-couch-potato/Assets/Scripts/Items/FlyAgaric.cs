@@ -8,9 +8,9 @@ namespace trrne.Core
     {
         protected override void Behavior() { }
 
-        async void OnTriggerEnter2D(Collider2D _info)
+        async void OnTriggerEnter2D(Collider2D info)
         {
-            if (_info.TryGetComponent(out Player player) && !player.IsDying)
+            if (info.TryGetComponent(out Player player) && !player.IsDying)
             {
                 effects.TryInstantiate(transform.position);
                 await player.Die(Cause.Muscarine);

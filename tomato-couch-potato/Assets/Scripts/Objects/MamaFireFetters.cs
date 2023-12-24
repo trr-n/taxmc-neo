@@ -1,5 +1,6 @@
 using Cysharp.Threading.Tasks;
 using UnityEngine;
+using trrne.Box;
 
 namespace trrne.Core
 {
@@ -17,8 +18,7 @@ namespace trrne.Core
         protected override void Movement()
         {
             // プレイヤーとの距離がdetectRange以下なら追随する
-            var distance = Vector2.Distance(transform.position, player.Core);
-            isTracking = distance < detectRange;
+            isTracking = Vec.Distance(transform, player.Core) < detectRange;
             transform.Translate(Time.deltaTime * speed * direction);
         }
 

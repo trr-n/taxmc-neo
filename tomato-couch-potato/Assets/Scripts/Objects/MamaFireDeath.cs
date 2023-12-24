@@ -1,4 +1,5 @@
 using Cysharp.Threading.Tasks;
+using trrne.Box;
 using UnityEngine;
 
 namespace trrne.Core
@@ -13,8 +14,7 @@ namespace trrne.Core
         protected override void Movement()
         {
             // プレイヤーとの距離がchaseRange以下になるまで追随、以下になったらそのまま直進
-            var distance = Vector2.Distance(transform.position, player.Core);
-            if (!isClose && distance <= chaseRange)
+            if (!isClose && Vec.Distance(transform, player.Core) <= chaseRange)
             {
                 isClose = true;
                 isTracking = false;

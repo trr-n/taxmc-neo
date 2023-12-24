@@ -4,7 +4,11 @@ namespace trrne.Box
 {
     public static class Audio
     {
-        public static AudioClip TryPlayOneShot(this AudioSource source, AudioClip clip, float volume = 1f)
+        public static AudioClip TryPlayOneShot(
+            this AudioSource source,
+            AudioClip clip, float
+            volume = 1f
+        )
         {
             if (clip != null)
             {
@@ -14,7 +18,11 @@ namespace trrne.Box
             return null;
         }
 
-        public static AudioClip TryPlayOneShot(this AudioSource source, AudioClip[] clips, float volume = 1f)
+        public static AudioClip TryPlayOneShot(
+            this AudioSource source,
+            AudioClip[] clips,
+            float volume = 1f
+        )
         {
             if (clips.Length > 0)
             {

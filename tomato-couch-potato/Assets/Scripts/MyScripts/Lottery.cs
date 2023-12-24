@@ -1,25 +1,27 @@
-﻿namespace trrne.Box
+﻿using System;
+
+namespace trrne.Box
 {
     public static class Lottery
     {
         // https://nekojara.city/unity-weighted-random-selection
         // https://youtu.be/3CQCBQRq0FA
-        public static int Bst(params float[] weights)
+        public static int Bst(params double[] weights)
         {
             if (weights.Length <= 0)
             {
                 throw new Karappoyanke("nanka kakankai");
             }
 
-            var totals = new float[weights.Length];
-            var total = 0f;
+            var totals = new double[weights.Length];
+            double total = .0;
             for (int i = 0; i < weights.Length; i++)
             {
                 total += weights[i];
                 totals[i] = total;
             }
 
-            float random = Rand.Float(max: total);
+            double random = Rand.Double(max: total);
             int bottom = 0, top = totals.Length - 1;
             while (bottom < top)
             {
@@ -30,7 +32,8 @@
                 }
                 else
                 {
-                    if (random >= (middle > 0 ? totals[middle - 1] : 0))
+                    double point = middle > 0 ? totals[middle - 1] : 0;
+                    if (random >= point)
                     {
                         return middle;
                     }
@@ -40,7 +43,10 @@
             return top;
         }
 
-        public static T Weighted<T>(this LotteryPair<T, float> pairs)
+        public static int Bst(params float[] weights)
+        => Bst(Array.ConvertAll(weights, w => (double)w));
+
+        public static T Weighted<T>(this LotteryPair<T> pairs)
         => pairs.Size() switch
         {
             0 => throw null,

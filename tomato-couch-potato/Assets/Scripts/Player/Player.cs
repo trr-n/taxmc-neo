@@ -326,6 +326,7 @@ namespace trrne.Core
 
             // mend carrots
             Gobject.Finds<Carrot>().ForEach(c => c.Mendable.If(c.Mend));
+            Gobject.Finds<MoroiFloor>().ForEach(m => m.Mendable.If(m.Mend));
 
             ReturnToCheckpoint();
             animator.StopPlayback();

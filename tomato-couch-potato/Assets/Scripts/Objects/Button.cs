@@ -45,7 +45,7 @@ namespace trrne.Core
             {
                 isPressing = true;
                 sr.sprite = sprites[ON];
-                var distance = Vector2.Distance(transform.position, player.position);
+                float distance = Vector2.Distance(transform.position, player.position);
                 Recorder.Instance.PlayOneShot(sounds.Choice(), 1 / (distance + 1));
                 effectiveSW.Restart();
 

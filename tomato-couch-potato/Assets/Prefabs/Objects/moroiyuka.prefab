@@ -12,9 +12,9 @@ GameObject:
   - component: {fileID: 291288717037885801}
   - component: {fileID: 3563288452098430614}
   - component: {fileID: 81187844130126518}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: moroiyuka
-  m_TagString: Untagged
+  m_TagString: Ground
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

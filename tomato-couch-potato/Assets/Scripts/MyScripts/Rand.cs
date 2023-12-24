@@ -15,7 +15,8 @@ namespace trrne.Box
         /// <param name="min">最小値</param>
         /// <param name="max">最大値(含む)</param>
         /// <returns>minからmaxまでの乱数を返す</returns>
-        public static double Double(double min = 0.0, double max = 0.0) => min + (rand.NextDouble() * (max - min));
+        public static double Double(double min = 0.0, double max = 0.0)
+        => min + (rand.NextDouble() * (max - min));
 
         /// <summary>
         /// 乱数生成器 -> <b>float</b><br/>
@@ -23,7 +24,8 @@ namespace trrne.Box
         /// <param name="min">最小値</param>
         /// <param name="max">最大値(含む)</param>
         /// <returns>minからmaxまでの乱数を返す</returns>
-        public static float Float(float min = 0, float max = 0) => (float)Double(min, max);
+        public static float Float(float min = 0, float max = 0)
+        => (float)Double(min, max);
 
         /// <summary>
         /// 乱数生成器 -> <b>float</b><br/>
@@ -31,7 +33,8 @@ namespace trrne.Box
         /// <param name="min">最小値</param>
         /// <param name="max">最大値(含む)</param>
         /// <returns>minからmaxまでの乱数を返す</returns>
-        public static int Int(int min = 0, int max = 0) => rand.Next(min, max + 1);
+        public static int Int(int min = 0, int max = 0)
+        => Numcs.Cutail((float)Double(min, max));
 
         /// <summary>
         /// 文字列生成 -> <b>string</b><br/>

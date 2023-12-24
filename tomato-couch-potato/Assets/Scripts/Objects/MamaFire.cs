@@ -5,8 +5,7 @@ using UnityEngine;
 
 namespace trrne.Core
 {
-    [RequireComponent(typeof(CircleCollider2D))]
-    [RequireComponent(typeof(SpriteRenderer))]
+    [RequireComponent(typeof(CircleCollider2D), typeof(SpriteRenderer))]
     public abstract class MamaFire : MonoBehaviour
     {
         [SerializeField]

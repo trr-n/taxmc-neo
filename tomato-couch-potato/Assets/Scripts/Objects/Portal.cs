@@ -30,7 +30,7 @@ namespace trrne.Core
 
             children = frames.Length;
             speeds = new float[children];
-            for (int i = 0; i < children; i++)
+            for (int i = 0; i < children; ++i)
             {
                 frames[i].GetComponent<SpriteRenderer>().SetAlpha(framesAlpha);
                 speeds[i] = Rand.Float(-FRAME_ROTATE_SPEED, FRAME_ROTATE_SPEED);
@@ -43,7 +43,7 @@ namespace trrne.Core
 #if UNITY_EDITOR
             Debug.DrawLine(transform.position, portalGoal.Goal);
 #endif
-            for (int i = 0; i < children; i++)
+            for (int i = 0; i < children; ++i)
             {
                 frames[i].transform.Rotate(Time.deltaTime * speeds[i] * Vec.Z);
             }

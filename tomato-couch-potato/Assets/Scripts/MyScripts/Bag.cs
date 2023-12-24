@@ -1,26 +1,25 @@
 ﻿namespace trrne.Box
 {
-    public sealed class Keyboard<T>
+    public sealed class MutBag<T>
     {
         T[] items;
         public int Length { get; private set; }
         public int Capacity { get; private set; }
 
-        public T this[int index] => items[index];
-
-        public Keyboard()
+        public T this[int index]
         {
-            Capacity = 10;
-            items = new T[Capacity];
-            Length = 0;
+            get => items[index];
+            set => items[index] = value;
         }
 
-        public Keyboard(int capacity)
+        public MutBag(int capacity)
         {
             Capacity = capacity;
             items = new T[capacity];
             Length = 0;
         }
+
+        public MutBag() : this(10) { }
 
         public void Add(T item)
         {
@@ -40,7 +39,7 @@
 
         public void RemoveAt(int index)
         {
-            if (Length <= 0)
+            if (Length <= 0 || index < 0)
             {
                 return;
             }

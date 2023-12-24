@@ -11,9 +11,8 @@ namespace trrne.Core
 
         Player player;
         readonly Stopwatch lifetimeSW = new(true);
-        // const float FadeSpeed = 2;
-        // const float MoveSpeed = 0.5f;
-        (float fade, float move) speed => (2f, 0.5f);
+        const float FADE_SPEED = 2f;
+        const float MOVE_SPEED = .5f;
         float left = 0f;
         Vector2 mirrored => new(-1, 1);
 
@@ -39,11 +38,11 @@ namespace trrne.Core
         // flip the sprite
         void Flip()
         {
-            float selfx = transform.position.x,
-                playerx = player.transform.position.x,
-                scalex = transform.localScale.x;
-            if ((selfx > playerx && left != scalex)
-                || (selfx < playerx && left == scalex))
+            float self = transform.position.x,
+                player = this.player.transform.position.x,
+                scale = transform.localScale.x;
+            if ((self > player && left != scale)
+                || (self < player && left == scale))
             {
                 transform.localScale *= mirrored;
             }
@@ -53,7 +52,7 @@ namespace trrne.Core
         protected override void Movement()
         {
             var direction = player.Core - transform.position;
-            transform.Translate(Time.deltaTime * speed.move * direction.normalized);
+            transform.Translate(Time.deltaTime * MOVE_SPEED * direction.normalized);
         }
 
         public override async UniTask Die() => await Die(UniTask.Delay(0));
@@ -64,7 +63,7 @@ namespace trrne.Core
             float alpha = 1f;
             while (alpha >= 0 && this != null)
             {
-                alpha -= Time.deltaTime * speed.fade;
+                alpha -= Time.deltaTime * FADE_SPEED;
                 sr.SetAlpha(alpha.Twins(0f) ? 0 : alpha);
                 await UniTask.WaitForSeconds(Time.deltaTime);
             }

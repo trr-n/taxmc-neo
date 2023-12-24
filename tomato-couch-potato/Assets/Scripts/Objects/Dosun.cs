@@ -19,8 +19,10 @@ namespace trrne.Core
 
         bool isDossun = true;
         float dossunPower = 0f;
-        (float MIN, float MAX) DOSSUN_POWER => (0f, 20f);
-        const float DOSSUN_VOLUME_REDUCTION_RATIO = 1.2f;
+        // (float MIN, float MAX) DOSSUN_POWER => (0f, 20f);
+        const float POWER_MIN = 0.0f;
+        const float POWER_MAX = 20.0f;
+        const float VOLUME_RED_RATIO = 1.2f;
 
         Rigidbody2D rb;
         Vector3 initPos;
@@ -50,7 +52,7 @@ namespace trrne.Core
                 return;
             }
             dossunPower += Time.deltaTime * accelRatio;
-            dossunPower = Mathf.Clamp(dossunPower, DOSSUN_POWER.MIN, DOSSUN_POWER.MAX);
+            dossunPower = Mathf.Clamp(dossunPower, POWER_MIN, POWER_MAX);
             transform.Translate(Time.deltaTime * dossunPower * down * -Vec.Y);
         }
 
@@ -63,8 +65,10 @@ namespace trrne.Core
 
             if (other.CompareLayer(Config.Layers.JUMPABLE))
             {
-                float distance = (transform.position - player.position).magnitude;
-                Recorder.Instance.PlayOneShot(ses.Choice(), 1 / (distance / DOSSUN_VOLUME_REDUCTION_RATIO));
+                Recorder.Instance.PlayOneShot(
+                    ses.Choice(),
+                    1 / (Vec.Distance(transform, player) / VOLUME_RED_RATIO)
+                );
 
                 dossunPower = 0f;
                 isDossun = false;

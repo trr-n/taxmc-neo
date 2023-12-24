@@ -25,7 +25,6 @@ namespace trrne.Core
 
         protected override void Behavior()
         {
-            DetectPlayer();
             IncrementLandingTimer();
             DestroyMe();
         }
@@ -34,6 +33,7 @@ namespace trrne.Core
         {
             if (isLanding)
             {
+                print("moroyuka landing.");
                 timer += Time.deltaTime;
                 return;
             }
@@ -46,22 +46,31 @@ namespace trrne.Core
             {
                 return;
             }
-            sr.enabled = false;
+            timer = 0f;
+            sr.enabled = hitbox.enabled = false;
             Mendable = true;
-            // Destroy(gameObject);
         }
 
-        void Mend()
+        public void Mend()
         {
-            sr.enabled = true;
+            sr.enabled = hitbox.enabled = true;
             Mendable = false;
         }
 
-        void DetectPlayer()
+        void OnCollisionEnter2D(Collision2D collisionInfo)
         {
-            isLanding = Gobject.Boxcast(
-                out var hit, transform.position, hitboxSize, Config.Layers.PLAYER)
-                && hit.TryGetComponent<Player>(out _);
+            if (collisionInfo.TryGetComponent(out Player _))
+            {
+                isLanding = true;
+            }
+        }
+
+        void OnCollisionExit2D(Collision2D collisionInfo)
+        {
+            if (collisionInfo.TryGetComponent(out Player _))
+            {
+                isLanding = false;
+            }
         }
     }
 }

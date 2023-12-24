@@ -12,9 +12,9 @@ namespace trrne.Core
         [SerializeField]
         protected Sprite[] sprites;
 
-        protected SpriteRenderer SR { get; private set; }
+        protected SpriteRenderer sr { get; private set; }
 
-        protected Vector2 Size => SR.bounds.size;
+        protected Vector2 size => sr.bounds.size;
 
         /// <summary>
         /// アニメーションのインターバル<br/>初期値: 0.02
@@ -31,7 +31,7 @@ namespace trrne.Core
 
         protected virtual void Start()
         {
-            SR = GetComponent<SpriteRenderer>();
+            sr = GetComponent<SpriteRenderer>();
         }
 
         void Update()
@@ -39,7 +39,7 @@ namespace trrne.Core
             Receive();
             Animation();
 
-            anima.Sprite(animatable, SR, Time.deltaTime, sprites);
+            anima.Sprite(animatable, sr, Time.deltaTime, sprites);
         }
 
         void Animation()
@@ -49,10 +49,10 @@ namespace trrne.Core
                 return;
             }
 
-            if (anim.sw.Sf() >= interval)
+            if (anim.sw.sf >= interval)
             {
                 anim.index = anim.index >= sprites.Length - 1 ? 0 : anim.index += 1;
-                SR.sprite = sprites[anim.index];
+                sr.sprite = sprites[anim.index];
                 anim.sw.Restart();
             }
         }
@@ -65,6 +65,6 @@ namespace trrne.Core
         /// <summary>
         /// 画像を設定
         /// </summary>
-        protected void SetSprite(Sprite _sprite) => SR.sprite = _sprite;
+        protected void SetSprite(Sprite _sprite) => sr.sprite = _sprite;
     }
 }

@@ -10,7 +10,8 @@ namespace trrne.Brain
         [SerializeField]
         CanvasGroup canvas;
 
-        const float SHOW_TIME = 3, FADE_SPEED = 10;
+        const float SHOWING_TIME = 3;
+        const float FADING_SPEED = 10;
         readonly Stopwatch sw = new();
 
         Player player;
@@ -26,7 +27,7 @@ namespace trrne.Brain
 
         void Update()
         {
-            if (sw.Sf() >= SHOW_TIME)
+            if (sw.sf >= SHOWING_TIME)
             {
                 sw.Reset();
                 StartCoroutine(FadeOut());
@@ -39,7 +40,7 @@ namespace trrne.Brain
             while (alpha >= 0)
             {
                 yield return null;
-                alpha -= Time.unscaledDeltaTime * FADE_SPEED;
+                alpha -= Time.unscaledDeltaTime * FADING_SPEED;
                 canvas.alpha = alpha;
             }
             canvas.alpha = 0;

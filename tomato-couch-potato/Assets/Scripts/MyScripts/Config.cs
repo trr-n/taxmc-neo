@@ -6,63 +6,68 @@ namespace trrne
     {
         public readonly struct Scenes
         {
-            public const string TITLE = "Title";
-            public const string SELECT = "Select";
-            public const string PREFIX = "Game";
-            public const string GAME0 = "Game0";
-            public const string GAME1 = "Game1";
+            public const string
+            TITLE = "Title",
+            SELECT = "Select",
+            PREFIX = "Game",
+            GAME0 = "Game0",
+            GAME1 = "Game1";
         }
 
         public readonly struct Layers
         {
-            public const int DEFAULT = 1 << 0;
-            public const int PLAYER = 1 << 6;
-            public const int JUMPABLE = 1 << 7;
-            public const int OBJECT = 1 << 8;
-            public const int CREATURE = 1 << 9;
+            public const int
+            DEFAULT = 1 << 0,
+            PLAYER = 1 << 6,
+            JUMPABLE = 1 << 7,
+            OBJECT = 1 << 8,
+            CREATURE = 1 << 9;
         }
 
         public readonly struct Keys
         {
-            public const string HORIZONTAL = "Horizontal";
-            public const string MIRRORED_HORIZONTAL = "ReversedHorizontal";
-            public const string VERTICAL = "Vertical";
-            public const string WHEEL = "Mouse ScrollWheel";
-            public const string JUMP = "Jump";
-            public const string DOWN = "Down";
-            public const string ZOOM = "Zoom";
-            public const string BUTTON = "Button";
-            public const string PAUSE = "Pause";
-            public const string RESPAWN = "Respawn";
-            public const string MOUSE_ZOOM = "Mouse ScrollWheel Zoom";
-            public const string RESET_ZOOM = "ResetZoom";
+            public const string
+            HORIZONTAL = "Horizontal",
+            MIRRORED_HORIZONTAL = "ReversedHorizontal",
+            VERTICAL = "Vertical",
+            WHEEL = "Mouse ScrollWheel",
+            JUMP = "Jump",
+            DOWN = "Down",
+            ZOOM = "Zoom",
+            BUTTON = "Button",
+            PAUSE = "Pause",
+            RESPAWN = "Respawn",
+            MOUSE_ZOOM = "Mouse ScrollWheel Zoom",
+            RESET_ZOOM = "ResetZoom";
         }
 
         public readonly struct Tags
         {
-            public const string MANAGER = "Manager";
-            public const string JUMPABLE = "Jumpable";
-            public const string PLAYER = "Player";
-            public const string LADDER = "Ladder";
-            public const string JUMP_PAD = "Pad";
-            public const string MAIN_CAMERA = "MainCamera";
-            public const string ENEMY = "Enemy";
-            public const string PANEL = "Panel";
-            public const string ICE = "Ice";
-            public const string HOLE = "Hole";
-            public const string MAMA = "Mama";
-            public const string INFO = "Info";
-            public const string SPECTRE = "Spectre";
+            public const string
+            MANAGER = "Manager",
+            JUMPABLE = "Jumpable",
+            PLAYER = "Player",
+            LADDER = "Ladder",
+            JUMP_PAD = "Pad",
+            MAIN_CAMERA = "MainCamera",
+            ENEMY = "Enemy",
+            PANEL = "Panel",
+            ICE = "Ice",
+            HOLE = "Hole",
+            MAMA = "Mama",
+            INFO = "Info",
+            SPECTRE = "Spectre";
         }
 
         public readonly struct Animations
         {
-            public const string Idle = "Idle";
-            public const string Jump = "Jump";
-            public const string Walk = "Walk";
-            public const string Venom = "Venom";
-            public const string Venomed = "venom_die";
-            public const string Die = "Die";
+            public const string
+            Idle = "Idle",
+            Jump = "Jump",
+            Walk = "Walk",
+            Venom = "Venom",
+            Venomed = "venom_die",
+            Die = "Die";
         }
 
         public readonly struct SpawnPositions

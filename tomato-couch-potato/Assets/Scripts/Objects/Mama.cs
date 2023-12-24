@@ -45,15 +45,15 @@ namespace trrne.Core
                 return;
             }
 
-            Vector3[] directions = {
+            var directions = new[] {
                 player.Core - eyes[0].transform.position,
                 player.Core - eyes[1].transform.position
             };
 
-
             for (int i = 0; i < eyes.Length; ++i)
             {
-                eyes[i].transform.position = inits[i] + directions[i].normalized * EYE_BUMP;
+                Vector3 value = inits[i] + directions[i].normalized;
+                eyes[i].transform.position = value * EYE_BUMP;
             }
 
             if ((fireRapidTimer += Time.deltaTime) >= fireRapidRate)

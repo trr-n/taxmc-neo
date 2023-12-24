@@ -32,17 +32,19 @@ namespace trrne.Box
         => MathF.Floor((MathF.Pow(a * 10, digit) * 2 + 1) / 2) / MathF.Pow(10, digit);
 
         /// <summary>
-        /// 四捨五入する -> <b>float</b><br/>
+        /// 四捨五入する -> <b>int</b><br/>
         /// </summary>
         /// <param name="a">対象の数値</param>
         /// <param name="digit">四捨五入する桁</param>
         /// <returns>四捨五入した結果を返す</returns>
-        public static int Round(int a, int digit = 0) => Cutail(Round((float)a, digit));
+        public static int Round(int a, int digit = 0)
+        => Cutail(Round((float)a, digit));
 
         /// <summary>
         /// 四捨五入する -> <b>float</b><br/>
         /// </summary>
-        public static float Round2(float a) => a > 0f ? (long)(a + .5f) : (long)(a - .5f);
+        public static float Round2(float a)
+        => a > 0f ? (long)(a + .5f) : (long)(a - .5f);
 
         /// <summary>
         /// 小数点以下を切り捨てる -> <b>int</b><br/>
@@ -67,7 +69,7 @@ namespace trrne.Box
         /// <param name="b"></param>
         /// <returns>a_cutailとbがほぼ同じならtrueを返す</returns>
         public static bool Twins(this float a, float b)
-        => Abs(b - a) < Max(1e-6f * Max(Abs(a), Abs(b)), Epsilon * 8f);
+        => Math.Abs((double)b - (double)a) < Math.Max(1e-6 * Max(Abs(a), Abs(b)), Epsilon * 8.0);
 
         /// <summary>
         /// 数値を比較する -> <b>bool</b><br/>
@@ -117,6 +119,7 @@ namespace trrne.Box
         /// <param name="min">下限値</param>
         /// <param name="max">上限値</param>
         /// <returns>nがmin以上max未満だったらtrueを返す</returns>
-        public static bool IsCaged(this float n, float min, float max) => !(n > max || n < min);
+        public static bool IsCaged(this float n, float min, float max)
+        => !(n > max || n < min);
     }
 }

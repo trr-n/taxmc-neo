@@ -1,6 +1,7 @@
 using System;
 using UnityEngine;
 using trrne.Box;
+using UnityEngine.UIElements;
 
 namespace trrne.Core
 {
@@ -47,8 +48,8 @@ namespace trrne.Core
 
         void Move()
         {
-            transform.Translate(Time.deltaTime * speed, 0, 0, Space.World);
-            transform.Rotate(0, 0, -speed * MathF.Abs(speed * 32f), Space.Self);
+            transform.Translate(x: Time.deltaTime * speed, space: Space.World);
+            transform.Rotate(z: -speed * MathF.Abs(speed * 32), space: Space.Self);
         }
     }
 }

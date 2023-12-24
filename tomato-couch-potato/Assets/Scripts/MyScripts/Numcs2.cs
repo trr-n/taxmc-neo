@@ -8,7 +8,7 @@ namespace trrne.Box
         /// <summary>
         /// イプシロン(-45乗) -> <b>double</b><br/>
         /// </summary>
-        public const double Epsilon = 1e-45f;
+        public const double Epsilon = 1e-45;
 
         public static double Min(double a, double b) => (a < b) ? a : b;
         public static double Max(double a, double b) => (a > b) ? a : b;

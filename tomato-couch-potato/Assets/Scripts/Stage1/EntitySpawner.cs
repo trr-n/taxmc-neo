@@ -15,7 +15,7 @@ namespace trrne.Core
 
         void Update()
         {
-            if (timer.Sf() >= span)
+            if (timer.sf >= span)
             {
                 SpawnEntity();
                 timer.Restart();

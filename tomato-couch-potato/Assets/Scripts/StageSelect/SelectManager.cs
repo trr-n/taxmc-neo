@@ -44,7 +44,7 @@ namespace trrne.Arm
 
         void Transition()
         {
-            var removed = CenterButton().name.Delete(STAGE_NAME_PREFIX);
+            var removed = CenterButton().name.ToLower().Delete(STAGE_NAME_PREFIX);
             if (CenterButton() != null
                 && int.TryParse(removed, out int idx)
                 && idx <= Recorder.Instance.Done

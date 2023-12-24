@@ -35,8 +35,8 @@ namespace trrne.Box
         public static T GetComponent<T>(this Collider info) => info.gameObject.GetComponent<T>();
         public static T GetComponent<T>(this RaycastHit2D hit) => GetComponent<T>(hit.collider);
 
-        [Obsolete] public static bool TryGetComponent<T>(this Collision2D info, out T t) => info.TryGetComponent(out t);
-        [Obsolete] public static bool TryGetComponent<T>(this Collider2D info, out T t) => info.TryGetComponent(out t);
+        public static bool TryGetComponent<T>(this Collision2D info, out T t) => info.gameObject.TryGetComponent(out t);
+        public static bool TryGetComponent<T>(this Collider2D info, out T t) => info.gameObject.TryGetComponent(out t);
         public static bool TryGetComponent<T>(this Collision info, out T t) => info.gameObject.TryGetComponent(out t);
         public static bool TryGetComponent<T>(this Collider info, out T t) => info.gameObject.TryGetComponent(out t);
         public static bool TryGetComponent<T>(this RaycastHit2D hit, out T t) => hit.collider.TryGetComponent(out t);
