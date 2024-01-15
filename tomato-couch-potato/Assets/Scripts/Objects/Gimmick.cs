@@ -1,5 +1,3 @@
-using UnityEngine;
-
 namespace trrne.Core
 {
     public interface IGimmick
@@ -8,7 +6,7 @@ namespace trrne.Core
         void Off();
     }
 
-    public abstract class Gimmick : MonoBehaviour, IGimmick
+    public abstract class Gimmick : Object, IGimmick
     {
         public abstract void Off();
         public abstract void On();

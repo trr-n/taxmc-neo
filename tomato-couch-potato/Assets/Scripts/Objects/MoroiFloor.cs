@@ -1,54 +1,70 @@
+using System;
 using trrne.Box;
 using UnityEngine;
 
 namespace trrne.Core
 {
-    public class MoroiFloor : Object
+    public class MoroiFloor : Object, IMendable
     {
         [SerializeField]
         float landingToleranceTime = 2f;
 
         bool isLanding = false;
-        float timer = 0f;
-
-        Vector2 hitboxSize => new(size.x * 0.9f, size.y * 0.5f);
+        float landingTime = float.MaxValue;
 
         BoxCollider2D hitbox;
 
         public bool Mendable { get; private set; }
 
+        Player player;
+
+        void Awake()
+        {
+            landingTime = landingToleranceTime;
+        }
+
         protected override void Start()
         {
             base.Start();
+
             hitbox = GetComponent<BoxCollider2D>();
+            player = Gobject.GetWithTag<Player>(Constant.Tags.PLAYER);
         }
 
         protected override void Behavior()
         {
-            IncrementLandingTimer();
+            DecrementLandingTimer();
             DestroyMe();
         }
 
-        void IncrementLandingTimer()
+        void LateUpdate()
+        {
+            // 生きていて乗っていたら
+            if (!player.IsDying && isLanding)
+            {
+                var colorValue = landingTime / landingToleranceTime / 360 * 100;
+                sr.color = Color.HSVToRGB(1, 1, colorValue);
+            }
+        }
+
+        void DecrementLandingTimer()
         {
             if (isLanding)
             {
-                print("moroyuka landing.");
-                timer += Time.deltaTime;
+                landingTime -= Time.deltaTime;
                 return;
             }
-            timer = 0f;
+            landingTime = landingToleranceTime;
         }
 
         void DestroyMe()
         {
-            if (timer < landingToleranceTime)
+            if (landingTime <= 0)
             {
-                return;
+                landingTime = landingToleranceTime;
+                sr.enabled = hitbox.enabled = false;
+                Mendable = true;
             }
-            timer = 0f;
-            sr.enabled = hitbox.enabled = false;
-            Mendable = true;
         }
 
         public void Mend()
@@ -69,6 +85,7 @@ namespace trrne.Core
         {
             if (collisionInfo.TryGetComponent(out Player _))
             {
+                sr.color = Color.white;
                 isLanding = false;
             }
         }

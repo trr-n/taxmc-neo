@@ -25,11 +25,10 @@ namespace trrne.Core
 
         void Update()
         {
-            if (!IsUpdate)
+            if (IsUpdate)
             {
-                return;
+                Goal = transform.position;
             }
-            Goal = transform.position;
         }
     }
 }

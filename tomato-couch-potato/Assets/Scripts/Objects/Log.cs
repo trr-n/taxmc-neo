@@ -1,7 +1,6 @@
 using System;
 using UnityEngine;
 using trrne.Box;
-using UnityEngine.UIElements;
 
 namespace trrne.Core
 {
@@ -29,7 +28,8 @@ namespace trrne.Core
 
         protected override void Behavior()
         {
-            Move();
+            transform.Translate(x: Time.deltaTime * speed);
+            transform.Rotate(z: -speed * MathF.Abs(speed * 32));
         }
 
         public void SetDirection(Direction direction)
@@ -44,12 +44,6 @@ namespace trrne.Core
                     _ => baseSpeed
                 }
             };
-        }
-
-        void Move()
-        {
-            transform.Translate(x: Time.deltaTime * speed, space: Space.World);
-            transform.Rotate(z: -speed * MathF.Abs(speed * 32), space: Space.Self);
         }
     }
 }

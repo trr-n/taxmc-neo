@@ -12,10 +12,8 @@ namespace trrne.Core
         protected override void Behavior()
         {
             // r=ae^(bθ)
-            angle += Time.deltaTime * speed;
-            float zip = a * Mathf.Exp(b * angle);
-            float x = zip * Mathf.Cos(angle), y = zip * Mathf.Sin(angle);
-            transform.position = new(x, y);
+            float zip = a * Mathf.Exp(b * (angle += Time.deltaTime * speed));
+            transform.position = new(zip * Mathf.Cos(angle), zip * Mathf.Sin(angle));
         }
     }
 }

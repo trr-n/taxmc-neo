@@ -4,6 +4,7 @@ using UnityEngine;
 namespace trrne.Core
 {
     [RequireComponent(typeof(SpriteRenderer))]
+    // [RequireComponent(typeof(AudioSource))]
     public abstract class Object : MonoBehaviour
     {
         [SerializeField]
@@ -25,11 +26,13 @@ namespace trrne.Core
         /// </summary>
         protected bool isAnimate { get; set; } = false;
         protected SpriteRenderer sr;
-        protected Vector2 size => sr.bounds.size;
+
+        AudioSource speaker;
 
         protected virtual void Start()
         {
             sr = GetComponent<SpriteRenderer>();
+            speaker = GetComponent<AudioSource>();
         }
 
         protected virtual void Update()
@@ -47,7 +50,7 @@ namespace trrne.Core
         readonly Runner set = new();
         void Animation()
         {
-            if (!isAnimate || sprites.Length <= 0)
+            if (!isAnimate && sprites.Length <= 0)
             {
                 return;
             }
@@ -62,5 +65,8 @@ namespace trrne.Core
                     break;
             }
         }
+
+        protected void PlayOneShot() => speaker.PlayOneShot(ses.Choice());
+        protected void PlayOneShot(AudioClip clip) => speaker.PlayOneShot(clip);
     }
 }

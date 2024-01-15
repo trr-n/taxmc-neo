@@ -1,5 +1,6 @@
 using UnityEngine;
 using trrne.Box;
+using System;
 
 namespace trrne.Core
 {
@@ -10,19 +11,17 @@ namespace trrne.Core
         [SerializeField]
         float offsetY = 1;
 
-        float kaxis = 0f, maxis = 0f;
+        (float keyboard, float wheel) axis = (0, 0);
+
         float raw = 0f;
-        const float Z = -10f;
 
         Player player;
 
-        // (float MIN, float MAX) ZOOM => (4.5f, 12f);
-        const float ZOOM_MIN = 4.5f;
-        const float ZOOM_MAX = 12f;
+        readonly (float min, float max) zoom = (4.5f, 12f);
 
         void Start()
         {
-            player = Gobject.GetWithTag<Player>(Config.Tags.PLAYER);
+            player = Gobject.GetWithTag<Player>(Constant.Tags.PLAYER);
         }
 
         void Update()
@@ -37,37 +36,35 @@ namespace trrne.Core
                 return;
             }
 
-            var p = player.transform.position;
-            transform.position = new(p.x, p.y + offsetY, Z);
+            Vector3 p = player.transform.position;
+            transform.position = new(p.x, p.y + offsetY, -10);
         }
 
         void Zoom()
         {
-            if (Inputs.Down(Config.Keys.RESET_ZOOM))
+            if (Inputs.Down(Constant.Keys.RESET_ZOOM))
             {
-                FetchValue(raw = ZOOM_MAX - ZOOM_MIN);
+                FetchValue(raw = zoom.max - zoom.min);
             }
 
-            kaxis = Input.GetAxisRaw(Config.Keys.ZOOM);
-            maxis = Input.GetAxisRaw(Config.Keys.MOUSE_ZOOM);
-            if (0f.Twins(kaxis + maxis))
+            axis = (Input.GetAxisRaw(Constant.Keys.ZOOM), Input.GetAxisRaw(Constant.Keys.MOUSE_ZOOM));
+            if (0f.Twins(axis.keyboard + axis.wheel))
             {
                 return;
             }
 
-            if (kaxis != 0)
+            if (axis.keyboard != 0)
             {
-                raw += Mathf.Sign(kaxis) / 4;
+                raw += MathF.Sign(axis.keyboard) / 4;
             }
-            else if (maxis != 0)
+            else if (axis.wheel != 0)
             {
-                raw += -Mathf.Sign(maxis);
+                raw += -MathF.Sign(axis.wheel);
             }
-            FetchValue(raw = Mathf.Clamp(raw, ZOOM_MIN, ZOOM_MAX));
+            FetchValue(raw = Mathf.Clamp(raw, zoom.min, zoom.max));
         }
 
-        void FetchValue(float value)
-        => Camera.main.orthographicSize = value;
+        void FetchValue(float value) => Camera.main.orthographicSize = value;
     }
 }
 

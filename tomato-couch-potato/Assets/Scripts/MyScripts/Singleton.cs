@@ -5,7 +5,7 @@ namespace trrne.Box
     public abstract class Singleton<T> : MonoBehaviour
         where T : MonoBehaviour
     {
-        protected virtual bool dontDestroy { get; } = true;
+        protected virtual bool DontDestroy { get; } = true;
 
         static T instance;
         public static T Instance
@@ -27,7 +27,7 @@ namespace trrne.Box
                 Destroy(this);
             }
 
-            if (dontDestroy)
+            if (DontDestroy)
             {
                 DontDestroyOnLoad(gameObject);
             }

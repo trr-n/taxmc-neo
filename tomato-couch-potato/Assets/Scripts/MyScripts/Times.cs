@@ -4,22 +4,22 @@ namespace trrne.Box
 {
     public static class Times
     {
-        public static string Raw()
-        => (Date(TimesFormat.Domestics) + Time(TimesFormat.Domestics)).DeleteLump("/", ":");
-        public static string raw => Raw();
+        static readonly DateTime now = DateTime.Now;
+
+        public static string Raw() => (Date(TimesFormat.D) + Time(TimesFormat.D)).DeleteLump("/", ":");
 
         public static string Date(TimesFormat format = TimesFormat.Domestics)
         => format switch
         {
-            TimesFormat.International => $"{DateTime.Now.Day}/{DateTime.Now.Month}/{DateTime.Now.Year}",
-            TimesFormat.Domestics or _ => $"{DateTime.Now.Year}/{DateTime.Now.Month}/{DateTime.Now.Day}",
+            TimesFormat.International or TimesFormat.I => $"{now.Day}/{now.Month}/{now.Year}",
+            TimesFormat.Domestics or TimesFormat.D or _ => $"{now.Year}/{now.Month}/{now.Day}",
         };
 
         public static string Time(TimesFormat format = TimesFormat.Domestics)
         => format switch
         {
-            TimesFormat.International => $"{DateTime.Now.Second}:{DateTime.Now.Minute}:{DateTime.Now.Hour}",
-            TimesFormat.Domestics or _ => $"{DateTime.Now.Hour}:{DateTime.Now.Minute}:{DateTime.Now.Second}",
+            TimesFormat.International => $"{now.Second}:{now.Minute}:{now.Hour}",
+            TimesFormat.Domestics or _ => $"{now.Hour}:{now.Minute}:{now.Second}",
         };
     }
 }

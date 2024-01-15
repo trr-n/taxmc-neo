@@ -3,14 +3,14 @@ using UnityEngine;
 
 namespace trrne.Core
 {
-    public class Carrot : Object
+    public class Carrot : Object, IMendable
     {
         [SerializeField]
         [Tooltip("limit回踏んだらアウト")]
         int limitSteps = 2;
 
         CarrotFlag flag;
-        new BoxCollider2D collider;
+        BoxCollider2D hitbox;
 
         public bool Mendable { get; private set; }
         public float Ratio => (float)flag.Count / limitSteps;
@@ -21,8 +21,9 @@ namespace trrne.Core
 
             sr.sprite = sprites[0];
             flag = transform.GetFromChild<CarrotFlag>();
+            hitbox = GetComponent<BoxCollider2D>();
+
             flag.ResetCount();
-            collider = GetComponent<BoxCollider2D>();
         }
 
         protected override void Behavior()
@@ -31,7 +32,7 @@ namespace trrne.Core
             {
                 effects.TryInstantiate(transform.position);
                 Mendable = true;
-                sr.enabled = collider.enabled = false;
+                sr.enabled = hitbox.enabled = false;
             }
             sr.sprite = sprites[Ratio < .5f ? 0 : 1];
         }
@@ -40,7 +41,7 @@ namespace trrne.Core
         {
             Mendable = false;
             flag.ResetCount();
-            sr.enabled = collider.enabled = true;
+            sr.enabled = hitbox.enabled = true;
         }
     }
 }

@@ -20,7 +20,6 @@ namespace trrne.Core
         [SerializeField]
         GameObject[] eyes;
         Vector3[] inits;
-        // Vector3[] directions;
 
         /// <summary>
         /// 黒目の可動域
@@ -29,7 +28,7 @@ namespace trrne.Core
 
         void Start()
         {
-            player = Gobject.GetWithTag<Player>(Config.Tags.PLAYER);
+            player = Gobject.GetWithTag<Player>(Constant.Tags.PLAYER);
 
             inits = new Vector3[eyes.Length];
             for (int i = 0; i < eyes.Length; ++i)
@@ -45,15 +44,10 @@ namespace trrne.Core
                 return;
             }
 
-            var directions = new[] {
-                player.Core - eyes[0].transform.position,
-                player.Core - eyes[1].transform.position
-            };
-
             for (int i = 0; i < eyes.Length; ++i)
             {
-                Vector3 value = inits[i] + directions[i].normalized;
-                eyes[i].transform.position = value * EYE_BUMP;
+                var offset = player.Core - eyes[i].transform.position;
+                eyes[i].transform.position = inits[i] + offset.normalized * EYE_BUMP;
             }
 
             if ((fireRapidTimer += Time.deltaTime) >= fireRapidRate)

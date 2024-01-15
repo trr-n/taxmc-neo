@@ -11,7 +11,6 @@ namespace trrne.Core
         [SerializeField]
         AudioClip[] sounds;
 
-        AudioSource source;
         bool isActive = false;
 
         LeverFlag flag;
@@ -21,42 +20,28 @@ namespace trrne.Core
             base.Start();
 
             flag = transform.GetFromChild<LeverFlag>();
-            source = Gobject.GetWithTag<AudioSource>(Config.Tags.MANAGER);
-
             sr.sprite = sprites[isActive ? 0 : 1];
         }
 
         protected override void Behavior()
         {
-            if (!flag.IsHitting != false)
+            if (!flag.IsHitting && Inputs.Down(Constant.Keys.BUTTON))
             {
                 return;
             }
 
-            if (isActive && Inputs.Down(Config.Keys.BUTTON))
+            if (isActive)
             {
-                source.TryPlayOneShot(sounds.Choice());
+                PlayOneShot(sounds.Choice());
                 sr.sprite = sprites[1];
-                gimmicks.ForEach(gimmick =>
-                {
-                    if (gimmick.TryGetComponent(out IGimmick g))
-                    {
-                        g.On();
-                    }
-                });
+                gimmicks.ForEach(gimmick => gimmick.TryGetComponent(out IGimmick g).If(g.On));
                 isActive = false;
             }
-            else if (!isActive && Inputs.Down(Config.Keys.BUTTON))
+            else
             {
-                source.TryPlayOneShot(sounds.Choice());
+                PlayOneShot(sounds.Choice());
                 sr.sprite = sprites[0];
-                gimmicks.ForEach(gim =>
-                {
-                    if (gim.TryGetComponent(out IGimmick g))
-                    {
-                        g.Off();
-                    }
-                });
+                gimmicks.ForEach(gimmick => gimmick.TryGetComponent(out IGimmick g).If(g.Off));
                 isActive = true;
             }
         }

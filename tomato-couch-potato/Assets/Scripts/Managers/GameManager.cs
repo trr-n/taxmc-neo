@@ -10,25 +10,26 @@ namespace trrne.Brain
         [SerializeField]
         Text timeT;
 
-        Cam cam;
         TimeManager time;
-        PauseMenu menu;
 
         void Start()
         {
             time = GetComponent<TimeManager>();
             time.Start();
 
-            menu = GetComponent<PauseMenu>();
+            PauseMenu menu = GetComponent<PauseMenu>();
             menu.Inactive();
 
             Physics2D.gravity = Vec.Gravity;
 
-            cam = Gobject.GetWithTag<Cam>(Config.Tags.MAIN_CAMERA);
+            Cam cam = Gobject.GetWithTag<Cam>(Constant.Tags.MAIN_CAMERA);
             cam.Followable = true;
 
-            var enemies = Gobject.GetsWithTag(Config.Tags.ENEMY);
+            GameObject[] enemies = Gobject.GetsWithTag(Constant.Tags.ENEMY);
             enemies.ForEach(enemy => enemy.GetComponent<Creature>().Enable = true);
+
+            AudioSource[] speakers = FindObjectsByType<AudioSource>(FindObjectsSortMode.None);
+            speakers.ForEach(speaker => speaker.rolloffMode = AudioRolloffMode.Linear);
         }
 
         void Update()

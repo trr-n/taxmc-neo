@@ -1,6 +1,7 @@
 using System.Text;
 using System.Collections.Generic;
 using System.Security.Cryptography;
+using System;
 
 namespace trrne.Secret
 {
@@ -33,7 +34,7 @@ namespace trrne.Secret
             managed.GenerateIV();
 
             using ICryptoTransform encrypt = managed.CreateEncryptor(managed.Key, managed.IV);
-            byte[] dst = encrypt.TransformFinalBlock(src, 0, src.Length);
+            var dst = encrypt.TransformFinalBlock(src, 0, src.Length);
             List<byte> compile = new(salt);
             compile.AddRange(managed.IV);
             compile.AddRange(dst);
@@ -58,7 +59,7 @@ namespace trrne.Secret
 
             using ICryptoTransform decrypt = managed.CreateDecryptor(managed.Key, managed.IV);
             int index = size.buffer * 2, count = compile.Count - (size.buffer * 2);
-            byte[] plain = compile.GetRange(index, count).ToArray();
+            var plain = compile.GetRange(index, count).ToArray();
             return decrypt.TransformFinalBlock(plain, 0, plain.Length);
         }
 

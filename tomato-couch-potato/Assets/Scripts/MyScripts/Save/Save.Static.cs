@@ -7,12 +7,7 @@ namespace trrne.Secret
 {
     public sealed partial class Save
     {
-        public static void Write(
-            object data,
-            string password,
-            string path,
-            FileMode mode = FileMode.Create
-        )
+        public static void Write(object data, string password, string path, FileMode mode = FileMode.Create)
         {
             using FileStream stream = new(path, mode);
             IEncryption encrypt = new Rijndael(password);
@@ -20,11 +15,7 @@ namespace trrne.Secret
             stream.Write(dataArr, 0, dataArr.Length);
         }
 
-        public static bool Read<T>(
-            out T read,
-            string password,
-            string path
-        )
+        public static bool Read<T>(out T read, string password, string path)
         {
             using (FileStream stream = new(path, FileMode.Open))
             {

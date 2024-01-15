@@ -28,11 +28,11 @@ namespace trrne.Box
             return names;
         }
 
-        public static int Total(ScenesCountingFormat which)
+        public static int Total(ScenesCountingType which)
         => which switch
         {
-            ScenesCountingFormat.Unbuilt => sceneCountInBuildSettings,
-            ScenesCountingFormat.Built => sceneCount,
+            ScenesCountingType.Unbuilt => sceneCountInBuildSettings,
+            ScenesCountingType.Built => sceneCount,
             _ => -1
         };
 

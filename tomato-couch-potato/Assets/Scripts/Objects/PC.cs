@@ -17,7 +17,7 @@ namespace trrne.Core
         {
             base.Start();
 
-            display = transform.GetFromChild<SpriteRenderer>(0);
+            display = transform.GetFromChild<SpriteRenderer>();
             display.color = DisplayColors[UNUSED];
         }
 
@@ -32,10 +32,7 @@ namespace trrne.Core
                 effects.TryInstantiate(transform.position);
                 display.color = DisplayColors[USED];
 
-                player.SetCheckpoint(
-                    x: transform.position.x,
-                    y: Numcs.Cutail(transform.position.y)
-                );
+                player.SetCheckpoint(transform.position.x, MF.Cutail(transform.position.y));
             }
         }
     }

@@ -15,7 +15,7 @@ namespace trrne.Box
 
             var totals = new double[weights.Length];
             double total = .0;
-            for (int i = 0; i < weights.Length; i++)
+            for (int i = 0; i < weights.Length; ++i)
             {
                 total += weights[i];
                 totals[i] = total;
@@ -43,8 +43,7 @@ namespace trrne.Box
             return top;
         }
 
-        public static int Bst(params float[] weights)
-        => Bst(Array.ConvertAll(weights, w => (double)w));
+        public static int Bst(params float[] weights) => Bst(Array.ConvertAll(weights, w => (double)w));
 
         public static T Weighted<T>(this LotteryPair<T> pairs)
         => pairs.Size() switch

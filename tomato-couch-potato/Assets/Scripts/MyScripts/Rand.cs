@@ -15,8 +15,7 @@ namespace trrne.Box
         /// <param name="min">最小値</param>
         /// <param name="max">最大値(含む)</param>
         /// <returns>minからmaxまでの乱数を返す</returns>
-        public static double Double(double min = 0.0, double max = 0.0)
-        => min + (rand.NextDouble() * (max - min));
+        public static double Double(double min = 0.0, double max = 0.0) => rand.NextDouble() * (max - min) + min;
 
         /// <summary>
         /// 乱数生成器 -> <b>float</b><br/>
@@ -24,8 +23,7 @@ namespace trrne.Box
         /// <param name="min">最小値</param>
         /// <param name="max">最大値(含む)</param>
         /// <returns>minからmaxまでの乱数を返す</returns>
-        public static float Float(float min = 0, float max = 0)
-        => (float)Double(min, max);
+        public static float Float(float min = 0, float max = 0) => float.Parse(Double(min, max).ToString()); // (float)Double(min, max);
 
         /// <summary>
         /// 乱数生成器 -> <b>float</b><br/>
@@ -33,8 +31,7 @@ namespace trrne.Box
         /// <param name="min">最小値</param>
         /// <param name="max">最大値(含む)</param>
         /// <returns>minからmaxまでの乱数を返す</returns>
-        public static int Int(int min = 0, int max = 0)
-        => Numcs.Cutail((float)Double(min, max));
+        public static int Int(int min = 0, int max = 0) => int.Parse(Double(min, max).ToString()); // MF.Cutail((float)Double(min, max));
 
         /// <summary>
         /// 文字列生成 -> <b>string</b><br/>
@@ -48,15 +45,15 @@ namespace trrne.Box
             char[] numbers = "0123456789".ToCharArray(),
                alphabets = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz".ToCharArray();
 
-            string Mixer(char[] array, int? start, int? end)
+            string Mixer(char[] array, int start, int end)
             {
-                bool isMixed = Shorthand.None(array, start, end);
-                char[] chars = new char[length];
+                bool isMixed = array is null && start == -1 && end == -1;
+                var chars = new char[length];
                 for (int i = 0; i < length; i++)
                 {
                     chars[i] = isMixed ?
                         alphabets.Concat(numbers).ToArray().Choice() :
-                        array[Int((int)start, (int)end - 1)];
+                        array[Int(start, end - 1)];
                 }
                 return chars.Link();
             }
@@ -67,13 +64,12 @@ namespace trrne.Box
                 RandStringType.ABUpper => Mixer(alphabets, alphabets.Length / 2, alphabets.Length),
                 RandStringType.ABLower => Mixer(alphabets, 0, alphabets.Length),
                 RandStringType.Number => Mixer(numbers, 0, numbers.Length),
-                RandStringType.Mixed or _ => Mixer(null, null, null)
+                RandStringType.Mixed or _ => Mixer(null, -1, -1)
             };
         }
 
         public static string String() => String(Int(2, 10), RandStringType.Mixed);
         public static string String(int length) => String(length, RandStringType.Mixed);
-
         public static void String(ref string output, int length) => output = String(length);
 
         public static int Choice(this object[] arr) => rand.Next(0, arr.Length);
@@ -94,6 +90,7 @@ namespace trrne.Box
         /// <returns>リストから選択された要素を返す</returns>
         public static T Choice<T>(this List<T> arr) => arr[rand.Next(0, arr.Count)];
 
-        [Obsolete] public static T Choice<T>(this Array arr) => (T)arr.GetValue(rand.Next(0, arr.Length));
+        [Obsolete]
+        public static T Choice<T>(this Array arr) => (T)arr.GetValue(rand.Next(0, arr.Length));
     }
 }

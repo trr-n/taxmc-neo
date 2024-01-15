@@ -3,7 +3,6 @@ using System.Collections.Generic;
 
 namespace trrne.Box
 {
-    // public class LotteryPair<TSubject, TWeight>
     public class LotteryPair<TSubject>
     {
         readonly List<TSubject> subjects = new();
@@ -19,18 +18,18 @@ namespace trrne.Box
 
         public LotteryPair(params (TSubject subject, double weight)[] pairs)
         {
-            foreach (var (subject, weight) in pairs)
+            for (int i = 0; i < pairs.Length; ++i)
             {
-                subjects.Add(subject);
-                weights.Add(weight);
+                subjects.Add(pairs[i].subject);
+                weights.Add(pairs[i].weight);
             }
         }
 
-        // [Obsolete]
-        // public object this[int index] // => (subjects[index], weights[index]);
-        // {
-        //     get => (subjects[index], weights[index]);
-        //     set => (subjects[index], weights[index]) = value;
-        // }
+        [Obsolete]
+        public object this[int index]
+        {
+            get => (subjects[index], weights[index]);
+            // set => (subjects[index], weights[index]) = value;
+        }
     }
 }

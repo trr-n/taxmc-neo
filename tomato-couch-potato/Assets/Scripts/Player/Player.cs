@@ -1,9 +1,11 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using UnityEngine;
+using UnityEngine.UI;
 using Cysharp.Threading.Tasks;
 using trrne.Box;
 using trrne.Brain;
-using UnityEngine.UI;
+using System.Collections.Generic;
 
 namespace trrne.Core
 {
@@ -16,9 +18,9 @@ namespace trrne.Core
 
     public enum Effect
     {
-        Mirror,
-        Chain,
-        Fetters,
+        Mirror,     // 操作左右反転
+        Chain,      // ジャンプ不可
+        Fetters,    // 移動速度低下
     }
 
     public class Player : MonoBehaviour, ICreature
@@ -26,37 +28,28 @@ namespace trrne.Core
         [SerializeField]
         GameObject diefx;
 
+        /// <summary> 操作フラグ </summary>
         public bool Controllable { get; set; }
-        public bool IsMoveKeyDetecting { get; private set; }
+
+        /// <summary> テレポート中か </summary>
         public bool IsTeleporting { get; set; }
+
+        /// <summary> 死亡処理中か </summary>
         public bool IsDying { get; private set; } = false;
 
         int fxidx = -1;
         public bool[] Effectables { get; private set; }
         public bool[] EffectFlags { get; set; }
+        int effectLength => new Effect().Length();
 
-        (float basis, float max) speed => (
-            basis: 20,
-            max: 10
-        );
-
-        (float fetters, float floating, float move) red => (
-            fetters: 0.5f,
-            floating: 0.95f,
-            move: 0.9f
-        );
-
-        (float floating, float basis) gscale => (
-            floating: 3f,
-            basis: 1f
-        );
+        (float basis, float max) speed => (20f, 10f);
+        (float fetters, float floating, float move) red => (0.5f, 0.95f, 0.9f);
+        (float floating, float basis) gscale => (3f, 1f);
 
         const float JUMP_POWER = 13f;
 
         public bool IsFloating { get; private set; }
-        public Vector2 Velocity { get; private set; }
-        bool onIce = false;
-        bool onGround = false;
+        (bool ice, bool ground) on = (false, false);
 
         Rigidbody2D rb;
         Animator animator;
@@ -68,40 +61,33 @@ namespace trrne.Core
 
         const float INPUT_TOLERANCE = 1 / 3;
 
-        public Vector2 Checkpoint { get; private set; } = Vector2.zero;
+        public Vector2 Checkpoint { get; private set; } = default;
 
         public void SetCheckpoint(Vector2 position) => Checkpoint = position;
-        public void SetCheckpoint(float? x = null, float? y = null)
-        => Checkpoint = new(x ?? transform.position.x, y ?? transform.position.y);
+        public void SetCheckpoint(float? x = null, float? y = null) => Checkpoint = new(x ?? transform.position.x, y ?? transform.position.y);
+
         public void ReturnToCheckpoint() => transform.position = Checkpoint;
 
         Vector2 reverse => new(-1, 1);
 
         Vector2 box;
-        Vector2 sizeMulRatio => new(.8f, .1f);
+        Vector2 hitboxSizeRatio => new(.8f, .1f);
+
+        const int ANIMATION_DELAY = 1250;
 
         void Start()
         {
-            menu = Gobject.GetWithTag<PauseMenu>(Config.Tags.MANAGER);
-            cam = Gobject.GetWithTag<Cam>(Config.Tags.MAIN_CAMERA);
+            menu = Gobject.GetWithTag<PauseMenu>(Constant.Tags.MANAGER);
+            cam = Gobject.GetWithTag<Cam>(Constant.Tags.MAIN_CAMERA);
             animator = GetComponent<Animator>();
             hitbox = GetComponent<BoxCollider2D>();
             rb = GetComponent<Rigidbody2D>();
             rb.gravityScale = gscale.basis;
 
-            int length = new Effect().Length();
-            EffectFlags = new bool[length];
-            Effectables = new bool[length];
-            for (int i = 0; i < EffectFlags.Length; i++)
-            {
-                EffectFlags[i] = false;
-                Effectables[i] = true;
-            }
+            EffectFlags = new bool[effectLength].Set(false);
+            Effectables = new bool[effectLength].Set(true);
 
-            box = new(
-                hitbox.bounds.size.x * sizeMulRatio.x,
-                hitbox.bounds.size.y * sizeMulRatio.y
-            );
+            box = new(hitbox.bounds.size.x * hitboxSizeRatio.x, hitbox.bounds.size.y * hitboxSizeRatio.y);
         }
 
         void FixedUpdate()
@@ -119,13 +105,13 @@ namespace trrne.Core
             PunishFlagsUpdater();
         }
 
-#if DEBUG
+#if !DEBUG
         [SerializeField]
         Text floatingT;
 
         void LateUpdate()
         {
-            floatingT.SetText($"OnIce: {onIce}\nOnGround: {onGround}");
+            floatingT.SetText($"OnIce: {on.ice}\nOnGround: {on.ground}");
         }
 #endif
 
@@ -133,20 +119,19 @@ namespace trrne.Core
         {
             Core = transform.position + new Vector3(0, hitbox.bounds.size.y / 2);
             rb.bodyType = IsTeleporting ? RigidbodyType2D.Static : RigidbodyType2D.Dynamic;
-            IsFloating = !onGround;
-            rb.gravityScale = IsFloating ? gscale.floating : gscale.basis;
+            rb.gravityScale = (IsFloating = !on.ground) ? gscale.floating : gscale.basis;
         }
 
         void Footer()
         {
-            if (!Gobject.Boxcast(out var hit, transform.position, box, Config.Layers.JUMPABLE))
+            if (!Gobject.Boxcast(out var hit, transform.position, box, Constant.Layers.JUMPABLE))
             {
-                onIce = onGround = false;
+                on.ice = on.ground = false;
                 return;
             }
 
-            onGround = hit.CompareLayer(Config.Layers.JUMPABLE);
-            onIce = hit.CompareTag(Config.Tags.ICE);
+            on.ground = hit.CompareLayer(Constant.Layers.JUMPABLE);
+            on.ice = hit.CompareTag(Constant.Tags.ICE);
         }
 
 #if DEBUG
@@ -162,12 +147,7 @@ namespace trrne.Core
         /// </summary>
         void Respawn()
         {
-            if (IsDying)
-            {
-                return;
-            }
-
-            if (Inputs.Down(Config.Keys.RESPAWN))
+            if (!IsDying && Inputs.Down(Constant.Keys.RESPAWN))
             {
                 ReturnToCheckpoint();
             }
@@ -186,7 +166,7 @@ namespace trrne.Core
 
         void PunishFlagsUpdater()
         {
-            for (int i = 0; i < EffectFlags.Length; i++)
+            for (int i = 0; i < effectLength; ++i)
             {
                 Effectables[i] = !EffectFlags[i];
             }
@@ -199,26 +179,14 @@ namespace trrne.Core
                 return;
             }
 
-            string horizontal = EffectFlags[(int)Effect.Mirror] ?
-                Config.Keys.MIRRORED_HORIZONTAL : Config.Keys.HORIZONTAL;
+            string horizontal = EffectFlags[(int)Effect.Mirror] ? Constant.Keys.MIRRORED_HORIZONTAL : Constant.Keys.HORIZONTAL;
             if (Inputs.Down(horizontal))
             {
-                int current = Numcs.Sign(transform.localScale.x);
+                int pre = MathF.Sign(transform.localScale.x);
                 float haxis = Input.GetAxisRaw(horizontal);
-                switch (Numcs.Sign(haxis))
+                if (MathF.Sign(haxis) != 0 && MathF.Sign(haxis) != pre)
                 {
-                    case 1:
-                        if (current != 1)
-                        {
-                            transform.localScale *= reverse;
-                        }
-                        break;
-                    case -1:
-                        if (current != -1)
-                        {
-                            transform.localScale *= reverse;
-                        }
-                        break;
+                    transform.localScale *= reverse;
                 }
             }
         }
@@ -230,17 +198,17 @@ namespace trrne.Core
                 return;
             }
 
-            if (!onGround)
+            if (!on.ground)
             {
-                animator.SetBool(Config.Animations.Jump, true);
+                animator.SetBool(Constant.Animations.Jump, true);
                 return;
             }
 
-            if (Inputs.Down(Config.Keys.JUMP))
+            if (Inputs.Down(Constant.Keys.JUMP))
             {
                 rb.velocity += JUMP_POWER * Vec.Y.ToV2();
             }
-            animator.SetBool(Config.Animations.Jump, false);
+            animator.SetBool(Constant.Animations.Jump, false);
         }
 
         /// <summary>
@@ -253,42 +221,39 @@ namespace trrne.Core
                 return;
             }
 
-            bool walk = Inputs.Pressed(Config.Keys.HORIZONTAL) && onGround;
-            animator.SetBool(Config.Animations.Walk, walk);
+            bool walkAnimationFlag = on.ground && Inputs.Pressed(Constant.Keys.HORIZONTAL);
+            animator.SetBool(Constant.Animations.Walk, walkAnimationFlag);
 
-            string horizontal = EffectFlags[(int)Effect.Mirror] ?
-                Config.Keys.MIRRORED_HORIZONTAL : Config.Keys.HORIZONTAL;
-            Vector2 move = Input.GetAxisRaw(horizontal) * Vec.X;
+            var horizon = EffectFlags[(int)Effect.Mirror] ? Constant.Keys.MIRRORED_HORIZONTAL : Constant.Keys.HORIZONTAL;
+            var move = Vec.MakeVec2(x: Input.GetAxisRaw(horizon));
 
             // 入力がtolerance以下、氷に乗っていない
-            if (move.magnitude <= INPUT_TOLERANCE && !onIce)
+            if (move.magnitude <= INPUT_TOLERANCE && !on.ice)
             {
                 // x軸の速度をspeed.reduction倍
                 rb.SetVelocity(x: rb.velocity.x * red.move);
             }
 
-            float limit = Shorthand.L1ne(() =>
-            {
-                if (EffectFlags[(int)Effect.Fetters])
-                {
-                    return speed.max * red.fetters;
-                }
-                else if (onIce)
-                {
-                    return speed.max * 2;
-                }
-                return speed.max;
-            });
-
             // x軸の速度を制限
             if (rb.bodyType != RigidbodyType2D.Static)
             {
+                float limit = Shorthand.L1ne(() =>
+                {
+                    if (EffectFlags[(int)Effect.Fetters])
+                    {
+                        return speed.max * red.fetters;
+                    }
+                    else if (on.ice)
+                    {
+                        return speed.max * 2;
+                    }
+                    return speed.max;
+                });
                 rb.ClampVelocity(x: (-limit, limit));
             }
 
-            // 浮いていたら移動速度低下
-            float scalar = IsFloating ? red.floating : 1f;
-            rb.velocity += Time.fixedDeltaTime * speed.basis * scalar * move;
+            // 浮いていたら移動速度低下 
+            rb.velocity += Time.fixedDeltaTime * speed.basis * (IsFloating ? red.floating : 1f) * move;
         }
 
         /// <summary>
@@ -302,7 +267,7 @@ namespace trrne.Core
             }
 
             // 敵への当たり判定は除外
-            hitbox.excludeLayers += Config.Layers.CREATURE;
+            hitbox.excludeLayers += Constant.Layers.CREATURE;
 
             IsDying = true;
             Controllable = cam.Followable = false;
@@ -315,29 +280,28 @@ namespace trrne.Core
                     break;
                 case Cause.Muscarine:
                     rb.velocity = Vector2.zero;
-                    animator.Play(Config.Animations.Venomed);
+                    animator.Play(Constant.Animations.Venomed);
                     break;
                 case Cause.Fallen:
-                    animator.Play(Config.Animations.Die);
+                    animator.Play(Constant.Animations.Die);
                     break;
             }
 
-            await UniTask.Delay(1250);
+            await UniTask.Delay(ANIMATION_DELAY);
 
-            // mend carrots
-            Gobject.Finds<Carrot>().ForEach(c => c.Mendable.If(c.Mend));
-            Gobject.Finds<MoroiFloor>().ForEach(m => m.Mendable.If(m.Mend));
+            // mend
+            Gobject.Finds<Carrot>().ForEach(carrot => carrot.Mendable.If(carrot.Mend));
+            Gobject.Finds<MoroiFloor>().ForEach(moro => moro.Mendable.If(moro.Mend));
 
             ReturnToCheckpoint();
             animator.StopPlayback();
 
-            hitbox.excludeLayers -= Config.Layers.CREATURE;
+            hitbox.excludeLayers -= Constant.Layers.CREATURE;
 
             cam.Followable = Controllable = true;
             IsDying = false;
 
             // エフェクトを削除
-            // EffectFlags = Enumerable.Repeat(false, EffectFlags.Length).ToArray();
             EffectFlags.Set(false);
         }
 

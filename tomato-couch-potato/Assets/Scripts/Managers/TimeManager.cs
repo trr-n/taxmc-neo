@@ -5,37 +5,25 @@ namespace trrne.Brain
 {
     public class TimeManager : MonoBehaviour
     {
-        readonly Stopwatch sw = new();
+        readonly Stopwatch stopwatch = new();
 
-        /// <summary>
-        /// 現在のタイム
-        /// </summary>
-        public (int minutes, int seconds) CurrentTimeSep => (sw.M(), sw.S());
-        public string CurrentTimeStr => sw.Spent(StopwatchOutput.MS);
+        public int CurrentTimeMinutes => stopwatch.minute;
+        public int CurrentTimeSeconds => stopwatch.second;
+        public string CurrentTimeStr => stopwatch.Spent(StopwatchOutputFormat.MS);
 
-        /// <summary>
-        /// 動いているか
-        /// </summary>
-        public bool IsRunning() => sw.IsRunning();
+        /// <summary> 動いているか </summary>
+        public bool IsRunning() => stopwatch.IsRunning();
 
-        /// <summary>
-        /// タイマーをスタート
-        /// </summary>
-        public void Start() => sw.Start();
+        /// <summary> タイマーをスタート </summary>
+        public void Start() => stopwatch.Start();
 
-        /// <summary>
-        /// タイマーをストップ
-        /// </summary>
-        public void Stop() => sw.Stop();
+        /// <summary> タイマーをストップ </summary>
+        public void Stop() => stopwatch.Stop();
 
-        /// <summary>
-        /// タイマーをリスタート
-        /// </summary>
-        public void Restart() => sw.Restart();
+        /// <summary> タイマーをリスタート </summary>
+        public void Restart() => stopwatch.Restart();
 
-        /// <summary>
-        /// タイマーをリセット
-        /// </summary>
-        public void Reset() => sw.Reset();
+        /// <summary> タイマーをリセット </summary>
+        public void Reset() => stopwatch.Reset();
     }
 }

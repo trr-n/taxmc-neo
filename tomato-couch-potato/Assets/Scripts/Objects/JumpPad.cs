@@ -1,16 +1,14 @@
 using trrne.Box;
-using trrne.Brain;
 using UnityEngine;
 
 namespace trrne.Core
 {
-    public class JumpPad : MonoBehaviour
+    public class JumpPad : Object
     {
         [SerializeField]
         float jumpPower = 10f;
 
-        [SerializeField]
-        AudioClip se;
+        protected override void Behavior() { }
 
         void OnTriggerEnter2D(Collider2D info)
         {
@@ -18,7 +16,7 @@ namespace trrne.Core
             {
                 rb.velocity = Vector2.zero;
                 rb.velocity += jumpPower * transform.up.ToV2();
-                Recorder.Instance.PlayOneShot(se);
+                PlayOneShot(ses.Choice());
             }
         }
     }

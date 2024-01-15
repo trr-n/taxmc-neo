@@ -38,7 +38,7 @@ namespace trrne.Core
 
         BoxCollider2D hitbox;
 
-        void Start()
+        protected override void Start()
         {
             value = transform.eulerAngles;
             hitbox = transform.GetFromChild<BoxCollider2D>(0);
@@ -46,8 +46,9 @@ namespace trrne.Core
 
         public override void On()
         {
-            Vector3 offset = new(0, 0, (float)amount - ROTATE_OFFSET);
-            var rotation = direct switch
+            var offset = ((float)amount - ROTATE_OFFSET) * Vec.Z;
+
+            Vector3 direct = this.direct switch
             {
                 RotateDirection.Left => value + offset,
                 RotateDirection.Right => value - offset,
@@ -58,8 +59,7 @@ namespace trrne.Core
                 },
                 _ => throw new Exception()
             };
-
-            transform.DORotate(rotation, speed)
+            transform.DORotate(direct, speed)
                 .OnPlay(() =>
                 {
                     if (!enableColliderOnRotating)
@@ -79,10 +79,11 @@ namespace trrne.Core
                     {
                         hitbox.enabled = false;
                     }
-                }
-                )
+                })
                 .OnComplete(() => hitbox.enabled = true);
         }
+
+        protected override void Behavior() { }
     }
 }
 

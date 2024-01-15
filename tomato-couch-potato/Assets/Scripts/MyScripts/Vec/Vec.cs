@@ -50,6 +50,9 @@ namespace trrne.Box
         /// </summary>
         public static Quaternion Q1 => new(1, 1, 1, 1);
 
+        public static Vector2 MakeVec2(float x = 0, float y = 0) => new(x, y);
+        public static Vector3 MakeVec3(float x = 0, float y = 0, float z = 0) => new(x, y, z);
+
         /// <summary>
         /// 重力加速度
         /// </summary>
@@ -66,22 +69,19 @@ namespace trrne.Box
             && Mathf.Approximately(a.y, b.y)
             && Mathf.Approximately(a.z, b.z);
 
-        public static float Dot(Vector2 a, Vector3 b) => a.x * b.x + a.y * b.y;
+        public static float Dot(Vector2 a, Vector3 b)
+        => a.x * b.x + a.y * b.y;
 
         public static float Angle(Vector2 a, Vector2 b)
-        {
-            float lal = Mathf.Sqrt(a.x * a.x + a.y * a.y),
-                lbl = Mathf.Sqrt(b.x * b.x + b.y * b.y);
-            return Mathf.Acos(Dot(a, b) / (lal * lbl));
-        }
+        => MathF.Acos(Dot(a, b) / (a.magnitude * b.magnitude));
 
         /// <summary>
         /// 極座標を直交座標に変換
         /// </summary>
         public static Vector2 Polor2Rectangular(Vector2 p)
-        => new(
-            x: p.x * MathF.Cos(p.y),
-            y: p.x * MathF.Sin(p.y)
-        );
+        => new(p.x * MathF.Cos(p.y), p.x * MathF.Sin(p.y));
+
+        public static Vector3 Mul(this Vector3 v, float a)
+        => new(v.x * a, v.y * a, v.z * a);
     }
 }

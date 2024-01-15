@@ -39,20 +39,18 @@ namespace trrne.Brain
 
         void PanelControl()
         {
-            if (!Inputs.Down(Config.Keys.PAUSE))
+            if (Inputs.Down(Constant.Keys.PAUSE))
             {
-                return;
+                State(!IsPausing);
             }
-            State(!IsPausing);
         }
 
         void FaderHandle(bool fin)
         {
-            if (isFading)
+            if (!isFading)
             {
-                return;
+                StartCoroutine(Fader(fin));
             }
-            StartCoroutine(Fader(fin));
         }
 
         /// <summary>
@@ -67,7 +65,7 @@ namespace trrne.Brain
                 canvas.alpha = FADE_SPEED * fin switch
                 {
                     true => alpha += Time.unscaledDeltaTime,
-                    false or _ => alpha -= Time.unscaledDeltaTime
+                    false => alpha -= Time.unscaledDeltaTime
                 };
                 yield return null;
             }

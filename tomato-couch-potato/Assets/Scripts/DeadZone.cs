@@ -4,15 +4,14 @@ namespace trrne.Core
 {
     public class DeadZone : MonoBehaviour
     {
-        async void OnTriggerEnter2D(Collider2D info)
+        async void OnTriggerEnter2D(Collider2D other)
         {
-            if (info.TryGetComponent(out ICreature creature))
+            if (other.TryGetComponent(out ICreature creature))
             {
                 await creature.Die();
                 return;
             }
-            try { Destroy(info.gameObject); }
-            catch { }
+            Destroy(other.gameObject);
         }
     }
 }

@@ -6,8 +6,7 @@ namespace trrne.Core
     {
         void OnTriggerEnter2D(Collider2D info)
         {
-            if (info.TryGetComponent(out Player _)
-                && info.transform.parent != transform)
+            if (info.TryGetComponent(out Player _) && info.transform.parent != transform)
             {
                 info.transform.parent = transform;
             }
@@ -15,8 +14,7 @@ namespace trrne.Core
 
         void OnTriggerExit2D(Collider2D info)
         {
-            if (info.TryGetComponent(out Player _)
-                && info.transform.parent != null)
+            if (info.TryGetComponent(out Player _) && info.transform.parent != null)
             {
                 info.transform.parent = null;
             }

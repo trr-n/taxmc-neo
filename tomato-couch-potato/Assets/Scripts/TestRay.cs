@@ -12,11 +12,11 @@ namespace trrne.test
 
         void Start()
         {
-            BoxCollider2D c = GetComponent<BoxCollider2D>();
-            offset = c.size.x * 1.2f;
-            length = c.size.x * 0.8f;
-            originOffset = (c.size.x - length) * 2;
-            half = c.size.x * 0.5f;
+            var hitbox = GetComponent<BoxCollider2D>();
+            offset = hitbox.size.x * 1.2f;
+            length = hitbox.size.x * 0.8f;
+            originOffset = (hitbox.size.x - length) * 2;
+            half = hitbox.size.x * 0.5f;
         }
 
         void Update()
@@ -26,9 +26,7 @@ namespace trrne.test
 
         void Left()
         {
-            left.ray = new(
-                origin: transform.position + new Vector3(-offset / 2, -originOffset),
-                direction: transform.up.ToV2());
+            left.ray = new(transform.position + new Vector3(-offset / 2, -originOffset), transform.up.ToV2());
             left.ray.DrawRay(length, Surface.Gaming);
             left.hit = Gobject.Raycast(left.ray, length, IGNORE_LAYER);
             if (left.hit)

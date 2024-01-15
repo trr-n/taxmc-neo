@@ -21,7 +21,7 @@ namespace trrne.Brain
             canvas.alpha = 1;
             sw.Start();
 
-            player = Gobject.GetWithTag<Player>(Config.Tags.PLAYER);
+            player = Gobject.GetWithTag<Player>(Constant.Tags.PLAYER);
             player.Controllable = false;
         }
 
@@ -37,14 +37,13 @@ namespace trrne.Brain
         IEnumerator FadeOut()
         {
             float alpha = 1f;
-            while (alpha >= 0)
+            while ((alpha -= Time.unscaledDeltaTime * FADING_SPEED) >= 0)
             {
                 yield return null;
-                alpha -= Time.unscaledDeltaTime * FADING_SPEED;
                 canvas.alpha = alpha;
             }
             canvas.alpha = 0;
-            yield return new WaitForSeconds(.5f);
+            yield return null; // new WaitForSeconds(.5f);
             player.Controllable = true;
         }
     }

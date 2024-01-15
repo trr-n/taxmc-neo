@@ -3,16 +3,16 @@ using UnityEngine;
 
 namespace trrne.Box
 {
-    public class Anima
+    public sealed class Anima
     {
-        struct ToolSet
-        {
-            public int i;
-            readonly public Stopwatch sw;
-        }
-        ToolSet colour, sprite;
+        (int i, Stopwatch sw) colour, sprite;
 
-        public void Colour(bool enable, SpriteRenderer sr, in float interval, params Color[] colours)
+        public void Colour(
+            bool enable,
+            SpriteRenderer sr,
+            float interval,
+            params Color[] colours
+        )
         {
             if (enable && colour.sw.sf >= interval)
             {
@@ -23,7 +23,12 @@ namespace trrne.Box
             }
         }
 
-        public void Sprite(bool enable, SpriteRenderer sr, in float interval, params Sprite[] pics)
+        public void Sprite(
+            bool enable,
+            SpriteRenderer sr,
+            float interval,
+            params Sprite[] pics
+        )
         {
             if (enable && sprite.sw.sf >= interval)
             {

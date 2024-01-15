@@ -7,9 +7,9 @@ namespace trrne.Eye
     {
         void Update()
         {
-            if (Inputs.Down(Config.Keys.BUTTON))
+            if (Inputs.Down(Constant.Keys.BUTTON))
             {
-                Scenes.Load(Config.Scenes.SELECT);
+                Scenes.Load(Constant.Scenes.SELECT);
             }
         }
     }

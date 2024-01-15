@@ -10,7 +10,7 @@ sealed class HowToUse : Singleton<HowToUse>
 {
     class TestClass : MonoBehaviour { }
     // シーン遷移で破壊するか
-    protected override bool dontDestroy => true;
+    protected override bool DontDestroy => true;
 
     void Gobject_()
     {

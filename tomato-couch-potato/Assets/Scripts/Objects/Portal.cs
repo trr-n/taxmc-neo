@@ -15,7 +15,7 @@ namespace trrne.Core
         [SerializeField]
         float framesAlpha = .75f;
 
-        const float FRAME_ROTATE_SPEED = 30;
+        const float ROTATE_SPEED = 30;
 
         [SerializeField]
         GameObject[] frames;
@@ -33,9 +33,9 @@ namespace trrne.Core
             for (int i = 0; i < children; ++i)
             {
                 frames[i].GetComponent<SpriteRenderer>().SetAlpha(framesAlpha);
-                speeds[i] = Rand.Float(-FRAME_ROTATE_SPEED, FRAME_ROTATE_SPEED);
+                speeds[i] = Rand.Float(-ROTATE_SPEED, ROTATE_SPEED);
             }
-            myspeed = Rand.Float(-FRAME_ROTATE_SPEED, FRAME_ROTATE_SPEED);
+            myspeed = Rand.Float(-ROTATE_SPEED, ROTATE_SPEED);
         }
 
         protected override void Behavior()
@@ -45,15 +45,20 @@ namespace trrne.Core
 #endif
             for (int i = 0; i < children; ++i)
             {
-                frames[i].transform.Rotate(Time.deltaTime * speeds[i] * Vec.Z);
+                // frames[i].transform.Rotate(Time.deltaTime * speeds[i] * Vec.Z);
+                frames[i].transform.Rotate(Vec.MakeVec3(z: Time.deltaTime * speeds[i]));
             }
-            transform.Rotate(Time.deltaTime * myspeed * Vec.Z);
+            transform.Rotate(z: Time.deltaTime * myspeed);
         }
 
         void OnTriggerEnter2D(Collider2D info)
         {
-            if (!warping && info.TryGetComponent(out Player player) && !player.IsDying
-            )
+            if (warping)
+            {
+                return;
+            }
+
+            if (info.TryGetComponent(out Player player) && !player.IsDying)
             {
                 info.transform.DOMove(portalGoal.Goal, teleportSpeed)
                     .SetEase(Ease.OutCubic)

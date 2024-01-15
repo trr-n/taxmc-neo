@@ -39,9 +39,9 @@ namespace trrne.Box
         /// <param name="after">置換したい文字</param>
         public static void ReplaceLump2(ref string target, string[] befores, string after)
         {
-            string temp = target;
-            befores.ForEach(before => temp = temp.Replace(before, after));
-            target = temp;
+            string dst = target;
+            befores.ForEach(before => dst = dst.Replace(before, after));
+            target = dst;
         }
 
         /// <summary>

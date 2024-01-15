@@ -2,6 +2,7 @@ using System.Collections;
 using Cysharp.Threading.Tasks;
 using trrne.Box;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 namespace trrne.Core
 {
@@ -26,9 +27,8 @@ namespace trrne.Core
         readonly (Ray ray, RaycastHit2D hit)[] horizon = { new(), new() };
         (Ray ray, RaycastHit2D hit) top, bottom;
         float length, offset, originOffset;
-        const int DETECT_LAYERS = Config.Layers.PLAYER | Config.Layers.JUMPABLE;
+        const int DETECT_LAYERS = Constant.Layers.PLAYER | Constant.Layers.JUMPABLE;
 
-        // bool hitHorizon = false, hitVertical = false;
         (bool horizon, bool vertical) hit = (false, false);
 
         Player player;
@@ -39,7 +39,7 @@ namespace trrne.Core
         {
             Enable = true;
 
-            player = Gobject.GetWithTag<Player>(Config.Tags.PLAYER);
+            player = Gobject.GetWithTag<Player>(Constant.Tags.PLAYER);
 
             var hitbox = GetComponent<BoxCollider2D>();
             offset = hitbox.size.x * 1.2f;
@@ -51,8 +51,7 @@ namespace trrne.Core
 
         public void SetFacing(Facing facing)
         {
-            this.facing = facing;
-            direction = facing switch
+            direction = (this.facing = facing) switch
             {
                 Facing.None => 0,
                 Facing.Left => -speed,
@@ -83,12 +82,11 @@ namespace trrne.Core
 
                 for (int i = 0, j = -1; j < 2; ++i, j += 2)
                 {
-                    horizon[i].ray = new(
-                        transform.position + new Vector3(originX * j / 2, originY),
-                        transform.up
-                    );
+                    horizon[i].ray = new(transform.position + new Vector3(originX * j / 2, originY), transform.up);
                     horizon[i].hit = horizon[i].ray.Raycast(length, DETECT_LAYERS);
+#if UNITY_EDITOR
                     horizon[i].ray.DrawRay(length, Color.green);
+#endif
 
                     if (!horizon[i].hit)
                     {
@@ -97,7 +95,7 @@ namespace trrne.Core
 
                     switch (horizon[i].hit.GetLayer())
                     {
-                        case Config.Layers.PLAYER:
+                        case Constant.Layers.PLAYER:
                             if (!isDestroy || !player.IsDying)
                             {
                                 await player.Die();
@@ -129,16 +127,11 @@ namespace trrne.Core
                     return;
                 }
 
-                top.ray = new(
-                    transform.position + new Vector3(originX, originY / 2),
-                    transform.right
-                );
+                top.ray = new(transform.position + new Vector3(originX, originY / 2), transform.right);
                 top.hit = top.ray.Raycast(length, DETECT_LAYERS);
                 top.ray.DrawRay(length, Color.red);
 
-                if (!isDestroy && !hit.horizon
-                    && top.hit && top.hit.TryGetComponent(out Player _)
-                    && !player.IsDying)
+                if (!isDestroy && !hit.horizon && top.hit && top.hit.TryGetComponent(out Player _) && !player.IsDying)
                 {
                     hit.vertical = true;
                     isDestroy = true;
@@ -157,10 +150,7 @@ namespace trrne.Core
                     return;
                 }
 
-                bottom.ray = new(
-                    transform.position + new Vector3(originX, originY / 2),
-                    transform.right
-                );
+                bottom.ray = new(transform.position + new Vector3(originX, originY / 2), transform.right);
                 bottom.hit = bottom.ray.Raycast(length, DETECT_LAYERS);
                 bottom.ray.DrawRay(length, Color.blue);
 
@@ -191,11 +181,6 @@ namespace trrne.Core
             catch (MissingReferenceException) { }
         }
 
-        protected override void Movement()
-        {
-            var dir = Time.deltaTime * direction * Vec.X;
-            // print(dir);
-            transform.Translate(dir);
-        }
+        protected override void Movement() => transform.Translate(Time.deltaTime * direction * Vec.X);
     }
 }

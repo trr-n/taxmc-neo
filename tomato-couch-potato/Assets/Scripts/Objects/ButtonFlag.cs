@@ -9,7 +9,7 @@ namespace trrne.Core
 
         void OnTriggerEnter2D(Collider2D other)
         {
-            if (other.CompareLayer(Config.Layers.PLAYER))
+            if (other.CompareLayer(Constant.Layers.PLAYER))
             {
                 IsHit = true;
             }
@@ -17,7 +17,7 @@ namespace trrne.Core
 
         void OnTriggerExit2D(Collider2D other)
         {
-            if (other.CompareLayer(Config.Layers.PLAYER))
+            if (other.CompareLayer(Constant.Layers.PLAYER))
             {
                 IsHit = false;
             }

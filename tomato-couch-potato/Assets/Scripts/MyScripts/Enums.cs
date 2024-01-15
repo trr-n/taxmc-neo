@@ -33,8 +33,8 @@ namespace trrne.Box
 
     public enum TimesFormat
     {
-        Domestics,
-        International
+        D, Domestics,
+        I, International
     }
 
     public enum RandStringType
@@ -46,7 +46,7 @@ namespace trrne.Box
         Number
     }
 
-    public enum ScenesCountingFormat
+    public enum ScenesCountingType
     {
         Built,
         Unbuilt
@@ -60,7 +60,7 @@ namespace trrne.Box
         MS, ms, MilliSecond, millisecond
     }
 
-    public enum StopwatchOutput
+    public enum StopwatchOutputFormat
     {
         HMS, HourMinuteSecond, hms,
         MS, MinuteSecond, ms

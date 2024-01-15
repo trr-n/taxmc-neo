@@ -3,12 +3,13 @@ using System.Linq;
 
 namespace trrne.Box
 {
-    public static class Numcs2
+    public static class MD
     {
         /// <summary>
         /// イプシロン(-45乗) -> <b>double</b><br/>
         /// </summary>
         public const double Epsilon = 1e-45;
+        public static double Eps(int e) => Math.Pow(10, -e);
 
         public static double Min(double a, double b) => (a < b) ? a : b;
         public static double Max(double a, double b) => (a > b) ? a : b;
@@ -44,6 +45,9 @@ namespace trrne.Box
         /// </summary>
         public static double Round2(double a) => a > 0f ? (long)(a + .5f) : (long)(a - .5f);
 
+        public static double Floor(double a, int digit) => Math.Floor(a * Math.Pow(10, digit)) / Math.Pow(10, digit);
+
+
         /// <summary>
         /// 小数点以下を切り捨てる -> <b>int</b><br/>
         /// </summary>
@@ -57,7 +61,7 @@ namespace trrne.Box
         /// <param name="a_cutail">対象の数値</param>
         /// <param name="b">比較したい数値</param>
         /// <returns>a_cutailとbがほぼ同じならtrueを返す</returns>
-        public static bool CutailedTwins(this double a_cutail, double b)
+        public static bool CutailedTwins(this double a_cutail, double b = 0.0)
         => Twins(Cutail(a_cutail), b);
 
         /// <summary>
@@ -67,7 +71,7 @@ namespace trrne.Box
         /// <param name="b"></param>
         /// <returns>a_cutailとbがほぼ同じならtrueを返す</returns>
         public static bool Twins(this double a, double b)
-        => Abs(b - a) < Max(1e-6f * Max(Abs(a), Abs(b)), Epsilon * 8f);
+        => Abs(b - a) < Max(1e-6f * Max(Abs(a), Abs(b)), Epsilon * 8);
 
         /// <summary>
         /// 数値を比較する -> <b>bool</b><br/>
@@ -81,7 +85,7 @@ namespace trrne.Box
 
         public static double Ratio(double w, double t) => (double)w / t;
 
-        public static int Sign(this double a) => (int)((a >= 0f) ? 1f : (-1f));
+        public static int Sign(this double a) => (a >= 0) ? 1 : (-1);
         public static bool Sign(this double a, int b) => Sign(a) == b;
 
         /// <summary>
@@ -100,7 +104,7 @@ namespace trrne.Box
                 return false;
             }
 
-            for (int i = 4; i < Math.Sqrt(n); i++)
+            for (int i = 4; i < Math.Sqrt(n); ++i)
             {
                 if (n % i == 0)
                 {
@@ -118,5 +122,9 @@ namespace trrne.Box
         /// <param name="max">上限値</param>
         /// <returns>nがmin以上max未満だったらtrueを返す</returns>
         public static bool IsCaged(this double n, double min, double max) => !(n > max || n < min);
+
+        public static double Clamp(double t, double min, double max) => t < min ? min : t > max ? max : t;
+        public static double Repeat(double t, double length) => Clamp(t - Math.Floor(t / length) * length, 0, length);
+        public static double PP(double t, double length) => length - Abs(Repeat(t, length * 2) - length);
     }
 }

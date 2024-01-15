@@ -1,5 +1,4 @@
 using trrne.Box;
-using trrne.Brain;
 using UnityEngine;
 
 namespace trrne.Core
@@ -15,7 +14,7 @@ namespace trrne.Core
         [SerializeField]
         AudioClip[] sounds;
 
-        readonly Stopwatch effectiveSW = new();
+        readonly Stopwatch effectiveSw = new();
         ButtonFlag flag;
 
         bool isPressing = false;
@@ -23,16 +22,12 @@ namespace trrne.Core
         const int ON = 0;
         const int OFF = 1;
 
-        Transform player;
-
         protected override void Start()
         {
             base.Start();
 
             isAnimate = false;
             flag = transform.GetFromChild<ButtonFlag>();
-
-            player = Gobject.GetWithTag<Transform>(Config.Tags.PLAYER);
 #if !DEBUG
             sr.color = Surface.Transparent;
 #endif
@@ -41,32 +36,33 @@ namespace trrne.Core
         protected override void Behavior()
         {
             // レバーが動作中じゃない、プレイヤーが範囲内にいる、キーが押された
-            if (!isPressing && flag.IsHit && Inputs.Down(Config.Keys.BUTTON))
+            if (!isPressing && flag.IsHit && Inputs.Down(Constant.Keys.BUTTON))
             {
                 isPressing = true;
                 sr.sprite = sprites[ON];
-                float distance = Vector2.Distance(transform.position, player.position);
-                Recorder.Instance.PlayOneShot(sounds.Choice(), 1 / (distance + 1));
-                effectiveSW.Restart();
+
+                PlayOneShot(sounds.Choice());
 
                 if (gimmicks.Length >= 1)
                 {
                     gimmicks.ForEach(g => g.GetComponent<IGimmick>().On());
                 }
+
+                effectiveSw.Restart();
             }
 
             // 動作中、効果時間がduration以上
-            if (isPressing && effectiveSW.Sf() >= duration)
+            if (isPressing && effectiveSw.sf >= duration)
             {
-                effectiveSW.Reset();
+                effectiveSw.Reset();
 
                 if (gimmicks.Length >= 1)
                 {
                     gimmicks.ForEach(g => g.GetComponent<IGimmick>().Off());
                 }
 
-                var distance = Vector2.Distance(transform.position, player.position);
-                Recorder.Instance.PlayOneShot(sounds.Choice(), 1 / (distance + 1));
+                PlayOneShot(sounds.Choice());
+
                 isPressing = false;
                 sr.sprite = sprites[OFF];
             }

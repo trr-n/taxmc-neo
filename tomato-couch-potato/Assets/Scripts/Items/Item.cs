@@ -44,17 +44,13 @@ namespace trrne.Core
 
         void Animation()
         {
-            if (!animatable)
+            if (!animatable && anim.sw.sf >= interval)
             {
                 return;
             }
-
-            if (anim.sw.sf >= interval)
-            {
-                anim.index = anim.index >= sprites.Length - 1 ? 0 : anim.index += 1;
-                sr.sprite = sprites[anim.index];
-                anim.sw.Restart();
-            }
+            anim.index = anim.index >= sprites.Length - 1 ? 0 : anim.index += 1;
+            sr.sprite = sprites[anim.index];
+            anim.sw.Restart();
         }
 
         /// <summary>
@@ -65,6 +61,6 @@ namespace trrne.Core
         /// <summary>
         /// 画像を設定
         /// </summary>
-        protected void SetSprite(Sprite _sprite) => sr.sprite = _sprite;
+        protected void SetSprite(Sprite sprite) => sr.sprite = sprite;
     }
 }

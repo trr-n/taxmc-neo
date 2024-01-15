@@ -21,7 +21,7 @@ namespace trrne.Arm
         RectTransform core;
 
         const string STAGE_NAME_PREFIX = "stage";
-        const float OFFSET = 18.96f;
+        const float BETWEEN_SPACE = 18.96f;
 
         bool isScrolling = false;
         const float BUTTON_SCROLL_SPEED = 0.5f;
@@ -30,7 +30,7 @@ namespace trrne.Arm
 
         void Start()
         {
-            core.SetPosition(Vec.X * OFFSET);
+            core.SetPosition(x: BETWEEN_SPACE);
         }
 
         void Update()
@@ -44,14 +44,13 @@ namespace trrne.Arm
 
         void Transition()
         {
-            var removed = CenterButton().name.ToLower().Delete(STAGE_NAME_PREFIX);
-            if (CenterButton() != null
-                && int.TryParse(removed, out int idx)
-                && idx <= Recorder.Instance.Done
-                && Inputs.Down(Config.Keys.BUTTON)
-            )
+            if (CenterButton() != null && Inputs.Down(Constant.Keys.BUTTON))
             {
-                Scenes.Load(Config.Scenes.PREFIX + idx);
+                string removedSceneIndex = CenterButton().name.ToLower().Delete(STAGE_NAME_PREFIX);
+                if (int.TryParse(removedSceneIndex, out int index))
+                {
+                    Scenes.Load(Constant.Scenes.PREFIX + index);
+                }
             }
         }
 
@@ -62,7 +61,7 @@ namespace trrne.Arm
         {
             foreach (var button in buttons)
             {
-                if (.0.CutailedTwins(button.transform.position.x))
+                if (button.transform.position.x.CutailedTwins())
                 {
                     return button.gameObject;
                 }
@@ -72,7 +71,7 @@ namespace trrne.Arm
 
         void Scroll()
         {
-            if (.0.Twins(horizon = Input.GetAxisRaw(Config.Keys.HORIZONTAL)))
+            if (0f.Twins(horizon = Input.GetAxisRaw(Constant.Keys.HORIZONTAL)))
             {
                 return;
             }
@@ -82,13 +81,13 @@ namespace trrne.Arm
                 case 1:
                     if (CenterButton() != buttons[^1].gameObject)
                     {
-                        Scroller(core.position.x - OFFSET);
+                        Scroller(core.position.x - BETWEEN_SPACE);
                     }
                     break;
                 default:
                     if (CenterButton() != buttons[0].gameObject)
                     {
-                        Scroller(core.position.x + OFFSET);
+                        Scroller(core.position.x + BETWEEN_SPACE);
                     }
                     break;
             }

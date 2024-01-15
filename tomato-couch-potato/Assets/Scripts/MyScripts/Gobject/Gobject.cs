@@ -7,18 +7,12 @@ namespace trrne.Box
 
     public static partial class Gobject
     {
-        public static void Destroy(this GameObject gob, float lifetime = 0)
-        => Destroy(gob, lifetime);
-        public static void Destroy(this Collider info, float lifetime = 0)
-        => Destroy(info.gameObject, lifetime);
-        public static void Destroy(this Collider2D info, float lifetime = 0)
-        => Destroy(info.gameObject, lifetime);
-        public static void Destroy(this Collision info, float lifetime = 0)
-        => Destroy(info.gameObject, lifetime);
-        public static void Destroy(this Collision2D info, float lifetime = 0)
-        => Destroy(info.gameObject, lifetime);
-        public static void Destroy(this RaycastHit2D info, float lifetime = 0)
-        => Destroy(info.collider.gameObject, lifetime);
+        public static void Destroy(this GameObject gob, float lifetime = 0) => Destroy(gob, lifetime);
+        public static void Destroy(this Collider info, float lifetime = 0) => Destroy(info.gameObject, lifetime);
+        public static void Destroy(this Collider2D info, float lifetime = 0) => Destroy(info.gameObject, lifetime);
+        public static void Destroy(this Collision info, float lifetime = 0) => Destroy(info.gameObject, lifetime);
+        public static void Destroy(this Collision2D info, float lifetime = 0) => Destroy(info.gameObject, lifetime);
+        public static void Destroy(this RaycastHit2D info, float lifetime = 0) => Destroy(info.collider.gameObject, lifetime);
 
         public static bool IsActive(this Text txt) => txt.IsActive();
 

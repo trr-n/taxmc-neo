@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace trrne.Box
 {
-    public sealed class V2
+    public sealed class V2 // (double x = 0.0, double y = 0.0)
     {
         public double x, y;
 
@@ -16,18 +16,6 @@ namespace trrne.Box
         }
 
         public V2() : this(0, 0) { }
-
-        public void Set(double x, double y)
-        {
-            this.x = x;
-            this.y = y;
-        }
-
-        public void Set(V2 other)
-        {
-            x = other.x;
-            y = other.y;
-        }
 
         public V2 Get() => this;
 
@@ -91,7 +79,6 @@ namespace trrne.Box
             {
                 return;
             }
-
             x += v.x;
             y += v.y;
         }
@@ -102,7 +89,6 @@ namespace trrne.Box
             {
                 return;
             }
-
             x += d;
             y += d;
         }

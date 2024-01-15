@@ -21,7 +21,7 @@ namespace trrne.Core
             Enable = true;
             base.Start();
 
-            player = Gobject.GetWithTag<Player>(Config.Tags.PLAYER);
+            player = Gobject.GetWithTag<Player>(Constant.Tags.PLAYER);
             left = transform.localScale.x;
         }
 
@@ -31,6 +31,7 @@ namespace trrne.Core
 
             if (this != null && lifetimeSW.Sf() >= lifetime)
             {
+                lifetimeSW.Reset();
                 await Die();
             }
         }
@@ -38,11 +39,9 @@ namespace trrne.Core
         // flip the sprite
         void Flip()
         {
-            float self = transform.position.x,
-                player = this.player.transform.position.x,
-                scale = transform.localScale.x;
-            if ((self > player && left != scale)
-                || (self < player && left == scale))
+            (float self, float player, float scale) x = (
+                transform.position.x, player.transform.position.x, transform.localScale.x);
+            if ((x.self > x.player && left != x.scale) || (x.self < x.player && left == x.scale))
             {
                 transform.localScale *= mirrored;
             }
@@ -51,23 +50,22 @@ namespace trrne.Core
         // follow the player slowly
         protected override void Movement()
         {
-            var direction = player.Core - transform.position;
+            Vector3 direction = player.Core - transform.position;
             transform.Translate(Time.deltaTime * MOVE_SPEED * direction.normalized);
         }
 
         public override async UniTask Die() => await Die(UniTask.Delay(0));
 
-        public async UniTask Die(UniTask _task)
+        public async UniTask Die(UniTask task)
         {
             lifetimeSW.Reset();
             float alpha = 1f;
-            while (alpha >= 0 && this != null)
+            while ((alpha -= Time.deltaTime * FADE_SPEED) >= 0 && this != null)
             {
-                alpha -= Time.deltaTime * FADE_SPEED;
                 sr.SetAlpha(alpha.Twins(0f) ? 0 : alpha);
                 await UniTask.WaitForSeconds(Time.deltaTime);
             }
-            await UniTask.WhenAll(_task);
+            await UniTask.WhenAll(task);
             Destroy(gameObject);
         }
 

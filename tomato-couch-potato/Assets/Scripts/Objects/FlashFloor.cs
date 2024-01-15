@@ -25,14 +25,12 @@ namespace trrne.Core
         /// </summary>
         IEnumerator Flash()
         {
-            while (true)
+            for (; ; )
             {
                 sr.enabled = hitbox.enabled = true;
-                // yield return new WaitForSeconds(cooltimes.x != 0 ? cooltimes.x : cooltimes.y);
                 yield return new WaitForSeconds(active != 0 ? active : inactive);
 
                 sr.enabled = hitbox.enabled = false;
-                // yield return new WaitForSeconds(cooltimes.y);
                 yield return new WaitForSeconds(inactive);
             }
         }

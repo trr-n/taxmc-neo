@@ -48,11 +48,6 @@ namespace trrne.Box
         public static bool operator <(in V3 a, in V3 b) => a.x < b.x && a.y < b.y && a.z < b.z;
         public static bool operator <=(in V3 a, in V3 b) => a.x <= b.x && a.y <= b.y && a.z <= b.z;
 
-        // public static bool operator >(in V3 a, in double b) => a.x > b && a.y > b && a.z > b;
-        // public static bool operator >=(in V3 a, in double b) => a.x >= b && a.y >= b && a.z >= b;
-        // public static bool operator <(in V3 a, in double b) => a.x < b && a.y < b && a.z < b;
-        // public static bool operator <=(in V3 a, in double b) => a.x <= b && a.y <= b && a.z <= b;
-
         public bool Twins(in double ofs) => ofs.Twins(x) && ofs.Twins(y) && ofs.Twins(z);
 
         public static explicit operator string(in V3 a) => $"({a.x}, {a.y}, {a.z})";
@@ -65,19 +60,9 @@ namespace trrne.Box
         public double Mag() => Math.Sqrt(x * x + y * y);
         public V3 Nor() => new(x / Mag(), y / Mag(), z / Mag());
 
-        public double Dot(in V3 other) => x * other.x + y * other.y + z * other.z;
-        public double Dot(in V3 a, in V3 b) => a.Dot(b);
-
-        public double Angle(in V3 other)
-        {
-            double lselfl = Mag(), lotherl = other.Mag();
-            if (Math.Abs(lselfl + lotherl) < 1e-44)
-            {
-                return .0;
-            }
-            return Math.Acos(Dot(other) / lselfl / lotherl) * (180 / MathF.PI);
-        }
-        public static double Angle(in V3 a, in V3 b) => a.Angle(b);
+        public static double Dot(in V3 a, in V3 b) => a.x * b.x + a.y * b.y + a.z * b.z;
+        public static double Cross(in V3 a, in V3 b) => 0;
+        public static double Angle(in V3 a, in V3 b) => Math.Acos(Dot(a, b) / a.Mag() / b.Mag()) * (180 / Math.PI);
 
         public void Translate(in V3 v)
         {
@@ -85,7 +70,6 @@ namespace trrne.Box
             {
                 return;
             }
-
             x += v.x;
             y += v.y;
             z += v.z;
@@ -97,7 +81,6 @@ namespace trrne.Box
             {
                 return;
             }
-
             x += d;
             y += d;
             z += d;
