@@ -6,6 +6,8 @@ namespace trrne.Box
     {
         public static void DrawRay(this Ray ray, float length, Color color) => Debug.DrawRay(ray.origin, ray.direction * length, color);
         public static void styled(this object obj) => Debug.Log($"{nameof(obj)}: {obj}");
+
+        public static void RBSettings(this Rigidbody2D rb) => Debug.Assert(true);
     }
 }
 

@@ -43,7 +43,7 @@ namespace trrne.Core
             if (!player.IsDying && isLanding)
             {
                 var colorValue = landingTime / landingToleranceTime / 360 * 100;
-                sr.color = Color.HSVToRGB(1, 1, colorValue);
+                sr.color = Color.HSVToRGB(colorValue, 1, 1);
             }
         }
 

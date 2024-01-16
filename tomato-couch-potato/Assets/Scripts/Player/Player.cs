@@ -1,11 +1,9 @@
 ﻿using System;
 using System.Collections;
 using UnityEngine;
-using UnityEngine.UI;
 using Cysharp.Threading.Tasks;
 using trrne.Box;
 using trrne.Brain;
-using System.Collections.Generic;
 
 namespace trrne.Core
 {
@@ -32,10 +30,13 @@ namespace trrne.Core
         public bool Controllable { get; set; }
 
         /// <summary> テレポート中か </summary>
-        public bool IsTeleporting { get; set; }
+        public bool IsTeleporting { get; set; } = false;
 
         /// <summary> 死亡処理中か </summary>
         public bool IsDying { get; private set; } = false;
+
+        /// <summary> 樽のなかにいるか </summary>
+        public bool OnBarrel { get; set; } = false;
 
         int fxidx = -1;
         public bool[] Effectables { get; private set; }
@@ -66,7 +67,11 @@ namespace trrne.Core
         public void SetCheckpoint(Vector2 position) => Checkpoint = position;
         public void SetCheckpoint(float? x = null, float? y = null) => Checkpoint = new(x ?? transform.position.x, y ?? transform.position.y);
 
-        public void ReturnToCheckpoint() => transform.position = Checkpoint;
+        public void ReturnToCheckpoint()
+        {
+            transform.position = Checkpoint;
+            OnBarrel = false;
+        }
 
         Vector2 reverse => new(-1, 1);
 
@@ -124,6 +129,11 @@ namespace trrne.Core
 
         void Footer()
         {
+            if (OnBarrel)
+            {
+                return;
+            }
+
             if (!Gobject.Boxcast(out var hit, transform.position, box, Constant.Layers.JUMPABLE))
             {
                 on.ice = on.ground = false;
@@ -174,7 +184,7 @@ namespace trrne.Core
 
         void Flip()
         {
-            if (!Controllable || menu.IsPausing || IsTeleporting)
+            if (OnBarrel || !Controllable || menu.IsPausing || IsTeleporting)
             {
                 return;
             }
@@ -193,7 +203,7 @@ namespace trrne.Core
 
         void Jump()
         {
-            if (!Controllable || EffectFlags[(int)Effect.Chain] || IsTeleporting)
+            if (!Controllable || EffectFlags[(int)Effect.Chain] || IsTeleporting || OnBarrel)
             {
                 return;
             }
@@ -216,7 +226,7 @@ namespace trrne.Core
         /// </summary>
         void Move()
         {
-            if (!Controllable || IsTeleporting)
+            if (!Controllable || IsTeleporting || OnBarrel)
             {
                 return;
             }
