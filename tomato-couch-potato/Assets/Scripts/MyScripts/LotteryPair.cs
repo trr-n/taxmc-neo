@@ -14,7 +14,7 @@ namespace trrne.Box
         public double Weight(int index) => weights[index];
         public double[] Weights() => weights.ToArray();
 
-        public int Size() => subjects.Count;
+        public int Length() => subjects.Count;
 
         public LotteryPair(params (TSubject subject, double weight)[] pairs)
         {
@@ -26,10 +26,10 @@ namespace trrne.Box
         }
 
         [Obsolete]
-        public object this[int index]
+        public (TSubject, double) this[int index]
         {
             get => (subjects[index], weights[index]);
-            // set => (subjects[index], weights[index]) = value;
+            set => (subjects[index], weights[index]) = value;
         }
     }
 }

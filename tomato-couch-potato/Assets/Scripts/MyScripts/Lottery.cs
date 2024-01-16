@@ -46,7 +46,7 @@ namespace trrne.Box
         public static int Bst(params float[] weights) => Bst(Array.ConvertAll(weights, w => (double)w));
 
         public static T Weighted<T>(this LotteryPair<T> pairs)
-        => pairs.Size() switch
+        => pairs.Length() switch
         {
             0 => throw null,
             1 => pairs.Subject(0),
