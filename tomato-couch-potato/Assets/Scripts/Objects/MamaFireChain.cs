@@ -12,6 +12,6 @@ namespace trrne.Core
         }
 
         protected override void Movement() => transform.Translate(Time.deltaTime * speed * direction);
-        protected override async UniTask Punishment(Player player) => await player.Punishment(effectDuration, Effect.Chain);
+        protected override async UniTask Punishment(Player player) => await player.Punishment(effectDuration, PunishEffect.Chain);
     }
 }

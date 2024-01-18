@@ -19,7 +19,7 @@ namespace trrne.Core
 
         void Update()
         {
-            transform.position = player.position + Vec.MakeVec3(y: 12);
+            transform.position = player.position + Vec.Make3(y: 12);
             if (alive == null)
             {
                 alive = spectre.TryInstantiate(transform.position);

@@ -50,8 +50,8 @@ namespace trrne.Box
         /// </summary>
         public static Quaternion Q1 => new(1, 1, 1, 1);
 
-        public static Vector2 MakeVec2(float x = 0, float y = 0) => new(x, y);
-        public static Vector3 MakeVec3(float x = 0, float y = 0, float z = 0) => new(x, y, z);
+        public static Vector2 Make2(float x = 0, float y = 0) => new(x, y);
+        public static Vector3 Make3(float x = 0, float y = 0, float z = 0) => new(x, y, z);
 
         /// <summary>
         /// 重力加速度

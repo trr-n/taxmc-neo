@@ -47,7 +47,7 @@ namespace trrne.Core
             {
                 dossunPower += Time.deltaTime * accelRatio;
                 dossunPower = Mathf.Clamp(dossunPower, 0f, POWER_MAX);
-                transform.Translate(Vec.MakeVec2(y: -Time.deltaTime * dossunPower * down));
+                transform.Translate(Vec.Make2(y: -Time.deltaTime * dossunPower * down));
             }
         }
 

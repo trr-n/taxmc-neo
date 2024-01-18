@@ -46,7 +46,7 @@ namespace trrne.Core
             for (int i = 0; i < children; ++i)
             {
                 // frames[i].transform.Rotate(Time.deltaTime * speeds[i] * Vec.Z);
-                frames[i].transform.Rotate(Vec.MakeVec3(z: Time.deltaTime * speeds[i]));
+                frames[i].transform.Rotate(Vec.Make3(z: Time.deltaTime * speeds[i]));
             }
             transform.Rotate(z: Time.deltaTime * myspeed);
         }

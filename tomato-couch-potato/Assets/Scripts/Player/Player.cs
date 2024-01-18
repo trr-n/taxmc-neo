@@ -14,7 +14,7 @@ namespace trrne.Core
         Fallen,     // 落下死
     }
 
-    public enum Effect
+    public enum PunishEffect
     {
         Mirror,     // 操作左右反転
         Chain,      // ジャンプ不可
@@ -36,17 +36,26 @@ namespace trrne.Core
         public bool IsDying { get; private set; } = false;
 
         /// <summary> 樽のなかにいるか </summary>
-        public bool OnBarrel { get; set; } = false;
+        bool inBarrel = false;
+        public void BarrelProcess(bool flag)
+        {
+            inBarrel = rb.isKinematic = flag;
+            rb.gravityScale = flag ? 0 : gscale.basis;
+            rb.velocity *= 0;
+            transform.GetChildrenGameObject().ForEach(child => child.SetActive(!flag));
+        }
 
+        // punish effect
         int fxidx = -1;
-        public bool[] Effectables { get; private set; }
-        public bool[] EffectFlags { get; set; }
-        int effectLength => new Effect().Length();
+        public bool[] Punishables { get; private set; }
+        public bool[] PunishFlags { get; set; }
+        int effectLength => new PunishEffect().Length();
 
         (float basis, float max) speed => (20f, 10f);
         (float fetters, float floating, float move) red => (0.5f, 0.95f, 0.9f);
         (float floating, float basis) gscale => (3f, 1f);
 
+        // Movement
         const float JUMP_POWER = 13f;
 
         public bool IsFloating { get; private set; }
@@ -63,20 +72,20 @@ namespace trrne.Core
         const float INPUT_TOLERANCE = 1 / 3;
 
         public Vector2 Checkpoint { get; private set; } = default;
-
         public void SetCheckpoint(Vector2 position) => Checkpoint = position;
-        public void SetCheckpoint(float? x = null, float? y = null) => Checkpoint = new(x ?? transform.position.x, y ?? transform.position.y);
+        public void SetCheckpoint(float? x = null, float? y = null)
+        => Checkpoint = new(x ?? transform.position.x, y ?? transform.position.y);
 
         public void ReturnToCheckpoint()
         {
             transform.position = Checkpoint;
-            OnBarrel = false;
+            inBarrel = false;
         }
 
-        Vector2 reverse => new(-1, 1);
+        Vector2 Reverse => new(-1, 1);
 
         Vector2 box;
-        Vector2 hitboxSizeRatio => new(.8f, .1f);
+        Vector2 HitboxSizeRatio => new(.8f, .1f);
 
         const int ANIMATION_DELAY = 1250;
 
@@ -89,10 +98,10 @@ namespace trrne.Core
             rb = GetComponent<Rigidbody2D>();
             rb.gravityScale = gscale.basis;
 
-            EffectFlags = new bool[effectLength].Set(false);
-            Effectables = new bool[effectLength].Set(true);
+            PunishFlags = new bool[effectLength].Set(false);
+            Punishables = new bool[effectLength].Set(true);
 
-            box = new(hitbox.bounds.size.x * hitboxSizeRatio.x, hitbox.bounds.size.y * hitboxSizeRatio.y);
+            box = new(hitbox.bounds.size.x * HitboxSizeRatio.x, hitbox.bounds.size.y * HitboxSizeRatio.y);
         }
 
         void FixedUpdate()
@@ -122,14 +131,18 @@ namespace trrne.Core
 
         void Def()
         {
-            Core = transform.position + new Vector3(0, hitbox.bounds.size.y / 2);
+            if (inBarrel)
+            {
+                return;
+            }
+            Core = transform.position + Vec.Make3(y: hitbox.bounds.size.y / 2);
             rb.bodyType = IsTeleporting ? RigidbodyType2D.Static : RigidbodyType2D.Dynamic;
             rb.gravityScale = (IsFloating = !on.ground) ? gscale.floating : gscale.basis;
         }
 
         void Footer()
         {
-            if (OnBarrel)
+            if (inBarrel)
             {
                 return;
             }
@@ -163,13 +176,13 @@ namespace trrne.Core
             }
         }
 
-        public IEnumerator Punishment(float duration, Effect effect)
+        public IEnumerator Punishment(float duration, PunishEffect effect)
         {
-            if (fxidx == -1 && Effectables[fxidx = (int)effect])
+            if (fxidx == -1 && Punishables[fxidx = (int)effect])
             {
-                EffectFlags[fxidx] = true;
+                PunishFlags[fxidx] = true;
                 yield return new WaitForSeconds(duration);
-                EffectFlags[fxidx] = false;
+                PunishFlags[fxidx] = false;
                 fxidx = -1;
             }
         }
@@ -178,32 +191,32 @@ namespace trrne.Core
         {
             for (int i = 0; i < effectLength; ++i)
             {
-                Effectables[i] = !EffectFlags[i];
+                Punishables[i] = !PunishFlags[i];
             }
         }
 
         void Flip()
         {
-            if (OnBarrel || !Controllable || menu.IsPausing || IsTeleporting)
+            if (inBarrel || !Controllable || menu.IsPausing || IsTeleporting)
             {
                 return;
             }
 
-            string horizontal = EffectFlags[(int)Effect.Mirror] ? Constant.Keys.MIRRORED_HORIZONTAL : Constant.Keys.HORIZONTAL;
+            string horizontal = PunishFlags[(int)PunishEffect.Mirror] ? Constant.Keys.MIRRORED_HORIZONTAL : Constant.Keys.HORIZONTAL;
             if (Inputs.Down(horizontal))
             {
                 int pre = MathF.Sign(transform.localScale.x);
                 float haxis = Input.GetAxisRaw(horizontal);
                 if (MathF.Sign(haxis) != 0 && MathF.Sign(haxis) != pre)
                 {
-                    transform.localScale *= reverse;
+                    transform.localScale *= Reverse;
                 }
             }
         }
 
         void Jump()
         {
-            if (!Controllable || EffectFlags[(int)Effect.Chain] || IsTeleporting || OnBarrel)
+            if (!Controllable || PunishFlags[(int)PunishEffect.Chain] || IsTeleporting || inBarrel)
             {
                 return;
             }
@@ -226,7 +239,7 @@ namespace trrne.Core
         /// </summary>
         void Move()
         {
-            if (!Controllable || IsTeleporting || OnBarrel)
+            if (!Controllable || IsTeleporting || inBarrel)
             {
                 return;
             }
@@ -234,8 +247,8 @@ namespace trrne.Core
             bool walkAnimationFlag = on.ground && Inputs.Pressed(Constant.Keys.HORIZONTAL);
             animator.SetBool(Constant.Animations.Walk, walkAnimationFlag);
 
-            var horizon = EffectFlags[(int)Effect.Mirror] ? Constant.Keys.MIRRORED_HORIZONTAL : Constant.Keys.HORIZONTAL;
-            var move = Vec.MakeVec2(x: Input.GetAxisRaw(horizon));
+            var horizon = PunishFlags[(int)PunishEffect.Mirror] ? Constant.Keys.MIRRORED_HORIZONTAL : Constant.Keys.HORIZONTAL;
+            var move = Vec.Make2(x: Input.GetAxisRaw(horizon));
 
             // 入力がtolerance以下、氷に乗っていない
             if (move.magnitude <= INPUT_TOLERANCE && !on.ice)
@@ -249,7 +262,7 @@ namespace trrne.Core
             {
                 float limit = Shorthand.L1ne(() =>
                 {
-                    if (EffectFlags[(int)Effect.Fetters])
+                    if (PunishFlags[(int)PunishEffect.Fetters])
                     {
                         return speed.max * red.fetters;
                     }
@@ -312,7 +325,7 @@ namespace trrne.Core
             IsDying = false;
 
             // エフェクトを削除
-            EffectFlags.Set(false);
+            PunishFlags.Set(false);
         }
 
         public async UniTask Die() => await Die(Cause.None);

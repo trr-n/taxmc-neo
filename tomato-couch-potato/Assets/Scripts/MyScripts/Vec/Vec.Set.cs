@@ -10,6 +10,7 @@ namespace trrne.Box
         public static void SetPosition(this GameObject g, Vector2 p) => g.transform.position = p;
         public static void SetPosition(this Transform t, Vector3 p) => t.position = p;
         public static void SetPosition(this Transform t, Vector2 p) => t.position = p;
+        public static void SetPosition(this Transform t, Transform p) => t.position = p.position;
         public static void SetPosition(this RaycastHit2D hit, Vector2 p) => hit.collider.transform.position = p;
         public static void SetPosition(this Collider2D info, Vector2 p) => info.transform.position = p;
         public static void SetPosition(this RectTransform rt, Vector2 p) => rt.transform.position = p;
