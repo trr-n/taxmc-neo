@@ -1,16 +1,15 @@
 using System.Text;
 using System.Collections.Generic;
 using System.Security.Cryptography;
-using System;
 
 namespace trrne.Secret
 {
-    public sealed class Rijndael : IEncryption
+    public sealed class RijndaelEncryption : IEncryption
     {
         readonly string password;
         readonly (int buffer, int block, int key) size;
 
-        public Rijndael(string password, int buffer = 32, int blockSize = 256, int keySize = 256)
+        public RijndaelEncryption(string password, int buffer = 32, int blockSize = 256, int keySize = 256)
         {
             this.password = password;
             size.buffer = buffer;
@@ -18,7 +17,7 @@ namespace trrne.Secret
             size.key = keySize;
         }
 
-        public byte[] Encrypt(byte[] src)
+        public byte[] En(byte[] src)
         {
             RijndaelManaged managed = new()
             {
@@ -41,9 +40,9 @@ namespace trrne.Secret
             return compile.ToArray();
         }
 
-        public byte[] Encrypt(string src) => Encrypt(Encoding.UTF8.GetBytes(src));
+        public byte[] En(string src) => En(Encoding.UTF8.GetBytes(src));
 
-        public byte[] Decrypt(byte[] src)
+        public byte[] De(byte[] src)
         {
             RijndaelManaged managed = new()
             {
@@ -63,7 +62,7 @@ namespace trrne.Secret
             return decrypt.TransformFinalBlock(plain, 0, plain.Length);
         }
 
-        public string Decrypt2String(byte[] src) => Encoding.UTF8.GetString(Decrypt(src));
+        public string De2Str(byte[] src) => Encoding.UTF8.GetString(De(src));
     }
 }
 

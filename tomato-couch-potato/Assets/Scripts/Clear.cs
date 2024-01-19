@@ -17,6 +17,9 @@ namespace trrne.Brain
         [Header("0: down\n1: up")]
         Sprite[] flagSprites;
 
+        [SerializeField]
+        bool isReturnSelectScene = false;
+
         SpriteRenderer sr;
         AudioSource speaker;
 
@@ -47,7 +50,17 @@ namespace trrne.Brain
                     }
                 }
                 await UniTask.WaitForSeconds(longestParticleDuration);
-                MainGameManager.Instance.SceneTransition(Constant.Scenes.SELECT);
+                var next = "";
+                if (isReturnSelectScene)
+                {
+                    var cleared = int.Parse(Scenes.Active().Delete(Constant.Scenes.PREFIX));
+                    next = $"{Constant.Scenes.PREFIX}{cleared + 1}";
+                }
+                else
+                {
+                    next = Constant.Scenes.SELECT;
+                }
+                MainGameManager.Instance.SceneTransition(next);
             }
         }
     }

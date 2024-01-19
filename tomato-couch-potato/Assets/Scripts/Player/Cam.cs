@@ -12,16 +12,26 @@ namespace trrne.Core
         float offsetY = 1;
 
         (float key, float wheel) axis = (0, 0);
-
         float raw = 0f;
+        (float min, float max) zoom => (4.5f, 16f);
 
         Player player;
 
-        readonly (float min, float max) zoom = (4.5f, 16f);
+
+        new Camera camera;
+        public void Shake(float duration, float magnitude)
+        {
+            try
+            {
+                camera.DoSalmon(duration, magnitude);
+            }
+            catch (NullReferenceException) { }
+        }
 
         void Start()
         {
             player = Gobject.GetWithTag<Player>(Constant.Tags.PLAYER);
+            camera = GetComponent<Camera>();
         }
 
         void Update()
@@ -36,7 +46,7 @@ namespace trrne.Core
                 return;
             }
 
-            Vector3 p = player.transform.position;
+            var p = player.transform.position;
             transform.position = new(p.x, p.y + offsetY, -10);
         }
 

@@ -3,9 +3,9 @@
 namespace trrne.Box
 {
     [Serializable]
-    public class Karappoyanke : Exception
+    public class KarappoyankeException : Exception
     {
-        public Karappoyanke() : base("nanka kakankai") {; }
-        public Karappoyanke(string msg = null) : base(msg) {; }
+        public KarappoyankeException() : base("nanka kakankai") {; }
+        public KarappoyankeException(string msg = null) : base(msg) {; }
     }
 }

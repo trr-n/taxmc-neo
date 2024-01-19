@@ -3,29 +3,29 @@ using UnityEngine;
 
 namespace trrne.Box
 {
-    public class CameraShake : MonoBehaviour
+    public static class CameraSalmon
     {
-        public void Shake(float duration, float magnitude)
-        {
-            StartCoroutine(DoShake(duration, magnitude));
-        }
+        // TODO MonoBehaviourを取得する
+        static readonly MonoBehaviour mb;
+        static CameraSalmon() => mb = new();
 
-        private IEnumerator DoShake(float duration, float magnitude)
+        public static void DoSalmon(this Camera camera, float duration, float magnitude)
+        => mb.StartCoroutine(camera.Salmon(duration, magnitude));
+
+        static IEnumerator Salmon(this Camera c, float d, float m)
         {
-            var pos = transform.localPosition;
+            var p = c.transform.localPosition;
             var elapsed = 0f;
 
-            while (elapsed < duration)
+            while (elapsed <= d)
             {
-                var x = pos.x + Random.Range(-1f, 1f) * magnitude;
-                var y = pos.y + Random.Range(-1f, 1f) * magnitude;
-                transform.localPosition = new(x, y, pos.z);
+                var x = p.x + Random.Range(-1f, 1f) * m;
+                var y = p.y + Random.Range(-1f, 1f) * m;
+                c.transform.localPosition = new(x, y, p.z);
                 elapsed += Time.deltaTime;
                 yield return null;
             }
-
-            transform.localPosition = pos;
+            c.transform.localPosition = p;
         }
     }
-
 }

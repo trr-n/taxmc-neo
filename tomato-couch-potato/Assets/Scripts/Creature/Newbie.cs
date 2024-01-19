@@ -2,7 +2,6 @@ using System.Collections;
 using Cysharp.Threading.Tasks;
 using trrne.Box;
 using UnityEngine;
-using UnityEngine.UIElements;
 
 namespace trrne.Core
 {
@@ -181,6 +180,6 @@ namespace trrne.Core
             catch (MissingReferenceException) { }
         }
 
-        protected override void Movement() => transform.Translate(Time.deltaTime * direction * Vec.X);
+        protected override void Movement() => transform.Translate(Vec.Make2(x: Time.deltaTime * direction));
     }
 }

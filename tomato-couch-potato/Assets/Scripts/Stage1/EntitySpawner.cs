@@ -30,7 +30,7 @@ namespace trrne.Core
             }
             catch (UnassignedReferenceException e)
             {
-                throw new Karappoyanke(e.Message);
+                throw new KarappoyankeException(e.Message);
             }
         }
     }

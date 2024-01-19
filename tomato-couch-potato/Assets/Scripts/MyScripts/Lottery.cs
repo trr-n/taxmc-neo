@@ -10,7 +10,7 @@ namespace trrne.Box
         {
             if (weights.Length <= 0)
             {
-                throw new Karappoyanke("nanka kakankai");
+                throw new KarappoyankeException("nanka kakankai");
             }
 
             var totals = new double[weights.Length];

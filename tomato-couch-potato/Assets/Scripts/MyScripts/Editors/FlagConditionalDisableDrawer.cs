@@ -9,12 +9,13 @@ namespace trrne.Box
         public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
         {
             var attr = attribute as FlagConditionalDisableInInspectorAttribute;
-            var prop = property.serializedObject.FindProperty(attr.FlagVariableName);
+            var prop = property.serializedObject.FindProperty(attr.FlagVarNameStr);
             if (prop == null)
             {
-                Debug.LogError($"Not found '{attr.FlagVariableName}' property");
+                // Debug.LogError($"Not found '{attr.FlagVariableName}' property");
                 EditorGUI.PropertyField(position, property, label, true);
                 EditorGUI.EndDisabledGroup();
+                throw new System.Exception($"Not found '{attr.FlagVarNameStr}' property");
             }
             var isDisable = IsDisable(attr, prop);
             if (attr.ConditionalInvisible && isDisable)
@@ -29,15 +30,14 @@ namespace trrne.Box
         public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
         {
             var attr = attribute as FlagConditionalDisableInInspectorAttribute;
-            var prop = property.serializedObject.FindProperty(attr.FlagVariableName);
-            if (attr.ConditionalInvisible && IsDisable(attr, prop))
+            if (attr.ConditionalInvisible && IsDisable(attr, property.serializedObject.FindProperty(attr.FlagVarNameStr)))
             {
                 return -EditorGUIUtility.standardVerticalSpacing;
             }
             return EditorGUI.GetPropertyHeight(property, true);
         }
 
-        private bool IsDisable(FlagConditionalDisableInInspectorAttribute attr, SerializedProperty prop)
+        bool IsDisable(FlagConditionalDisableInInspectorAttribute attr, SerializedProperty prop)
         {
             return attr.TrueThenDisable ? prop.boolValue : !prop.boolValue;
         }

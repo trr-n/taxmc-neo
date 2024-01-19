@@ -7,7 +7,7 @@ namespace trrne.Box
         Low = 30,
         Medium = 60,
         High = 144,
-        Ultra = 200,
+        Ultra = 240,
         VSync = -1
     }
 
@@ -19,9 +19,9 @@ namespace trrne.Box
 
     public enum CursorRangeOfMotion
     {
-        InScene = CursorLockMode.Confined,
+        Limitless = CursorLockMode.None,
         Fixed = CursorLockMode.Locked,
-        Limitless = CursorLockMode.None
+        InScene = CursorLockMode.Confined
     }
 
     public enum KindaScreen

@@ -18,7 +18,7 @@ namespace trrne.Box
             var names = new string[sceneCount];
             if (names.Length <= 0)
             {
-                throw new Karappoyanke("tabun settei sitenai");
+                throw new KarappoyankeException("tabun settei sitenai");
             }
 
             for (int i = 0; i < sceneCount; i++)

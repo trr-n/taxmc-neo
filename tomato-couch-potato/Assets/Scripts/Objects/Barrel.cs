@@ -43,10 +43,11 @@ namespace trrne.Core
                 // 樽を回転させてキーが押された時点の角度に合わせて飛ばす
                 if (player != null && Inputs.Down(Constant.Keys.JUMP))
                 {
+                    Gobject.GetWithTag<Cam>(Constant.Tags.MAIN_CAMERA).Shake(0.5f, 2f);
                     player.BarrelProcess(false);
                     player.GetComponent<Rigidbody2D>().velocity += power * (Vector2)transform.up;
                     inBarrel = false;
-                    player.isAfterBarrel = true;
+                    player.IsAfterBarrel = true;
                     player = null;
                 }
             }

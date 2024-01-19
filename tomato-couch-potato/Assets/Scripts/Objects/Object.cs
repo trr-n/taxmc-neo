@@ -46,7 +46,6 @@ namespace trrne.Core
         /// </summary>
         protected abstract void Behavior();
 
-        readonly Anima anima = new();
         readonly Runner set = new();
         void Animation()
         {
@@ -61,7 +60,7 @@ namespace trrne.Core
                     set.RunOnce(() => sr.sprite = sprites[0]);
                     break;
                 default:
-                    anima.Sprite(isAnimate, sr, animationInterval, sprites);
+                    sr.Animation(isAnimate, animationInterval, sprites);
                     break;
             }
         }

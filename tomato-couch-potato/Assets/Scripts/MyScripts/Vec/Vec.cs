@@ -52,6 +52,7 @@ namespace trrne.Box
 
         public static Vector2 Make2(float x = 0, float y = 0) => new(x, y);
         public static Vector3 Make3(float x = 0, float y = 0, float z = 0) => new(x, y, z);
+        public static Quaternion MakeQ(float x = 0, float y = 0, float z = 0, float w = 0) => new(x, y, z, w);
 
         /// <summary>
         /// 重力加速度
@@ -65,23 +66,17 @@ namespace trrne.Box
         /// </summary>
         /// <returns>aとbがほぼ同じならtrueを変える</returns>
         public static bool Twins(Vector3 a, Vector3 b)
-        => Mathf.Approximately(a.x, b.x)
-            && Mathf.Approximately(a.y, b.y)
-            && Mathf.Approximately(a.z, b.z);
+        => Mathf.Approximately(a.x, b.x) && Mathf.Approximately(a.y, b.y) && Mathf.Approximately(a.z, b.z);
 
-        public static float Dot(Vector2 a, Vector3 b)
-        => a.x * b.x + a.y * b.y;
+        public static float Dot(Vector2 a, Vector3 b) => a.x * b.x + a.y * b.y;
 
-        public static float Angle(Vector2 a, Vector2 b)
-        => MathF.Acos(Dot(a, b) / (a.magnitude * b.magnitude));
+        public static float Angle(Vector2 a, Vector2 b) => MathF.Acos(Dot(a, b) / (a.magnitude * b.magnitude));
 
         /// <summary>
         /// 極座標を直交座標に変換
         /// </summary>
-        public static Vector2 Polor2Rectangular(Vector2 p)
-        => new(p.x * MathF.Cos(p.y), p.x * MathF.Sin(p.y));
+        public static Vector2 Polor2Rectangular(Vector2 p) => new(p.x * MathF.Cos(p.y), p.x * MathF.Sin(p.y));
 
-        public static Vector3 Mul(this Vector3 v, float a)
-        => new(v.x * a, v.y * a, v.z * a);
+        public static Vector3 Mul(this Vector3 v, float a) => new(v.x * a, v.y * a, v.z * a);
     }
 }

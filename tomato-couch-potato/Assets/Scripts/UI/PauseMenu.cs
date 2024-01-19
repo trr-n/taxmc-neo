@@ -34,7 +34,7 @@ namespace trrne.Brain
         {
             FaderHandle(active);
             // FIXME タイムスケールいじるとキャンバスが上に飛んでいく
-            // Time.timeScale = active ? 0 : 1;
+            Time.timeScale = active ? 0 : 1;
         }
 
         void PanelControl()
@@ -59,8 +59,8 @@ namespace trrne.Brain
         IEnumerator Fader(bool fin)
         {
             isFading = true;
-            float alpha = fin ? 0f : 1;
-            while (alpha.IsCaged(0, 1))
+            float alpha = fin ? 0f : 1f;
+            while (alpha.IsCaged(0f, 1f))
             {
                 canvas.alpha = FADE_SPEED * fin switch
                 {

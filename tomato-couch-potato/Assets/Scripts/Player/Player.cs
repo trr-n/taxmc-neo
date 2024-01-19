@@ -10,6 +10,7 @@ namespace trrne.Core
     public enum Cause
     {
         None,
+        Hizakarakuzureotiru,
         Muscarine,  // 毒
         Fallen,     // 落下死
     }
@@ -37,7 +38,7 @@ namespace trrne.Core
 
         /// <summary> 樽のなかにいるか </summary>
         bool inBarrel = false;
-        public bool isAfterBarrel = false;
+        public bool IsAfterBarrel { get; set; } = false;
         public void BarrelProcess(bool flag)
         {
             rb.velocity *= 0;
@@ -159,7 +160,7 @@ namespace trrne.Core
                 on.ice = on.ground = false;
                 return;
             }
-            isAfterBarrel = false;
+            IsAfterBarrel = false;
             on.ground = hit.CompareLayer(Constant.Layers.JUMPABLE);
             on.ice = hit.CompareTag(Constant.Tags.ICE);
         }
@@ -209,11 +210,11 @@ namespace trrne.Core
                 return;
             }
 
-            string horizontal = PunishFlags[(int)PunishEffect.Mirror] ? Constant.Keys.MIRRORED_HORIZONTAL : Constant.Keys.HORIZONTAL;
+            var horizontal = PunishFlags[(int)PunishEffect.Mirror] ? Constant.Keys.MIRRORED_HORIZONTAL : Constant.Keys.HORIZONTAL;
             if (Inputs.Down(horizontal))
             {
-                int pre = MathF.Sign(transform.localScale.x);
-                float haxis = Input.GetAxisRaw(horizontal);
+                var pre = MathF.Sign(transform.localScale.x);
+                var haxis = Input.GetAxisRaw(horizontal);
                 if (MathF.Sign(haxis) != 0 && MathF.Sign(haxis) != pre)
                 {
                     transform.localScale *= Reverse;
@@ -246,19 +247,19 @@ namespace trrne.Core
         /// </summary>
         void Move()
         {
-            if (!Controllable || IsTeleporting || inBarrel || isAfterBarrel)
+            if (!Controllable || IsTeleporting || inBarrel || IsAfterBarrel)
             {
                 return;
             }
 
-            bool walkAnimationFlag = on.ground && Inputs.Pressed(Constant.Keys.HORIZONTAL);
+            var walkAnimationFlag = on.ground && Inputs.Pressed(Constant.Keys.HORIZONTAL);
             animator.SetBool(Constant.Animations.Walk, walkAnimationFlag);
 
             var horizon = PunishFlags[(int)PunishEffect.Mirror] ? Constant.Keys.MIRRORED_HORIZONTAL : Constant.Keys.HORIZONTAL;
             var move = Vec.Make2(x: Input.GetAxisRaw(horizon));
 
             // 入力がtolerance以下、氷に乗っていない
-            if (move.magnitude <= INPUT_TOLERANCE && !on.ice)// && !isAfterBarrel)
+            if (move.magnitude <= INPUT_TOLERANCE && !on.ice)
             {
                 // x軸の速度をspeed.reduction倍
                 rb.SetVelocity(x: rb.velocity.x * red.move);
@@ -267,7 +268,7 @@ namespace trrne.Core
             // x軸の速度を制限
             if (rb.bodyType != RigidbodyType2D.Static)
             {
-                float limit = Shorthand.L1ne(() =>
+                var limit = Shorthand.L1ne(() =>
                 {
                     if (PunishFlags[(int)PunishEffect.Fetters])
                     {
@@ -309,6 +310,7 @@ namespace trrne.Core
                 case Cause.None:
                     break;
                 case Cause.Muscarine:
+                case Cause.Hizakarakuzureotiru:
                     rb.velocity = Vector2.zero;
                     animator.Play(Constant.Animations.Venomed);
                     break;

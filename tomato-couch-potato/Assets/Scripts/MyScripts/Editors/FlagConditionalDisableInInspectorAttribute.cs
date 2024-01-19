@@ -4,16 +4,16 @@ namespace trrne.Box
 {
     public class FlagConditionalDisableInInspectorAttribute : PropertyAttribute
     {
-        public readonly string FlagVariableName;
-        public readonly bool TrueThenDisable;
-        public readonly bool ConditionalInvisible;
+        public readonly string FlagVarNameStr;
+        public readonly bool TrueThenDisable, ConditionalInvisible;
 
-        public FlagConditionalDisableInInspectorAttribute(
-            string flagVariableName, bool trueThenDisable = false, bool conditionalInvisible = false)
+        public FlagConditionalDisableInInspectorAttribute(string flag, bool ttd = false, bool condition = false)
         {
-            FlagVariableName = flagVariableName;
-            TrueThenDisable = trueThenDisable;
-            ConditionalInvisible = conditionalInvisible;
+            FlagVarNameStr = flag;
+            TrueThenDisable = ttd;
+            ConditionalInvisible = condition;
         }
     }
 }
+
+// https://mu-777.hatenablog.com/entry/2022/09/04/113348

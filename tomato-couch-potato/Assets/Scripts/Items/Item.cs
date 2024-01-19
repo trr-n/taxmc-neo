@@ -27,7 +27,6 @@ namespace trrne.Core
         protected bool animatable = true;
 
         (int index, Stopwatch sw) anim = (0, new(true));
-        readonly Anima anima = new();
 
         protected virtual void Start()
         {
@@ -39,7 +38,7 @@ namespace trrne.Core
             Receive();
             Animation();
 
-            anima.Sprite(animatable, sr, Time.deltaTime, sprites);
+            sr.Animation(animatable, Time.deltaTime, sprites);
         }
 
         void Animation()
