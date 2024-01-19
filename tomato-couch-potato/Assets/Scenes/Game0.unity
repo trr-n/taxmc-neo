@@ -621,6 +621,18 @@ PrefabInstance:
       propertyPath: m_FlipX
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6583199484258935708, guid: 6a550ffeb191e7d408a362590ce74a8d, type: 3}
+      propertyPath: m_Color.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6583199484258935708, guid: 6a550ffeb191e7d408a362590ce74a8d, type: 3}
+      propertyPath: m_Color.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6583199484258935708, guid: 6a550ffeb191e7d408a362590ce74a8d, type: 3}
+      propertyPath: m_Color.r
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8518776664643100737, guid: 6a550ffeb191e7d408a362590ce74a8d, type: 3}
       propertyPath: m_IsTrigger
       value: 0
@@ -16789,7 +16801,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4755165446146077792, guid: 4116959be5ee7cc47a5d7e8a0d69756b, type: 3}
       propertyPath: jumpPower
-      value: 17.5
+      value: 20
       objectReference: {fileID: 0}
     - target: {fileID: 4869448017957978218, guid: 4116959be5ee7cc47a5d7e8a0d69756b, type: 3}
       propertyPath: m_LocalPosition.x

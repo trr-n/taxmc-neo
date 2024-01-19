@@ -11,7 +11,7 @@ namespace trrne.Core
         [SerializeField]
         float offsetY = 1;
 
-        (float keyboard, float wheel) axis = (0, 0);
+        (float key, float wheel) axis = (0, 0);
 
         float raw = 0f;
 
@@ -48,14 +48,14 @@ namespace trrne.Core
             }
 
             axis = (Input.GetAxisRaw(Constant.Keys.ZOOM), Input.GetAxisRaw(Constant.Keys.MOUSE_ZOOM));
-            if (0f.Twins(axis.keyboard + axis.wheel))
+            if (MF.ZeroTwins(axis.key + axis.wheel))
             {
                 return;
             }
 
-            if (axis.keyboard != 0)
+            if (axis.key != 0)
             {
-                raw += MathF.Sign(axis.keyboard) / 4;
+                raw += MathF.Sign(axis.key) / 4;
             }
             else if (axis.wheel != 0)
             {

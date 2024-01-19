@@ -28,7 +28,7 @@ namespace trrne.Core
 
         public bool Rotatable { get; set; } = true;
 
-        readonly LotteryPair<int> speeds = new((32, 1), (48, 1), (64, 2), (128, 1));
+        readonly LotteryPair<int> speeds = new((32, 0.8f), (48, 1), (64, 2), (128, 1));
         int speed;
 
         protected override void Start()
@@ -48,10 +48,13 @@ namespace trrne.Core
 
         IEnumerator SpeedUpdater()
         {
+            // int index = 0;
             while (true)
             {
                 yield return new WaitForSeconds(Rand.Int(2, 5));
                 speed = speeds.Weighted();
+                // speed = speeds.Subject(index);
+                // index = index + 1 >= speeds.Length() ? 0 : ++index;
             }
         }
     }

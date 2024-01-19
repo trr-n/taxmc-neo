@@ -37,11 +37,12 @@ namespace trrne.Core
 
         /// <summary> 樽のなかにいるか </summary>
         bool inBarrel = false;
+        public bool isAfterBarrel = false;
         public void BarrelProcess(bool flag)
         {
+            rb.velocity *= 0;
             inBarrel = rb.isKinematic = flag;
             rb.gravityScale = flag ? 0 : gscale.basis;
-            rb.velocity *= 0;
             transform.GetChildrenGameObject().ForEach(child => child.SetActive(!flag));
         }
 
@@ -152,7 +153,7 @@ namespace trrne.Core
                 on.ice = on.ground = false;
                 return;
             }
-
+            isAfterBarrel = false;
             on.ground = hit.CompareLayer(Constant.Layers.JUMPABLE);
             on.ice = hit.CompareTag(Constant.Tags.ICE);
         }
@@ -170,7 +171,7 @@ namespace trrne.Core
         /// </summary>
         void Respawn()
         {
-            if (!IsDying && Inputs.Down(Constant.Keys.RESPAWN))
+            if (!IsDying && Inputs.Down(Constant.Keys.RESPAWN) && !inBarrel)
             {
                 ReturnToCheckpoint();
             }
@@ -239,7 +240,7 @@ namespace trrne.Core
         /// </summary>
         void Move()
         {
-            if (!Controllable || IsTeleporting || inBarrel)
+            if (!Controllable || IsTeleporting || inBarrel || isAfterBarrel)
             {
                 return;
             }
@@ -251,7 +252,7 @@ namespace trrne.Core
             var move = Vec.Make2(x: Input.GetAxisRaw(horizon));
 
             // 入力がtolerance以下、氷に乗っていない
-            if (move.magnitude <= INPUT_TOLERANCE && !on.ice)
+            if (move.magnitude <= INPUT_TOLERANCE && !on.ice)// && !isAfterBarrel)
             {
                 // x軸の速度をspeed.reduction倍
                 rb.SetVelocity(x: rb.velocity.x * red.move);

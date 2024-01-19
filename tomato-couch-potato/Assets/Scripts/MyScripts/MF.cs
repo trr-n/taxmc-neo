@@ -66,6 +66,8 @@ namespace trrne.Box
         /// <returns>a_cutailとbがほぼ同じならtrueを返す</returns>
         public static bool Twins(this float a, float b) => Math.Abs((double)b - (double)a) < Math.Max(1e-6 * Max(Abs(a), Abs(b)), Epsilon * 8);
 
+        public static bool ZeroTwins(this float a) => Twins(a, 0f);
+
         /// <summary>
         /// 数値を比較する -> <b>bool</b><br/>
         /// </summary>

@@ -30,16 +30,13 @@ namespace trrne.Core
         [Min(.5f)]
         float movingRange;
 
-        Vector2 centre;
         readonly Stopwatch pp = new(true);
 
         Rigidbody2D rb;
 
         protected override void Start()
         {
-            centre = transform.position;
             base.Start();
-
             rb = GetComponent<Rigidbody2D>();
             rb.isKinematic = true;
             rb.gravityScale = 0;
@@ -47,11 +44,11 @@ namespace trrne.Core
 
         protected override void Behavior()
         {
-            float pp2 = wave switch
+            var pp2 = movingRange * wave switch
             {
-                WaveType.Sin => Mathf.Sin(pp.secondf * movingSpeed) * movingRange,
-                WaveType.Cos => Mathf.Cos(pp.secondf * movingSpeed) * movingRange,
-                WaveType.Tan => Mathf.Tan(pp.secondf * movingSpeed) * movingRange,
+                WaveType.Sin => Mathf.Sin(pp.secondf * movingSpeed),
+                WaveType.Cos => Mathf.Cos(pp.secondf * movingSpeed),
+                WaveType.Tan => Mathf.Tan(pp.secondf * movingSpeed),
                 _ => 0
             };
 

@@ -10,34 +10,45 @@ namespace trrne.Core
 
         [SerializeField]
         [Tooltip("回転角")]
-        float range;
+        float rotRange = 0;
+
+        [SerializeField]
+        float rotSpeed = 10;
+
+        [SerializeField]
+        bool isRotate = false;
 
         bool inBarrel = false;
-        float initZ;
+        float initZ = 0;
 
-        float z = 10;
-
-        Rigidbody2D playerRB = null;
+        Player player = null;
 
         protected override void Start()
         {
             base.Start();
-            initZ = transform.eulerAngles.z;
+            initZ = transform.localEulerAngles.z;
         }
 
         protected override void Behavior()
         {
-            if (!inBarrel)
+            if (isRotate && rotRange != 0)
             {
-                return;
+                var z = Mathf.Sin(rotSpeed * Time.time) * rotRange + initZ;
+                transform.rotation = Quaternion.Euler(0, 0, z);
             }
 
-            // 樽を回転させてキーが押された時点の角度に合わせて飛ばす
-            transform.Rotate(z: Time.deltaTime * z, space: Space.Self);
-            if (playerRB != null && Inputs.Down(Constant.Keys.JUMP))
+            if (inBarrel)
             {
-                playerRB = null;
-                playerRB.gameObject.GetComponent<Player>().BarrelProcess(false);
+                player.transform.position = transform.position;
+                // 樽を回転させてキーが押された時点の角度に合わせて飛ばす
+                if (player != null && Inputs.Down(Constant.Keys.JUMP))
+                {
+                    player.BarrelProcess(false);
+                    player.GetComponent<Rigidbody2D>().velocity += power * (Vector2)transform.up;
+                    inBarrel = false;
+                    player.isAfterBarrel = true;
+                    player = null;
+                }
             }
         }
 
@@ -46,8 +57,8 @@ namespace trrne.Core
             if (other.TryGetComponent(out Player player))
             {
                 player.BarrelProcess(inBarrel = true);
-                player.transform.SetPosition(transform);
-                playerRB = player.GetComponent<Rigidbody2D>();
+                player.transform.position = transform.position;
+                this.player = player;
             }
         }
     }
