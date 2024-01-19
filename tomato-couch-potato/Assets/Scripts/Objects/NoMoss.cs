@@ -1,5 +1,4 @@
 using System.Collections;
-using Cysharp.Threading.Tasks;
 using trrne.Box;
 using UnityEngine;
 
@@ -20,22 +19,31 @@ namespace trrne.Core
         [SerializeField]
         RotateDirection direction;
 
-        // [SerializeField]
-        // float speed = 15f;
-        // public float Speed => speed;
-        // public void SetSpeed(float speed) => this.speed = speed;
+        [SerializeField]
+        bool isFixed = true;
 
+        [FlagConditionalDisableInInspector("isFixed")]
+        [SerializeField]
+        float rotSpeed = 64;
 
         public bool Rotatable { get; set; } = true;
 
-        readonly LotteryPair<int> speeds = new((32, 0.8f), (48, 1), (64, 2), (128, 1));
-        int speed;
+        readonly LotteryPair<float> speeds = new((32, 0.8f), (48, 1), (64, 2), (128, 1));
+        float speed;
 
         protected override void Start()
         {
             base.Start();
-            speed = speeds.Weighted();
-            StartCoroutine(nameof(SpeedUpdater));
+
+            if (!isFixed)
+            {
+                speed = speeds.Weighted();
+                StartCoroutine(nameof(SpeedUpdater));
+            }
+            else
+            {
+                speed = rotSpeed;
+            }
         }
 
         protected override void Behavior()
@@ -49,7 +57,7 @@ namespace trrne.Core
         IEnumerator SpeedUpdater()
         {
             // int index = 0;
-            while (true)
+            while (this != null)
             {
                 yield return new WaitForSeconds(Rand.Int(2, 5));
                 speed = speeds.Weighted();

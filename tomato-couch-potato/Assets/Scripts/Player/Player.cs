@@ -118,9 +118,15 @@ namespace trrne.Core
             Flip();
             Respawn();
             PunishFlagsUpdater();
+#if DEBUG
+            if (Inputs.Down(KeyCode.H))
+            {
+                transform.SetPosition(237f, 18f);
+            }
+#endif
         }
 
-#if !DEBUG
+#if false
         [SerializeField]
         Text floatingT;
 

@@ -33,7 +33,7 @@ namespace trrne.Core
         {
             if (isRotate && rotRange != 0)
             {
-                var z = Mathf.Sin(rotSpeed * Time.time) * rotRange + initZ;
+                var z = Mathf.Sin(rotSpeed * Time.time) * (rotRange / 2) + initZ;
                 transform.rotation = Quaternion.Euler(0, 0, z);
             }
 
@@ -54,7 +54,7 @@ namespace trrne.Core
 
         void OnTriggerEnter2D(Collider2D other)
         {
-            if (other.TryGetComponent(out Player player))
+            if (other.TryGetComponent(out Player player) && !player.IsDying)
             {
                 player.BarrelProcess(inBarrel = true);
                 player.transform.position = transform.position;

@@ -17,7 +17,7 @@ namespace trrne.Core
 
         Player player;
 
-        readonly (float min, float max) zoom = (4.5f, 12f);
+        readonly (float min, float max) zoom = (4.5f, 16f);
 
         void Start()
         {
@@ -55,7 +55,7 @@ namespace trrne.Core
 
             if (axis.key != 0)
             {
-                raw += MathF.Sign(axis.key) / 4;
+                raw += MathF.Sign(axis.key) * .25f;
             }
             else if (axis.wheel != 0)
             {

@@ -10,7 +10,7 @@ namespace trrne.Box
         public static T Cast<T>(this object o) => (T)o;
         public static Vector2 ToV2(this Vector3 vector) => (Vector2)vector;
         public static Vector3 ToV3(this Vector2 vector) => (Vector3)vector;
-        [Obsolete] public static Vector3 ToV3(this Quaternion q) => new(2 * ((q.x * q.w) + (q.y * q.z)), 2 * ((q.x * q.z) - (q.y * q.w)), 2 * ((q.y * q.w) + (q.x * q.z)));
+        [Obsolete] public static Vector3 ToV3(this Quaternion q) => 2 * new Vector3((q.x * q.w) + (q.y * q.z), (q.x * q.z) - (q.y * q.w), (q.y * q.w) + (q.x * q.z));
         public static Quaternion ToQ(this Vector3 vector) => Quaternion.Euler(vector);
         public static Quaternion ToQ(this Vector2 vector) => Quaternion.Euler(vector);
         public static string ToStr(this bool boolean) => boolean ? "true" : "false";
