@@ -18,20 +18,9 @@ namespace trrne.Core
         Player player;
 
 
-        new Camera camera;
-        public void Shake(float duration, float magnitude)
-        {
-            try
-            {
-                camera.DoSalmon(duration, magnitude);
-            }
-            catch (NullReferenceException) { }
-        }
-
         void Start()
         {
             player = Gobject.GetWithTag<Player>(Constant.Tags.PLAYER);
-            camera = GetComponent<Camera>();
         }
 
         void Update()

@@ -3,12 +3,12 @@ using UnityEditor;
 
 namespace trrne.Box
 {
-    [CustomPropertyDrawer(typeof(FlagConditionalDisableInInspectorAttribute))]
-    internal sealed class FlagConditionalDisableDrawer : PropertyDrawer
+    [CustomPropertyDrawer(typeof(DisableVariableAttribute))]
+    internal sealed class DisableVariableDrawer : PropertyDrawer
     {
         public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
         {
-            var attr = attribute as FlagConditionalDisableInInspectorAttribute;
+            var attr = attribute as DisableVariableAttribute;
             var prop = property.serializedObject.FindProperty(attr.FlagVarNameStr);
             if (prop == null)
             {
@@ -29,7 +29,7 @@ namespace trrne.Box
 
         public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
         {
-            var attr = attribute as FlagConditionalDisableInInspectorAttribute;
+            var attr = attribute as DisableVariableAttribute;
             if (attr.ConditionalInvisible && IsDisable(attr, property.serializedObject.FindProperty(attr.FlagVarNameStr)))
             {
                 return -EditorGUIUtility.standardVerticalSpacing;
@@ -37,7 +37,7 @@ namespace trrne.Box
             return EditorGUI.GetPropertyHeight(property, true);
         }
 
-        bool IsDisable(FlagConditionalDisableInInspectorAttribute attr, SerializedProperty prop)
+        bool IsDisable(DisableVariableAttribute attr, SerializedProperty prop)
         {
             return attr.TrueThenDisable ? prop.boolValue : !prop.boolValue;
         }

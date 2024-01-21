@@ -67,5 +67,6 @@ namespace trrne.Core
 
         protected void PlayOneShot() => speaker.PlayOneShot(ses.Choice());
         protected void PlayOneShot(AudioClip clip) => speaker.PlayOneShot(clip);
+        protected void PlayOneShot(AudioClip clip, float volume) => speaker.PlayOneShot(clip, volume);
     }
 }

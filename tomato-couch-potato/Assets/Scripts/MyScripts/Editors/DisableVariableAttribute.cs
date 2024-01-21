@@ -2,12 +2,12 @@ using UnityEngine;
 
 namespace trrne.Box
 {
-    public class FlagConditionalDisableInInspectorAttribute : PropertyAttribute
+    public class DisableVariableAttribute : PropertyAttribute
     {
         public readonly string FlagVarNameStr;
         public readonly bool TrueThenDisable, ConditionalInvisible;
 
-        public FlagConditionalDisableInInspectorAttribute(string flag, bool ttd = false, bool condition = false)
+        public DisableVariableAttribute(string flag, bool ttd = false, bool condition = false)
         {
             FlagVarNameStr = flag;
             TrueThenDisable = ttd;

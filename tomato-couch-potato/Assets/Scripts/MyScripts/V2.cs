@@ -53,6 +53,8 @@ namespace trrne.Box
         public static explicit operator Vector2(in V2 a) => new((float)a.x, (float)a.y);
         public static explicit operator Vector3(in V2 a) => new((float)a.x, (float)a.y, 0f);
 
+        public Vector2 vector2() => (Vector2)this;
+
         public override bool Equals(object obj) => base.Equals(obj);
         public override int GetHashCode() => base.GetHashCode();
 

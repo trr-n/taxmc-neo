@@ -1,5 +1,6 @@
-using trrne.Box;
+using System;
 using UnityEngine;
+using trrne.Box;
 
 namespace trrne.Core
 {
@@ -32,35 +33,45 @@ namespace trrne.Core
 
         readonly Stopwatch pp = new(true);
 
-        Rigidbody2D rb;
+        new Rigidbody2D rigidbody;
 
         protected override void Start()
         {
             base.Start();
-            rb = GetComponent<Rigidbody2D>();
-            rb.isKinematic = true;
-            rb.gravityScale = 0;
+            rigidbody = GetComponent<Rigidbody2D>();
+            rigidbody.isKinematic = true;
+            rigidbody.gravityScale = 0;
+
+            var pos = transform.position;
+            var offset = (new V2(pos.x, pos.y) - movingRange / 2).vector2();
+            switch (style)
+            {
+                case MovingStyle.Horizontal:
+                    pos.x += offset.x;
+                    break;
+                case MovingStyle.Vertical:
+                    pos.y += offset.y;
+                    break;
+            }
+            transform.position = pos;
         }
 
         protected override void Behavior()
         {
-            var pp2 = movingRange * wave switch
+            var pp2 = wave switch
             {
-                WaveType.Sin => Mathf.Sin(pp.secondf * movingSpeed),
-                WaveType.Cos => Mathf.Cos(pp.secondf * movingSpeed),
-                WaveType.Tan => Mathf.Tan(pp.secondf * movingSpeed),
+                WaveType.Sin => MathF.Sin(pp.secondf * movingSpeed),
+                WaveType.Cos => MathF.Cos(pp.secondf * movingSpeed),
+                WaveType.Tan => MathF.Tan(pp.secondf * movingSpeed),
                 _ => 0
             };
 
-            switch (style)
+            rigidbody.velocity = movingRange * style switch
             {
-                case MovingStyle.Horizontal:
-                    rb.SetVelocity(x: pp2);
-                    break;
-                case MovingStyle.Vertical:
-                    rb.SetVelocity(y: pp2);
-                    break;
-            }
+                MovingStyle.Horizontal => new Vector2(pp2, 0),
+                MovingStyle.Vertical => new(0, pp2),
+                _ => new()
+            };
         }
 
         public void FetchStyle(MovingStyle style) => this.style = style;

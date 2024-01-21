@@ -27,6 +27,11 @@ namespace trrne.Core
         [SerializeField]
         GameObject diefx;
 
+        [SerializeField]
+        AudioClip[] jumpSEs;
+
+        AudioSource speaker;
+
         /// <summary> 操作フラグ </summary>
         public bool Controllable { get; set; }
 
@@ -43,7 +48,7 @@ namespace trrne.Core
         {
             rb.velocity *= 0;
             inBarrel = rb.isKinematic = flag;
-            rb.gravityScale = flag ? 0 : gscale.basis;
+            rb.gravityScale = flag ? 0 : gravityScale.BASIS;
             transform.GetChildrenGameObject().ForEach(child => child.SetActive(!flag));
         }
 
@@ -53,15 +58,15 @@ namespace trrne.Core
         public bool[] PunishFlags { get; set; }
         int effectLength => new PunishEffect().Length();
 
-        (float basis, float max) speed => (20f, 10f);
-        (float fetters, float floating, float move) red => (0.5f, 0.95f, 0.9f);
-        (float floating, float basis) gscale => (3f, 1f);
+        (float BASIS, float MAX) speed => (20f, 10f);
+        (float FETTERS, float FLOATING, float MOVE) red => (0.5f, 0.95f, 0.9f);
+        (float FLOATING, float BASIS) gravityScale => (3f, 1f);
 
         // Movement
         const float JUMP_POWER = 13f;
 
         public bool IsFloating { get; private set; }
-        (bool ice, bool ground) on = (false, false);
+        (bool ICE, bool GROUND) on = (false, false);
 
         Rigidbody2D rb;
         Animator animator;
@@ -74,20 +79,25 @@ namespace trrne.Core
         const float INPUT_TOLERANCE = 1 / 3;
 
         public Vector2 Checkpoint { get; private set; } = default;
-        public void SetCheckpoint(Vector2 position) => Checkpoint = position;
+        public void SetCheckpoint(Vector2 position)
+        {
+            MendingDoableObjects();
+            Checkpoint = position;
+        }
         public void SetCheckpoint(float? x = null, float? y = null)
-        => Checkpoint = new(x ?? transform.position.x, y ?? transform.position.y);
+        => SetCheckpoint(new(x ?? transform.position.x, y ?? transform.position.y));
 
         public void ReturnToCheckpoint()
         {
+            rb.velocity = Vector2.zero;
             transform.position = Checkpoint;
             inBarrel = false;
         }
 
-        Vector2 Reverse => new(-1, 1);
+        Vector2 reverse => new(-1, 1);
 
         Vector2 box;
-        Vector2 HitboxSizeRatio => new(.8f, .1f);
+        Vector2 hitboxSizeRatio => new(.8f, .1f);
 
         const int ANIMATION_DELAY = 1250;
 
@@ -98,12 +108,13 @@ namespace trrne.Core
             animator = GetComponent<Animator>();
             hitbox = GetComponent<BoxCollider2D>();
             rb = GetComponent<Rigidbody2D>();
-            rb.gravityScale = gscale.basis;
+            rb.gravityScale = gravityScale.BASIS;
+            speaker = GetComponent<AudioSource>();
 
             PunishFlags = new bool[effectLength].Set(false);
             Punishables = new bool[effectLength].Set(true);
 
-            box = new(hitbox.bounds.size.x * HitboxSizeRatio.x, hitbox.bounds.size.y * HitboxSizeRatio.y);
+            box = new(hitbox.bounds.size.x * hitboxSizeRatio.x, hitbox.bounds.size.y * hitboxSizeRatio.y);
         }
 
         void FixedUpdate()
@@ -122,7 +133,7 @@ namespace trrne.Core
 #if DEBUG
             if (Inputs.Down(KeyCode.H))
             {
-                transform.SetPosition(237f, 18f);
+                transform.SetPosition(133f, 18f);
             }
 #endif
         }
@@ -139,13 +150,12 @@ namespace trrne.Core
 
         void Def()
         {
-            if (inBarrel)
+            if (!inBarrel)
             {
-                return;
+                Core = transform.position + Vec.Make3(y: hitbox.bounds.size.y / 2);
+                rb.bodyType = IsTeleporting ? RigidbodyType2D.Static : RigidbodyType2D.Dynamic;
+                rb.gravityScale = (IsFloating = !on.GROUND) ? gravityScale.FLOATING : gravityScale.BASIS;
             }
-            Core = transform.position + Vec.Make3(y: hitbox.bounds.size.y / 2);
-            rb.bodyType = IsTeleporting ? RigidbodyType2D.Static : RigidbodyType2D.Dynamic;
-            rb.gravityScale = (IsFloating = !on.ground) ? gscale.floating : gscale.basis;
         }
 
         void Footer()
@@ -157,12 +167,12 @@ namespace trrne.Core
 
             if (!Gobject.Boxcast(out var hit, transform.position, box, Constant.Layers.JUMPABLE))
             {
-                on.ice = on.ground = false;
+                on.ICE = on.GROUND = false;
                 return;
             }
             IsAfterBarrel = false;
-            on.ground = hit.CompareLayer(Constant.Layers.JUMPABLE);
-            on.ice = hit.CompareTag(Constant.Tags.ICE);
+            on.GROUND = hit.CompareLayer(Constant.Layers.JUMPABLE);
+            on.ICE = hit.CompareTag(Constant.Tags.ICE);
         }
 
 #if DEBUG
@@ -217,7 +227,7 @@ namespace trrne.Core
                 var haxis = Input.GetAxisRaw(horizontal);
                 if (MathF.Sign(haxis) != 0 && MathF.Sign(haxis) != pre)
                 {
-                    transform.localScale *= Reverse;
+                    transform.localScale *= reverse;
                 }
             }
         }
@@ -229,17 +239,18 @@ namespace trrne.Core
                 return;
             }
 
-            if (!on.ground)
+            if (!on.GROUND)
             {
-                animator.SetBool(Constant.Animations.Jump, true);
+                animator.SetBool(Constant.Animations.JUMP, true);
                 return;
             }
 
             if (Inputs.Down(Constant.Keys.JUMP))
             {
-                rb.velocity += JUMP_POWER * Vec.Y.ToV2();
+                speaker.PlayOneShot(jumpSEs.Choice());
+                rb.velocity += Vec.Make2(y: JUMP_POWER);
             }
-            animator.SetBool(Constant.Animations.Jump, false);
+            animator.SetBool(Constant.Animations.JUMP, false);
         }
 
         /// <summary>
@@ -252,17 +263,16 @@ namespace trrne.Core
                 return;
             }
 
-            var walkAnimationFlag = on.ground && Inputs.Pressed(Constant.Keys.HORIZONTAL);
-            animator.SetBool(Constant.Animations.Walk, walkAnimationFlag);
+            animator.SetBool(Constant.Animations.WALK, on.GROUND && Inputs.Pressed(Constant.Keys.HORIZONTAL));
 
             var horizon = PunishFlags[(int)PunishEffect.Mirror] ? Constant.Keys.MIRRORED_HORIZONTAL : Constant.Keys.HORIZONTAL;
             var move = Vec.Make2(x: Input.GetAxisRaw(horizon));
 
             // 入力がtolerance以下、氷に乗っていない
-            if (move.magnitude <= INPUT_TOLERANCE && !on.ice)
+            if (move.magnitude <= INPUT_TOLERANCE && !on.ICE)
             {
                 // x軸の速度をspeed.reduction倍
-                rb.SetVelocity(x: rb.velocity.x * red.move);
+                rb.SetVelocity(x: rb.velocity.x * red.MOVE);
             }
 
             // x軸の速度を制限
@@ -272,19 +282,17 @@ namespace trrne.Core
                 {
                     if (PunishFlags[(int)PunishEffect.Fetters])
                     {
-                        return speed.max * red.fetters;
+                        return speed.MAX * red.FETTERS;
                     }
-                    else if (on.ice)
+                    else if (on.ICE)
                     {
-                        return speed.max * 2;
+                        return speed.MAX * 2;
                     }
-                    return speed.max;
+                    return speed.MAX;
                 });
                 rb.ClampVelocity(x: (-limit, limit));
             }
-
-            // 浮いていたら移動速度低下 
-            rb.velocity += Time.fixedDeltaTime * speed.basis * (IsFloating ? red.floating : 1f) * move;
+            rb.velocity += Time.fixedDeltaTime * speed.BASIS * (IsFloating ? red.FLOATING : 1f) * move;
         }
 
         /// <summary>
@@ -312,18 +320,17 @@ namespace trrne.Core
                 case Cause.Muscarine:
                 case Cause.Hizakarakuzureotiru:
                     rb.velocity = Vector2.zero;
-                    animator.Play(Constant.Animations.Venomed);
+                    animator.Play(Constant.Animations.VENOMED);
                     break;
                 case Cause.Fallen:
-                    animator.Play(Constant.Animations.Die);
+                    animator.Play(Constant.Animations.DIE);
                     break;
             }
 
             await UniTask.Delay(ANIMATION_DELAY);
 
             // mend
-            Gobject.Finds<Carrot>().ForEach(carrot => carrot.Mendable.If(carrot.Mend));
-            Gobject.Finds<MoroiFloor>().ForEach(moro => moro.Mendable.If(moro.Mend));
+            MendingDoableObjects();
 
             ReturnToCheckpoint();
             animator.StopPlayback();
@@ -338,5 +345,11 @@ namespace trrne.Core
         }
 
         public async UniTask Die() => await Die(Cause.None);
+
+        public void MendingDoableObjects()
+        {
+            Gobject.Finds<Carrot>().ForEach(carrot => carrot.Mendable.If(carrot.Mend));
+            Gobject.Finds<MoroiFloor>().ForEach(moro => moro.Mendable.If(moro.Mend));
+        }
     }
 }

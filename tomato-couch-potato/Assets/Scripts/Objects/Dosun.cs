@@ -23,6 +23,7 @@ namespace trrne.Core
 
         Vector3 initPos;
         Transform player;
+        new Rigidbody2D rigidbody;
 
         void Awake()
         {
@@ -33,7 +34,9 @@ namespace trrne.Core
         {
             base.Start();
 
-            GetComponent<Rigidbody2D>().gravityScale = 0;
+            sr.sprite = sprites[0];
+            rigidbody = GetComponent<Rigidbody2D>();
+            rigidbody.gravityScale = 0;
             player = Gobject.GetWithTag<Transform>(Constant.Tags.PLAYER);
 
             Invoke(nameof(StopTimer), startDelay);
@@ -47,7 +50,7 @@ namespace trrne.Core
             {
                 dossunPower += Time.deltaTime * accelRatio;
                 dossunPower = Mathf.Clamp(dossunPower, 0f, POWER_MAX);
-                transform.Translate(Vec.Make2(y: -Time.deltaTime * dossunPower * down));
+                rigidbody.velocity += Vec.Make2(y: -Time.deltaTime * dossunPower * down);
             }
         }
 
@@ -57,22 +60,33 @@ namespace trrne.Core
             {
                 return;
             }
+            print("hit for someone");
 
-            if (other.TryGetComponent(out ICreature creature))
+            if (other.TryGetComponent(out Player player))
+            {
+                print("player is tubusita");
+                await player.Die(Cause.Hizakarakuzureotiru);
+            }
+            else if (other.TryGetComponent(out ICreature creature))
             {
                 await creature.Die();
             }
+
             if (other.CompareLayer(Constant.Layers.JUMPABLE))
             {
-                isDossun = false;
                 PlayOneShot(ses.Choice());
+                isDossun = false;
                 dossunPower = 0f;
+                sr.sprite = sprites[0];
 
                 // initPosに移動
-                transform.DOMove(initPos, up)
+                rigidbody.DOMove(initPos, up)
+                // transform.DOMove(initPos, up)
                     .SetEase(Ease.OutCubic)
+                    .OnStart(() => sr.sprite = sprites[0])
                     .OnComplete(async () =>
                     {
+                        sr.sprite = sprites[1];
                         await UniTask.WaitForSeconds(interval); // interval秒経過後落下する
                         isDossun = true;
                     });

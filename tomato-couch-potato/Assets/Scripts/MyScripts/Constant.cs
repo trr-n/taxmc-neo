@@ -62,12 +62,12 @@ namespace trrne
         public readonly struct Animations
         {
             public const string
-            Idle = "Idle",
-            Jump = "Jump",
-            Walk = "Walk",
-            Venom = "Venom",
-            Venomed = "venom_die",
-            Die = "Die";
+            IDLE = "Idle",
+            JUMP = "Jump",
+            WALK = "Walk",
+            VENOM = "Venom",
+            VENOMED = "venom_die",
+            DIE = "Die";
         }
 
         public readonly struct SpawnPositions

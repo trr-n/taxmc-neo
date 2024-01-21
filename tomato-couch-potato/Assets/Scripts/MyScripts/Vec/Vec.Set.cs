@@ -33,6 +33,9 @@ namespace trrne.Box
         // velocity
         public static void SetVelocity(this Rigidbody2D rb, float? x = null, float? y = null) => rb.velocity = new(x ?? rb.velocity.x, y ?? rb.velocity.y);
 
+        public static void AddVelocity(this Rigidbody2D rb, float x = 0, float y = 0) => rb.velocity += new Vector2(x, y);
+        public static void AddVelocity(this Rigidbody2D rb, Vector2 v) => rb.velocity += v;
+
         public static void ClampVelocity(this Rigidbody2D rb, (float min, float max)? x = null, (float min, float max)? y = null)
         => rb.velocity = new(
             x is null ? rb.velocity.x : Mathf.Clamp(rb.velocity.x, x.Value.min, x.Value.max),
