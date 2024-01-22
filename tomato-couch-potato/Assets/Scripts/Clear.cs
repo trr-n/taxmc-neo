@@ -53,18 +53,22 @@ namespace trrne.Brain
                 string next;
                 if (isReturnSelectScene)
                 {
-                    var clearSceneIndex = int.Parse(Scenes.Active().Delete(Constant.Scenes.PREFIX));
-                    if (clearSceneIndex >= MainGameManager.Instance.MAX - 1)
-                    {
-                        // next = Constant.Scenes.SELECT;
-                        goto test;
-                    }
-                    next = $"{Constant.Scenes.PREFIX}{clearSceneIndex + 1}";
+                    next = Constant.Scenes.SELECT;
                 }
                 else
                 {
-                test:
-                    next = Constant.Scenes.SELECT;
+                    var clearSceneIndex = int.Parse(Scenes.Active().Delete(Constant.Scenes.PREFIX));
+                    var timeManager = Gobject.GetWithTag<TimeManager>(Constant.Tags.MANAGER);
+                    if (clearSceneIndex >= MainGameManager.MAX - 1)
+                    {
+                        next = Constant.Scenes.CLEAR;
+                        MainGameManager.Instance.Scores[^1] = $"ステージ1: {timeManager.CurrentTimeStr}";
+                    }
+                    else
+                    {
+                        next = Constant.Scenes.PREFIX + (clearSceneIndex + 1).ToString();
+                        MainGameManager.Instance.Scores[0] = $"チュートリアル: {timeManager.CurrentTimeStr}";
+                    }
                 }
                 MainGameManager.Instance.SceneTransition(next);
             }

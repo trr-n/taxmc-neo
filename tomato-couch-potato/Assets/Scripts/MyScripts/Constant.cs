@@ -1,3 +1,4 @@
+using trrne.Brain;
 using UnityEngine;
 
 namespace trrne
@@ -11,7 +12,8 @@ namespace trrne
             SELECT = "Select",
             PREFIX = "Game",
             GAME0 = "Game0",
-            GAME1 = "Game1";
+            GAME1 = "Game1",
+            CLEAR = "Clear";
         }
 
         public readonly struct Layers

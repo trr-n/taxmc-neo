@@ -16945,6 +16945,46 @@ PrefabInstance:
       propertyPath: diefx
       value: 
       objectReference: {fileID: 5565991161832110117, guid: 3909e1890e2aefe458a5b72b5ee3a948, type: 3}
+    - target: {fileID: 7281095245200427739, guid: 442ace25410a6cc4eb70cdb6ed501a58, type: 3}
+      propertyPath: jumpSEs.Array.size
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 7281095245200427739, guid: 442ace25410a6cc4eb70cdb6ed501a58, type: 3}
+      propertyPath: jumpSEs.Array.data[0]
+      value: 
+      objectReference: {fileID: 8300000, guid: 319f249210268f640ab450e3b7a816c7, type: 3}
+    - target: {fileID: 7281095245200427739, guid: 442ace25410a6cc4eb70cdb6ed501a58, type: 3}
+      propertyPath: jumpSEs.Array.data[1]
+      value: 
+      objectReference: {fileID: 8300000, guid: 27b81f16b08a9704ca4f5aaf1e55b2cf, type: 3}
+    - target: {fileID: 7281095245200427739, guid: 442ace25410a6cc4eb70cdb6ed501a58, type: 3}
+      propertyPath: jumpSEs.Array.data[2]
+      value: 
+      objectReference: {fileID: 8300000, guid: 0601e242a9eab1b4a9d54ff1af8ad658, type: 3}
+    - target: {fileID: 7281095245200427739, guid: 442ace25410a6cc4eb70cdb6ed501a58, type: 3}
+      propertyPath: jumpSEs.Array.data[3]
+      value: 
+      objectReference: {fileID: 8300000, guid: efd0403c309561745b2b4e2e5c1c1311, type: 3}
+    - target: {fileID: 7281095245200427739, guid: 442ace25410a6cc4eb70cdb6ed501a58, type: 3}
+      propertyPath: jumpSEs.Array.data[4]
+      value: 
+      objectReference: {fileID: 8300000, guid: c63227513dd353f44903ca5c38c156c7, type: 3}
+    - target: {fileID: 7281095245200427739, guid: 442ace25410a6cc4eb70cdb6ed501a58, type: 3}
+      propertyPath: jumpSEs.Array.data[5]
+      value: 
+      objectReference: {fileID: 8300000, guid: 9997fddddc0172047830871c3a0fe14e, type: 3}
+    - target: {fileID: 7281095245200427739, guid: 442ace25410a6cc4eb70cdb6ed501a58, type: 3}
+      propertyPath: jumpSEs.Array.data[6]
+      value: 
+      objectReference: {fileID: 8300000, guid: 9ba4f729d76c62540a206eb02f13584a, type: 3}
+    - target: {fileID: 7281095245200427739, guid: 442ace25410a6cc4eb70cdb6ed501a58, type: 3}
+      propertyPath: jumpSEs.Array.data[7]
+      value: 
+      objectReference: {fileID: 8300000, guid: a5de590d7627f5a4a9c75f87f23c66d1, type: 3}
+    - target: {fileID: 7281095245200427739, guid: 442ace25410a6cc4eb70cdb6ed501a58, type: 3}
+      propertyPath: jumpSEs.Array.data[8]
+      value: 
+      objectReference: {fileID: 8300000, guid: beac2e40a8ffc2b498221477237b8cc6, type: 3}
     - target: {fileID: 7533838126954174317, guid: 442ace25410a6cc4eb70cdb6ed501a58, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
