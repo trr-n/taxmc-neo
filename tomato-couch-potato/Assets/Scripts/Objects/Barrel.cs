@@ -1,3 +1,4 @@
+using System.Linq;
 using trrne.Box;
 using UnityEngine;
 
@@ -10,6 +11,7 @@ namespace trrne.Core
 
         [SerializeField]
         [Tooltip("回転角")]
+        [DisableVariable(nameof(isRotate))]
         float rotRange = 0;
 
         [SerializeField]
@@ -44,7 +46,7 @@ namespace trrne.Core
                 // 樽を回転させてキーが押された時点の角度に合わせて飛ばす
                 if (player != null && Inputs.Down(Constant.Keys.JUMP))
                 {
-                    PlayOneShot(ses[0]);
+                    speaker.PlayOneShot(ses.First());
                     player.BarrelProcess(false);
                     player.GetComponent<Rigidbody2D>().velocity += power * (Vector2)transform.up;
                     inBarrel = false;

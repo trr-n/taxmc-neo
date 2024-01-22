@@ -23,10 +23,12 @@ namespace trrne.Box
                 2 => x * x * x,
                 3 => -(x * x / 2) + (1 / 2),
                 4 => -x * x + 2 * x,
-                5 => -2 * x * x * x + 3 * x * x, // -2x^3+3x^2
+                5 => -2 * x * x * x + 3 * x * x,
                 6 => MathF.Sin(x * 8),
                 _ => 0
             };
         }
+
+        public static float f87(int n, float m) => MathF.Pow(x * MathF.Sin(4 * n + 1 / 2 * MathF.PI * x), m);
     }
 }

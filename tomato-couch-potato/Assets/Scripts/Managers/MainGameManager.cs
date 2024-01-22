@@ -7,7 +7,7 @@ namespace trrne.Brain
     {
         protected override bool DontDestroy => true;
 
-        public const int MAX = 2;
+        public int MAX => 2;
         public int Current => int.Parse(Scenes.Active().Delete(Constant.Scenes.PREFIX));
         public int Stay { get; private set; }
         public int Done { get; private set; }

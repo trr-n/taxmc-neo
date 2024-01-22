@@ -56,13 +56,13 @@ namespace trrne.Core
 
         IEnumerator SpeedUpdater()
         {
-            // int index = 0;
+            int index = 0;
             while (this != null)
             {
                 yield return new WaitForSeconds(Rand.Int(2, 5));
-                speed = speeds.Weighted();
-                // speed = speeds.Subject(index);
-                // index = index + 1 >= speeds.Length() ? 0 : ++index;
+                // speed = speeds.Weighted();
+                speed = speeds.Subject(index);
+                index = index + 1 >= speeds.Length() ? 0 : ++index;
             }
         }
     }

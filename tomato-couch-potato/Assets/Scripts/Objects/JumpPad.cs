@@ -16,7 +16,7 @@ namespace trrne.Core
             {
                 rb.velocity = Vector2.zero;
                 rb.velocity += jumpPower * transform.up.ToV2();
-                PlayOneShot(ses.Choice());
+                speaker.PlayOneShot(ses.Choice());
             }
         }
     }

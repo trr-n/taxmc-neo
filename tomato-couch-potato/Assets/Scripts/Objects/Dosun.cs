@@ -10,7 +10,7 @@ namespace trrne.Core
         [SerializeField]
         float interval = 1f, accelRatio = 5f, startDelay = 0f;
 
-        [Header("速度")]
+        [Tooltip("速度")]
         [SerializeField]
         float down = 7.5f, up = 3f;
 
@@ -74,14 +74,13 @@ namespace trrne.Core
 
             if (other.CompareLayer(Constant.Layers.JUMPABLE))
             {
-                PlayOneShot(ses.Choice());
+                speaker.PlayOneShot(ses.Choice());
                 isDossun = false;
                 dossunPower = 0f;
                 sr.sprite = sprites[0];
 
                 // initPosに移動
                 rigidbody.DOMove(initPos, up)
-                // transform.DOMove(initPos, up)
                     .SetEase(Ease.OutCubic)
                     .OnStart(() => sr.sprite = sprites[0])
                     .OnComplete(async () =>

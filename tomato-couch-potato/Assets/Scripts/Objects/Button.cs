@@ -41,7 +41,7 @@ namespace trrne.Core
                 isPressing = true;
                 sr.sprite = sprites[ON];
 
-                PlayOneShot(sounds.Choice());
+                speaker.PlayOneShot(sounds.Choice());
 
                 if (gimmicks.Length >= 1)
                 {
@@ -61,7 +61,7 @@ namespace trrne.Core
                     gimmicks.ForEach(g => g.GetComponent<IGimmick>().Off());
                 }
 
-                PlayOneShot(sounds.Choice());
+                speaker.PlayOneShot(sounds.Choice());
 
                 isPressing = false;
                 sr.sprite = sprites[OFF];

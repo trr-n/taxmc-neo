@@ -50,14 +50,20 @@ namespace trrne.Brain
                     }
                 }
                 await UniTask.WaitForSeconds(longestParticleDuration);
-                var next = "";
+                string next;
                 if (isReturnSelectScene)
                 {
-                    var cleared = int.Parse(Scenes.Active().Delete(Constant.Scenes.PREFIX));
-                    next = $"{Constant.Scenes.PREFIX}{cleared + 1}";
+                    var clearSceneIndex = int.Parse(Scenes.Active().Delete(Constant.Scenes.PREFIX));
+                    if (clearSceneIndex >= MainGameManager.Instance.MAX - 1)
+                    {
+                        // next = Constant.Scenes.SELECT;
+                        goto test;
+                    }
+                    next = $"{Constant.Scenes.PREFIX}{clearSceneIndex + 1}";
                 }
                 else
                 {
+                test:
                     next = Constant.Scenes.SELECT;
                 }
                 MainGameManager.Instance.SceneTransition(next);

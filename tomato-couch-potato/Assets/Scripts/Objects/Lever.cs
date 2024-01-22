@@ -32,14 +32,14 @@ namespace trrne.Core
 
             if (isActive)
             {
-                PlayOneShot(sounds.Choice());
+                speaker.PlayOneShot(sounds.Choice());
                 sr.sprite = sprites[1];
                 gimmicks.ForEach(gimmick => gimmick.TryGetComponent(out IGimmick g).If(g.On));
                 isActive = false;
             }
             else
             {
-                PlayOneShot(sounds.Choice());
+                speaker.PlayOneShot(sounds.Choice());
                 sr.sprite = sprites[0];
                 gimmicks.ForEach(gimmick => gimmick.TryGetComponent(out IGimmick g).If(g.Off));
                 isActive = true;

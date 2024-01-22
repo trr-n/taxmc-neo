@@ -14,6 +14,8 @@ namespace trrne.Brain
 
         void Start()
         {
+            App.SetFPS(FrameRate.Medium);
+
             time = GetComponent<TimeManager>();
             time.Start();
 

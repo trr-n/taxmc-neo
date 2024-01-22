@@ -42,18 +42,18 @@ namespace trrne.Core
             rigidbody.isKinematic = true;
             rigidbody.gravityScale = 0;
 
-            var pos = transform.position;
-            var offset = (new V2(pos.x, pos.y) - movingRange / 2).vector2();
-            switch (style)
-            {
-                case MovingStyle.Horizontal:
-                    pos.x += offset.x;
-                    break;
-                case MovingStyle.Vertical:
-                    pos.y += offset.y;
-                    break;
-            }
-            transform.position = pos;
+            // var pos = transform.position;
+            // var offset = (new V2(pos.x, pos.y) - movingRange / 2).vector2();
+            // switch (style)
+            // {
+            //     case MovingStyle.Horizontal:
+            //         pos.x += offset.x;
+            //         break;
+            //     case MovingStyle.Vertical:
+            //         pos.y += offset.y;
+            //         break;
+            // }
+            // transform.position = pos;
         }
 
         protected override void Behavior()

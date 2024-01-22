@@ -133,7 +133,7 @@ namespace trrne.Core
 #if DEBUG
             if (Inputs.Down(KeyCode.H))
             {
-                transform.SetPosition(133f, 18f);
+                transform.SetPosition(512f, 56f);
             }
 #endif
         }
