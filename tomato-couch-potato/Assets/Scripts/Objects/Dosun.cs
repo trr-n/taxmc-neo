@@ -26,6 +26,8 @@ namespace trrne.Core
         Transform player;
         new Rigidbody2D rigidbody;
 
+        // readonly Stopwatch ctTimer = new();
+
         void Awake()
         {
             initPos = transform.position;
@@ -43,15 +45,17 @@ namespace trrne.Core
             Invoke(nameof(StopTimer), startDelay);
         }
 
-        void StopTimer() => startDelayTimer.Stop();
+        void StopTimer()
+        {
+            startDelayTimer.Stop();
+            // ctTimer.Start();
+        }
 
         protected override void Behavior()
         {
             if (isFalling && !startDelayTimer.isRunning)
             {
-                dossunPower += Time.deltaTime * accelRatio;
-                dossunPower = Mathf.Clamp(dossunPower, 0f, POWER_MAX);
-                // rigidbody.velocity += new Vector2(0, -Time.deltaTime * dossunPower * down);
+                dossunPower = Mathf.Clamp(dossunPower += Time.deltaTime * accelRatio, 0f, POWER_MAX);
                 transform.Translate(y: -Time.deltaTime * dossunPower * down);
             }
         }
@@ -77,6 +81,9 @@ namespace trrne.Core
 
             if (other.CompareLayer(Constant.Layers.JUMPABLE))
             {
+                // ctTimer.Stop();
+                // print(ctTimer.secondf);
+                // ctTimer.Reset();
                 speaker.PlayOneShot(ses.Choice());
                 isFalling = false;
                 dossunPower = 0f;

@@ -311,7 +311,7 @@ PrefabInstance:
       addedObject: {fileID: 5781492381599332819}
     - targetCorrespondingSourceObject: {fileID: -8653719598885068355, guid: 9f1f9e1b1cb81c141bea908f8780ed1c, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 2409837617072758087}
+      addedObject: {fileID: 3723862674971618713}
     - targetCorrespondingSourceObject: {fileID: -8653719598885068355, guid: 9f1f9e1b1cb81c141bea908f8780ed1c, type: 3}
       insertIndex: -1
       addedObject: {fileID: 7281095245200427739}
@@ -401,7 +401,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -0.005735427, y: 1.1725651}
+  m_Offset: {x: 0, y: 1.12}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -412,9 +412,9 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.6352332, y: 2.0276039}
-  m_EdgeRadius: 0.15
---- !u!82 &2409837617072758087
+  m_Size: {x: 0.5, y: 2.1044228}
+  m_EdgeRadius: 0.05
+--- !u!82 &3723862674971618713
 AudioSource:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

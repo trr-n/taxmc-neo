@@ -5,7 +5,7 @@ namespace trrne.Box
 {
     public sealed class Stopwatch
     {
-        readonly SSW ssw;
+        SSW ssw;
 
         public Stopwatch(bool start)
         {
@@ -13,6 +13,7 @@ namespace trrne.Box
             start.If(ssw.Start);
         }
         public Stopwatch() : this(false) { }
+        ~Stopwatch() => ssw = null;
 
         public void Start() => ssw.Start();
         public void Stop() => ssw.Stop();

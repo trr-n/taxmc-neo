@@ -1,4 +1,5 @@
 using System.Collections;
+using trrne.Box;
 using UnityEngine;
 
 namespace trrne.Core
@@ -13,9 +14,12 @@ namespace trrne.Core
 
         BoxCollider2D hitbox;
 
+        GameObject[] children;
+
         protected override void Start()
         {
             base.Start();
+            children = transform.GetChildrenGameObject();
             hitbox = GetComponent<BoxCollider2D>();
             StartCoroutine(Flash());
         }
@@ -25,12 +29,14 @@ namespace trrne.Core
         /// </summary>
         IEnumerator Flash()
         {
-            for (; ; )
+            while (true)
             {
-                sr.enabled = hitbox.enabled = true;
+                // sr.enabled = hitbox.enabled = true;
+                children.ForEach(child => child.SetActive(sr.enabled = hitbox.enabled = true));
                 yield return new WaitForSeconds(active != 0 ? active : inactive);
 
-                sr.enabled = hitbox.enabled = false;
+                // sr.enabled = hitbox.enabled = false;
+                children.ForEach(child => child.SetActive(sr.enabled = hitbox.enabled = false));
                 yield return new WaitForSeconds(inactive);
             }
         }
