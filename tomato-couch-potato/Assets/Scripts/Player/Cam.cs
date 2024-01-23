@@ -9,11 +9,12 @@ namespace trrne.Core
         public bool Followable { get; set; }
 
         [SerializeField]
-        float offsetY = 1;
+        float offsetY = 5;
 
-        (float key, float wheel) axis = (0, 0);
+        // (float key, float wheel) axis = (0, 0);
+        struct axis { public static float key, wheel; }
         float raw = 0f;
-        (float min, float max) zoom => (4.5f, 16f);
+        readonly struct ZOOM { public const float MIN = 4.5f, MAX = 16; }
 
         Player player;
 
@@ -43,10 +44,11 @@ namespace trrne.Core
         {
             if (Inputs.Down(Constant.Keys.RESET_ZOOM))
             {
-                FetchValue(raw = zoom.max - zoom.min);
+                FetchValue(raw = ZOOM.MAX - ZOOM.MIN);
             }
 
-            axis = (Input.GetAxisRaw(Constant.Keys.ZOOM), Input.GetAxisRaw(Constant.Keys.MOUSE_ZOOM));
+            axis.key = Input.GetAxisRaw(Constant.Keys.ZOOM);
+            axis.wheel = Input.GetAxisRaw(Constant.Keys.MOUSE_ZOOM);
             if (MF.ZeroTwins(axis.key + axis.wheel))
             {
                 return;
@@ -60,7 +62,7 @@ namespace trrne.Core
             {
                 raw += -MathF.Sign(axis.wheel);
             }
-            FetchValue(raw = Mathf.Clamp(raw, zoom.min, zoom.max));
+            FetchValue(raw = Mathf.Clamp(raw, ZOOM.MIN, ZOOM.MAX));
         }
 
         void FetchValue(float value) => Camera.main.orthographicSize = value;

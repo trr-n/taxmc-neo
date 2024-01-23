@@ -19,8 +19,7 @@ namespace trrne.Core
 
         bool isPressing = false;
 
-        const int ON = 0;
-        const int OFF = 1;
+        const int ON = 0, OFF = 1;
 
         protected override void Start()
         {

@@ -33,7 +33,6 @@ namespace trrne.Brain
         void State(bool active)
         {
             FaderHandle(active);
-            // FIXME タイムスケールいじるとキャンバスが上に飛んでいく
             Time.timeScale = active ? 0 : 1;
         }
 

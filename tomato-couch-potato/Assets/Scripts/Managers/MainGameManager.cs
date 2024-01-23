@@ -24,7 +24,6 @@ namespace trrne.Brain
             if (int.TryParse(Scenes.Active().Delete(Constant.Scenes.PREFIX), out int index))
             {
                 ++Done;
-                // Transition(Config.Scenes.SELECT);
             }
         }
 

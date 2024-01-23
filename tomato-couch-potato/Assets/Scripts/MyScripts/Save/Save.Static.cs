@@ -18,7 +18,7 @@ namespace trrne.Secret
                 EncryptionTypes.XOR => new XOREncryption(16),
                 _ => throw null
             };
-            var dataArr = encrypt.En(JsonUtility.ToJson(data));
+            var dataArr = encrypt.Encrypt(JsonUtility.ToJson(data));
             stream.Write(dataArr, 0, dataArr.Length);
         }
 
@@ -35,7 +35,7 @@ namespace trrne.Secret
                     EncryptionTypes.XOR => new XOREncryption(16),
                     _ => throw null
                 };
-                read = JsonUtility.FromJson<T>(decrypt.De2Str(readArr));
+                read = JsonUtility.FromJson<T>(decrypt.DecryptToString(readArr));
             }
             return read == null;
         }
@@ -50,7 +50,7 @@ namespace trrne.Secret
         public static void Write2(object data, string password, string path)
         {
             using FileStream stream = new(path, FileMode.Create);
-            byte[] arr = new RijndaelEncryption(password).En(JsonSerializer.Serialize(data));
+            byte[] arr = new RijndaelEncryption(password).Encrypt(JsonSerializer.Serialize(data));
             stream.Write(arr, 0, arr.Length);
         }
 
@@ -61,7 +61,7 @@ namespace trrne.Secret
             {
                 byte[] arr = new byte[stream.Length];
                 stream.Read(arr, 0, (int)stream.Length);
-                read = JsonSerializer.Deserialize<T>(new RijndaelEncryption(password).De2Str(arr));
+                read = JsonSerializer.Deserialize<T>(new RijndaelEncryption(password).DecryptToString(arr));
             }
             return read == null;
         }

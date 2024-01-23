@@ -46,7 +46,7 @@ namespace trrne.Core
 
         public override void On()
         {
-            var offset = ((float)amount - ROTATE_OFFSET) * Vec.Z;
+            Vector3 offset = new(0, 0, (float)amount - ROTATE_OFFSET);
 
             Vector3 direct = this.direct switch
             {

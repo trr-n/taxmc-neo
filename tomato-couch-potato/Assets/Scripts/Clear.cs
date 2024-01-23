@@ -62,12 +62,12 @@ namespace trrne.Brain
                     if (clearSceneIndex >= MainGameManager.MAX - 1)
                     {
                         next = Constant.Scenes.CLEAR;
-                        MainGameManager.Instance.Scores[^1] = $"ステージ1: {timeManager.CurrentTimeStr}";
+                        MainGameManager.Instance.Scores[^1] = timeManager.CurrentTimeStr;
                     }
                     else
                     {
                         next = Constant.Scenes.PREFIX + (clearSceneIndex + 1).ToString();
-                        MainGameManager.Instance.Scores[0] = $"チュートリアル: {timeManager.CurrentTimeStr}";
+                        MainGameManager.Instance.Scores[0] = timeManager.CurrentTimeStr;
                     }
                 }
                 MainGameManager.Instance.SceneTransition(next);

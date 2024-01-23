@@ -17,7 +17,7 @@ namespace trrne.Secret
             size.key = keySize;
         }
 
-        public byte[] En(byte[] src)
+        public byte[] Encrypt(byte[] src)
         {
             RijndaelManaged managed = new()
             {
@@ -40,9 +40,9 @@ namespace trrne.Secret
             return compile.ToArray();
         }
 
-        public byte[] En(string src) => En(Encoding.UTF8.GetBytes(src));
+        public byte[] Encrypt(string src) => Encrypt(Encoding.UTF8.GetBytes(src));
 
-        public byte[] De(byte[] src)
+        public byte[] Decrypt(byte[] src)
         {
             RijndaelManaged managed = new()
             {
@@ -62,7 +62,7 @@ namespace trrne.Secret
             return decrypt.TransformFinalBlock(plain, 0, plain.Length);
         }
 
-        public string De2Str(byte[] src) => Encoding.UTF8.GetString(De(src));
+        public string DecryptToString(byte[] src) => Encoding.UTF8.GetString(Decrypt(src));
     }
 }
 

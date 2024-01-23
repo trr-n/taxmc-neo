@@ -214,13 +214,13 @@ sealed class HowToUse : Singleton<HowToUse>
             password = "暗号化のパスワード";
         IEncryption encrypt = new RijndaelEncryption(password);
         // 暗号化1: 手動で文字列をバイト配列にしてから暗号化
-        byte[] encrypted1 = encrypt.En(Encoding.UTF8.GetBytes(src));
+        byte[] encrypted1 = encrypt.Encrypt(Encoding.UTF8.GetBytes(src));
         // 暗号化2: 自動で文字列をバイト配列にしてから暗号化
-        byte[] encrypted2 = encrypt.En(src);
+        byte[] encrypted2 = encrypt.Encrypt(src);
 
         // 復号化1: バイト配列の暗号を復号し、バイト配列で返す
-        byte[] decrypted1 = encrypt.De(encrypted1);
+        byte[] decrypted1 = encrypt.Decrypt(encrypted1);
         // 復号化2: バイト配列の暗号を復号し、文字列にしてから返す
-        string decrypted2 = encrypt.De2Str(encrypted1);
+        string decrypted2 = encrypt.DecryptToString(encrypted1);
     }
 }

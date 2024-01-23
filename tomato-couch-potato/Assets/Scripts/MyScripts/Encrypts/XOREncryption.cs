@@ -8,7 +8,7 @@ namespace trrne.Secret
 
         public XOREncryption(byte key) => this.key = key;
 
-        public byte[] En(byte[] src)
+        public byte[] Encrypt(byte[] src)
         {
             for (int i = 0; i < src.Length; ++i)
             {
@@ -17,9 +17,9 @@ namespace trrne.Secret
             return src;
         }
 
-        public byte[] En(string src) => En(Encoding.UTF8.GetBytes(src));
+        public byte[] Encrypt(string src) => Encrypt(Encoding.UTF8.GetBytes(src));
 
-        public byte[] De(byte[] src)
+        public byte[] Decrypt(byte[] src)
         {
             for (int i = 0; i < src.Length; ++i)
             {
@@ -28,6 +28,6 @@ namespace trrne.Secret
             return src;
         }
 
-        public string De2Str(byte[] src) => Encoding.UTF8.GetString(De(src));
+        public string DecryptToString(byte[] src) => Encoding.UTF8.GetString(Decrypt(src));
     }
 }

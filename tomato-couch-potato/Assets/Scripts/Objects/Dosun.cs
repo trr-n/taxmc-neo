@@ -1,3 +1,4 @@
+using System.Transactions;
 using UnityEngine;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
@@ -16,7 +17,7 @@ namespace trrne.Core
 
         readonly Stopwatch startDelayTimer = new(true);
 
-        bool isDossun = true;
+        bool isFalling = true;
         float dossunPower = 0f;
         const float POWER_MAX = 20.0f;
         const float VOLUME_RED_RATIO = 1.2f;
@@ -46,25 +47,27 @@ namespace trrne.Core
 
         protected override void Behavior()
         {
-            if (isDossun && !startDelayTimer.isRunning)
+            if (isFalling && !startDelayTimer.isRunning)
             {
                 dossunPower += Time.deltaTime * accelRatio;
                 dossunPower = Mathf.Clamp(dossunPower, 0f, POWER_MAX);
-                rigidbody.velocity += Vec.Make2(y: -Time.deltaTime * dossunPower * down);
+                // rigidbody.velocity += new Vector2(0, -Time.deltaTime * dossunPower * down);
+                transform.Translate(y: -Time.deltaTime * dossunPower * down);
             }
         }
 
         async void OnTriggerEnter2D(Collider2D other)
         {
-            if (!isDossun || startDelayTimer.isRunning)
+            if (!isFalling || startDelayTimer.isRunning)
             {
+                // print("isDossun is false");
                 return;
             }
-            print("hit for someone");
+            // print("hit for someone");
 
             if (other.TryGetComponent(out Player player))
             {
-                print("player is tubusita");
+                // print("player is tubusita");
                 await player.Die(Cause.Hizakarakuzureotiru);
             }
             else if (other.TryGetComponent(out ICreature creature))
@@ -75,7 +78,7 @@ namespace trrne.Core
             if (other.CompareLayer(Constant.Layers.JUMPABLE))
             {
                 speaker.PlayOneShot(ses.Choice());
-                isDossun = false;
+                isFalling = false;
                 dossunPower = 0f;
                 sr.sprite = sprites[0];
 
@@ -87,7 +90,7 @@ namespace trrne.Core
                     {
                         sr.sprite = sprites[1];
                         await UniTask.WaitForSeconds(interval); // interval秒経過後落下する
-                        isDossun = true;
+                        isFalling = true;
                     });
             }
         }

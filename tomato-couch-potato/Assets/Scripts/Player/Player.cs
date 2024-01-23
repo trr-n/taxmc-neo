@@ -1,9 +1,11 @@
-﻿using System;
+﻿using System.Reflection;
+using System;
 using System.Collections;
 using UnityEngine;
 using Cysharp.Threading.Tasks;
 using trrne.Box;
 using trrne.Brain;
+using UnityEditor.Rendering;
 
 namespace trrne.Core
 {
@@ -48,7 +50,7 @@ namespace trrne.Core
         {
             rb.velocity *= 0;
             inBarrel = rb.isKinematic = flag;
-            rb.gravityScale = flag ? 0 : gravityScale.BASIS;
+            rb.gravityScale = flag ? 0 : GRAVITY_SCALE.BASIS;
             transform.GetChildrenGameObject().ForEach(child => child.SetActive(!flag));
         }
 
@@ -58,15 +60,19 @@ namespace trrne.Core
         public bool[] PunishFlags { get; set; }
         int effectLength => new PunishEffect().Length();
 
-        (float BASIS, float MAX) speed => (20f, 10f);
-        (float FETTERS, float FLOATING, float MOVE) red => (0.5f, 0.95f, 0.9f);
-        (float FLOATING, float BASIS) gravityScale => (3f, 1f);
+        // (float BASIS, float MAX) speed => (20f, 10f);
+        readonly struct SPEED { public const float BASIS = 20f, MAX = 10; }
+        // (float FETTERS, float FLOATING, float MOVE) red => (0.5f, 0.95f, 0.9f);
+        readonly struct REDUCTION { public const float FETTERS = 0.5f, FLOATING = 0.95f, MOVE = 0.9f; }
+        // (float FLOATING, float BASIS) GRAVITY_SCALE => (3f, 1f);
+        readonly struct GRAVITY_SCALE { public const float FLOATING = 3, BASIS = 1; }
 
         // Movement
         const float JUMP_POWER = 13f;
 
         public bool IsFloating { get; private set; }
-        (bool ICE, bool GROUND) on = (false, false);
+        // (bool ICE, bool GROUND) on = (false, false);
+        struct on { public static bool ice, ground; }
 
         Rigidbody2D rb;
         Animator animator;
@@ -108,7 +114,7 @@ namespace trrne.Core
             animator = GetComponent<Animator>();
             hitbox = GetComponent<BoxCollider2D>();
             rb = GetComponent<Rigidbody2D>();
-            rb.gravityScale = gravityScale.BASIS;
+            rb.gravityScale = GRAVITY_SCALE.BASIS;
             speaker = GetComponent<AudioSource>();
 
             PunishFlags = new bool[effectLength].Set(false);
@@ -133,7 +139,7 @@ namespace trrne.Core
 #if DEBUG
             if (Inputs.Down(KeyCode.H))
             {
-                transform.SetPosition(512f, 56f);
+                transform.SetPosition(133f, 18f);
             }
 #endif
         }
@@ -154,7 +160,7 @@ namespace trrne.Core
             {
                 Core = transform.position + Vec.Make3(y: hitbox.bounds.size.y / 2);
                 rb.bodyType = IsTeleporting ? RigidbodyType2D.Static : RigidbodyType2D.Dynamic;
-                rb.gravityScale = (IsFloating = !on.GROUND) ? gravityScale.FLOATING : gravityScale.BASIS;
+                rb.gravityScale = (IsFloating = !on.ground) ? GRAVITY_SCALE.FLOATING : GRAVITY_SCALE.BASIS;
             }
         }
 
@@ -167,12 +173,12 @@ namespace trrne.Core
 
             if (!Gobject.Boxcast(out var hit, transform.position, box, Constant.Layers.JUMPABLE))
             {
-                on.ICE = on.GROUND = false;
+                on.ice = on.ground = false;
                 return;
             }
             IsAfterBarrel = false;
-            on.GROUND = hit.CompareLayer(Constant.Layers.JUMPABLE);
-            on.ICE = hit.CompareTag(Constant.Tags.ICE);
+            on.ground = hit.CompareLayer(Constant.Layers.JUMPABLE);
+            on.ice = hit.CompareTag(Constant.Tags.ICE);
         }
 
 #if DEBUG
@@ -239,7 +245,7 @@ namespace trrne.Core
                 return;
             }
 
-            if (!on.GROUND)
+            if (!on.ground)
             {
                 animator.SetBool(Constant.Animations.JUMP, true);
                 return;
@@ -263,16 +269,16 @@ namespace trrne.Core
                 return;
             }
 
-            animator.SetBool(Constant.Animations.WALK, on.GROUND && Inputs.Pressed(Constant.Keys.HORIZONTAL));
+            animator.SetBool(Constant.Animations.WALK, on.ground && Inputs.Pressed(Constant.Keys.HORIZONTAL));
 
             var horizon = PunishFlags[(int)PunishEffect.Mirror] ? Constant.Keys.MIRRORED_HORIZONTAL : Constant.Keys.HORIZONTAL;
             var move = Vec.Make2(x: Input.GetAxisRaw(horizon));
 
             // 入力がtolerance以下、氷に乗っていない
-            if (move.magnitude <= INPUT_TOLERANCE && !on.ICE)
+            if (move.magnitude <= INPUT_TOLERANCE && !on.ice)
             {
                 // x軸の速度をspeed.reduction倍
-                rb.SetVelocity(x: rb.velocity.x * red.MOVE);
+                rb.SetVelocity(x: rb.velocity.x * REDUCTION.MOVE);
             }
 
             // x軸の速度を制限
@@ -282,17 +288,17 @@ namespace trrne.Core
                 {
                     if (PunishFlags[(int)PunishEffect.Fetters])
                     {
-                        return speed.MAX * red.FETTERS;
+                        return SPEED.MAX * REDUCTION.FETTERS;
                     }
-                    else if (on.ICE)
+                    else if (on.ice)
                     {
-                        return speed.MAX * 2;
+                        return SPEED.MAX * 2;
                     }
-                    return speed.MAX;
+                    return SPEED.MAX;
                 });
                 rb.ClampVelocity(x: (-limit, limit));
             }
-            rb.velocity += Time.fixedDeltaTime * speed.BASIS * (IsFloating ? red.FLOATING : 1f) * move;
+            rb.velocity += Time.fixedDeltaTime * SPEED.BASIS * (IsFloating ? REDUCTION.FLOATING : 1f) * move;
         }
 
         /// <summary>

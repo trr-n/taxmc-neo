@@ -2,10 +2,10 @@
 {
     public interface IEncryption
     {
-        byte[] En(byte[] src);
-        byte[] En(string src);
-        byte[] De(byte[] src);
-        string De2Str(byte[] src);
+        byte[] Encrypt(byte[] src);
+        byte[] Encrypt(string src);
+        byte[] Decrypt(byte[] src);
+        string DecryptToString(byte[] src);
     }
 
     public enum EncryptionTypes
