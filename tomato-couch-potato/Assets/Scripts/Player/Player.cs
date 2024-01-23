@@ -254,7 +254,7 @@ namespace trrne.Core
             if (Inputs.Down(Constant.Keys.JUMP))
             {
                 speaker.PlayOneShot(jumpSEs.Choice());
-                rb.velocity += Vec.Make2(y: JUMP_POWER);
+                rb.velocity += new Vector2(0, JUMP_POWER);
             }
             animator.SetBool(Constant.Animations.JUMP, false);
         }
