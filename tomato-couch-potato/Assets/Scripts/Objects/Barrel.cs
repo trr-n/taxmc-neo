@@ -10,7 +10,7 @@ namespace trrne.Core
         float power = 50f;
 
         [SerializeField]
-        [Tooltip("回転角")]
+        [Tooltip("回転角\n0のままだと一方向に回転し続ける")]
         [DisableVariable(nameof(isRotate))]
         float rotRange = 0;
 
@@ -34,10 +34,17 @@ namespace trrne.Core
 
         protected override void Behavior()
         {
-            if (isRotate && rotRange != 0)
+            if (isRotate)
             {
-                var z = Mathf.Sin(rotSpeed * Time.time) * (rotRange / 2) + initZ;
-                transform.rotation = Quaternion.Euler(0, 0, z);
+                if (rotRange != 0)
+                {
+                    var z = Mathf.Sin(rotSpeed * Time.time) * (rotRange / 2) + initZ;
+                    transform.rotation = Quaternion.Euler(0, 0, z);
+                }
+                else
+                {
+                    transform.Rotate(z: rotSpeed * Time.deltaTime);
+                }
             }
 
             if (inBarrel)

@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace trrne.Core
 {
-    public class MamaFireMirror : MamaFire
+    public class MamaFireMirror : MamaFireBase
     {
         protected override void Start()
         {

@@ -18,6 +18,8 @@ namespace trrne.Core
 
         Player player;
 
+        SpriteRenderer[] childrenSrs;
+
         void Awake()
         {
             landingTime = landingToleranceTime;
@@ -26,23 +28,31 @@ namespace trrne.Core
         protected override void Start()
         {
             base.Start();
+            isAnimate = false;
 
             hitbox = GetComponent<BoxCollider2D>();
             player = Gobject.GetWithTag<Player>(Constant.Tags.PLAYER);
+            childrenSrs = transform.GetComponentsInChildren<SpriteRenderer>();
+            childrenSrs.ForEach(childSr => childSr.SetColor(Color.white));
+            sr.enabled = false;
         }
 
         protected override void Behavior()
         {
             DecrementLandingTimer();
             DestroyMe();
+            sr.enabled = false;
         }
 
         void LateUpdate()
         {
-            // 生きていて乗っていたら
             if (!player.IsDying && isLanding)
             {
-                sr.color = Color.HSVToRGB(landingTime / landingToleranceTime / 360 * 100, 1, 1);
+                var ratio = landingTime / landingToleranceTime;
+                foreach (var childSr in childrenSrs)
+                {
+                    childSr.SetColor(new Color(1, ratio, ratio));
+                }
             }
         }
 
@@ -61,14 +71,22 @@ namespace trrne.Core
             if (landingTime <= 0)
             {
                 landingTime = landingToleranceTime;
-                sr.enabled = hitbox.enabled = false;
+                // sr.enabled = false;
+                hitbox.enabled = false;
+                childrenSrs.ForEach(childSr => childSr.enabled = false);
                 Mendable = true;
             }
         }
 
         public void Mend()
         {
-            sr.enabled = hitbox.enabled = true;
+            // sr.enabled = false;
+            hitbox.enabled = true;
+            childrenSrs.ForEach(childSr =>
+            {
+                childSr.SetColor(Color.white);
+                childSr.enabled = true;
+            });
             Mendable = false;
         }
 
@@ -84,7 +102,7 @@ namespace trrne.Core
         {
             if (collisionInfo.TryGetComponent(out Player _))
             {
-                sr.color = Color.white;
+                childrenSrs.ForEach(childSr => childSr.SetColor(Color.white));
                 isLanding = false;
             }
         }

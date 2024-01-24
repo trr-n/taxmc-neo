@@ -48,7 +48,7 @@ namespace trrne.Core
         readonly Runner set = new();
         void Animation()
         {
-            if (!isAnimate && sprites.Length <= 0)
+            if (!isAnimate || sprites.Length <= 0)
             {
                 return;
             }

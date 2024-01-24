@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace trrne.Core
 {
-    public class MamaFireChain : MamaFire
+    public class MamaFireChain : MamaFireBase
     {
         protected override void Start()
         {

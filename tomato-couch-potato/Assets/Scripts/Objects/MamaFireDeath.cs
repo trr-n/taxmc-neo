@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace trrne.Core
 {
-    public class MamaFireDeath : MamaFire
+    public class MamaFireDeath : MamaFireBase
     {
         [SerializeField]
         float chaseRange;

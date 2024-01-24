@@ -6,7 +6,7 @@ using UnityEngine;
 namespace trrne.Core
 {
     [RequireComponent(typeof(CircleCollider2D), typeof(SpriteRenderer))]
-    public abstract class MamaFire : MonoBehaviour
+    public abstract class MamaFireBase : MonoBehaviour
     {
         [SerializeField]
         protected GameObject[] effects;
@@ -61,12 +61,11 @@ namespace trrne.Core
                 return;
             }
 
-            Movement();
-
             if (isTracking)
             {
-                direction = (player.transform.position - transform.position).normalized;
+                direction = (player.Core - transform.position).normalized;
             }
+            Movement();
         }
 
         protected abstract void Movement();

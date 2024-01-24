@@ -4,7 +4,7 @@ using trrne.Box;
 
 namespace trrne.Core
 {
-    public class MamaFireFetters : MamaFire
+    public class MamaFireFetters : MamaFireBase
     {
         [SerializeField]
         float detectRange = 10;

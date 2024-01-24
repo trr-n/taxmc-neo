@@ -61,7 +61,7 @@ namespace trrne.Arm
         {
             foreach (var button in buttons)
             {
-                if (button.transform.position.x.CutailedTwins())
+                if (button.transform.position.x.CutailedTwins()) 
                 {
                     return button.gameObject;
                 }
