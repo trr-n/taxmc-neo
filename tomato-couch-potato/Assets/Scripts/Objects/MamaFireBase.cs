@@ -87,7 +87,9 @@ namespace trrne.Core
                     Destroy(gameObject);
                 }
                 catch (MissingReferenceException) { }
+                return;
             }
+            Destroy(gameObject);
         }
     }
 }

@@ -35,20 +35,21 @@ namespace trrne.Core
         bool enableColliderOnRotating = false;
 
         const float ROTATE_OFFSET = 1e-8f;
+        Vector3 offset => new(0, 0, (float)amount - ROTATE_OFFSET);
 
         BoxCollider2D hitbox;
 
         protected override void Start()
         {
+            base.Start();
+            sr.SetSprite(sprites);
             value = transform.eulerAngles;
-            hitbox = transform.GetFromChild<BoxCollider2D>(0);
+            hitbox = GetComponent<BoxCollider2D>();
         }
 
         public override void On()
         {
-            Vector3 offset = new(0, 0, (float)amount - ROTATE_OFFSET);
-
-            Vector3 direct = this.direct switch
+            var direct = this.direct switch
             {
                 RotateDirection.Left => value + offset,
                 RotateDirection.Right => value - offset,

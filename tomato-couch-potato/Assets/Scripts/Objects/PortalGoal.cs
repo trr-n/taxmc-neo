@@ -1,4 +1,6 @@
+#if !UNITY_EDITOR
 using trrne.Box;
+#endif
 using UnityEngine;
 
 namespace trrne.Core
@@ -10,16 +12,11 @@ namespace trrne.Core
 
         public Vector2 Goal { get; private set; }
 
-        SpriteRenderer sr;
-
         void Start()
         {
             Goal = transform.position;
-            sr = GetComponent<SpriteRenderer>();
-#if UNITY_EDITOR
-            sr.SetAlpha(1);
-#else
-            sr.SetAlpha(0);
+#if !UNITY_EDITOR
+            GetComponent<SpriteRenderer>().SetAlpha(0);
 #endif
         }
 

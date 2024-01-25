@@ -72,7 +72,7 @@ namespace trrne.Box
         public static string String(int length) => String(length, RandStringType.Mixed);
         public static void String(ref string output, int length) => output = String(length);
 
-        public static int Choice(this object[] arr) => rand.Next(0, arr.Length);
+        public static int Choice0<T>(this T[] arr) => rand.Next(0, arr.Length - 1);
 
         /// <summary>
         /// 配列からランダムに選択する
@@ -80,7 +80,7 @@ namespace trrne.Box
         /// <typeparam name="T">配列の型</typeparam>
         /// <param name="arr">対象の配列</param>
         /// <returns>配列から選択された要素を返す</returns>
-        public static T Choice<T>(this T[] arr) => arr[rand.Next(0, arr.Length)];
+        public static T Choice<T>(this T[] arr) => arr[arr.Choice0()];
 
         /// <summary>
         /// リストからランダムに選択する
@@ -88,9 +88,6 @@ namespace trrne.Box
         /// <typeparam name="T">リストの型</typeparam>
         /// <param name="arr">対象のリスト</param>
         /// <returns>リストから選択された要素を返す</returns>
-        public static T Choice<T>(this List<T> arr) => arr[rand.Next(0, arr.Count)];
-
-        [Obsolete]
-        public static T Choice<T>(this Array arr) => (T)arr.GetValue(rand.Next(0, arr.Length));
+        public static T Choice<T>(this List<T> arr) => arr.ToArray().Choice(); // arr[rand.Next(0, arr.Count)];
     }
 }
