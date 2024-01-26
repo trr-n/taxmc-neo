@@ -1,5 +1,6 @@
 using System;
 using SSW = System.Diagnostics.Stopwatch;
+using STT = System.Timers.Timer;
 
 namespace trrne.Box
 {

@@ -65,10 +65,12 @@ namespace trrne.Core
                 {
                     if (!enableColliderOnRotating)
                     {
-                        hitbox.enabled = false;
+                        // hitbox.enabled = false;
+                        hitbox.isTrigger = true;
                     }
                 })
-                .OnComplete(() => hitbox.enabled = true);
+                // .OnComplete(() => hitbox.enabled = true);
+                .OnComplete(() => hitbox.isTrigger = false);
         }
 
         public override void Off()
@@ -78,10 +80,12 @@ namespace trrne.Core
                 {
                     if (!enableColliderOnRotating)
                     {
-                        hitbox.enabled = false;
+                        // hitbox.enabled = false;
+                        hitbox.isTrigger = true;
                     }
                 })
-                .OnComplete(() => hitbox.enabled = true);
+                // .OnComplete(() => hitbox.enabled = true);
+                .OnComplete(() => hitbox.isTrigger = false);
         }
 
         protected override void Behavior() { }

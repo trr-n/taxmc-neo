@@ -8,8 +8,10 @@ namespace trrne.Arm
 {
     public class SelectManager : MonoBehaviour
     {
+#if DEBUG
         [SerializeField]
         Text centerT;
+#endif
 
         [SerializeField]
         Sprite[] backs;
@@ -49,7 +51,10 @@ namespace trrne.Arm
                 string removedSceneIndex = CenterButton().name.ToLower().Delete(STAGE_NAME_PREFIX);
                 if (int.TryParse(removedSceneIndex, out int index))
                 {
-                    Scenes.Load(Constant.Scenes.PREFIX + index);
+                    if (index != 2)
+                    {
+                        Scenes.Load(Constant.Scenes.PREFIX + index);
+                    }
                 }
             }
         }
@@ -61,7 +66,7 @@ namespace trrne.Arm
         {
             foreach (var button in buttons)
             {
-                if (button.transform.position.x.CutailedTwins()) 
+                if (button.transform.position.x.CutailedTwins())
                 {
                     return button.gameObject;
                 }

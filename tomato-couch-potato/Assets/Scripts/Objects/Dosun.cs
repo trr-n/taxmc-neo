@@ -1,8 +1,8 @@
-using System.Transactions;
 using UnityEngine;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using trrne.Box;
+using System.ComponentModel;
 
 namespace trrne.Core
 {
@@ -15,10 +15,14 @@ namespace trrne.Core
         [SerializeField]
         float down = 7.5f, up = 3f;
 
+        [SerializeField]
+        float minY = 15;
+
         readonly Stopwatch startDelayTimer = new(true);
 
         bool isFalling = true;
         float dossunPower = 0f;
+        double dossunPower2 = 0;
         const float POWER_MAX = 20.0f;
         const float VOLUME_RED_RATIO = 1.2f;
 
@@ -27,6 +31,15 @@ namespace trrne.Core
         new Rigidbody2D rigidbody;
 
         // readonly Stopwatch ctTimer = new();
+
+        const int GREEN = 0, RED = 1;
+
+        readonly Stopwatch loopTimer = new();
+        // int loopCount = 0;
+        float pre = 0f;
+        // float myDelta => loopTimer.msf - pre;
+
+        readonly Timer timer = new();
 
         void Awake()
         {
@@ -37,27 +50,42 @@ namespace trrne.Core
         {
             base.Start();
 
-            sr.sprite = sprites[0];
+            sr.sprite = sprites[GREEN];
             rigidbody = GetComponent<Rigidbody2D>();
             rigidbody.gravityScale = 0;
             player = Gobject.GetWithTag<Transform>(Constant.Tags.PLAYER);
 
             Invoke(nameof(StopTimer), startDelay);
+
+            timer.Restart();
         }
 
         void StopTimer()
         {
             startDelayTimer.Stop();
-            // ctTimer.Start();
+            sr.sprite = sprites[RED];
+            loopTimer.Start();
         }
 
         protected override void Behavior()
         {
+            pre = loopTimer.millisecondf;
             if (isFalling && !startDelayTimer.isRunning)
             {
-                dossunPower = Mathf.Clamp(dossunPower += Time.deltaTime * accelRatio, 0f, POWER_MAX);
-                transform.Translate(y: -Time.deltaTime * dossunPower * down);
+                dossunPower = Mathf.Clamp(dossunPower += Time.fixedDeltaTime * accelRatio, 0f, POWER_MAX);
+                // transform.Translate(y: -Time.fixedDeltaTime * dossunPower * down);
+                transform.Translate(y: -(float)timer.Delta * dossunPower * down);
             }
+
+            if (transform.position.y < minY && isFalling && !startDelayTimer.isRunning)
+            {
+                // minY以下にいる、貫通した可能性
+                isFalling = false;
+                dossunPower2 = dossunPower = 0;
+                sr.sprite = sprites[GREEN];
+                ReturnInitPos();
+            }
+            timer.Restart();
         }
 
         async void OnTriggerEnter2D(Collider2D other)
@@ -86,20 +114,22 @@ namespace trrne.Core
                 // ctTimer.Reset();
                 speaker.PlayOneShot(ses.Choice());
                 isFalling = false;
-                dossunPower = 0f;
-                sr.sprite = sprites[0];
+                dossunPower2 = dossunPower = 0f;
+                sr.sprite = sprites[GREEN];
 
-                // initPosに移動
-                rigidbody.DOMove(initPos, up)
-                    .SetEase(Ease.OutCubic)
-                    .OnStart(() => sr.sprite = sprites[0])
-                    .OnComplete(async () =>
-                    {
-                        sr.sprite = sprites[1];
-                        await UniTask.WaitForSeconds(interval); // interval秒経過後落下する
-                        isFalling = true;
-                    });
+                ReturnInitPos();
             }
         }
+
+        void ReturnInitPos()
+        => rigidbody.DOMove(initPos, up)
+            .SetEase(Ease.OutCubic)
+            .OnStart(() => sr.sprite = sprites[0])
+            .OnComplete(async () =>
+            {
+                sr.sprite = sprites[RED];
+                await UniTask.WaitForSeconds(interval); // interval秒経過後落下する
+                isFalling = true;
+            });
     }
 }

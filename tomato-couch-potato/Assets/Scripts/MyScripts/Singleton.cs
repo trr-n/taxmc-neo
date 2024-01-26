@@ -24,7 +24,8 @@ namespace trrne.Box
         {
             if (this != Instance)
             {
-                Destroy(this);
+                Destroy(this.gameObject);
+                return;
             }
 
             if (DontDestroy)

@@ -22,7 +22,7 @@ namespace trrne.Core
         [SerializeField]
         bool isFixed = true;
 
-        [DisableVariable("isFixed")]
+        // [DisableVariable("isFixed")]
         [SerializeField]
         float rotSpeed = 64;
 

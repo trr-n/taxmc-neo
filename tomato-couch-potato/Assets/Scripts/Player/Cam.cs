@@ -49,7 +49,7 @@ namespace trrne.Core
 
             axis.key = Input.GetAxisRaw(Constant.Keys.ZOOM);
             axis.wheel = Input.GetAxisRaw(Constant.Keys.MOUSE_ZOOM);
-            if (MF.ZeroTwins(axis.key + axis.wheel))
+            if (MF.ZeroTwins(MathF.Abs(axis.key) + MathF.Abs(axis.wheel)))
             {
                 return;
             }

@@ -11,11 +11,11 @@ namespace trrne.Core
 
         [SerializeField]
         [Tooltip("回転角\n0のままだと一方向に回転し続ける")]
-        [DisableVariable(nameof(isRotate))]
+        // [DisableVariable(nameof(isRotate))]
         float rotRange = 0;
 
         [SerializeField]
-        [DisableVariable(nameof(isRotate))]
+        // [DisableVariable(nameof(isRotate))]
         float rotSpeed = 10;
 
         [SerializeField]

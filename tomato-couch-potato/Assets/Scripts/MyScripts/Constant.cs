@@ -40,7 +40,8 @@ namespace trrne
             PAUSE = "Pause",
             RESPAWN = "Respawn",
             MOUSE_ZOOM = "Mouse ScrollWheel Zoom",
-            RESET_ZOOM = "ResetZoom";
+            RESET_ZOOM = "ResetZoom",
+            CHANGE_MUSIC_VOLUME = "ChangeMusicVolume";
         }
 
         public readonly struct Tags
