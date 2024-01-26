@@ -32,7 +32,7 @@ namespace trrne.Core
         {
             scoreT.SetText(scoreStr);
 
-#if DEBUG
+#if false // DEBUG
             if (Inputs.Down(Constant.Keys.BUTTON))
             {
                 SceneManager.Title();

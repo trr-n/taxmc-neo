@@ -23,7 +23,7 @@ namespace trrne.Arm
         RectTransform core;
 
         const string STAGE_NAME_PREFIX = "stage";
-        const float BETWEEN_SPACE = 18.96f;
+        const float BETWEEN_SPACE = 20.48f; // 18.96f;
 
         bool isScrolling = false;
         const float BUTTON_SCROLL_SPEED = 0.5f;

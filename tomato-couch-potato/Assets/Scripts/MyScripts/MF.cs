@@ -116,7 +116,7 @@ namespace trrne.Box
         /// <param name="min">下限値</param>
         /// <param name="max">上限値</param>
         /// <returns>nがmin以上max未満だったらtrueを返す</returns>
-        public static bool IsCaged(this float n, float min, float max) => !(n > max || n < min);
+        public static bool IsCaged(this float n, float min, float max) => n >= min && n <= max;
 
         public static float Clamp(float t, float min, float max) => t < min ? min : t > max ? max : t;
         public static float Repeat(float t, float length) => Clamp(t - MathF.Floor(t / length) * length, 0, length);

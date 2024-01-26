@@ -1,6 +1,3 @@
-#if !UNITY_EDITOR
-using trrne.Box;
-#endif
 using UnityEngine;
 
 namespace trrne.Core
@@ -15,9 +12,6 @@ namespace trrne.Core
         void Start()
         {
             Goal = transform.position;
-#if !UNITY_EDITOR
-            GetComponent<SpriteRenderer>().SetAlpha(0);
-#endif
         }
 
         void Update()

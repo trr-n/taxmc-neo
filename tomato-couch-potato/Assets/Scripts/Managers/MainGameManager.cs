@@ -1,7 +1,7 @@
-using System;
 using UnityEngine;
 using trrne.Box;
 using trrne.Secret;
+using UnityEngine.UI;
 
 namespace trrne.Brain
 {
@@ -34,51 +34,37 @@ namespace trrne.Brain
         public void WriteSaveData(string fileName, string src) => Save.Write(src, PASSWORD, Path(fileName));
         public string ReadSaveData(string fileName) => Save.Read<string>(PASSWORD, Path(fileName));
 
+        [SerializeField]
+        Slider volumeSlider = null;
+
         AudioSource speaker;
-        float volume = 0.2f;
 
         void Start()
         {
-            print("start func of singleton");
-            speaker = GetComponent<AudioSource>();
-            InitVolumeSettings();
-            speaker.Play();
+            if (volumeSlider != null)
+            {
+                print("start func of singleton");
+                speaker = GetComponent<AudioSource>();
+                InitVolumeSettings();
+                speaker.Play();
+                volumeSlider.value = speaker.volume;
+            }
         }
 
         void Update()
         {
-            // if (Inputs.Down(Constant.Keys.CHANGE_MUSIC_VOLUME))
-            // {
-            //     volume = 0;
-            // }
-            // print("call");
-            // var axis = Input.GetAxis(Constant.Keys.CHANGE_MUSIC_VOLUME);
-            // if (MF.ZeroTwins(axis))
-            // {
-            //     return;
-            // }
-            // volume += axis / 8;
-            // speaker.volume = Mathf.Clamp01(volume);
-            // print(volume);
-
-            var axis = Input.GetAxisRaw(Constant.Keys.CHANGE_MUSIC_VOLUME);
-            if (MF.ZeroTwins(axis))
+            if (volumeSlider != null)
             {
-                return;
+                speaker.volume = volumeSlider.value;
             }
-
-            volume += MathF.Sign(axis) * 0.1f;
-            FetchValue(volume = Mathf.Clamp01(volume));
         }
-
-        void FetchValue(float value) => speaker.volume = value;
 
         public void InitVolumeSettings()
         {
             if (speaker != null)
             {
                 speaker.loop = true;
-                speaker.volume = volume;
+                speaker.volume = 0.2f;
             }
         }
     }

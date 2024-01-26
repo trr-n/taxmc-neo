@@ -18,7 +18,6 @@ namespace trrne.Core
         ButtonFlag flag;
 
         bool isPressing = false;
-
         const int ON = 0, OFF = 1;
 
         protected override void Start()
@@ -27,13 +26,15 @@ namespace trrne.Core
 
             isAnimate = false;
             flag = transform.GetFromChild<ButtonFlag>();
-#if !DEBUG
-            sr.color = Surface.Transparent;
-#endif
         }
 
         protected override void Behavior()
         {
+            if (MF.ZeroTwins(Time.timeScale))
+            {
+                return;
+            }
+
             // レバーが動作中じゃない、プレイヤーが範囲内にいる、キーが押された
             if (!isPressing && flag.IsHit && Inputs.Down(Constant.Keys.BUTTON))
             {
